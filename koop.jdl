@@ -1,0 +1,16 @@
+application {
+  config {
+    jhiPrefix koop
+    languages [tr, en]
+    nativeLanguage tr
+    packageName com.koop.app
+    prodDatabaseType postgresql
+    baseName koop
+    authenticationType jwt
+    useSass true
+    clientFramework react
+    cacheProvider caffeine
+  }
+}
+
+paginate * with infinite-scroll
