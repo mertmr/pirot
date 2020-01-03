@@ -1,0 +1,58 @@
+{
+    "name": "Virman",
+    "fields": [
+        {
+            "fieldName": "tutar",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "notlar",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cikisHesabi",
+            "fieldType": "Hesap",
+            "fieldValues": "KASA,BANKA",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "grisiHesabi",
+            "fieldType": "Hesap",
+            "fieldValues": "KASA,BANKA",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "virman",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        }
+    ],
+    "changelogDate": "20200103090907",
+    "entityTableName": "virman",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

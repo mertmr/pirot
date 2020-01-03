@@ -1,0 +1,28 @@
+{
+    "name": "Satis",
+    "fields": [
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "satis",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        }
+    ],
+    "changelogDate": "20200103090901",
+    "entityTableName": "satis",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,183 @@
+package com.koop.app.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
+import java.io.Serializable;
+
+import com.koop.app.domain.enumeration.Birim;
+
+import com.koop.app.domain.enumeration.UrunKategorisi;
+
+/**
+ * A Urun.
+ */
+@Entity
+@Table(name = "urun")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class Urun implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    private Long id;
+
+    @NotNull
+    @Column(name = "urun_adi", nullable = false)
+    private String urunAdi;
+
+    @Column(name = "musteri_fiyati")
+    private Integer musteriFiyati;
+
+    @NotNull
+    @Column(name = "birim", nullable = false)
+    private Birim birim;
+
+    @Column(name = "dayanisma_urunu")
+    private Boolean dayanismaUrunu;
+
+    @Column(name = "urun_kategorisi")
+    private UrunKategorisi urunKategorisi;
+
+    @ManyToOne
+    @JsonIgnoreProperties("uruns")
+    private User user;
+
+    @ManyToOne
+    @JsonIgnoreProperties("uruns")
+    private KdvKategorisi kdvKategorisi;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUrunAdi() {
+        return urunAdi;
+    }
+
+    public Urun urunAdi(String urunAdi) {
+        this.urunAdi = urunAdi;
+        return this;
+    }
+
+    public void setUrunAdi(String urunAdi) {
+        this.urunAdi = urunAdi;
+    }
+
+    public Integer getMusteriFiyati() {
+        return musteriFiyati;
+    }
+
+    public Urun musteriFiyati(Integer musteriFiyati) {
+        this.musteriFiyati = musteriFiyati;
+        return this;
+    }
+
+    public void setMusteriFiyati(Integer musteriFiyati) {
+        this.musteriFiyati = musteriFiyati;
+    }
+
+    public Birim getBirim() {
+        return birim;
+    }
+
+    public Urun birim(Birim birim) {
+        this.birim = birim;
+        return this;
+    }
+
+    public void setBirim(Birim birim) {
+        this.birim = birim;
+    }
+
+    public Boolean isDayanismaUrunu() {
+        return dayanismaUrunu;
+    }
+
+    public Urun dayanismaUrunu(Boolean dayanismaUrunu) {
+        this.dayanismaUrunu = dayanismaUrunu;
+        return this;
+    }
+
+    public void setDayanismaUrunu(Boolean dayanismaUrunu) {
+        this.dayanismaUrunu = dayanismaUrunu;
+    }
+
+    public UrunKategorisi getUrunKategorisi() {
+        return urunKategorisi;
+    }
+
+    public Urun urunKategorisi(UrunKategorisi urunKategorisi) {
+        this.urunKategorisi = urunKategorisi;
+        return this;
+    }
+
+    public void setUrunKategorisi(UrunKategorisi urunKategorisi) {
+        this.urunKategorisi = urunKategorisi;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Urun user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public KdvKategorisi getKdvKategorisi() {
+        return kdvKategorisi;
+    }
+
+    public Urun kdvKategorisi(KdvKategorisi kdvKategorisi) {
+        this.kdvKategorisi = kdvKategorisi;
+        return this;
+    }
+
+    public void setKdvKategorisi(KdvKategorisi kdvKategorisi) {
+        this.kdvKategorisi = kdvKategorisi;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Urun)) {
+            return false;
+        }
+        return id != null && id.equals(((Urun) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public String toString() {
+        return "Urun{" +
+            "id=" + getId() +
+            ", urunAdi='" + getUrunAdi() + "'" +
+            ", musteriFiyati=" + getMusteriFiyati() +
+            ", birim='" + getBirim() + "'" +
+            ", dayanismaUrunu='" + isDayanismaUrunu() + "'" +
+            ", urunKategorisi='" + getUrunKategorisi() + "'" +
+            "}";
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "koopApp": {
+    "satis": {
+      "home": {
+        "title": "Satis",
+        "createLabel": "Create a new Satis",
+        "createOrEditLabel": "Create or edit a Satis",
+        "notFound": "No Satis found"
+      },
+      "created": "A new Satis is created with identifier {{ param }}",
+      "updated": "A Satis is updated with identifier {{ param }}",
+      "deleted": "A Satis is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Satis {{ id }}?"
+      },
+      "detail": {
+        "title": "Satis"
+      },
+      "tarih": "Tarih",
+      "user": "User"
+    }
+  }
+}

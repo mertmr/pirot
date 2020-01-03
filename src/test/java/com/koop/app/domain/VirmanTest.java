@@ -1,0 +1,22 @@
+package com.koop.app.domain;
+
+import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import com.koop.app.web.rest.TestUtil;
+
+public class VirmanTest {
+
+    @Test
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Virman.class);
+        Virman virman1 = new Virman();
+        virman1.setId(1L);
+        Virman virman2 = new Virman();
+        virman2.setId(virman1.getId());
+        assertThat(virman1).isEqualTo(virman2);
+        virman2.setId(2L);
+        assertThat(virman1).isNotEqualTo(virman2);
+        virman1.setId(null);
+        assertThat(virman1).isNotEqualTo(virman2);
+    }
+}

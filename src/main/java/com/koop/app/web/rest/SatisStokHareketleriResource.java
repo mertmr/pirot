@@ -1,0 +1,131 @@
+package com.koop.app.web.rest;
+
+import com.koop.app.domain.SatisStokHareketleri;
+import com.koop.app.repository.SatisStokHareketleriRepository;
+import com.koop.app.web.rest.errors.BadRequestAlertException;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing {@link com.koop.app.domain.SatisStokHareketleri}.
+ */
+@RestController
+@RequestMapping("/api")
+@Transactional
+public class SatisStokHareketleriResource {
+
+    private final Logger log = LoggerFactory.getLogger(SatisStokHareketleriResource.class);
+
+    private static final String ENTITY_NAME = "satisStokHareketleri";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
+    private final SatisStokHareketleriRepository satisStokHareketleriRepository;
+
+    public SatisStokHareketleriResource(SatisStokHareketleriRepository satisStokHareketleriRepository) {
+        this.satisStokHareketleriRepository = satisStokHareketleriRepository;
+    }
+
+    /**
+     * {@code POST  /satis-stok-hareketleris} : Create a new satisStokHareketleri.
+     *
+     * @param satisStokHareketleri the satisStokHareketleri to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new satisStokHareketleri, or with status {@code 400 (Bad Request)} if the satisStokHareketleri has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/satis-stok-hareketleris")
+    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri) throws URISyntaxException {
+        log.debug("REST request to save SatisStokHareketleri : {}", satisStokHareketleri);
+        if (satisStokHareketleri.getId() != null) {
+            throw new BadRequestAlertException("A new satisStokHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
+        return ResponseEntity.created(new URI("/api/satis-stok-hareketleris/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /satis-stok-hareketleris} : Updates an existing satisStokHareketleri.
+     *
+     * @param satisStokHareketleri the satisStokHareketleri to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated satisStokHareketleri,
+     * or with status {@code 400 (Bad Request)} if the satisStokHareketleri is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the satisStokHareketleri couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/satis-stok-hareketleris")
+    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri) throws URISyntaxException {
+        log.debug("REST request to update SatisStokHareketleri : {}", satisStokHareketleri);
+        if (satisStokHareketleri.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satisStokHareketleri.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code GET  /satis-stok-hareketleris} : get all the satisStokHareketleris.
+     *
+
+     * @param pageable the pagination information.
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of satisStokHareketleris in body.
+     */
+    @GetMapping("/satis-stok-hareketleris")
+    public ResponseEntity<List<SatisStokHareketleri>> getAllSatisStokHareketleris(Pageable pageable) {
+        log.debug("REST request to get a page of SatisStokHareketleris");
+        Page<SatisStokHareketleri> page = satisStokHareketleriRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /satis-stok-hareketleris/:id} : get the "id" satisStokHareketleri.
+     *
+     * @param id the id of the satisStokHareketleri to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the satisStokHareketleri, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/satis-stok-hareketleris/{id}")
+    public ResponseEntity<SatisStokHareketleri> getSatisStokHareketleri(@PathVariable Long id) {
+        log.debug("REST request to get SatisStokHareketleri : {}", id);
+        Optional<SatisStokHareketleri> satisStokHareketleri = satisStokHareketleriRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(satisStokHareketleri);
+    }
+
+    /**
+     * {@code DELETE  /satis-stok-hareketleris/:id} : delete the "id" satisStokHareketleri.
+     *
+     * @param id the id of the satisStokHareketleri to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/satis-stok-hareketleris/{id}")
+    public ResponseEntity<Void> deleteSatisStokHareketleri(@PathVariable Long id) {
+        log.debug("REST request to delete SatisStokHareketleri : {}", id);
+        satisStokHareketleriRepository.deleteById(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+}

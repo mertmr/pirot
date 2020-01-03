@@ -1,0 +1,11 @@
+id;urun_adi;musteri_fiyati;birim;dayanisma_urunu;urun_kategorisi
+1;Massachusetts lime California;94838;GR;true;GIDA
+2;deposit Bahamian Dollar;73232;GR;false;GIDA
+3;6th generation monitor;27912;GR;false;GIDA_DISI
+4;Executive;84467;GR;false;GIDA
+5;Yen;67899;KG;true;GIDA
+6;Afghanistan back up Baby;36672;KG;true;GIDA
+7;optimize;4496;KG;true;GIDA
+8;optical;79946;KG;true;GIDA_DISI
+9;Credit Card Account;92875;ADET;false;GIDA
+10;synergistic;53448;GR;true;GIDA

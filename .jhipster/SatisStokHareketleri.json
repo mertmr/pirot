@@ -1,0 +1,45 @@
+{
+    "name": "SatisStokHareketleri",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tutar",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "satis",
+            "otherEntityRelationshipName": "satisStokHareketleri",
+            "relationshipName": "satis",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "urun",
+            "otherEntityRelationshipName": "satisStokHareketleri",
+            "relationshipName": "urun",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200103090902",
+    "entityTableName": "satis_stok_hareketleri",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

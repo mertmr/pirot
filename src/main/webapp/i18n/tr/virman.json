@@ -1,0 +1,27 @@
+{
+  "koopApp": {
+    "virman": {
+      "home": {
+        "title": "Virmen",
+        "createLabel": "Create a new Virman",
+        "createOrEditLabel": "Create or edit a Virman",
+        "notFound": "No Virmen found"
+      },
+      "created": "A new Virman is created with identifier {{ param }}",
+      "updated": "A Virman is updated with identifier {{ param }}",
+      "deleted": "A Virman is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Virman {{ id }}?"
+      },
+      "detail": {
+        "title": "Virman"
+      },
+      "tutar": "Tutar",
+      "notlar": "Notlar",
+      "cikisHesabi": "Cikis Hesabi",
+      "grisiHesabi": "Grisi Hesabi",
+      "tarih": "Tarih",
+      "user": "User"
+    }
+  }
+}

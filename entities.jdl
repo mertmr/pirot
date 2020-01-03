@@ -96,4 +96,4 @@ relationship ManyToOne {
   Urun{kdvKategorisi} to KdvKategorisi
 }
 
-paginate * with infinite-scroll
+paginate * with pager
