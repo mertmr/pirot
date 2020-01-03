@@ -12,6 +12,42 @@ import activate, { ActivateState } from 'app/modules/account/activate/activate.r
 import password, { PasswordState } from 'app/modules/account/password/password.reducer';
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
+// prettier-ignore
+import gider, {
+  GiderState
+} from 'app/entities/gider/gider.reducer';
+// prettier-ignore
+import kdvKategorisi, {
+  KdvKategorisiState
+} from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
+// prettier-ignore
+import satis, {
+  SatisState
+} from 'app/entities/satis/satis.reducer';
+// prettier-ignore
+import satisStokHareketleri, {
+  SatisStokHareketleriState
+} from 'app/entities/satis-stok-hareketleri/satis-stok-hareketleri.reducer';
+// prettier-ignore
+import stokGirisi, {
+  StokGirisiState
+} from 'app/entities/stok-girisi/stok-girisi.reducer';
+// prettier-ignore
+import uretici, {
+  UreticiState
+} from 'app/entities/uretici/uretici.reducer';
+// prettier-ignore
+import urun, {
+  UrunState
+} from 'app/entities/urun/urun.reducer';
+// prettier-ignore
+import urunFiyat, {
+  UrunFiyatState
+} from 'app/entities/urun-fiyat/urun-fiyat.reducer';
+// prettier-ignore
+import virman, {
+  VirmanState
+} from 'app/entities/virman/virman.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -25,6 +61,15 @@ export interface IRootState {
   readonly passwordReset: PasswordResetState;
   readonly password: PasswordState;
   readonly settings: SettingsState;
+  readonly gider: GiderState;
+  readonly kdvKategorisi: KdvKategorisiState;
+  readonly satis: SatisState;
+  readonly satisStokHareketleri: SatisStokHareketleriState;
+  readonly stokGirisi: StokGirisiState;
+  readonly uretici: UreticiState;
+  readonly urun: UrunState;
+  readonly urunFiyat: UrunFiyatState;
+  readonly virman: VirmanState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -40,6 +85,15 @@ const rootReducer = combineReducers<IRootState>({
   passwordReset,
   password,
   settings,
+  gider,
+  kdvKategorisi,
+  satis,
+  satisStokHareketleri,
+  stokGirisi,
+  uretici,
+  urun,
+  urunFiyat,
+  virman,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

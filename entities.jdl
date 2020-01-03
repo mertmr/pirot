@@ -1,0 +1,99 @@
+enum Birim {
+    KG, GR, ADET
+}
+
+enum GiderTipi {
+    KARGO, SU, DIGER, VERGI, KIRA, AIDAT, TAKSI, ELEKTRIK, SU
+}
+
+enum OdemeAraci {
+    ARAC1, ARAC2
+}
+
+enum StokHareketiTipi {
+    STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF
+}
+
+enum UrunKategorisi {
+    GIDA, GIDA_DISI
+}
+
+enum Hesap {
+    KASA, BANKA
+}
+
+
+entity Gider {
+    tarih ZonedDateTime
+    tutar Integer required
+    notlar String required
+    giderTipi GiderTipi required
+    odemeAraci OdemeAraci required
+}
+
+entity KdvKategorisi {
+    kategoriAdi String required
+    kdvOrani Integer required
+}
+
+entity Satis {
+    tarih ZonedDateTime
+}
+
+entity SatisStokHareketleri {
+    miktar Integer required
+    tutar Integer required
+}
+
+entity StokGirisi {
+    miktar Integer required
+    agirlik Integer
+    notlar String required
+    stokHareketiTipi StokHareketiTipi required
+    tarih ZonedDateTime
+}
+
+entity Uretici {
+    adi String required
+    adres String
+    bankaBilgileri String required
+    tarih ZonedDateTime
+}
+
+entity Urun {
+    urunAdi String required
+    musteriFiyati Integer
+    birim Birim required
+    dayanismaUrunu Boolean
+    urunKategorisi UrunKategorisi
+}
+
+entity UrunFiyat {
+    fiyat Integer
+    tarih ZonedDateTime
+}
+
+entity Virman {
+    tutar Integer required
+    notlar String required
+    cikisHesabi Hesap required
+    girisHesabi Hesap required
+    tarih ZonedDateTime
+}
+
+relationship ManyToOne {
+  Gider{user(login)} to User
+  Satis{user(login)} to User
+  StokGirisi{user(login)} to User
+  Uretici{user(login)} to User
+  Urun{user(login)} to User
+  UrunFiyat{user(login)} to User
+  Virman{user(login)} to User
+  SatisStokHareketleri{satis} to Satis
+  SatisStokHareketleri{urun} to Urun
+  StokGirisi{urun} to Urun
+  UrunFiyat{urun} to Urun
+  Urun{kdvKategorisi} to KdvKategorisi
+}
+
+paginate * with infinite-scroll

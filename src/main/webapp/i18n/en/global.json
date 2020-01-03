@@ -7,6 +7,15 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "gider": "Gider",
+        "kdvKategorisi": "Kdv Kategorisi",
+        "satis": "Satis",
+        "satisStokHareketleri": "Satis Stok Hareketleri",
+        "stokGirisi": "Stok Girisi",
+        "uretici": "Uretici",
+        "urun": "Urun",
+        "urunFiyat": "Urun Fiyat",
+        "virman": "Virman",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
