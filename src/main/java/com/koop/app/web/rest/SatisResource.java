@@ -108,9 +108,10 @@ public class SatisResource {
     @GetMapping("/satis")
     public ResponseEntity<List<Satis>> getAllSatis(Pageable pageable) {
         log.debug("REST request to get a page of Satis");
-        Page<Satis> page = satisRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        Page<Integer> ids = satisRepository.findAllIds(pageable);
+        List<Satis> satislar = satisRepository.findAllByIds(ids.getContent());
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ids);
+        return ResponseEntity.ok().headers(headers).body(satislar);
     }
 
     /**
@@ -122,7 +123,7 @@ public class SatisResource {
     @GetMapping("/satis/{id}")
     public ResponseEntity<Satis> getSatis(@PathVariable Long id) {
         log.debug("REST request to get Satis : {}", id);
-        Optional<Satis> satis = satisRepository.findById(id);
+        Optional<Satis> satis = satisRepository.findOneWithStokHareketleriById(id);
         return ResponseUtil.wrapOrNotFound(satis);
     }
 

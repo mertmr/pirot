@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Satis.
@@ -25,6 +27,10 @@ public class Satis implements Serializable {
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
+
+    @OneToMany(mappedBy = "satis")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SatisStokHareketleri> stokHareketleriLists = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("satis")
@@ -50,6 +56,31 @@ public class Satis implements Serializable {
 
     public void setTarih(ZonedDateTime tarih) {
         this.tarih = tarih;
+    }
+
+    public Set<SatisStokHareketleri> getStokHareketleriLists() {
+        return stokHareketleriLists;
+    }
+
+    public Satis stokHareketleriLists(Set<SatisStokHareketleri> satisStokHareketleris) {
+        this.stokHareketleriLists = satisStokHareketleris;
+        return this;
+    }
+
+    public Satis addStokHareketleriList(SatisStokHareketleri satisStokHareketleri) {
+        this.stokHareketleriLists.add(satisStokHareketleri);
+        satisStokHareketleri.setSatis(this);
+        return this;
+    }
+
+    public Satis removeStokHareketleriList(SatisStokHareketleri satisStokHareketleri) {
+        this.stokHareketleriLists.remove(satisStokHareketleri);
+        satisStokHareketleri.setSatis(null);
+        return this;
+    }
+
+    public void setStokHareketleriLists(Set<SatisStokHareketleri> satisStokHareketleris) {
+        this.stokHareketleriLists = satisStokHareketleris;
     }
 
     public User getUser() {

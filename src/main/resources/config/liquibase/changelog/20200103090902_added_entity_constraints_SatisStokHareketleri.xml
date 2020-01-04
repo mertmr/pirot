@@ -8,17 +8,17 @@
     -->
     <changeSet id="20200103090902-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="satis_id"
-                                 baseTableName="satis_stok_hareketleri"
-                                 constraintName="fk_satis_stok_hareketleri_satis_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="satis"/>
-
         <addForeignKeyConstraint baseColumnNames="urun_id"
                                  baseTableName="satis_stok_hareketleri"
                                  constraintName="fk_satis_stok_hareketleri_urun_id"
                                  referencedColumnNames="id"
                                  referencedTableName="urun"/>
+
+        <addForeignKeyConstraint baseColumnNames="satis_id"
+                                 baseTableName="satis_stok_hareketleri"
+                                 constraintName="fk_satis_stok_hareketleri_satis_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="satis"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -7,10 +7,10 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { ISatis } from 'app/shared/model/satis.model';
-import { getEntities as getSatis } from 'app/entities/satis/satis.reducer';
 import { IUrun } from 'app/shared/model/urun.model';
 import { getEntities as getUruns } from 'app/entities/urun/urun.reducer';
+import { ISatis } from 'app/shared/model/satis.model';
+import { getEntities as getSatis } from 'app/entities/satis/satis.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './satis-stok-hareketleri.reducer';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -19,11 +19,11 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ISatisStokHareketleriUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdateProps) => {
-  const [satisId, setSatisId] = useState('0');
   const [urunId, setUrunId] = useState('0');
+  const [satisId, setSatisId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { satisStokHareketleriEntity, satis, uruns, loading, updating } = props;
+  const { satisStokHareketleriEntity, uruns, satis, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/satis-stok-hareketleri' + props.location.search);
@@ -36,8 +36,8 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
       props.getEntity(props.match.params.id);
     }
 
-    props.getSatis();
     props.getUruns();
+    props.getSatis();
   }, []);
 
   useEffect(() => {
@@ -115,13 +115,13 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 />
               </AvGroup>
               <AvGroup>
-                <Label for="satis-stok-hareketleri-satis">
-                  <Translate contentKey="koopApp.satisStokHareketleri.satis">Satis</Translate>
+                <Label for="satis-stok-hareketleri-urun">
+                  <Translate contentKey="koopApp.satisStokHareketleri.urun">Urun</Translate>
                 </Label>
-                <AvInput id="satis-stok-hareketleri-satis" type="select" className="form-control" name="satis.id">
+                <AvInput id="satis-stok-hareketleri-urun" type="select" className="form-control" name="urun.id">
                   <option value="" key="0" />
-                  {satis
-                    ? satis.map(otherEntity => (
+                  {uruns
+                    ? uruns.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.id}
                         </option>
@@ -130,13 +130,13 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="satis-stok-hareketleri-urun">
-                  <Translate contentKey="koopApp.satisStokHareketleri.urun">Urun</Translate>
+                <Label for="satis-stok-hareketleri-satis">
+                  <Translate contentKey="koopApp.satisStokHareketleri.satis">Satis</Translate>
                 </Label>
-                <AvInput id="satis-stok-hareketleri-urun" type="select" className="form-control" name="urun.id">
+                <AvInput id="satis-stok-hareketleri-satis" type="select" className="form-control" name="satis.id">
                   <option value="" key="0" />
-                  {uruns
-                    ? uruns.map(otherEntity => (
+                  {satis
+                    ? satis.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.id}
                         </option>
@@ -166,8 +166,8 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  satis: storeState.satis.entities,
   uruns: storeState.urun.entities,
+  satis: storeState.satis.entities,
   satisStokHareketleriEntity: storeState.satisStokHareketleri.entity,
   loading: storeState.satisStokHareketleri.loading,
   updating: storeState.satisStokHareketleri.updating,
@@ -175,8 +175,8 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getSatis,
   getUruns,
+  getSatis,
   getEntity,
   updateEntity,
   createEntity,

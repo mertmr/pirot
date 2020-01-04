@@ -39,13 +39,13 @@ export const SatisStokHareketleriDetail = (props: ISatisStokHareketleriDetailPro
           </dt>
           <dd>{satisStokHareketleriEntity.tutar}</dd>
           <dt>
-            <Translate contentKey="koopApp.satisStokHareketleri.satis">Satis</Translate>
-          </dt>
-          <dd>{satisStokHareketleriEntity.satis ? satisStokHareketleriEntity.satis.id : ''}</dd>
-          <dt>
             <Translate contentKey="koopApp.satisStokHareketleri.urun">Urun</Translate>
           </dt>
           <dd>{satisStokHareketleriEntity.urun ? satisStokHareketleriEntity.urun.id : ''}</dd>
+          <dt>
+            <Translate contentKey="koopApp.satisStokHareketleri.satis">Satis</Translate>
+          </dt>
+          <dd>{satisStokHareketleriEntity.satis ? satisStokHareketleriEntity.satis.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/satis-stok-hareketleri" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

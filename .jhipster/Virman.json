@@ -18,18 +18,12 @@
         {
             "fieldName": "cikisHesabi",
             "fieldType": "Hesap",
-            "fieldValues": "KASA,BANKA",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldValues": "KASA,BANKA"
         },
         {
             "fieldName": "girisHesabi",
             "fieldType": "Hesap",
-            "fieldValues": "KASA,BANKA",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldValues": "KASA,BANKA"
         },
         {
             "fieldName": "tarih",

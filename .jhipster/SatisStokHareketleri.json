@@ -19,16 +19,16 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "otherEntityName": "satis",
+            "otherEntityName": "urun",
             "otherEntityRelationshipName": "satisStokHareketleri",
-            "relationshipName": "satis",
+            "relationshipName": "urun",
             "otherEntityField": "id"
         },
         {
             "relationshipType": "many-to-one",
-            "otherEntityName": "urun",
-            "otherEntityRelationshipName": "satisStokHareketleri",
-            "relationshipName": "urun",
+            "otherEntityName": "satis",
+            "otherEntityRelationshipName": "stokHareketleriList",
+            "relationshipName": "satis",
             "otherEntityField": "id"
         }
     ],

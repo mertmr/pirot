@@ -22,10 +22,10 @@
                 <constraints nullable="false" />
             </column>
             <column name="cikis_hesabi" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="giris_hesabi" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="tarih" type="datetime">
                 <constraints nullable="true" />

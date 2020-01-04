@@ -33,11 +33,11 @@ public class SatisStokHareketleri implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("satisStokHareketleris")
-    private Satis satis;
+    private Urun urun;
 
     @ManyToOne
-    @JsonIgnoreProperties("satisStokHareketleris")
-    private Urun urun;
+    @JsonIgnoreProperties("stokHareketleriLists")
+    private Satis satis;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -74,19 +74,6 @@ public class SatisStokHareketleri implements Serializable {
         this.tutar = tutar;
     }
 
-    public Satis getSatis() {
-        return satis;
-    }
-
-    public SatisStokHareketleri satis(Satis satis) {
-        this.satis = satis;
-        return this;
-    }
-
-    public void setSatis(Satis satis) {
-        this.satis = satis;
-    }
-
     public Urun getUrun() {
         return urun;
     }
@@ -98,6 +85,19 @@ public class SatisStokHareketleri implements Serializable {
 
     public void setUrun(Urun urun) {
         this.urun = urun;
+    }
+
+    public Satis getSatis() {
+        return satis;
+    }
+
+    public SatisStokHareketleri satis(Satis satis) {
+        this.satis = satis;
+        return this;
+    }
+
+    public void setSatis(Satis satis) {
+        this.satis = satis;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -89,11 +89,14 @@ relationship ManyToOne {
   Urun{user(login)} to User
   UrunFiyat{user(login)} to User
   Virman{user(login)} to User
-  SatisStokHareketleri{satis} to Satis
   SatisStokHareketleri{urun} to Urun
   StokGirisi{urun} to Urun
   UrunFiyat{urun} to Urun
   Urun{kdvKategorisi} to KdvKategorisi
+}
+
+relationship OneToMany {
+    Satis{stokHareketleriList(id)} to SatisStokHareketleri{satis}
 }
 
 paginate * with pagination

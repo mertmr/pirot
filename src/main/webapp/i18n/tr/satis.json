@@ -17,7 +17,8 @@
         "title": "Satış"
       },
       "tarih": "Tarih",
-      "user": "Kullanıcı"
+      "stokHareketleriList": "Stok Hareketleri List",
+      "user": "User"
     }
   }
 }

@@ -21,10 +21,10 @@
             <column name="tutar" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="satis_id" type="bigint">
+            <column name="urun_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="urun_id" type="bigint">
+            <column name="satis_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

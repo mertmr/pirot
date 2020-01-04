@@ -1,17 +1,20 @@
 import './home.scss';
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Translate } from 'react-jhipster';
-import { connect } from 'react-redux';
-import { Row, Col, Alert } from 'reactstrap';
+import {Link} from 'react-router-dom';
+import {Translate} from 'react-jhipster';
+import {connect} from 'react-redux';
+import {Row, Col, Alert} from 'reactstrap';
+import 'antd/lib/statistic/style/index.css';
+import 'antd/lib/card/style/index.css';
+import {Card, Statistic} from 'antd';
 
-import { IRootState } from 'app/shared/reducers';
+import {IRootState} from 'app/shared/reducers';
 
 export type IHomeProp = StateProps;
 
 export const Home = (props: IHomeProp) => {
-  const { account } = props;
+  const {account} = props;
 
   return (
     <Row>
@@ -25,10 +28,22 @@ export const Home = (props: IHomeProp) => {
         {account && account.login ? (
           <div>
             <Alert color="success">
-              <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
+              <Translate contentKey="home.logged.message" interpolate={{username: account.login}}>
                 You are logged in as user {account.login}.
               </Translate>
             </Alert>
+            <Row gutter={18}>
+              <Col span={6}>
+                <Card>
+                  <Statistic title="Kasa" value={112893.34} suffix="TL"/>
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card>
+                  <Statistic title="Günlük Ciro" value={112893.34} suffix="TL"/>
+                </Card>
+              </Col>
+            </Row>
           </div>
         ) : (
           <div>
@@ -39,7 +54,8 @@ export const Home = (props: IHomeProp) => {
             </Alert>
 
             <Alert color="warning">
-              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account yet?</Translate>&nbsp;
+              <Translate contentKey="global.messages.info.register.noaccount">You do not have an account
+                yet?</Translate>&nbsp;
               <Link to="/account/register" className="alert-link">
                 <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
               </Link>
