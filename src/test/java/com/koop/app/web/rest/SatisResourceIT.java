@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Satis;
 import com.koop.app.repository.SatisRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +60,9 @@ public class SatisResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restSatisMockMvc;
 
     private Satis satis;
@@ -66,7 +70,7 @@ public class SatisResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SatisResource satisResource = new SatisResource(satisRepository);
+        final SatisResource satisResource = new SatisResource(satisRepository, userService);
         this.restSatisMockMvc = MockMvcBuilders.standaloneSetup(satisResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -154,7 +158,7 @@ public class SatisResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(satis.getId().intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getSatis() throws Exception {

@@ -23,11 +23,13 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
   const { ureticiEntity, users, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/uretici');
+    props.history.push('/uretici' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 

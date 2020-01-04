@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.StokGirisi;
 import com.koop.app.repository.StokGirisiRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -72,6 +73,9 @@ public class StokGirisiResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restStokGirisiMockMvc;
 
     private StokGirisi stokGirisi;
@@ -79,7 +83,7 @@ public class StokGirisiResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final StokGirisiResource stokGirisiResource = new StokGirisiResource(stokGirisiRepository);
+        final StokGirisiResource stokGirisiResource = new StokGirisiResource(stokGirisiRepository, userService);
         this.restStokGirisiMockMvc = MockMvcBuilders.standaloneSetup(stokGirisiResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -237,7 +241,7 @@ public class StokGirisiResourceIT {
             .andExpect(jsonPath("$.[*].stokHareketiTipi").value(hasItem(DEFAULT_STOK_HAREKETI_TIPI.toString())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getStokGirisi() throws Exception {

@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Uretici;
 import com.koop.app.repository.UreticiRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +69,9 @@ public class UreticiResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restUreticiMockMvc;
 
     private Uretici uretici;
@@ -75,7 +79,7 @@ public class UreticiResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UreticiResource ureticiResource = new UreticiResource(ureticiRepository);
+        final UreticiResource ureticiResource = new UreticiResource(ureticiRepository, userService);
         this.restUreticiMockMvc = MockMvcBuilders.standaloneSetup(ureticiResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -211,7 +215,7 @@ public class UreticiResourceIT {
             .andExpect(jsonPath("$.[*].bankaBilgileri").value(hasItem(DEFAULT_BANKA_BILGILERI)))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getUretici() throws Exception {

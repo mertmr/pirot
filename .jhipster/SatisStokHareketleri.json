@@ -35,7 +35,7 @@
     "changelogDate": "20200103090902",
     "entityTableName": "satis_stok_hareketleri",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

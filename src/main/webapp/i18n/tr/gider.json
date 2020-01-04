@@ -2,16 +2,16 @@
   "koopApp": {
     "gider": {
       "home": {
-        "title": "Giders",
-        "createLabel": "Create a new Gider",
-        "createOrEditLabel": "Create or edit a Gider",
-        "notFound": "No Giders found"
+        "title": "Giderler",
+        "createLabel": "Yeni Gider",
+        "createOrEditLabel": "Gider Yarat/Düzenle",
+        "notFound": "Gider bulunamadı"
       },
-      "created": "A new Gider is created with identifier {{ param }}",
-      "updated": "A Gider is updated with identifier {{ param }}",
-      "deleted": "A Gider is deleted with identifier {{ param }}",
+      "created": "{{ param }} idli gider yaratıldı",
+      "updated": "{{ param }} idli gider düzenlendi",
+      "deleted": "{{ param }} idli gider silindi",
       "delete": {
-        "question": "Are you sure you want to delete Gider {{ id }}?"
+        "question": "{{ id }} idli gideri silmek istediğinize emin misiniz?"
       },
       "detail": {
         "title": "Gider"

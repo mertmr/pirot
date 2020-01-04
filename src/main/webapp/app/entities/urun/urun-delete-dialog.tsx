@@ -17,7 +17,7 @@ export const UrunDeleteDialog = (props: IUrunDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/urun');
+    props.history.push('/urun' + props.location.search);
   };
 
   useEffect(() => {

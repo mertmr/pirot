@@ -18,7 +18,7 @@
     "changelogDate": "20200103090901",
     "entityTableName": "satis",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

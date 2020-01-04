@@ -48,7 +48,7 @@
     "changelogDate": "20200103090859",
     "entityTableName": "gider",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

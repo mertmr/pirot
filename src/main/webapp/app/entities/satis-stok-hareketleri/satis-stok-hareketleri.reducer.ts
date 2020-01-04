@@ -1,12 +1,5 @@
 import axios from 'axios';
-import {
-  parseHeaderForLinks,
-  loadMoreDataWhenScrolled,
-  ICrudGetAction,
-  ICrudGetAllAction,
-  ICrudPutAction,
-  ICrudDeleteAction
-} from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -27,7 +20,6 @@ const initialState = {
   errorMessage: null,
   entities: [] as ReadonlyArray<ISatisStokHareketleri>,
   entity: defaultValue,
-  links: { next: 0 },
   updating: false,
   totalItems: 0,
   updateSuccess: false
@@ -68,17 +60,13 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
         updateSuccess: false,
         errorMessage: action.payload
       };
-    case SUCCESS(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI_LIST): {
-      const links = parseHeaderForLinks(action.payload.headers.link);
-
+    case SUCCESS(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI_LIST):
       return {
         ...state,
         loading: false,
-        links,
-        entities: loadMoreDataWhenScrolled(state.entities, action.payload.data, links),
+        entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
-    }
     case SUCCESS(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI):
       return {
         ...state,
@@ -134,6 +122,7 @@ export const createEntity: ICrudPutAction<ISatisStokHareketleri> = entity => asy
     type: ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
   return result;
 };
 
@@ -142,6 +131,7 @@ export const updateEntity: ICrudPutAction<ISatisStokHareketleri> = entity => asy
     type: ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
   return result;
 };
 
@@ -151,6 +141,7 @@ export const deleteEntity: ICrudDeleteAction<ISatisStokHareketleri> = id => asyn
     type: ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

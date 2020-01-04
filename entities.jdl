@@ -76,8 +76,8 @@ entity UrunFiyat {
 entity Virman {
     tutar Integer required
     notlar String required
-    cikisHesabi Hesap required
-    girisHesabi Hesap required
+    cikisHesabi Hesap
+    girisHesabi Hesap
     tarih ZonedDateTime
 }
 
@@ -96,4 +96,4 @@ relationship ManyToOne {
   Urun{kdvKategorisi} to KdvKategorisi
 }
 
-paginate * with pager
+paginate * with pagination

@@ -2,6 +2,7 @@ package com.koop.app.service;
 
 import com.koop.app.config.Constants;
 import com.koop.app.domain.Authority;
+import com.koop.app.domain.Gider;
 import com.koop.app.domain.User;
 import com.koop.app.repository.AuthorityRepository;
 import com.koop.app.repository.UserRepository;
@@ -9,6 +10,7 @@ import com.koop.app.security.AuthoritiesConstants;
 import com.koop.app.security.SecurityUtils;
 import com.koop.app.service.dto.UserDTO;
 
+import com.koop.app.web.rest.errors.UserNotFoundException;
 import io.github.jhipster.security.RandomUtil;
 
 import org.slf4j.Logger;
@@ -125,9 +127,9 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser){
+    private boolean removeNonActivatedUser(User existingUser) {
         if (existingUser.getActivated()) {
-             return false;
+            return false;
         }
         userRepository.delete(existingUser);
         userRepository.flush();
@@ -184,7 +186,7 @@ public class UserService {
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 if (email != null) {
-	                user.setEmail(email.toLowerCase());
+                    user.setEmail(email.toLowerCase());
                 }
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
@@ -290,6 +292,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     public List<String> getAuthorities() {
@@ -302,5 +305,16 @@ public class UserService {
         if (user.getEmail() != null) {
             Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
         }
+    }
+
+    public User getCurrentUser() {
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        if (currentUserLogin.isPresent()) {
+            Optional<User> oneByLogin = userRepository.findOneByLogin(currentUserLogin.get());
+            if (oneByLogin.isPresent()) {
+                return oneByLogin.get();
+            }
+        }
+        throw new UserNotFoundException();
     }
 }

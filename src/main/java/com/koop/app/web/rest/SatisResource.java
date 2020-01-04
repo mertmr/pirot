@@ -1,7 +1,9 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Satis;
+import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,15 +15,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +44,11 @@ public class SatisResource {
 
     private final SatisRepository satisRepository;
 
-    public SatisResource(SatisRepository satisRepository) {
+    private final UserService userService;
+
+    public SatisResource(SatisRepository satisRepository, UserService userService) {
         this.satisRepository = satisRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +64,9 @@ public class SatisResource {
         if (satis.getId() != null) {
             throw new BadRequestAlertException("A new satis cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User currentUser = userService.getCurrentUser();
+        satis.setUser(currentUser);
+        satis.setTarih(ZonedDateTime.now());
         Satis result = satisRepository.save(satis);
         return ResponseEntity.created(new URI("/api/satis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -80,6 +88,9 @@ public class SatisResource {
         if (satis.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        User currentUser = userService.getCurrentUser();
+        satis.setUser(currentUser);
+        satis.setTarih(ZonedDateTime.now());
         Satis result = satisRepository.save(satis);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satis.getId().toString()))

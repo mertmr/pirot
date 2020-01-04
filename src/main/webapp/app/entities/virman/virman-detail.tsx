@@ -44,11 +44,11 @@ export const VirmanDetail = (props: IVirmanDetailProps) => {
           </dt>
           <dd>{virmanEntity.cikisHesabi}</dd>
           <dt>
-            <span id="grisiHesabi">
-              <Translate contentKey="koopApp.virman.grisiHesabi">Grisi Hesabi</Translate>
+            <span id="girisHesabi">
+              <Translate contentKey="koopApp.virman.girisHesabi">Giris Hesabi</Translate>
             </span>
           </dt>
-          <dd>{virmanEntity.grisiHesabi}</dd>
+          <dd>{virmanEntity.girisHesabi}</dd>
           <dt>
             <span id="tarih">
               <Translate contentKey="koopApp.virman.tarih">Tarih</Translate>

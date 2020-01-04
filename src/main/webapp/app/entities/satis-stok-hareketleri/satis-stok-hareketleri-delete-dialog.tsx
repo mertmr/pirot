@@ -17,7 +17,7 @@ export const SatisStokHareketleriDeleteDialog = (props: ISatisStokHareketleriDel
   }, []);
 
   const handleClose = () => {
-    props.history.push('/satis-stok-hareketleri');
+    props.history.push('/satis-stok-hareketleri' + props.location.search);
   };
 
   useEffect(() => {

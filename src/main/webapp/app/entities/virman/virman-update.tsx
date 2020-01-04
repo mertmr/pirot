@@ -23,11 +23,13 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
   const { virmanEntity, users, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/virman');
+    props.history.push('/virman' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 
@@ -124,15 +126,15 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label id="grisiHesabiLabel" for="virman-grisiHesabi">
-                  <Translate contentKey="koopApp.virman.grisiHesabi">Grisi Hesabi</Translate>
+                <Label id="girisHesabiLabel" for="virman-girisHesabi">
+                  <Translate contentKey="koopApp.virman.girisHesabi">Giris Hesabi</Translate>
                 </Label>
                 <AvInput
-                  id="virman-grisiHesabi"
+                  id="virman-girisHesabi"
                   type="select"
                   className="form-control"
-                  name="grisiHesabi"
-                  value={(!isNew && virmanEntity.grisiHesabi) || 'KASA'}
+                  name="girisHesabi"
+                  value={(!isNew && virmanEntity.girisHesabi) || 'KASA'}
                 >
                   <option value="KASA">{translate('koopApp.Hesap.KASA')}</option>
                   <option value="BANKA">{translate('koopApp.Hesap.BANKA')}</option>

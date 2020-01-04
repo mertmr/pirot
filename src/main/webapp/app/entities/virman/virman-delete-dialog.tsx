@@ -17,7 +17,7 @@ export const VirmanDeleteDialog = (props: IVirmanDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/virman');
+    props.history.push('/virman' + props.location.search);
   };
 
   useEffect(() => {

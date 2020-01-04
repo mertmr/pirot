@@ -34,13 +34,11 @@ public class Virman implements Serializable {
     @Column(name = "notlar", nullable = false)
     private String notlar;
 
-    @NotNull
-    @Column(name = "cikis_hesabi", nullable = false)
+    @Column(name = "cikis_hesabi")
     private Hesap cikisHesabi;
 
-    @NotNull
-    @Column(name = "grisi_hesabi", nullable = false)
-    private Hesap grisiHesabi;
+    @Column(name = "giris_hesabi")
+    private Hesap girisHesabi;
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
@@ -97,17 +95,17 @@ public class Virman implements Serializable {
         this.cikisHesabi = cikisHesabi;
     }
 
-    public Hesap getGrisiHesabi() {
-        return grisiHesabi;
+    public Hesap getGirisHesabi() {
+        return girisHesabi;
     }
 
-    public Virman grisiHesabi(Hesap grisiHesabi) {
-        this.grisiHesabi = grisiHesabi;
+    public Virman girisHesabi(Hesap girisHesabi) {
+        this.girisHesabi = girisHesabi;
         return this;
     }
 
-    public void setGrisiHesabi(Hesap grisiHesabi) {
-        this.grisiHesabi = grisiHesabi;
+    public void setGirisHesabi(Hesap girisHesabi) {
+        this.girisHesabi = girisHesabi;
     }
 
     public ZonedDateTime getTarih() {
@@ -160,7 +158,7 @@ public class Virman implements Serializable {
             ", tutar=" + getTutar() +
             ", notlar='" + getNotlar() + "'" +
             ", cikisHesabi='" + getCikisHesabi() + "'" +
-            ", grisiHesabi='" + getGrisiHesabi() + "'" +
+            ", girisHesabi='" + getGirisHesabi() + "'" +
             ", tarih='" + getTarih() + "'" +
             "}";
     }

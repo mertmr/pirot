@@ -20,11 +20,13 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
   const { kdvKategorisiEntity, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/kdv-kategorisi');
+    props.history.push('/kdv-kategorisi' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
   }, []);

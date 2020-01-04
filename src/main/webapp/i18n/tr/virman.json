@@ -2,14 +2,14 @@
   "koopApp": {
     "virman": {
       "home": {
-        "title": "Virmen",
-        "createLabel": "Create a new Virman",
-        "createOrEditLabel": "Create or edit a Virman",
-        "notFound": "No Virmen found"
+        "title": "Virman",
+        "createLabel": "Yeni Virman Girişi",
+        "createOrEditLabel": "Yarat Ya da Düzenle Virman",
+        "notFound": "No Virman found"
       },
-      "created": "A new Virman is created with identifier {{ param }}",
-      "updated": "A Virman is updated with identifier {{ param }}",
-      "deleted": "A Virman is deleted with identifier {{ param }}",
+      "created": "{{ param }} idsi ile virman oluşturuldu",
+      "updated": "{{ param }} idli virman düzenlendi",
+      "deleted": "{{ param }} idli virman silindi",
       "delete": {
         "question": "Are you sure you want to delete Virman {{ id }}?"
       },
@@ -19,7 +19,7 @@
       "tutar": "Tutar",
       "notlar": "Notlar",
       "cikisHesabi": "Cikis Hesabi",
-      "grisiHesabi": "Grisi Hesabi",
+      "girisHesabi": "Giris Hesabi",
       "tarih": "Tarih",
       "user": "User"
     }

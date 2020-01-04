@@ -17,7 +17,7 @@ export const UrunFiyatDeleteDialog = (props: IUrunFiyatDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/urun-fiyat');
+    props.history.push('/urun-fiyat' + props.location.search);
   };
 
   useEffect(() => {

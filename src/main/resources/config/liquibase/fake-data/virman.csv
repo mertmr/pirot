@@ -1,4 +1,4 @@
-id;tutar;notlar;cikis_hesabi;grisi_hesabi;tarih
+id;tutar;notlar;cikis_hesabi;giris_hesabi;tarih
 1;53726;capacitor;BANKA;KASA;2020-01-03T05:44:48
 2;22493;transmit;KASA;BANKA;2020-01-03T08:16:39
 3;34995;access;BANKA;BANKA;2020-01-02T15:53:42

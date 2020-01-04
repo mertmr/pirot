@@ -26,11 +26,13 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
   const { satisStokHareketleriEntity, satis, uruns, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/satis-stok-hareketleri');
+    props.history.push('/satis-stok-hareketleri' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 
@@ -136,7 +138,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                   {uruns
                     ? uruns.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.urunAdi}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

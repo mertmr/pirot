@@ -1,7 +1,9 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.StokGirisi;
+import com.koop.app.domain.User;
 import com.koop.app.repository.StokGirisiRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,16 +15,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +45,11 @@ public class StokGirisiResource {
 
     private final StokGirisiRepository stokGirisiRepository;
 
-    public StokGirisiResource(StokGirisiRepository stokGirisiRepository) {
+    private final UserService userService;
+
+    public StokGirisiResource(StokGirisiRepository stokGirisiRepository, UserService userService) {
         this.stokGirisiRepository = stokGirisiRepository;
+        this.userService = userService;
     }
 
     /**
@@ -60,6 +65,9 @@ public class StokGirisiResource {
         if (stokGirisi.getId() != null) {
             throw new BadRequestAlertException("A new stokGirisi cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User currentUser = userService.getCurrentUser();
+        stokGirisi.setUser(currentUser);
+        stokGirisi.setTarih(ZonedDateTime.now());
         StokGirisi result = stokGirisiRepository.save(stokGirisi);
         return ResponseEntity.created(new URI("/api/stok-girisis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

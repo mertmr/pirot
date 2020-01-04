@@ -24,7 +24,7 @@
             ]
         },
         {
-            "fieldName": "grisiHesabi",
+            "fieldName": "girisHesabi",
             "fieldType": "Hesap",
             "fieldValues": "KASA,BANKA",
             "fieldValidateRules": [
@@ -48,7 +48,7 @@
     "changelogDate": "20200103090907",
     "entityTableName": "virman",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

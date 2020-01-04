@@ -7,7 +7,7 @@ export interface IVirman {
   tutar?: number;
   notlar?: string;
   cikisHesabi?: Hesap;
-  grisiHesabi?: Hesap;
+  girisHesabi?: Hesap;
   tarih?: Moment;
   user?: IUser;
 }

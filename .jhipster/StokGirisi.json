@@ -51,7 +51,7 @@
     "changelogDate": "20200103090903",
     "entityTableName": "stok_girisi",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

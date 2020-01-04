@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Virman;
 import com.koop.app.repository.VirmanRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.koop.app.domain.enumeration.Hesap;
-import com.koop.app.domain.enumeration.Hesap;
+
 /**
  * Integration tests for the {@link VirmanResource} REST controller.
  */
@@ -49,8 +50,8 @@ public class VirmanResourceIT {
     private static final Hesap DEFAULT_CIKIS_HESABI = Hesap.KASA;
     private static final Hesap UPDATED_CIKIS_HESABI = Hesap.BANKA;
 
-    private static final Hesap DEFAULT_GRISI_HESABI = Hesap.KASA;
-    private static final Hesap UPDATED_GRISI_HESABI = Hesap.BANKA;
+    private static final Hesap DEFAULT_GIRIS_HESABI = Hesap.KASA;
+    private static final Hesap UPDATED_GIRIS_HESABI = Hesap.BANKA;
 
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -71,6 +72,9 @@ public class VirmanResourceIT {
     private EntityManager em;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private Validator validator;
 
     private MockMvc restVirmanMockMvc;
@@ -80,7 +84,7 @@ public class VirmanResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VirmanResource virmanResource = new VirmanResource(virmanRepository);
+        final VirmanResource virmanResource = new VirmanResource(virmanRepository, userService);
         this.restVirmanMockMvc = MockMvcBuilders.standaloneSetup(virmanResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -100,7 +104,7 @@ public class VirmanResourceIT {
             .tutar(DEFAULT_TUTAR)
             .notlar(DEFAULT_NOTLAR)
             .cikisHesabi(DEFAULT_CIKIS_HESABI)
-            .grisiHesabi(DEFAULT_GRISI_HESABI)
+            .girisHesabi(DEFAULT_GIRIS_HESABI)
             .tarih(DEFAULT_TARIH);
         return virman;
     }
@@ -115,7 +119,7 @@ public class VirmanResourceIT {
             .tutar(UPDATED_TUTAR)
             .notlar(UPDATED_NOTLAR)
             .cikisHesabi(UPDATED_CIKIS_HESABI)
-            .grisiHesabi(UPDATED_GRISI_HESABI)
+            .girisHesabi(UPDATED_GIRIS_HESABI)
             .tarih(UPDATED_TARIH);
         return virman;
     }
@@ -143,7 +147,7 @@ public class VirmanResourceIT {
         assertThat(testVirman.getTutar()).isEqualTo(DEFAULT_TUTAR);
         assertThat(testVirman.getNotlar()).isEqualTo(DEFAULT_NOTLAR);
         assertThat(testVirman.getCikisHesabi()).isEqualTo(DEFAULT_CIKIS_HESABI);
-        assertThat(testVirman.getGrisiHesabi()).isEqualTo(DEFAULT_GRISI_HESABI);
+        assertThat(testVirman.getGirisHesabi()).isEqualTo(DEFAULT_GIRIS_HESABI);
         assertThat(testVirman.getTarih()).isEqualTo(DEFAULT_TARIH);
     }
 
@@ -223,10 +227,10 @@ public class VirmanResourceIT {
 
     @Test
     @Transactional
-    public void checkGrisiHesabiIsRequired() throws Exception {
+    public void checkGirisHesabiIsRequired() throws Exception {
         int databaseSizeBeforeTest = virmanRepository.findAll().size();
         // set the field null
-        virman.setGrisiHesabi(null);
+        virman.setGirisHesabi(null);
 
         // Create the Virman, which fails.
 
@@ -253,10 +257,10 @@ public class VirmanResourceIT {
             .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR)))
             .andExpect(jsonPath("$.[*].notlar").value(hasItem(DEFAULT_NOTLAR)))
             .andExpect(jsonPath("$.[*].cikisHesabi").value(hasItem(DEFAULT_CIKIS_HESABI.toString())))
-            .andExpect(jsonPath("$.[*].grisiHesabi").value(hasItem(DEFAULT_GRISI_HESABI.toString())))
+            .andExpect(jsonPath("$.[*].girisHesabi").value(hasItem(DEFAULT_GIRIS_HESABI.toString())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getVirman() throws Exception {
@@ -271,7 +275,7 @@ public class VirmanResourceIT {
             .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR))
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
             .andExpect(jsonPath("$.cikisHesabi").value(DEFAULT_CIKIS_HESABI.toString()))
-            .andExpect(jsonPath("$.grisiHesabi").value(DEFAULT_GRISI_HESABI.toString()))
+            .andExpect(jsonPath("$.girisHesabi").value(DEFAULT_GIRIS_HESABI.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
 
@@ -299,7 +303,7 @@ public class VirmanResourceIT {
             .tutar(UPDATED_TUTAR)
             .notlar(UPDATED_NOTLAR)
             .cikisHesabi(UPDATED_CIKIS_HESABI)
-            .grisiHesabi(UPDATED_GRISI_HESABI)
+            .girisHesabi(UPDATED_GIRIS_HESABI)
             .tarih(UPDATED_TARIH);
 
         restVirmanMockMvc.perform(put("/api/virmen")
@@ -314,7 +318,7 @@ public class VirmanResourceIT {
         assertThat(testVirman.getTutar()).isEqualTo(UPDATED_TUTAR);
         assertThat(testVirman.getNotlar()).isEqualTo(UPDATED_NOTLAR);
         assertThat(testVirman.getCikisHesabi()).isEqualTo(UPDATED_CIKIS_HESABI);
-        assertThat(testVirman.getGrisiHesabi()).isEqualTo(UPDATED_GRISI_HESABI);
+        assertThat(testVirman.getGirisHesabi()).isEqualTo(UPDATED_GIRIS_HESABI);
         assertThat(testVirman.getTarih()).isEqualTo(UPDATED_TARIH);
     }
 

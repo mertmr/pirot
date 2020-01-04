@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Urun;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +69,9 @@ public class UrunResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restUrunMockMvc;
 
     private Urun urun;
@@ -75,7 +79,7 @@ public class UrunResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UrunResource urunResource = new UrunResource(urunRepository);
+        final UrunResource urunResource = new UrunResource(urunRepository, userService);
         this.restUrunMockMvc = MockMvcBuilders.standaloneSetup(urunResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -215,7 +219,7 @@ public class UrunResourceIT {
             .andExpect(jsonPath("$.[*].dayanismaUrunu").value(hasItem(DEFAULT_DAYANISMA_URUNU.booleanValue())))
             .andExpect(jsonPath("$.[*].urunKategorisi").value(hasItem(DEFAULT_URUN_KATEGORISI.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getUrun() throws Exception {

@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Gider;
 import com.koop.app.repository.GiderRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -73,6 +74,9 @@ public class GiderResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restGiderMockMvc;
 
     private Gider gider;
@@ -80,7 +84,7 @@ public class GiderResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final GiderResource giderResource = new GiderResource(giderRepository);
+        final GiderResource giderResource = new GiderResource(giderRepository, userService);
         this.restGiderMockMvc = MockMvcBuilders.standaloneSetup(giderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -256,7 +260,7 @@ public class GiderResourceIT {
             .andExpect(jsonPath("$.[*].giderTipi").value(hasItem(DEFAULT_GIDER_TIPI.toString())))
             .andExpect(jsonPath("$.[*].odemeAraci").value(hasItem(DEFAULT_ODEME_ARACI.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getGider() throws Exception {

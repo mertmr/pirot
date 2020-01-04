@@ -17,7 +17,7 @@ export const GiderDeleteDialog = (props: IGiderDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/gider');
+    props.history.push('/gider' + props.location.search);
   };
 
   useEffect(() => {

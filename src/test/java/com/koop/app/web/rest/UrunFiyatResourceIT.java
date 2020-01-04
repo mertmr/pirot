@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.UrunFiyat;
 import com.koop.app.repository.UrunFiyatRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +63,9 @@ public class UrunFiyatResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restUrunFiyatMockMvc;
 
     private UrunFiyat urunFiyat;
@@ -69,7 +73,7 @@ public class UrunFiyatResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UrunFiyatResource urunFiyatResource = new UrunFiyatResource(urunFiyatRepository);
+        final UrunFiyatResource urunFiyatResource = new UrunFiyatResource(urunFiyatRepository, userService);
         this.restUrunFiyatMockMvc = MockMvcBuilders.standaloneSetup(urunFiyatResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -161,7 +165,7 @@ public class UrunFiyatResourceIT {
             .andExpect(jsonPath("$.[*].fiyat").value(hasItem(DEFAULT_FIYAT)))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getUrunFiyat() throws Exception {

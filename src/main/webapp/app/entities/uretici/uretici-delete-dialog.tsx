@@ -17,7 +17,7 @@ export const UreticiDeleteDialog = (props: IUreticiDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/uretici');
+    props.history.push('/uretici' + props.location.search);
   };
 
   useEffect(() => {

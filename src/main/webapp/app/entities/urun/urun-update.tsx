@@ -26,11 +26,13 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
   const { urunEntity, users, kdvKategorisis, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/urun');
+    props.history.push('/urun' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 

@@ -1,7 +1,9 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Uretici;
+import com.koop.app.domain.User;
 import com.koop.app.repository.UreticiRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,16 +15,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +45,11 @@ public class UreticiResource {
 
     private final UreticiRepository ureticiRepository;
 
-    public UreticiResource(UreticiRepository ureticiRepository) {
+    private final UserService userService;
+
+    public UreticiResource(UreticiRepository ureticiRepository, UserService userService) {
         this.ureticiRepository = ureticiRepository;
+        this.userService = userService;
     }
 
     /**
@@ -60,6 +65,9 @@ public class UreticiResource {
         if (uretici.getId() != null) {
             throw new BadRequestAlertException("A new uretici cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User currentUser = userService.getCurrentUser();
+        uretici.setUser(currentUser);
+        uretici.setTarih(ZonedDateTime.now());
         Uretici result = ureticiRepository.save(uretici);
         return ResponseEntity.created(new URI("/api/ureticis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -81,6 +89,9 @@ public class UreticiResource {
         if (uretici.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        User currentUser = userService.getCurrentUser();
+        uretici.setUser(currentUser);
+        uretici.setTarih(ZonedDateTime.now());
         Uretici result = ureticiRepository.save(uretici);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, uretici.getId().toString()))

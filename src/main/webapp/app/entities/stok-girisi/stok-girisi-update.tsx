@@ -26,11 +26,13 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   const { stokGirisiEntity, users, uruns, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/stok-girisi');
+    props.history.push('/stok-girisi' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 

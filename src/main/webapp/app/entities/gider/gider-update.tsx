@@ -23,11 +23,13 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
   const { giderEntity, users, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/gider');
+    props.history.push('/gider' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 
@@ -80,19 +82,6 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   <AvInput id="gider-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
-              <AvGroup>
-                <Label id="tarihLabel" for="gider-tarih">
-                  <Translate contentKey="koopApp.gider.tarih">Tarih</Translate>
-                </Label>
-                <AvInput
-                  id="gider-tarih"
-                  type="datetime-local"
-                  className="form-control"
-                  name="tarih"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.giderEntity.tarih)}
-                />
-              </AvGroup>
               <AvGroup>
                 <Label id="tutarLabel" for="gider-tutar">
                   <Translate contentKey="koopApp.gider.tutar">Tutar</Translate>
@@ -155,21 +144,6 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 >
                   <option value="ARAC1">{translate('koopApp.OdemeAraci.ARAC1')}</option>
                   <option value="ARAC2">{translate('koopApp.OdemeAraci.ARAC2')}</option>
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label for="gider-user">
-                  <Translate contentKey="koopApp.gider.user">User</Translate>
-                </Label>
-                <AvInput id="gider-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/gider" replace color="info">

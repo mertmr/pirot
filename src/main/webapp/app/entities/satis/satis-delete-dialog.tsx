@@ -17,7 +17,7 @@ export const SatisDeleteDialog = (props: ISatisDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/satis');
+    props.history.push('/satis' + props.location.search);
   };
 
   useEffect(() => {

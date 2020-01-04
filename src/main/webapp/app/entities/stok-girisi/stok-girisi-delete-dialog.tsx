@@ -17,7 +17,7 @@ export const StokGirisiDeleteDialog = (props: IStokGirisiDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/stok-girisi');
+    props.history.push('/stok-girisi' + props.location.search);
   };
 
   useEffect(() => {

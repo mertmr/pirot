@@ -1,7 +1,9 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Urun;
+import com.koop.app.domain.User;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,10 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,8 +44,11 @@ public class UrunResource {
 
     private final UrunRepository urunRepository;
 
-    public UrunResource(UrunRepository urunRepository) {
+    private final UserService userService;
+
+    public UrunResource(UrunRepository urunRepository, UserService userService) {
         this.urunRepository = urunRepository;
+        this.userService = userService;
     }
 
     /**
@@ -60,6 +64,8 @@ public class UrunResource {
         if (urun.getId() != null) {
             throw new BadRequestAlertException("A new urun cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User currentUser = userService.getCurrentUser();
+        urun.setUser(currentUser);
         Urun result = urunRepository.save(urun);
         return ResponseEntity.created(new URI("/api/uruns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -81,6 +87,8 @@ public class UrunResource {
         if (urun.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        User currentUser = userService.getCurrentUser();
+        urun.setUser(currentUser);
         Urun result = urunRepository.save(urun);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urun.getId().toString()))

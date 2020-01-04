@@ -1,7 +1,9 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.UrunFiyat;
+import com.koop.app.domain.User;
 import com.koop.app.repository.UrunFiyatRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,15 +15,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +44,11 @@ public class UrunFiyatResource {
 
     private final UrunFiyatRepository urunFiyatRepository;
 
-    public UrunFiyatResource(UrunFiyatRepository urunFiyatRepository) {
+    private final UserService userService;
+
+    public UrunFiyatResource(UrunFiyatRepository urunFiyatRepository, UserService userService) {
         this.urunFiyatRepository = urunFiyatRepository;
+        this.userService = userService;
     }
 
     /**
@@ -59,6 +64,9 @@ public class UrunFiyatResource {
         if (urunFiyat.getId() != null) {
             throw new BadRequestAlertException("A new urunFiyat cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User currentUser = userService.getCurrentUser();
+        urunFiyat.setUser(currentUser);
+        urunFiyat.setTarih(ZonedDateTime.now());
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity.created(new URI("/api/urun-fiyats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -80,6 +88,9 @@ public class UrunFiyatResource {
         if (urunFiyat.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        User currentUser = userService.getCurrentUser();
+        urunFiyat.setUser(currentUser);
+        urunFiyat.setTarih(ZonedDateTime.now());
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString()))

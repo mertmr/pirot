@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Koop",
+    "title": "Kooperatif Muhasebe",
     "browsehappy": "<strong>Çok eski</strong> bir tarayıcı kullanıyorsunuz. Lütfen kullanım kalitenizi arttırmak için <a href=\"http://browsehappy.com/?locale=tr\">tarayıcınızı yükseltin</a>.",
     "menu": {
       "home": "Ana Sayfa",
@@ -145,5 +145,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "Burası sayfa alt bilgisi"
+  "footer": "Her hakkı gönüllülere saklıdır"
 }

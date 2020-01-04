@@ -17,7 +17,7 @@ export const KdvKategorisiDeleteDialog = (props: IKdvKategorisiDeleteDialogProps
   }, []);
 
   const handleClose = () => {
-    props.history.push('/kdv-kategorisi');
+    props.history.push('/kdv-kategorisi' + props.location.search);
   };
 
   useEffect(() => {

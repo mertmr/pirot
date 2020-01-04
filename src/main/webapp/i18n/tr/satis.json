@@ -2,22 +2,22 @@
   "koopApp": {
     "satis": {
       "home": {
-        "title": "Satis",
-        "createLabel": "Create a new Satis",
-        "createOrEditLabel": "Create or edit a Satis",
-        "notFound": "No Satis found"
+        "title": "Satış",
+        "createLabel": "Yeni Satış",
+        "createOrEditLabel": "Yeni/Düzenleme Satış",
+        "notFound": "Satış bulunamadı"
       },
-      "created": "A new Satis is created with identifier {{ param }}",
-      "updated": "A Satis is updated with identifier {{ param }}",
-      "deleted": "A Satis is deleted with identifier {{ param }}",
+      "created": "{{ param }} idli satış oluşturuldu",
+      "updated": "{{ param }} idli satış düzenlendi",
+      "deleted": "{{ param }} satış silindi",
       "delete": {
-        "question": "Are you sure you want to delete Satis {{ id }}?"
+        "question": "{{ id }} bu satışı silmek istediğinize emin misiniz?"
       },
       "detail": {
-        "title": "Satis"
+        "title": "Satış"
       },
       "tarih": "Tarih",
-      "user": "User"
+      "user": "Kullanıcı"
     }
   }
 }

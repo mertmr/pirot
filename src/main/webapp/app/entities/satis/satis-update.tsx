@@ -23,11 +23,13 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const { satisEntity, users, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/satis');
+    props.history.push('/satis' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 

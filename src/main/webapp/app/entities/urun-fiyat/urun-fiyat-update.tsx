@@ -26,11 +26,13 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
   const { urunFiyatEntity, users, uruns, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/urun-fiyat');
+    props.history.push('/urun-fiyat' + props.location.search);
   };
 
   useEffect(() => {
-    if (!isNew) {
+    if (isNew) {
+      props.reset();
+    } else {
       props.getEntity(props.match.params.id);
     }
 

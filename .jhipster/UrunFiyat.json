@@ -29,7 +29,7 @@
     "changelogDate": "20200103090906",
     "entityTableName": "urun_fiyat",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

@@ -36,7 +36,7 @@
     "changelogDate": "20200103090904",
     "entityTableName": "uretici",
     "dto": "no",
-    "pagination": "infinite-scroll",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

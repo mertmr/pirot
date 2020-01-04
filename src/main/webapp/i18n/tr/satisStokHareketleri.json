@@ -2,7 +2,7 @@
   "koopApp": {
     "satisStokHareketleri": {
       "home": {
-        "title": "Satis Stok Hareketleris",
+        "title": "Stok Hareketleri",
         "createLabel": "Create a new Satis Stok Hareketleri",
         "createOrEditLabel": "Create or edit a Satis Stok Hareketleri",
         "notFound": "No Satis Stok Hareketleris found"
@@ -18,8 +18,8 @@
       },
       "miktar": "Miktar",
       "tutar": "Tutar",
-      "satis": "Satis",
-      "urun": "Urun"
+      "satis": "Satış",
+      "urun": "Ürün"
     }
   }
 }
