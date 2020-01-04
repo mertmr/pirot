@@ -101,7 +101,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="musteriFiyatiLabel" for="urun-musteriFiyati">
                   <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate>
                 </Label>
-                <AvField id="urun-musteriFiyati" type="string" className="form-control" name="musteriFiyati" />
+                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati" />
               </AvGroup>
               <AvGroup>
                 <Label id="birimLabel" for="urun-birim">

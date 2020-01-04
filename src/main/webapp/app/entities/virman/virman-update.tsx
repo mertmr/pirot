@@ -88,8 +88,7 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                 </Label>
                 <AvField
                   id="virman-tutar"
-                  type="string"
-                  className="form-control"
+                  type="text"
                   name="tutar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },

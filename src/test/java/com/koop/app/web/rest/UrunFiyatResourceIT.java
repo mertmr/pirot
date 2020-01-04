@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
@@ -39,8 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = KoopApp.class)
 public class UrunFiyatResourceIT {
 
-    private static final Integer DEFAULT_FIYAT = 1;
-    private static final Integer UPDATED_FIYAT = 2;
+    private static final BigDecimal DEFAULT_FIYAT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_FIYAT = new BigDecimal(2);
 
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -162,7 +163,7 @@ public class UrunFiyatResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urunFiyat.getId().intValue())))
-            .andExpect(jsonPath("$.[*].fiyat").value(hasItem(DEFAULT_FIYAT)))
+            .andExpect(jsonPath("$.[*].fiyat").value(hasItem(DEFAULT_FIYAT.intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
 
@@ -177,7 +178,7 @@ public class UrunFiyatResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(urunFiyat.getId().intValue()))
-            .andExpect(jsonPath("$.fiyat").value(DEFAULT_FIYAT))
+            .andExpect(jsonPath("$.fiyat").value(DEFAULT_FIYAT.intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
 

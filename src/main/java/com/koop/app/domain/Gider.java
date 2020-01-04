@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 import com.koop.app.domain.enumeration.GiderTipi;
@@ -32,8 +33,8 @@ public class Gider implements Serializable {
     private ZonedDateTime tarih;
 
     @NotNull
-    @Column(name = "tutar", nullable = false)
-    private Integer tutar;
+    @Column(name = "tutar", precision = 21, scale = 2, nullable = false)
+    private BigDecimal tutar;
 
     @NotNull
     @Column(name = "notlar", nullable = false)
@@ -73,16 +74,16 @@ public class Gider implements Serializable {
         this.tarih = tarih;
     }
 
-    public Integer getTutar() {
+    public BigDecimal getTutar() {
         return tutar;
     }
 
-    public Gider tutar(Integer tutar) {
+    public Gider tutar(BigDecimal tutar) {
         this.tutar = tutar;
         return this;
     }
 
-    public void setTutar(Integer tutar) {
+    public void setTutar(BigDecimal tutar) {
         this.tutar = tutar;
     }
 

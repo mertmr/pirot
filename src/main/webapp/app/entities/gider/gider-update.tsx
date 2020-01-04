@@ -88,8 +88,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 </Label>
                 <AvField
                   id="gider-tutar"
-                  type="string"
-                  className="form-control"
+                  type="text"
                   name="tutar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },

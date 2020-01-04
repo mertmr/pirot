@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 /**
@@ -23,8 +24,8 @@ public class UrunFiyat implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "fiyat")
-    private Integer fiyat;
+    @Column(name = "fiyat", precision = 21, scale = 2)
+    private BigDecimal fiyat;
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
@@ -46,16 +47,16 @@ public class UrunFiyat implements Serializable {
         this.id = id;
     }
 
-    public Integer getFiyat() {
+    public BigDecimal getFiyat() {
         return fiyat;
     }
 
-    public UrunFiyat fiyat(Integer fiyat) {
+    public UrunFiyat fiyat(BigDecimal fiyat) {
         this.fiyat = fiyat;
         return this;
     }
 
-    public void setFiyat(Integer fiyat) {
+    public void setFiyat(BigDecimal fiyat) {
         this.fiyat = fiyat;
     }
 

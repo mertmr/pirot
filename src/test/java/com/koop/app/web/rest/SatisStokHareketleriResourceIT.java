@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
@@ -36,8 +37,8 @@ public class SatisStokHareketleriResourceIT {
     private static final Integer DEFAULT_MIKTAR = 1;
     private static final Integer UPDATED_MIKTAR = 2;
 
-    private static final Integer DEFAULT_TUTAR = 1;
-    private static final Integer UPDATED_TUTAR = 2;
+    private static final BigDecimal DEFAULT_TUTAR = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TUTAR = new BigDecimal(2);
 
     @Autowired
     private SatisStokHareketleriRepository satisStokHareketleriRepository;
@@ -190,7 +191,7 @@ public class SatisStokHareketleriResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(satisStokHareketleri.getId().intValue())))
             .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR)))
-            .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR)));
+            .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())));
     }
     
     @Test
@@ -205,7 +206,7 @@ public class SatisStokHareketleriResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(satisStokHareketleri.getId().intValue()))
             .andExpect(jsonPath("$.miktar").value(DEFAULT_MIKTAR))
-            .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR));
+            .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()));
     }
 
     @Test

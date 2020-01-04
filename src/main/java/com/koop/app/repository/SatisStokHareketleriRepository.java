@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokHareketleri, Long> {
 
+    @Query("select sum(satisStokHareketleri.tutar) from SatisStokHareketleri satisStokHareketleri")
+    Double findAllTutar();
 }

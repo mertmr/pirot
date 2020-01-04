@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 import com.koop.app.domain.enumeration.Hesap;
@@ -27,8 +28,8 @@ public class Virman implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "tutar", nullable = false)
-    private Integer tutar;
+    @Column(name = "tutar", precision = 21, scale = 2, nullable = false)
+    private BigDecimal tutar;
 
     @NotNull
     @Column(name = "notlar", nullable = false)
@@ -56,16 +57,16 @@ public class Virman implements Serializable {
         this.id = id;
     }
 
-    public Integer getTutar() {
+    public BigDecimal getTutar() {
         return tutar;
     }
 
-    public Virman tutar(Integer tutar) {
+    public Virman tutar(BigDecimal tutar) {
         this.tutar = tutar;
         return this;
     }
 
-    public void setTutar(Integer tutar) {
+    public void setTutar(BigDecimal tutar) {
         this.tutar = tutar;
     }
 

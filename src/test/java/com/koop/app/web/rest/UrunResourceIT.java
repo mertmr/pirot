@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
@@ -39,8 +40,8 @@ public class UrunResourceIT {
     private static final String DEFAULT_URUN_ADI = "AAAAAAAAAA";
     private static final String UPDATED_URUN_ADI = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_MUSTERI_FIYATI = 1;
-    private static final Integer UPDATED_MUSTERI_FIYATI = 2;
+    private static final BigDecimal DEFAULT_MUSTERI_FIYATI = new BigDecimal(1);
+    private static final BigDecimal UPDATED_MUSTERI_FIYATI = new BigDecimal(2);
 
     private static final Birim DEFAULT_BIRIM = Birim.KG;
     private static final Birim UPDATED_BIRIM = Birim.GR;
@@ -214,7 +215,7 @@ public class UrunResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urun.getId().intValue())))
             .andExpect(jsonPath("$.[*].urunAdi").value(hasItem(DEFAULT_URUN_ADI)))
-            .andExpect(jsonPath("$.[*].musteriFiyati").value(hasItem(DEFAULT_MUSTERI_FIYATI)))
+            .andExpect(jsonPath("$.[*].musteriFiyati").value(hasItem(DEFAULT_MUSTERI_FIYATI.intValue())))
             .andExpect(jsonPath("$.[*].birim").value(hasItem(DEFAULT_BIRIM.toString())))
             .andExpect(jsonPath("$.[*].dayanismaUrunu").value(hasItem(DEFAULT_DAYANISMA_URUNU.booleanValue())))
             .andExpect(jsonPath("$.[*].urunKategorisi").value(hasItem(DEFAULT_URUN_KATEGORISI.toString())));
@@ -232,7 +233,7 @@ public class UrunResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(urun.getId().intValue()))
             .andExpect(jsonPath("$.urunAdi").value(DEFAULT_URUN_ADI))
-            .andExpect(jsonPath("$.musteriFiyati").value(DEFAULT_MUSTERI_FIYATI))
+            .andExpect(jsonPath("$.musteriFiyati").value(DEFAULT_MUSTERI_FIYATI.intValue()))
             .andExpect(jsonPath("$.birim").value(DEFAULT_BIRIM.toString()))
             .andExpect(jsonPath("$.dayanismaUrunu").value(DEFAULT_DAYANISMA_URUNU.booleanValue()))
             .andExpect(jsonPath("$.urunKategorisi").value(DEFAULT_URUN_KATEGORISI.toString()));

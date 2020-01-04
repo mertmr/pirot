@@ -18,7 +18,7 @@
             <column name="miktar" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="tutar" type="integer">
+            <column name="tutar" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
             <column name="urun_id" type="bigint">

@@ -1,6 +1,6 @@
 import './home.scss';
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {Translate} from 'react-jhipster';
 import {connect} from 'react-redux';
@@ -8,13 +8,19 @@ import {Row, Col, Alert} from 'reactstrap';
 import 'antd/lib/statistic/style/index.css';
 import 'antd/lib/card/style/index.css';
 import {Card, Statistic} from 'antd';
+import {getDashboardReports} from 'app/shared/reducers/dashboard-reports.reducer';
 
 import {IRootState} from 'app/shared/reducers';
 
-export type IHomeProp = StateProps;
+export interface IHomeProp extends StateProps, DispatchProps {
+}
 
 export const Home = (props: IHomeProp) => {
-  const {account} = props;
+  const {account, dashboardReports} = props;
+
+  useEffect(() => {
+    props.getDashboardReports();
+  }, []);
 
   return (
     <Row>
@@ -35,12 +41,12 @@ export const Home = (props: IHomeProp) => {
             <Row gutter={18}>
               <Col span={6}>
                 <Card>
-                  <Statistic title="Kasa" value={112893.34} suffix="TL"/>
+                  <Statistic title="Kasa" value={dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} suffix="TL"/>
                 </Card>
               </Col>
               <Col span={6}>
                 <Card>
-                  <Statistic title="Günlük Ciro" value={112893.34} suffix="TL"/>
+                  <Statistic title="Günlük Ciro" value={dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} suffix="TL"/>
                 </Card>
               </Col>
             </Row>
@@ -69,10 +75,16 @@ export const Home = (props: IHomeProp) => {
 };
 
 const mapStateToProps = storeState => ({
+  dashboardReports: storeState.dashboardReportsState.entity,
   account: storeState.authentication.account,
   isAuthenticated: storeState.authentication.isAuthenticated
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  getDashboardReports
+};
 
-export default connect(mapStateToProps)(Home);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home);

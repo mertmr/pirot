@@ -10,7 +10,7 @@
         },
         {
             "fieldName": "musteriFiyati",
-            "fieldType": "Integer"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "birim",

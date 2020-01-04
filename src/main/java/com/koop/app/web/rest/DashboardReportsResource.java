@@ -1,7 +1,7 @@
 package com.koop.app.web.rest;
 
-import com.kodops.next.service.DashboardReportService;
-import com.kodops.next.service.dto.DashboardReports;
+import com.koop.app.domain.DashboardReports;
+import com.koop.app.service.DashboardReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

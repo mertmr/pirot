@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.koop.app.domain.enumeration.Birim;
 
@@ -31,8 +32,8 @@ public class Urun implements Serializable {
     @Column(name = "urun_adi", nullable = false)
     private String urunAdi;
 
-    @Column(name = "musteri_fiyati")
-    private Integer musteriFiyati;
+    @Column(name = "musteri_fiyati", precision = 21, scale = 2)
+    private BigDecimal musteriFiyati;
 
     @NotNull
     @Column(name = "birim", nullable = false)
@@ -74,16 +75,16 @@ public class Urun implements Serializable {
         this.urunAdi = urunAdi;
     }
 
-    public Integer getMusteriFiyati() {
+    public BigDecimal getMusteriFiyati() {
         return musteriFiyati;
     }
 
-    public Urun musteriFiyati(Integer musteriFiyati) {
+    public Urun musteriFiyati(BigDecimal musteriFiyati) {
         this.musteriFiyati = musteriFiyati;
         return this;
     }
 
-    public void setMusteriFiyati(Integer musteriFiyati) {
+    public void setMusteriFiyati(BigDecimal musteriFiyati) {
         this.musteriFiyati = musteriFiyati;
     }
 

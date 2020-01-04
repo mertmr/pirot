@@ -3,7 +3,7 @@
     "fields": [
         {
             "fieldName": "tutar",
-            "fieldType": "Integer",
+            "fieldType": "BigDecimal",
             "fieldValidateRules": [
                 "required"
             ]

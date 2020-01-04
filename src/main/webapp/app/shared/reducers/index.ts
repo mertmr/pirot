@@ -49,6 +49,7 @@ import virman, {
   VirmanState
 } from 'app/entities/virman/virman.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
+import dashboardReportsState, { DashboardReportsState } from './dashboard-reports.reducer';
 
 export interface IRootState {
   readonly authentication: AuthenticationState;
@@ -72,6 +73,7 @@ export interface IRootState {
   readonly virman: VirmanState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
+  readonly dashboardReportsState: DashboardReportsState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -95,6 +97,7 @@ const rootReducer = combineReducers<IRootState>({
   urunFiyat,
   virman,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
+  dashboardReportsState,
   loadingBar
 });
 

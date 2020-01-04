@@ -2,8 +2,11 @@ package com.koop.app.service;
 
 import com.koop.app.domain.DashboardReports;
 import com.koop.app.domain.Satis;
+import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.repository.GiderRepository;
 import com.koop.app.repository.SatisRepository;
+import com.koop.app.repository.SatisStokHareketleriRepository;
+import com.koop.app.repository.VirmanRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -16,28 +19,42 @@ public class DashboardReportService {
 
     private final GiderRepository giderRepository;
 
-    public DashboardReportService(SatisRepository satisRepository, GiderRepository giderRepository) {
+    private final SatisStokHareketleriRepository satisStokHareketleriRepository;
+
+    private final VirmanRepository virmanRepository;
+
+    public DashboardReportService(SatisRepository satisRepository, GiderRepository giderRepository, SatisStokHareketleriRepository satisStokHareketleriRepository, VirmanRepository virmanRepository) {
         this.satisRepository = satisRepository;
         this.giderRepository = giderRepository;
+        this.satisStokHareketleriRepository = satisStokHareketleriRepository;
+        this.virmanRepository = virmanRepository;
     }
 
     public DashboardReports getDashboardReports() {
         DashboardReports dashboardReports = new DashboardReports();
+        Double tumGiderTutari = giderRepository.findAllGiderTutar();
+        Double tumSatisTutari = satisStokHareketleriRepository.findAllTutar();
+        Double tumVirman = virmanRepository.findAllVirman();
+        dashboardReports.setKasadaNeVar(tumSatisTutari - tumGiderTutari - tumVirman);
+
         ZonedDateTime today = ZonedDateTime.now();
         ZonedDateTime yesterday = ZonedDateTime.now()
             .plusDays(-1);
-
-        List<Integer> allIdsToday = satisRepository.findAllIdsToday(today, yesterday);
-        List<Satis> allByIds = satisRepository.findAllByIds(allIdsToday);
-        double bugununSatisi = allByIds
-        Double bugununGideri = giderRepository.findBugununGideri(today, yesterday);
-        dashboardReports.setKasadaNeVar(bugununSatisi - bugununGideri);
-
-        dashboardReports.setParameterCheckResultSuccessCount(parameterCheckResultRepository.findYesterdaySuccess(today, yesterday));
-
-        dashboardReports.setCollectorResultFailCount(collectorResultRepository.findYesterdayFail(today, yesterday));
-        dashboardReports.setCollectorResultSuccessCount(collectorResultRepository.findYesterdaySuccess(today, yesterday));
+        double bugununSatisi = getBugununSatisi(today, yesterday);
+        dashboardReports.setGunlukCiro(bugununSatisi);
 
         return dashboardReports;
+    }
+
+    private double getBugununSatisi(ZonedDateTime today, ZonedDateTime yesterday) {
+        double bugununSatisi = 0;
+        List<Long> allIdsToday = satisRepository.findAllIdsToday(today, yesterday);
+        List<Satis> allByIds = satisRepository.findAllByIds(allIdsToday);
+        for (Satis satis : allByIds) {
+            for (SatisStokHareketleri stokHareketi : satis.getStokHareketleriLists()) {
+                bugununSatisi += stokHareketi.getTutar().doubleValue();
+            }
+        }
+        return bugununSatisi;
     }
 }

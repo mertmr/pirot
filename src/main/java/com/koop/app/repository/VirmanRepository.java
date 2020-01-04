@@ -16,4 +16,6 @@ public interface VirmanRepository extends JpaRepository<Virman, Long> {
     @Query("select virman from Virman virman where virman.user.login = ?#{principal.username}")
     List<Virman> findByUserIsCurrentUser();
 
+    @Query("select sum(virman.tutar) from Virman virman where virman.cikisHesabi='2'")
+    Double findAllVirman();
 }

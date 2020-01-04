@@ -105,8 +105,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 </Label>
                 <AvField
                   id="satis-stok-hareketleri-tutar"
-                  type="string"
-                  className="form-control"
+                  type="text"
                   name="tutar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },

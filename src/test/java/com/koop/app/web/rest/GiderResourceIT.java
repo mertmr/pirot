@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
@@ -44,8 +45,8 @@ public class GiderResourceIT {
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final Integer DEFAULT_TUTAR = 1;
-    private static final Integer UPDATED_TUTAR = 2;
+    private static final BigDecimal DEFAULT_TUTAR = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TUTAR = new BigDecimal(2);
 
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
@@ -255,7 +256,7 @@ public class GiderResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(gider.getId().intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))))
-            .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR)))
+            .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())))
             .andExpect(jsonPath("$.[*].notlar").value(hasItem(DEFAULT_NOTLAR)))
             .andExpect(jsonPath("$.[*].giderTipi").value(hasItem(DEFAULT_GIDER_TIPI.toString())))
             .andExpect(jsonPath("$.[*].odemeAraci").value(hasItem(DEFAULT_ODEME_ARACI.toString())));
@@ -273,7 +274,7 @@ public class GiderResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(gider.getId().intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)))
-            .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR))
+            .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()))
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
             .andExpect(jsonPath("$.giderTipi").value(DEFAULT_GIDER_TIPI.toString()))
             .andExpect(jsonPath("$.odemeAraci").value(DEFAULT_ODEME_ARACI.toString()));

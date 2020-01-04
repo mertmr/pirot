@@ -25,7 +25,7 @@ enum Hesap {
 
 entity Gider {
     tarih ZonedDateTime
-    tutar Integer required
+    tutar BigDecimal required
     notlar String required
     giderTipi GiderTipi required
     odemeAraci OdemeAraci required
@@ -42,7 +42,7 @@ entity Satis {
 
 entity SatisStokHareketleri {
     miktar Integer required
-    tutar Integer required
+    tutar BigDecimal required
 }
 
 entity StokGirisi {
@@ -62,19 +62,19 @@ entity Uretici {
 
 entity Urun {
     urunAdi String required
-    musteriFiyati Integer
+    musteriFiyati BigDecimal
     birim Birim required
     dayanismaUrunu Boolean
     urunKategorisi UrunKategorisi
 }
 
 entity UrunFiyat {
-    fiyat Integer
+    fiyat BigDecimal
     tarih ZonedDateTime
 }
 
 entity Virman {
-    tutar Integer required
+    tutar BigDecimal required
     notlar String required
     cikisHesabi Hesap
     girisHesabi Hesap

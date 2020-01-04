@@ -26,15 +26,18 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     List<Satis> findByUserIsCurrentUser();
 
     @Query("select satis.id from Satis satis")
-    Page<Integer> findAllIds(Pageable var1);
+    Page<Long> findAllIds(Pageable var1);
+
+    @Query("select satis.id from Satis satis")
+    List<Long> findAllIds();
 
     @EntityGraph(attributePaths = "stokHareketleriLists.tutar")
     @Query("select satis from Satis satis where satis.id in :ids")
-    List<Satis> findAllByIds(@Param("ids") List<Integer> ids);
+    List<Satis> findAllByIds(@Param("ids") List<Long> ids);
 
     @EntityGraph(attributePaths = "stokHareketleriLists")
     Optional<Satis> findOneWithStokHareketleriById(Long id);
 
-    @Query("select satis.id from Satis satis where satis.tarih between :today and :yesterday")
-    List<Integer> findAllIdsToday(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
+    @Query("select satis.id from Satis satis where satis.tarih between :yesterday and :today")
+    List<Long> findAllIdsToday(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 }

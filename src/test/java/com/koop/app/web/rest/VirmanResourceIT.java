@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
@@ -34,15 +35,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.koop.app.domain.enumeration.Hesap;
-
+import com.koop.app.domain.enumeration.Hesap;
 /**
  * Integration tests for the {@link VirmanResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
 public class VirmanResourceIT {
 
-    private static final Integer DEFAULT_TUTAR = 1;
-    private static final Integer UPDATED_TUTAR = 2;
+    private static final BigDecimal DEFAULT_TUTAR = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TUTAR = new BigDecimal(2);
 
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
@@ -72,10 +73,10 @@ public class VirmanResourceIT {
     private EntityManager em;
 
     @Autowired
-    private UserService userService;
+    private Validator validator;
 
     @Autowired
-    private Validator validator;
+    private UserService userService;
 
     private MockMvc restVirmanMockMvc;
 
@@ -209,42 +210,6 @@ public class VirmanResourceIT {
 
     @Test
     @Transactional
-    public void checkCikisHesabiIsRequired() throws Exception {
-        int databaseSizeBeforeTest = virmanRepository.findAll().size();
-        // set the field null
-        virman.setCikisHesabi(null);
-
-        // Create the Virman, which fails.
-
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
-            .andExpect(status().isBadRequest());
-
-        List<Virman> virmanList = virmanRepository.findAll();
-        assertThat(virmanList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkGirisHesabiIsRequired() throws Exception {
-        int databaseSizeBeforeTest = virmanRepository.findAll().size();
-        // set the field null
-        virman.setGirisHesabi(null);
-
-        // Create the Virman, which fails.
-
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
-            .andExpect(status().isBadRequest());
-
-        List<Virman> virmanList = virmanRepository.findAll();
-        assertThat(virmanList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllVirmen() throws Exception {
         // Initialize the database
         virmanRepository.saveAndFlush(virman);
@@ -254,7 +219,7 @@ public class VirmanResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(virman.getId().intValue())))
-            .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR)))
+            .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())))
             .andExpect(jsonPath("$.[*].notlar").value(hasItem(DEFAULT_NOTLAR)))
             .andExpect(jsonPath("$.[*].cikisHesabi").value(hasItem(DEFAULT_CIKIS_HESABI.toString())))
             .andExpect(jsonPath("$.[*].girisHesabi").value(hasItem(DEFAULT_GIRIS_HESABI.toString())))
@@ -272,7 +237,7 @@ public class VirmanResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(virman.getId().intValue()))
-            .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR))
+            .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()))
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
             .andExpect(jsonPath("$.cikisHesabi").value(DEFAULT_CIKIS_HESABI.toString()))
             .andExpect(jsonPath("$.girisHesabi").value(DEFAULT_GIRIS_HESABI.toString()))

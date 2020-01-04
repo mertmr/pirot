@@ -90,7 +90,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 <Label id="fiyatLabel" for="urun-fiyat-fiyat">
                   <Translate contentKey="koopApp.urunFiyat.fiyat">Fiyat</Translate>
                 </Label>
-                <AvField id="urun-fiyat-fiyat" type="string" className="form-control" name="fiyat" />
+                <AvField id="urun-fiyat-fiyat" type="text" name="fiyat" />
               </AvGroup>
               <AvGroup>
                 <Label id="tarihLabel" for="urun-fiyat-tarih">

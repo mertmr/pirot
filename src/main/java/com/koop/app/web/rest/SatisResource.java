@@ -108,7 +108,7 @@ public class SatisResource {
     @GetMapping("/satis")
     public ResponseEntity<List<Satis>> getAllSatis(Pageable pageable) {
         log.debug("REST request to get a page of Satis");
-        Page<Integer> ids = satisRepository.findAllIds(pageable);
+        Page<Long> ids = satisRepository.findAllIds(pageable);
         List<Satis> satislar = satisRepository.findAllByIds(ids.getContent());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ids);
         return ResponseEntity.ok().headers(headers).body(satislar);
