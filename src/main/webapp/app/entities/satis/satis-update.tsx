@@ -10,8 +10,11 @@ import {getUsers} from 'app/modules/administration/user-management/user-manageme
 import {createEntity, getEntity, reset, updateEntity} from './satis.reducer';
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {defaultValue} from "app/shared/model/urun.model";
-import {defaultValue as satisDefault} from "app/shared/model/satis.model";
-import {defaultValue as stokHareketiDefault} from "app/shared/model/satis-stok-hareketleri.model";
+import {defaultValue as satisDefault, ISatis} from "app/shared/model/satis.model";
+import {
+  defaultValue as stokHareketiDefault,
+  ISatisStokHareketleri
+} from "app/shared/model/satis-stok-hareketleri.model";
 import {DatePicker, InputNumber, Select} from 'antd';
 import 'antd/lib/input-number/style/index.css';
 import 'antd/lib/date-picker/style/index.css';
@@ -22,20 +25,19 @@ import moment from 'moment';
 import 'moment/locale/tr';
 import {APP_LOCAL_DATETIME_FORMAT} from "app/config/constants";
 
-
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [userId, setUserId] = useState('0');
   const [satis, setSatis] = useState(satisDefault);
-  const [stokHareketi, setStokHareketi] = useState(stokHareketiDefault);
+  const [satisStokHareketleri, setSatisStokHareketleri] = useState([] as ReadonlyArray<ISatisStokHareketleri>);
   const [urunler, setUrunler] = useState([{
-    id: 0,
+    index: 0,
     miktar: undefined,
-    tutar: undefined,
+    birimFiyat: undefined,
     urun: defaultValue,
-    urunToplamTutari: 0
+    tutar: 0
   }
   ]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
@@ -48,11 +50,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const addRow = () => {
     const yeniUrun = {
-      id: urunler.length,
+      index: urunler.length,
       miktar: undefined,
-      tutar: undefined,
+      birimFiyat: undefined,
       urun: defaultValue,
-      urunToplamTutari: 0
+      tutar: 0
     };
     setUrunler([...urunler, yeniUrun]);
   };
@@ -66,7 +68,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...urunler];
     yeniUrunler[i].miktar = value;
-    yeniUrunler[i].urunToplamTutari = value * yeniUrunler[i].tutar;
+    yeniUrunler[i].tutar = value * yeniUrunler[i].birimFiyat;
     setUrunler(yeniUrunler);
   };
 
@@ -75,7 +77,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const onChangeUrun = (value, i) => {
     const yeniUrunler = [...urunler];
     const secilenUrun = satisUrunleri[value];
-    yeniUrunler[i].tutar = secilenUrun.musteriFiyati;
+    yeniUrunler[i].birimFiyat = secilenUrun.musteriFiyati;
     yeniUrunler[i].urun = secilenUrun;
     setUrunler(yeniUrunler);
   };
@@ -122,8 +124,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...satisEntity,
-        ...values
+        ...satis.tarih
       };
+
+      setSatisStokHareketleri([...satisStokHareketleri, urunler]);
 
       if (isNew) {
         props.createEntity(entity);
@@ -209,9 +213,9 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                             ))}
                           </Select>
                         </td>
-                        <td>{urun.tutar} TL</td>
+                        <td>{urun.birimFiyat} TL</td>
                         <td><InputNumber value={urun.miktar} onChange={(value) => onChangeMiktar(value, i)}/></td>
-                        <td>{urun.urunToplamTutari} TL</td>
+                        <td>{urun.tutar} TL</td>
                         <td className="text-right">
                           <div className="btn-group flex-btn-group-container">
                             <Button
