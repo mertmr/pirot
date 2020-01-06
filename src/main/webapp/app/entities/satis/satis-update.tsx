@@ -1,30 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Label, Row, Table} from 'reactstrap';
+import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
+import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
+import {createEntity, getEntity, getSatisUrunleri, reset, updateEntity} from './satis.reducer';
+import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
+import {defaultValue} from "app/shared/model/urun.model";
+import {InputNumber, Select} from 'antd';
+import 'antd/lib/input-number/style/index.css';
+import 'antd/lib/select/style/index.css';
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './satis.reducer';
-import { ISatis } from 'app/shared/model/satis.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 
-export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+}
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [userId, setUserId] = useState('0');
+  const [urunler, setUrunler] = useState([{
+    id: 0,
+    miktar: undefined,
+    tutar: undefined,
+    urun: defaultValue,
+    urunToplamTutari: 0
+  }
+  ]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { satisEntity, users, loading, updating } = props;
+  const {satisEntity, users, loading, updating} = props;
 
   const handleClose = () => {
     props.history.push('/satis' + props.location.search);
   };
+
+  const addRow = () => {
+    const yeniUrun = {
+      id: urunler.length,
+      miktar: undefined,
+      tutar: undefined,
+      urun: defaultValue,
+      urunToplamTutari: 0
+    };
+    setUrunler([...urunler, yeniUrun]);
+  };
+
+  const onChangeMiktar = (value, i) => {
+    const yeniUrun = [...urunler];
+    yeniUrun[i].miktar = value;
+    setUrunler(yeniUrun);
+  };
+
+  const { Option } = Select;
+
+  useEffect(() => {
+    props.getSatisUrunleri();
+  }, []);
 
   useEffect(() => {
     if (isNew) {
@@ -59,6 +92,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
   };
 
+  const { satisUrunleri } = props;
+
   return (
     <div>
       <Row className="justify-content-center">
@@ -79,7 +114,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   <Label for="satis-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly />
+                  <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly/>
                 </AvGroup>
               ) : null}
               <AvGroup>
@@ -95,23 +130,69 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   value={isNew ? null : convertDateTimeFromServer(props.satisEntity.tarih)}
                 />
               </AvGroup>
-              <AvGroup>
-                <Label for="satis-user">
-                  <Translate contentKey="koopApp.satis.user">User</Translate>
-                </Label>
-                <AvInput id="satis-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
+              <Button
+                tag={Link}
+                onClick={addRow}
+                color="primary"
+                size="sm"
+              >
+                <FontAwesomeIcon icon="pencil-alt"/>{' '}
+                <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
+              </Button>
+              <div className="table-responsive">
+                {urunler && urunler.length > 0 ? (
+                  <Table responsive>
+                    <thead>
+                    <tr>
+                      <th>
+                        <Translate contentKey="koopApp.satisStokHareketleri.urun">Urun</Translate>
+                      </th>
+                      <th className="hand">
+                        Birim Fiyat
+                      </th>
+                      <th className="hand">
+                        <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
+                      </th>
+                      <th className="hand">
+                        <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
+                      </th>
+                      <th/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {urunler.map((urun, i) => (
+                      <tr key={`entity-${i}`}>
+                        <td>
+                          {/*<Select*/}
+                          {/*  showSearch*/}
+                          {/*  style={{ width: 200 }}*/}
+                          {/*  placeholder="Select a person"*/}
+                          {/*  optionFilterProp="children"*/}
+                          {/*  filterOption={(input, option) =>*/}
+                          {/*    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
+                          {/*  }*/}
+                          {/*>*/}
+                          {/*  {satisUrunleri.map((satisUrunu, k) => (*/}
+                          {/*  <Option key={k} value="k">satisUrunu.urunAdi</Option>*/}
+                          {/*    ))}*/}
+                          {/*</Select>*/}
+                        </td>
+                        <td>{urun.tutar} TL</td>
+                        <td><InputNumber value={urun.miktar} onChange={(value) => onChangeMiktar(value, i)}/></td>
+                        <td>{urun.urunToplamTutari} TL</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <div className="alert alert-warning">
+                    <Translate contentKey="koopApp.satisStokHareketleri.home.notFound">No Satis Stok Hareketleris
+                      found</Translate>
+                  </div>
+                )}
+              </div>
               <Button tag={Link} id="cancel-save" to="/satis" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -119,7 +200,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
@@ -136,7 +217,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   satisEntity: storeState.satis.entity,
   loading: storeState.satis.loading,
   updating: storeState.satis.updating,
-  updateSuccess: storeState.satis.updateSuccess
+  updateSuccess: storeState.satis.updateSuccess,
+  satisUrunleri:  storeState.satis.satisUrunleri
 });
 
 const mapDispatchToProps = {
@@ -144,7 +226,8 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  getSatisUrunleri
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

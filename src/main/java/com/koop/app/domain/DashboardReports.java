@@ -2,11 +2,11 @@ package com.koop.app.domain;
 
 public class DashboardReports {
 
-    private double kasadaNeVar;
+    private double kasadaNeVar = 0;
 
-    private double bankadaNeVar;
+    private double bankadaNeVar = 0;
 
-    private double gunlukCiro;
+    private double gunlukCiro = 0;
 
     public double getKasadaNeVar() {
         return kasadaNeVar;

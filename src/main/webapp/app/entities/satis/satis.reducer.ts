@@ -5,9 +5,11 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ISatis, defaultValue } from 'app/shared/model/satis.model';
+import { IUrun } from 'app/shared/model/urun.model';
 
 export const ACTION_TYPES = {
   FETCH_SATIS_LIST: 'satis/FETCH_SATIS_LIST',
+  FETCH_URUN_SATIS_LIST: 'satis/FETCH_URUN_SATIS_LIST',
   FETCH_SATIS: 'satis/FETCH_SATIS',
   CREATE_SATIS: 'satis/CREATE_SATIS',
   UPDATE_SATIS: 'satis/UPDATE_SATIS',
@@ -22,7 +24,8 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  satisUrunleri: [] as ReadonlyArray<IUrun>
 };
 
 export type SatisState = Readonly<typeof initialState>;
@@ -32,6 +35,7 @@ export type SatisState = Readonly<typeof initialState>;
 export default (state: SatisState = initialState, action): SatisState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_SATIS_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
     case REQUEST(ACTION_TYPES.FETCH_SATIS):
       return {
         ...state,
@@ -49,6 +53,7 @@ export default (state: SatisState = initialState, action): SatisState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_SATIS_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
     case FAILURE(ACTION_TYPES.FETCH_SATIS):
     case FAILURE(ACTION_TYPES.CREATE_SATIS):
     case FAILURE(ACTION_TYPES.UPDATE_SATIS):
@@ -66,6 +71,12 @@ export default (state: SatisState = initialState, action): SatisState => {
         loading: false,
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_SATIS):
       return {
@@ -106,6 +117,14 @@ export const getEntities: ICrudGetAllAction<ISatis> = (page, size, sort) => {
   return {
     type: ACTION_TYPES.FETCH_SATIS_LIST,
     payload: axios.get<ISatis>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getSatisUrunleri: ICrudGetAllAction<IUrun> = () => {
+  const requestUrl = `${apiUrl}/urunler`;
+  return {
+    type: ACTION_TYPES.FETCH_URUN_SATIS_LIST,
+    payload: axios.get<ISatis>(`${requestUrl}cacheBuster=${new Date().getTime()}`)
   };
 };
 

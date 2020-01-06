@@ -1,8 +1,10 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Satis;
+import com.koop.app.domain.Urun;
 import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
+import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
@@ -46,9 +48,12 @@ public class SatisResource {
 
     private final UserService userService;
 
-    public SatisResource(SatisRepository satisRepository, UserService userService) {
+    private final UrunService urunService;
+
+    public SatisResource(SatisRepository satisRepository, UserService userService, UrunService urunService) {
         this.satisRepository = satisRepository;
         this.userService = userService;
+        this.urunService = urunService;
     }
 
     /**
@@ -138,5 +143,17 @@ public class SatisResource {
         log.debug("REST request to delete Satis : {}", id);
         satisRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * {@code GET  /satis} : get all the urun list for satis.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of urunler in body.
+     */
+    @GetMapping("/satis/urunler")
+    public ResponseEntity<List<Urun>> getAllUrunForSatis() {
+        log.debug("REST request to get a page of Satis");
+        List<Urun> urunler = urunService.getAllUrunForSatis();
+        return ResponseEntity.ok().body(urunler);
     }
 }

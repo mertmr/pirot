@@ -9,6 +9,8 @@ import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.VirmanRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -37,10 +39,9 @@ public class DashboardReportService {
         Double tumVirman = virmanRepository.findAllVirman();
         dashboardReports.setKasadaNeVar(tumSatisTutari - tumGiderTutari - tumVirman);
 
-        ZonedDateTime today = ZonedDateTime.now();
-        ZonedDateTime yesterday = ZonedDateTime.now()
-            .plusDays(-1);
-        double bugununSatisi = getBugununSatisi(today, yesterday);
+        ZonedDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault());
+        ZonedDateTime startOfDay = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
+        double bugununSatisi = getBugununSatisi(endOfDay, startOfDay);
         dashboardReports.setGunlukCiro(bugununSatisi);
 
         return dashboardReports;
@@ -49,12 +50,16 @@ public class DashboardReportService {
     private double getBugununSatisi(ZonedDateTime today, ZonedDateTime yesterday) {
         double bugununSatisi = 0;
         List<Long> allIdsToday = satisRepository.findAllIdsToday(today, yesterday);
-        List<Satis> allByIds = satisRepository.findAllByIds(allIdsToday);
-        for (Satis satis : allByIds) {
-            for (SatisStokHareketleri stokHareketi : satis.getStokHareketleriLists()) {
-                bugununSatisi += stokHareketi.getTutar().doubleValue();
+        if (allIdsToday.isEmpty()) {
+            return bugununSatisi;
+        } else {
+            List<Satis> allByIds = satisRepository.findAllByIds(allIdsToday);
+            for (Satis satis : allByIds) {
+                for (SatisStokHareketleri stokHareketi : satis.getStokHareketleriLists()) {
+                    bugununSatisi += stokHareketi.getTutar().doubleValue();
+                }
             }
+            return bugununSatisi;
         }
-        return bugununSatisi;
     }
 }
