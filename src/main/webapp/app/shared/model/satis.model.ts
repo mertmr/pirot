@@ -10,4 +10,13 @@ export interface ISatis {
   user?: IUser;
 }
 
-export const defaultValue: Readonly<ISatis> = {};
+export const defaultValue: Readonly<ISatis> = {
+  stokHareketleriLists: [
+    {
+      miktar: 0,
+      urun: {
+        musteriFiyati: 0
+      }
+    }
+  ]
+};

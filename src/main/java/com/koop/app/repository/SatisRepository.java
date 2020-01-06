@@ -3,6 +3,7 @@ package com.koop.app.repository;
 import com.koop.app.domain.Satis;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,6 +31,10 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
 
     @Query("select satis.id from Satis satis")
     List<Long> findAllIds();
+
+    @EntityGraph(attributePaths = "stokHareketleriLists.tutar")
+    @Query("select satis from Satis satis where satis.id in :ids")
+    List<Satis> findAllByIds(@Param("ids") List<Long> ids, Sort sort);
 
     @EntityGraph(attributePaths = "stokHareketleriLists.tutar")
     @Query("select satis from Satis satis where satis.id in :ids")

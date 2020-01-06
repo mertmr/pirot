@@ -24,7 +24,8 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  satisUrunleri: [] as ReadonlyArray<IUrun>
 };
 
 export type UrunState = Readonly<typeof initialState>;
@@ -74,9 +75,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
       return {
         ...state,
-        loading: false,
-        entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        satisUrunleri: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN):
       return {

@@ -1,10 +1,11 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Satis;
-import com.koop.app.domain.Urun;
+import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.domain.User;
+import com.koop.app.dto.SatisUrunler;
 import com.koop.app.repository.SatisRepository;
-import com.koop.app.service.UrunService;
+import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Satis}.
@@ -48,9 +51,12 @@ public class SatisResource {
 
     private final UserService userService;
 
-    public SatisResource(SatisRepository satisRepository, UserService userService) {
+    private final SatisStokHareketleriRepository satisStokHareketleriRepository;
+
+    public SatisResource(SatisRepository satisRepository, UserService userService, SatisStokHareketleriRepository satisStokHareketleriRepository) {
         this.satisRepository = satisRepository;
         this.userService = userService;
+        this.satisStokHareketleriRepository = satisStokHareketleriRepository;
     }
 
     /**
@@ -63,13 +69,19 @@ public class SatisResource {
     @PostMapping("/satis")
     public ResponseEntity<Satis> createSatis(@RequestBody Satis satis) throws URISyntaxException {
         log.debug("REST request to save Satis : {}", satis);
+        Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();
         if (satis.getId() != null) {
             throw new BadRequestAlertException("A new satis cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if(satis.getTarih() == null) {
+            satis.setTarih(ZonedDateTime.now());
         }
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
         satis.setTarih(ZonedDateTime.now());
         Satis result = satisRepository.save(satis);
+        stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
+        satisStokHareketleriRepository.saveAll(stokHareketleriLists);
         return ResponseEntity.created(new URI("/api/satis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -110,7 +122,7 @@ public class SatisResource {
     public ResponseEntity<List<Satis>> getAllSatis(Pageable pageable) {
         log.debug("REST request to get a page of Satis");
         Page<Long> ids = satisRepository.findAllIds(pageable);
-        List<Satis> satislar = satisRepository.findAllByIds(ids.getContent());
+        List<Satis> satislar = satisRepository.findAllByIds(ids.getContent(), pageable.getSort());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ids);
         return ResponseEntity.ok().headers(headers).body(satislar);
     }

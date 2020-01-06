@@ -8,13 +8,14 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {IRootState} from 'app/shared/reducers';
 import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
 import {createEntity, getEntity, reset, updateEntity} from './satis.reducer';
+import {
+  createEntity as createStokHareketi,
+  updateEntity as updateStokHareketi
+} from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {defaultValue} from "app/shared/model/urun.model";
-import {defaultValue as satisDefault, ISatis} from "app/shared/model/satis.model";
-import {
-  defaultValue as stokHareketiDefault,
-  ISatisStokHareketleri
-} from "app/shared/model/satis-stok-hareketleri.model";
+import {defaultValue as satisDefault} from "app/shared/model/satis.model";
+import {ISatisStokHareketleri} from "app/shared/model/satis-stok-hareketleri.model";
 import {DatePicker, InputNumber, Select} from 'antd';
 import 'antd/lib/input-number/style/index.css';
 import 'antd/lib/date-picker/style/index.css';
@@ -31,15 +32,12 @@ export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteCompo
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [userId, setUserId] = useState('0');
   const [satis, setSatis] = useState(satisDefault);
-  const [satisStokHareketleri, setSatisStokHareketleri] = useState([] as ReadonlyArray<ISatisStokHareketleri>);
-  const [urunler, setUrunler] = useState([{
-    index: 0,
-    miktar: undefined,
-    birimFiyat: undefined,
-    urun: defaultValue,
-    tutar: 0
-  }
-  ]);
+  const [stokHareketleriLists, setStokHareketleriLists] = useState([{
+    miktar: 0,
+    urun: {
+      musteriFiyati: 0
+    }
+  }] as ISatisStokHareketleri[]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
   const {satisEntity, users, loading, updating} = props;
@@ -50,36 +48,36 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const addRow = () => {
     const yeniUrun = {
-      index: urunler.length,
+      index: stokHareketleriLists.length,
       miktar: undefined,
       birimFiyat: undefined,
       urun: defaultValue,
       tutar: 0
     };
-    setUrunler([...urunler, yeniUrun]);
+    setStokHareketleriLists([...stokHareketleriLists, yeniUrun]);
   };
 
   const deleteRow = (i) => {
-    const yeniUrunler = [...urunler];
+    const yeniUrunler = [...stokHareketleriLists];
     yeniUrunler.splice(i, 1);
-    setUrunler(yeniUrunler);
+    setStokHareketleriLists(yeniUrunler);
   };
 
   const onChangeMiktar = (value, i) => {
-    const yeniUrunler = [...urunler];
+    const yeniUrunler = [...stokHareketleriLists];
     yeniUrunler[i].miktar = value;
-    yeniUrunler[i].tutar = value * yeniUrunler[i].birimFiyat;
-    setUrunler(yeniUrunler);
+    yeniUrunler[i].tutar = value * yeniUrunler[i].urun.musteriFiyati;
+    setStokHareketleriLists(yeniUrunler);
   };
 
   const {satisUrunleri} = props;
 
   const onChangeUrun = (value, i) => {
-    const yeniUrunler = [...urunler];
+    const yeniUrunler = [...stokHareketleriLists];
     const secilenUrun = satisUrunleri[value];
-    yeniUrunler[i].birimFiyat = secilenUrun.musteriFiyati;
+    yeniUrunler[i].urun.musteriFiyati = secilenUrun.musteriFiyati;
     yeniUrunler[i].urun = secilenUrun;
-    setUrunler(yeniUrunler);
+    setStokHareketleriLists(yeniUrunler);
   };
 
   const updateDateSatisField = (value, dateString) => {
@@ -122,17 +120,19 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     values.tarih = convertDateTimeToServer(satis.tarih);
 
     if (errors.length === 0) {
-      const entity = {
-        ...satisEntity,
-        ...satis.tarih
-      };
-
-      setSatisStokHareketleri([...satisStokHareketleri, urunler]);
-
       if (isNew) {
-        props.createEntity(entity);
+        const yenisatis = {
+          ...satis,
+          stokHareketleriLists
+        };
+        props.createEntity(yenisatis);
       } else {
-        props.updateEntity(entity);
+        const yenisatis = {
+          ...satis,
+          satisEntity,
+          stokHareketleriLists
+        };
+        props.updateEntity(yenisatis);
       }
     }
   };
@@ -178,7 +178,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
               </Button>
               <div className="table-responsive">
-                {urunler && urunler.length > 0 ? (
+                {stokHareketleriLists && stokHareketleriLists.length > 0 ? (
                   <Table responsive>
                     <thead>
                     <tr>
@@ -198,7 +198,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {urunler.map((urun, i) => (
+                    {stokHareketleriLists.map((urun, i) => (
                       <tr key={`entity-${i}`}>
                         <td>
                           <Select
@@ -213,7 +213,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                             ))}
                           </Select>
                         </td>
-                        <td>{urun.birimFiyat} TL</td>
+                        <td>{urun.urun.musteriFiyati} TL</td>
                         <td><InputNumber value={urun.miktar} onChange={(value) => onChangeMiktar(value, i)}/></td>
                         <td>{urun.tutar} TL</td>
                         <td className="text-right">
@@ -267,7 +267,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.satis.loading,
   updating: storeState.satis.updating,
   updateSuccess: storeState.satis.updateSuccess,
-  satisUrunleri: storeState.urun.entities
+  satisUrunleri: storeState.urun.satisUrunleri
 });
 
 const mapDispatchToProps = {
@@ -276,7 +276,9 @@ const mapDispatchToProps = {
   updateEntity,
   createEntity,
   reset,
-  getSatisUrunleri
+  getSatisUrunleri,
+  createStokHareketi,
+  updateStokHareketi
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
