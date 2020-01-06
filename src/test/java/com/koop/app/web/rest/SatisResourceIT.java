@@ -64,9 +64,6 @@ public class SatisResourceIT {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UrunService urunService;
-
     private MockMvc restSatisMockMvc;
 
     private Satis satis;
@@ -74,7 +71,7 @@ public class SatisResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SatisResource satisResource = new SatisResource(satisRepository, userService, urunService);
+        final SatisResource satisResource = new SatisResource(satisRepository, userService);
         this.restSatisMockMvc = MockMvcBuilders.standaloneSetup(satisResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

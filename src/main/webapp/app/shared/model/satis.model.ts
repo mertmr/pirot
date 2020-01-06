@@ -8,7 +8,6 @@ export interface ISatis {
   tarih?: Moment;
   stokHareketleriLists?: ISatisStokHareketleri[];
   user?: IUser;
-  // satisUrunleri?: IUrun[];
 }
 
 export const defaultValue: Readonly<ISatis> = {};

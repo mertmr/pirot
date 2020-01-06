@@ -48,12 +48,9 @@ public class SatisResource {
 
     private final UserService userService;
 
-    private final UrunService urunService;
-
-    public SatisResource(SatisRepository satisRepository, UserService userService, UrunService urunService) {
+    public SatisResource(SatisRepository satisRepository, UserService userService) {
         this.satisRepository = satisRepository;
         this.userService = userService;
-        this.urunService = urunService;
     }
 
     /**
@@ -95,7 +92,6 @@ public class SatisResource {
         }
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
-        satis.setTarih(ZonedDateTime.now());
         Satis result = satisRepository.save(satis);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satis.getId().toString()))
@@ -143,17 +139,5 @@ public class SatisResource {
         log.debug("REST request to delete Satis : {}", id);
         satisRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * {@code GET  /satis} : get all the urun list for satis.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of urunler in body.
-     */
-    @GetMapping("/satis/urunler")
-    public ResponseEntity<List<Urun>> getAllUrunForSatis() {
-        log.debug("REST request to get a page of Satis");
-        List<Urun> urunler = urunService.getAllUrunForSatis();
-        return ResponseEntity.ok().body(urunler);
     }
 }

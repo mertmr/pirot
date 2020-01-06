@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.Urun;
 import com.koop.app.domain.User;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
@@ -46,9 +47,12 @@ public class UrunResource {
 
     private final UserService userService;
 
-    public UrunResource(UrunRepository urunRepository, UserService userService) {
+    private final UrunService urunService;
+
+    public UrunResource(UrunRepository urunRepository, UserService userService, UrunService urunService) {
         this.urunRepository = urunRepository;
         this.userService = userService;
+        this.urunService = urunService;
     }
 
     /**
@@ -135,5 +139,17 @@ public class UrunResource {
         log.debug("REST request to delete Urun : {}", id);
         urunRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * {@code GET  /satis} : get all the urun list for satis.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of urunler in body.
+     */
+    @GetMapping("/uruns/satis")
+    public ResponseEntity<List<Urun>> getAllUrunForSatis() {
+        log.debug("REST request to get a page of Satis");
+        List<Urun> urunler = urunService.getAllUrunForSatis();
+        return ResponseEntity.ok().body(urunler);
     }
 }

@@ -7,12 +7,20 @@ import {Translate} from 'react-jhipster';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {IRootState} from 'app/shared/reducers';
 import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
-import {createEntity, getEntity, getSatisUrunleri, reset, updateEntity} from './satis.reducer';
+import {createEntity, getEntity, reset, updateEntity} from './satis.reducer';
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {defaultValue} from "app/shared/model/urun.model";
-import {InputNumber, Select} from 'antd';
+import {defaultValue as satisDefault} from "app/shared/model/satis.model";
+import {defaultValue as stokHareketiDefault} from "app/shared/model/satis-stok-hareketleri.model";
+import {DatePicker, InputNumber, Select} from 'antd';
 import 'antd/lib/input-number/style/index.css';
+import 'antd/lib/date-picker/style/index.css';
 import 'antd/lib/select/style/index.css';
+import 'antd/lib/input/style/index.css';
+import {getSatisUrunleri} from "app/entities/urun/urun.reducer";
+import moment from 'moment';
+import 'moment/locale/tr';
+import {APP_LOCAL_DATETIME_FORMAT} from "app/config/constants";
 
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
@@ -20,6 +28,8 @@ export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteCompo
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [userId, setUserId] = useState('0');
+  const [satis, setSatis] = useState(satisDefault);
+  const [stokHareketi, setStokHareketi] = useState(stokHareketiDefault);
   const [urunler, setUrunler] = useState([{
     id: 0,
     miktar: undefined,
@@ -47,13 +57,44 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     setUrunler([...urunler, yeniUrun]);
   };
 
-  const onChangeMiktar = (value, i) => {
-    const yeniUrun = [...urunler];
-    yeniUrun[i].miktar = value;
-    setUrunler(yeniUrun);
+  const deleteRow = (i) => {
+    const yeniUrunler = [...urunler];
+    yeniUrunler.splice(i, 1);
+    setUrunler(yeniUrunler);
   };
 
-  const { Option } = Select;
+  const onChangeMiktar = (value, i) => {
+    const yeniUrunler = [...urunler];
+    yeniUrunler[i].miktar = value;
+    yeniUrunler[i].urunToplamTutari = value * yeniUrunler[i].tutar;
+    setUrunler(yeniUrunler);
+  };
+
+  const {satisUrunleri} = props;
+
+  const onChangeUrun = (value, i) => {
+    const yeniUrunler = [...urunler];
+    const secilenUrun = satisUrunleri[value];
+    yeniUrunler[i].tutar = secilenUrun.musteriFiyati;
+    yeniUrunler[i].urun = secilenUrun;
+    setUrunler(yeniUrunler);
+  };
+
+  const updateDateSatisField = (value, dateString) => {
+    setSatis({
+      ...satis,
+      ["tarih"]: dateString
+    });
+  };
+
+  const updateSatisField = (e) => {
+    setSatis({
+      ...satis,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const {Option} = Select;
 
   useEffect(() => {
     props.getSatisUrunleri();
@@ -76,7 +117,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   }, [props.updateSuccess]);
 
   const saveEntity = (event, errors, values) => {
-    values.tarih = convertDateTimeToServer(values.tarih);
+    values.tarih = convertDateTimeToServer(satis.tarih);
 
     if (errors.length === 0) {
       const entity = {
@@ -91,8 +132,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
       }
     }
   };
-
-  const { satisUrunleri } = props;
 
   return (
     <div>
@@ -117,19 +156,14 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly/>
                 </AvGroup>
               ) : null}
-              <AvGroup>
-                <Label id="tarihLabel" for="satis-tarih">
-                  <Translate contentKey="koopApp.satis.tarih">Tarih</Translate>
-                </Label>
-                <AvInput
-                  id="satis-tarih"
-                  type="datetime-local"
-                  className="form-control"
-                  name="tarih"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.satisEntity.tarih)}
-                />
-              </AvGroup>
+              <Row>
+                <DatePicker showTime
+                            name="tarih"
+                            placeholder="Tarih Seçin"
+                            onChange={updateDateSatisField}
+                            defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
+                              moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
+              </Row>
               <Button
                 tag={Link}
                 onClick={addRow}
@@ -163,23 +197,34 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     {urunler.map((urun, i) => (
                       <tr key={`entity-${i}`}>
                         <td>
-                          {/*<Select*/}
-                          {/*  showSearch*/}
-                          {/*  style={{ width: 200 }}*/}
-                          {/*  placeholder="Select a person"*/}
-                          {/*  optionFilterProp="children"*/}
-                          {/*  filterOption={(input, option) =>*/}
-                          {/*    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
-                          {/*  }*/}
-                          {/*>*/}
-                          {/*  {satisUrunleri.map((satisUrunu, k) => (*/}
-                          {/*  <Option key={k} value="k">satisUrunu.urunAdi</Option>*/}
-                          {/*    ))}*/}
-                          {/*</Select>*/}
+                          <Select
+                            showSearch
+                            style={{width: 400}}
+                            placeholder="Ürün seç"
+                            optionFilterProp="children"
+                            onChange={(value) => onChangeUrun(value, i)}
+                          >
+                            {satisUrunleri.map((satisUrunu, k) => (
+                              <Option key={k} value={k}>{satisUrunu.urunAdi}</Option>
+                            ))}
+                          </Select>
                         </td>
                         <td>{urun.tutar} TL</td>
                         <td><InputNumber value={urun.miktar} onChange={(value) => onChangeMiktar(value, i)}/></td>
                         <td>{urun.urunToplamTutari} TL</td>
+                        <td className="text-right">
+                          <div className="btn-group flex-btn-group-container">
+                            <Button
+                              tag={Link}
+                              color="danger"
+                              size="sm"
+                              onClick={(() => deleteRow(i))}
+                            >
+                              <FontAwesomeIcon icon="trash"/>{' '}
+                              <span className="d-none d-md-inline">SİL</span>
+                            </Button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                     </tbody>
@@ -218,7 +263,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.satis.loading,
   updating: storeState.satis.updating,
   updateSuccess: storeState.satis.updateSuccess,
-  satisUrunleri:  storeState.satis.satisUrunleri
+  satisUrunleri: storeState.urun.entities
 });
 
 const mapDispatchToProps = {

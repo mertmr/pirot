@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Urun;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
@@ -73,6 +74,9 @@ public class UrunResourceIT {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UrunService urunService;
+
     private MockMvc restUrunMockMvc;
 
     private Urun urun;
@@ -80,7 +84,7 @@ public class UrunResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UrunResource urunResource = new UrunResource(urunRepository, userService);
+        final UrunResource urunResource = new UrunResource(urunRepository, userService, urunService);
         this.restUrunMockMvc = MockMvcBuilders.standaloneSetup(urunResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
