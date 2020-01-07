@@ -1,25 +1,29 @@
 enum Birim {
-    KG, GR, ADET
+    YOK, ADET, GRAM
 }
 
 enum GiderTipi {
-    KARGO, SU, DIGER, VERGI, KIRA, AIDAT, TAKSI, ELEKTRIK, SU
+    YOK, KARGO, SU, DIGER, VERGI, KIRA, AIDAT, TAKSI, ELEKTRIK, SU
 }
 
 enum OdemeAraci {
-    ARAC1, ARAC2
+    YOK, NAKIT, BANKA
 }
 
 enum StokHareketiTipi {
-    STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF
+    YOK, STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF
 }
 
 enum UrunKategorisi {
-    GIDA, GIDA_DISI
+    YOK, GIDA, GIDA_DISI
 }
 
 enum Hesap {
-    KASA, BANKA
+    YOK, KASA, BANKA
+}
+
+enum HareketTipi {
+    URUN_GIRISI, ODEME
 }
 
 
@@ -38,6 +42,7 @@ entity KdvKategorisi {
 
 entity Satis {
     tarih ZonedDateTime
+    toplamTutar BigDecimal
 }
 
 entity SatisStokHareketleri {
@@ -62,6 +67,8 @@ entity Uretici {
 
 entity Urun {
     urunAdi String required
+    stok BigDecimal
+    stokSiniri BigDecimal
     musteriFiyati BigDecimal
     birim Birim required
     dayanismaUrunu Boolean
@@ -81,6 +88,34 @@ entity Virman {
     tarih ZonedDateTime
 }
 
+entity BorcAlacak {
+    tutar BigDecimal
+    notlar String
+    odemeAraci OdemeAraci
+    hareketTipi HareketTipi
+    tarih ZonedDateTime
+}
+
+entity KasaHareketleri {
+    kasaMiktar BigDecimal
+    hareket String
+    tarih ZonedDateTime
+}
+
+entity NobetHareketleri {
+    kasa BigDecimal
+    pirot BigDecimal
+    fark BigDecimal
+    notlar String
+    tarih ZonedDateTime
+}
+
+entity Kisiler {
+    kisiAdi String
+    notlar String
+    tarih ZonedDateTime
+}
+
 relationship ManyToOne {
   Gider{user(login)} to User
   Satis{user(login)} to User
@@ -89,9 +124,11 @@ relationship ManyToOne {
   Urun{user(login)} to User
   UrunFiyat{user(login)} to User
   Virman{user(login)} to User
+  BorcAlacak{user(login)} to User
   SatisStokHareketleri{urun} to Urun
   StokGirisi{urun} to Urun
   UrunFiyat{urun} to Urun
+  BorcAlacak{urun(urunAdi)} to Urun
   Urun{kdvKategorisi} to KdvKategorisi
 }
 
