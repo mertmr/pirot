@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface KasaHareketleriRepository extends JpaRepository<KasaHareketleri, Long> {
 
+    KasaHareketleri findFirstOrderByTarihDesc();
 }

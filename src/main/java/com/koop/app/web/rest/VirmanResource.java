@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.User;
 import com.koop.app.domain.Virman;
 import com.koop.app.repository.VirmanRepository;
+import com.koop.app.service.KasaHareketleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
@@ -47,9 +48,12 @@ public class VirmanResource {
 
     private final UserService userService;
 
-    public VirmanResource(VirmanRepository virmanRepository, UserService userService) {
+    private final KasaHareketleriService kasaHareketleriService;
+
+    public VirmanResource(VirmanRepository virmanRepository, UserService userService, KasaHareketleriService kasaHareketleriService) {
         this.virmanRepository = virmanRepository;
         this.userService = userService;
+        this.kasaHareketleriService = kasaHareketleriService;
     }
 
     /**
@@ -69,6 +73,7 @@ public class VirmanResource {
         virman.setUser(currentUser);
         virman.setTarih(ZonedDateTime.now());
         Virman result = virmanRepository.save(virman);
+        kasaHareketleriService.createKasaHareketi(virman.getTutar().negate(), "Kasadan Virman Cikti");
         return ResponseEntity.created(new URI("/api/virmen/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -92,6 +97,9 @@ public class VirmanResource {
         User currentUser = userService.getCurrentUser();
         virman.setUser(currentUser);
         virman.setTarih(ZonedDateTime.now());
+        Virman oncekiVirman = virmanRepository.findById(virman.getId()).get();
+        kasaHareketleriService.createKasaHareketi(virman.getTutar().subtract(oncekiVirman.getTutar()).negate(),
+            "Virmanda Düzenleme");
         Virman result = virmanRepository.save(virman);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, virman.getId().toString()))

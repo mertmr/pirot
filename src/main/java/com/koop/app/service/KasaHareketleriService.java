@@ -1,0 +1,40 @@
+package com.koop.app.service;
+
+import com.koop.app.domain.KasaHareketleri;
+import com.koop.app.repository.KasaHareketleriRepository;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+
+@Service
+public class KasaHareketleriService {
+
+    private final KasaHareketleriRepository kasaHareketleriRepository;
+
+    public KasaHareketleriService(KasaHareketleriRepository kasaHareketleriRepository) {
+        this.kasaHareketleriRepository = kasaHareketleriRepository;
+    }
+
+    /**
+     * Yapilan satis/gider/virman islemi icin kasa hakeketi yaratilir
+     * @param eklenecekTutar Eger satis gibi kasaya giren bir para varsa pozitif rakam gonderilir. Gider, virman gibi
+     *                       kasadan cikan islemler icin negatif gonderilmeli. Ileride hareket tipi gibi bir enum
+     *                       belirlenirse o enumla daha okunabilir hale getirilebilir.
+     *
+     *                       Eger bir hareket duzenlemeye ugruyorsa buraya gonderilen rakam duzenlemeye ugrayan tutarin
+     *                       degisimi kadar olmalidir.
+     * @param hareketMesaji Yapilan hareketi
+     * @return
+     */
+    public KasaHareketleri createKasaHareketi(BigDecimal eklenecekTutar, String hareketMesaji){
+        KasaHareketleri newKasaHareketi = new KasaHareketleri();
+        KasaHareketleri sonKasaHareketi = kasaHareketleriRepository.findFirstOrderByTarihDesc();
+
+        newKasaHareketi.setKasaMiktar(sonKasaHareketi.getKasaMiktar().add(eklenecekTutar));
+        newKasaHareketi.setHareket(hareketMesaji);
+        newKasaHareketi.setTarih(ZonedDateTime.now());
+        kasaHareketleriRepository.save(newKasaHareketi);
+        return newKasaHareketi;
+    }
+}

@@ -54,11 +54,6 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
     <div>
       <h2 id="kasa-hareketleri-heading">
         <Translate contentKey="koopApp.kasaHareketleri.home.title">Kasa Hareketleris</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="koopApp.kasaHareketleri.home.createLabel">Create new Kasa Hareketleri</Translate>
-        </Link>
       </h2>
       <div className="table-responsive">
         {kasaHareketleriList && kasaHareketleriList.length > 0 ? (
@@ -92,38 +87,6 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
                   <td>{kasaHareketleri.hareket}</td>
                   <td>
                     <TextFormat type="date" value={kasaHareketleri.tarih} format={APP_DATE_FORMAT} />
-                  </td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${kasaHareketleri.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${kasaHareketleri.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${kasaHareketleri.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
-                    </div>
                   </td>
                 </tr>
               ))}

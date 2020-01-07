@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.koop.app.domain.enumeration.Hesap;
-import com.koop.app.domain.enumeration.Hesap;
+
 /**
  * Integration tests for the {@link VirmanResource} REST controller.
  */
@@ -85,7 +85,7 @@ public class VirmanResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VirmanResource virmanResource = new VirmanResource(virmanRepository, userService);
+        final VirmanResource virmanResource = new VirmanResource(virmanRepository, userService, kasaHareketleriService);
         this.restVirmanMockMvc = MockMvcBuilders.standaloneSetup(virmanResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

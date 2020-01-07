@@ -78,7 +78,7 @@ public class SatisResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SatisResource satisResource = new SatisResource(satisRepository, userService, satisStokHareketleriRepository);
+        final SatisResource satisResource = new SatisResource(satisRepository, userService, satisStokHareketleriRepository, satisService);
         this.restSatisMockMvc = MockMvcBuilders.standaloneSetup(satisResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

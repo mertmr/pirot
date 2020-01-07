@@ -85,7 +85,7 @@ public class GiderResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final GiderResource giderResource = new GiderResource(giderRepository, userService);
+        final GiderResource giderResource = new GiderResource(giderRepository, userService, kasaHareketleriService);
         this.restGiderMockMvc = MockMvcBuilders.standaloneSetup(giderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
