@@ -41,17 +41,23 @@ public class UrunResourceIT {
     private static final String DEFAULT_URUN_ADI = "AAAAAAAAAA";
     private static final String UPDATED_URUN_ADI = "BBBBBBBBBB";
 
+    private static final BigDecimal DEFAULT_STOK = new BigDecimal(1);
+    private static final BigDecimal UPDATED_STOK = new BigDecimal(2);
+
+    private static final BigDecimal DEFAULT_STOK_SINIRI = new BigDecimal(1);
+    private static final BigDecimal UPDATED_STOK_SINIRI = new BigDecimal(2);
+
     private static final BigDecimal DEFAULT_MUSTERI_FIYATI = new BigDecimal(1);
     private static final BigDecimal UPDATED_MUSTERI_FIYATI = new BigDecimal(2);
 
-    private static final Birim DEFAULT_BIRIM = Birim.KG;
-    private static final Birim UPDATED_BIRIM = Birim.GR;
+    private static final Birim DEFAULT_BIRIM = Birim.YOK;
+    private static final Birim UPDATED_BIRIM = Birim.ADET;
 
     private static final Boolean DEFAULT_DAYANISMA_URUNU = false;
     private static final Boolean UPDATED_DAYANISMA_URUNU = true;
 
-    private static final UrunKategorisi DEFAULT_URUN_KATEGORISI = UrunKategorisi.GIDA;
-    private static final UrunKategorisi UPDATED_URUN_KATEGORISI = UrunKategorisi.GIDA_DISI;
+    private static final UrunKategorisi DEFAULT_URUN_KATEGORISI = UrunKategorisi.YOK;
+    private static final UrunKategorisi UPDATED_URUN_KATEGORISI = UrunKategorisi.GIDA;
 
     @Autowired
     private UrunRepository urunRepository;
@@ -102,6 +108,8 @@ public class UrunResourceIT {
     public static Urun createEntity(EntityManager em) {
         Urun urun = new Urun()
             .urunAdi(DEFAULT_URUN_ADI)
+            .stok(DEFAULT_STOK)
+            .stokSiniri(DEFAULT_STOK_SINIRI)
             .musteriFiyati(DEFAULT_MUSTERI_FIYATI)
             .birim(DEFAULT_BIRIM)
             .dayanismaUrunu(DEFAULT_DAYANISMA_URUNU)
@@ -117,6 +125,8 @@ public class UrunResourceIT {
     public static Urun createUpdatedEntity(EntityManager em) {
         Urun urun = new Urun()
             .urunAdi(UPDATED_URUN_ADI)
+            .stok(UPDATED_STOK)
+            .stokSiniri(UPDATED_STOK_SINIRI)
             .musteriFiyati(UPDATED_MUSTERI_FIYATI)
             .birim(UPDATED_BIRIM)
             .dayanismaUrunu(UPDATED_DAYANISMA_URUNU)
@@ -145,6 +155,8 @@ public class UrunResourceIT {
         assertThat(urunList).hasSize(databaseSizeBeforeCreate + 1);
         Urun testUrun = urunList.get(urunList.size() - 1);
         assertThat(testUrun.getUrunAdi()).isEqualTo(DEFAULT_URUN_ADI);
+        assertThat(testUrun.getStok()).isEqualTo(DEFAULT_STOK);
+        assertThat(testUrun.getStokSiniri()).isEqualTo(DEFAULT_STOK_SINIRI);
         assertThat(testUrun.getMusteriFiyati()).isEqualTo(DEFAULT_MUSTERI_FIYATI);
         assertThat(testUrun.getBirim()).isEqualTo(DEFAULT_BIRIM);
         assertThat(testUrun.isDayanismaUrunu()).isEqualTo(DEFAULT_DAYANISMA_URUNU);
@@ -219,6 +231,8 @@ public class UrunResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urun.getId().intValue())))
             .andExpect(jsonPath("$.[*].urunAdi").value(hasItem(DEFAULT_URUN_ADI)))
+            .andExpect(jsonPath("$.[*].stok").value(hasItem(DEFAULT_STOK.intValue())))
+            .andExpect(jsonPath("$.[*].stokSiniri").value(hasItem(DEFAULT_STOK_SINIRI.intValue())))
             .andExpect(jsonPath("$.[*].musteriFiyati").value(hasItem(DEFAULT_MUSTERI_FIYATI.intValue())))
             .andExpect(jsonPath("$.[*].birim").value(hasItem(DEFAULT_BIRIM.toString())))
             .andExpect(jsonPath("$.[*].dayanismaUrunu").value(hasItem(DEFAULT_DAYANISMA_URUNU.booleanValue())))
@@ -237,6 +251,8 @@ public class UrunResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(urun.getId().intValue()))
             .andExpect(jsonPath("$.urunAdi").value(DEFAULT_URUN_ADI))
+            .andExpect(jsonPath("$.stok").value(DEFAULT_STOK.intValue()))
+            .andExpect(jsonPath("$.stokSiniri").value(DEFAULT_STOK_SINIRI.intValue()))
             .andExpect(jsonPath("$.musteriFiyati").value(DEFAULT_MUSTERI_FIYATI.intValue()))
             .andExpect(jsonPath("$.birim").value(DEFAULT_BIRIM.toString()))
             .andExpect(jsonPath("$.dayanismaUrunu").value(DEFAULT_DAYANISMA_URUNU.booleanValue()))
@@ -265,6 +281,8 @@ public class UrunResourceIT {
         em.detach(updatedUrun);
         updatedUrun
             .urunAdi(UPDATED_URUN_ADI)
+            .stok(UPDATED_STOK)
+            .stokSiniri(UPDATED_STOK_SINIRI)
             .musteriFiyati(UPDATED_MUSTERI_FIYATI)
             .birim(UPDATED_BIRIM)
             .dayanismaUrunu(UPDATED_DAYANISMA_URUNU)
@@ -280,6 +298,8 @@ public class UrunResourceIT {
         assertThat(urunList).hasSize(databaseSizeBeforeUpdate);
         Urun testUrun = urunList.get(urunList.size() - 1);
         assertThat(testUrun.getUrunAdi()).isEqualTo(UPDATED_URUN_ADI);
+        assertThat(testUrun.getStok()).isEqualTo(UPDATED_STOK);
+        assertThat(testUrun.getStokSiniri()).isEqualTo(UPDATED_STOK_SINIRI);
         assertThat(testUrun.getMusteriFiyati()).isEqualTo(UPDATED_MUSTERI_FIYATI);
         assertThat(testUrun.getBirim()).isEqualTo(UPDATED_BIRIM);
         assertThat(testUrun.isDayanismaUrunu()).isEqualTo(UPDATED_DAYANISMA_URUNU);

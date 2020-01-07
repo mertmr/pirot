@@ -2,9 +2,9 @@
   "koopApp": {
     "Birim": {
       "null": "",
-      "KG": "KG",
-      "GR": "GR",
-      "ADET": "ADET"
+      "YOK": "YOK",
+      "ADET": "ADET",
+      "GRAM": "GRAM"
     }
   }
 }

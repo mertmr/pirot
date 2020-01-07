@@ -23,6 +23,10 @@
     <include file="config/liquibase/changelog/20200103090905_added_entity_Urun.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200103090906_added_entity_UrunFiyat.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200103090907_added_entity_Virman.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200107161124_added_entity_BorcAlacak.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200107161125_added_entity_KasaHareketleri.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200107161126_added_entity_NobetHareketleri.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200107161127_added_entity_Kisiler.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200103090859_added_entity_constraints_Gider.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200103090901_added_entity_constraints_Satis.xml" relativeToChangelogFile="false"/>
@@ -32,5 +36,6 @@
     <include file="config/liquibase/changelog/20200103090905_added_entity_constraints_Urun.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200103090906_added_entity_constraints_UrunFiyat.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200103090907_added_entity_constraints_Virman.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200107161124_added_entity_constraints_BorcAlacak.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

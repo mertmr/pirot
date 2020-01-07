@@ -16,6 +16,10 @@
         "urun": "Urun",
         "urunFiyat": "Urun Fiyat",
         "virman": "Virman",
+        "borcAlacak": "Borc Alacak",
+        "kasaHareketleri": "Kasa Hareketleri",
+        "nobetHareketleri": "Nobet Hareketleri",
+        "kisiler": "Kisiler",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

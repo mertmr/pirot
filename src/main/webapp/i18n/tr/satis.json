@@ -17,6 +17,7 @@
         "title": "Satış"
       },
       "tarih": "Tarih",
+      "toplamTutar": "Toplam Tutar",
       "stokHareketleriList": "Stok Hareketleri List",
       "user": "User"
     }

@@ -1,5 +1,5 @@
 export const enum Birim {
-  KG,
-  GR,
-  ADET
+  YOK,
+  ADET,
+  GRAM
 }

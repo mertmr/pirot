@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
@@ -42,6 +43,9 @@ public class SatisResourceIT {
 
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final BigDecimal DEFAULT_TOPLAM_TUTAR = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOPLAM_TUTAR = new BigDecimal(2);
 
     @Autowired
     private SatisRepository satisRepository;
@@ -91,7 +95,8 @@ public class SatisResourceIT {
      */
     public static Satis createEntity(EntityManager em) {
         Satis satis = new Satis()
-            .tarih(DEFAULT_TARIH);
+            .tarih(DEFAULT_TARIH)
+            .toplamTutar(DEFAULT_TOPLAM_TUTAR);
         return satis;
     }
     /**
@@ -102,7 +107,8 @@ public class SatisResourceIT {
      */
     public static Satis createUpdatedEntity(EntityManager em) {
         Satis satis = new Satis()
-            .tarih(UPDATED_TARIH);
+            .tarih(UPDATED_TARIH)
+            .toplamTutar(UPDATED_TOPLAM_TUTAR);
         return satis;
     }
 
@@ -127,6 +133,7 @@ public class SatisResourceIT {
         assertThat(satisList).hasSize(databaseSizeBeforeCreate + 1);
         Satis testSatis = satisList.get(satisList.size() - 1);
         assertThat(testSatis.getTarih()).isEqualTo(DEFAULT_TARIH);
+        assertThat(testSatis.getToplamTutar()).isEqualTo(DEFAULT_TOPLAM_TUTAR);
     }
 
     @Test
@@ -160,7 +167,8 @@ public class SatisResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(satis.getId().intValue())))
-            .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
+            .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))))
+            .andExpect(jsonPath("$.[*].toplamTutar").value(hasItem(DEFAULT_TOPLAM_TUTAR.intValue())));
     }
 
     @Test
@@ -174,7 +182,8 @@ public class SatisResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(satis.getId().intValue()))
-            .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
+            .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)))
+            .andExpect(jsonPath("$.toplamTutar").value(DEFAULT_TOPLAM_TUTAR.intValue()));
     }
 
     @Test
@@ -198,7 +207,8 @@ public class SatisResourceIT {
         // Disconnect from session so that the updates on updatedSatis are not directly saved in db
         em.detach(updatedSatis);
         updatedSatis
-            .tarih(UPDATED_TARIH);
+            .tarih(UPDATED_TARIH)
+            .toplamTutar(UPDATED_TOPLAM_TUTAR);
 
         restSatisMockMvc.perform(put("/api/satis")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -210,6 +220,7 @@ public class SatisResourceIT {
         assertThat(satisList).hasSize(databaseSizeBeforeUpdate);
         Satis testSatis = satisList.get(satisList.size() - 1);
         assertThat(testSatis.getTarih()).isEqualTo(UPDATED_TARIH);
+        assertThat(testSatis.getToplamTutar()).isEqualTo(UPDATED_TOPLAM_TUTAR);
     }
 
     @Test

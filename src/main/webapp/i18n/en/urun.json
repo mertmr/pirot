@@ -17,6 +17,8 @@
         "title": "Urun"
       },
       "urunAdi": "Urun Adi",
+      "stok": "Stok",
+      "stokSiniri": "Stok Siniri",
       "musteriFiyati": "Musteri Fiyati",
       "birim": "Birim",
       "dayanismaUrunu": "Dayanisma Urunu",

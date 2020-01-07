@@ -22,7 +22,7 @@
         {
             "fieldName": "giderTipi",
             "fieldType": "GiderTipi",
-            "fieldValues": "KARGO,SU,DIGER,VERGI,KIRA,AIDAT,TAKSI,ELEKTRIK",
+            "fieldValues": "YOK,KARGO,SU,DIGER,VERGI,KIRA,AIDAT,TAKSI,ELEKTRIK",
             "fieldValidateRules": [
                 "required"
             ]
@@ -30,7 +30,7 @@
         {
             "fieldName": "odemeAraci",
             "fieldType": "OdemeAraci",
-            "fieldValues": "ARAC1,ARAC2",
+            "fieldValues": "YOK,NAKIT,BANKA",
             "fieldValidateRules": [
                 "required"
             ]

@@ -118,8 +118,9 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="giderTipi"
-                  value={(!isNew && giderEntity.giderTipi) || 'KARGO'}
+                  value={(!isNew && giderEntity.giderTipi) || 'YOK'}
                 >
+                  <option value="YOK">{translate('koopApp.GiderTipi.YOK')}</option>
                   <option value="KARGO">{translate('koopApp.GiderTipi.KARGO')}</option>
                   <option value="SU">{translate('koopApp.GiderTipi.SU')}</option>
                   <option value="DIGER">{translate('koopApp.GiderTipi.DIGER')}</option>
@@ -139,10 +140,26 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="odemeAraci"
-                  value={(!isNew && giderEntity.odemeAraci) || 'ARAC1'}
+                  value={(!isNew && giderEntity.odemeAraci) || 'YOK'}
                 >
-                  <option value="ARAC1">{translate('koopApp.OdemeAraci.ARAC1')}</option>
-                  <option value="ARAC2">{translate('koopApp.OdemeAraci.ARAC2')}</option>
+                  <option value="YOK">{translate('koopApp.OdemeAraci.YOK')}</option>
+                  <option value="NAKIT">{translate('koopApp.OdemeAraci.NAKIT')}</option>
+                  <option value="BANKA">{translate('koopApp.OdemeAraci.BANKA')}</option>
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <Label for="gider-user">
+                  <Translate contentKey="koopApp.gider.user">User</Translate>
+                </Label>
+                <AvInput id="gider-user" type="select" className="form-control" name="user.id">
+                  <option value="" key="0" />
+                  {users
+                    ? users.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.login}
+                        </option>
+                      ))
+                    : null}
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/gider" replace color="info">

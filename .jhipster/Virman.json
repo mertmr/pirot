@@ -18,12 +18,12 @@
         {
             "fieldName": "cikisHesabi",
             "fieldType": "Hesap",
-            "fieldValues": "KASA,BANKA"
+            "fieldValues": "YOK,KASA,BANKA"
         },
         {
             "fieldName": "girisHesabi",
             "fieldType": "Hesap",
-            "fieldValues": "KASA,BANKA"
+            "fieldValues": "YOK,KASA,BANKA"
         },
         {
             "fieldName": "tarih",

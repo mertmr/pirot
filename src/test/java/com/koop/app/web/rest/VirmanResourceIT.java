@@ -48,11 +48,11 @@ public class VirmanResourceIT {
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
 
-    private static final Hesap DEFAULT_CIKIS_HESABI = Hesap.KASA;
-    private static final Hesap UPDATED_CIKIS_HESABI = Hesap.BANKA;
+    private static final Hesap DEFAULT_CIKIS_HESABI = Hesap.YOK;
+    private static final Hesap UPDATED_CIKIS_HESABI = Hesap.KASA;
 
-    private static final Hesap DEFAULT_GIRIS_HESABI = Hesap.KASA;
-    private static final Hesap UPDATED_GIRIS_HESABI = Hesap.BANKA;
+    private static final Hesap DEFAULT_GIRIS_HESABI = Hesap.YOK;
+    private static final Hesap UPDATED_GIRIS_HESABI = Hesap.KASA;
 
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);

@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +27,9 @@ public class Satis implements Serializable {
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
+
+    @Column(name = "toplam_tutar", precision = 21, scale = 2)
+    private BigDecimal toplamTutar;
 
     @OneToMany(mappedBy = "satis")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -55,6 +59,19 @@ public class Satis implements Serializable {
 
     public void setTarih(ZonedDateTime tarih) {
         this.tarih = tarih;
+    }
+
+    public BigDecimal getToplamTutar() {
+        return toplamTutar;
+    }
+
+    public Satis toplamTutar(BigDecimal toplamTutar) {
+        this.toplamTutar = toplamTutar;
+        return this;
+    }
+
+    public void setToplamTutar(BigDecimal toplamTutar) {
+        this.toplamTutar = toplamTutar;
     }
 
     public Set<SatisStokHareketleri> getStokHareketleriLists() {
@@ -117,6 +134,7 @@ public class Satis implements Serializable {
         return "Satis{" +
             "id=" + getId() +
             ", tarih='" + getTarih() + "'" +
+            ", toplamTutar=" + getToplamTutar() +
             "}";
     }
 }

@@ -1,8 +1,8 @@
 id;miktar;agirlik;notlar;stok_hareketi_tipi;tarih
-1;67902;99855;front-end navigating Investment Account;STOK_GIRISI;2020-01-02T18:11:04
+1;67902;99855;front-end navigating Investment Account;YOK;2020-01-02T18:11:04
 2;77483;67102;schemas calculate;FIRE;2020-01-02T09:46:23
 3;91811;51451;Investor;MASRAF;2020-01-02T15:20:11
-4;13970;83791;Ergonomic Metal Pizza;FIRE;2020-01-02T14:12:39
+4;13970;83791;Ergonomic Metal Pizza;STOK_GIRISI;2020-01-02T14:12:39
 5;84518;91227;withdrawal;MASRAF;2020-01-02T15:00:55
 6;83929;83068;Refined;STOK_DUZELTME;2020-01-03T08:57:52
 7;75169;28786;bifurcated;MASRAF;2020-01-03T02:30:06

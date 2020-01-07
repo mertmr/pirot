@@ -1,0 +1,36 @@
+{
+    "name": "NobetHareketleri",
+    "fields": [
+        {
+            "fieldName": "kasa",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "pirot",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "fark",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "notlar",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200107161126",
+    "entityTableName": "nobet_hareketleri",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

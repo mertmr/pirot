@@ -98,6 +98,18 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 />
               </AvGroup>
               <AvGroup>
+                <Label id="stokLabel" for="urun-stok">
+                  <Translate contentKey="koopApp.urun.stok">Stok</Translate>
+                </Label>
+                <AvField id="urun-stok" type="text" name="stok" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="stokSiniriLabel" for="urun-stokSiniri">
+                  <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
+                </Label>
+                <AvField id="urun-stokSiniri" type="text" name="stokSiniri" />
+              </AvGroup>
+              <AvGroup>
                 <Label id="musteriFiyatiLabel" for="urun-musteriFiyati">
                   <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate>
                 </Label>
@@ -107,10 +119,10 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="birimLabel" for="urun-birim">
                   <Translate contentKey="koopApp.urun.birim">Birim</Translate>
                 </Label>
-                <AvInput id="urun-birim" type="select" className="form-control" name="birim" value={(!isNew && urunEntity.birim) || 'KG'}>
-                  <option value="KG">{translate('koopApp.Birim.KG')}</option>
-                  <option value="GR">{translate('koopApp.Birim.GR')}</option>
+                <AvInput id="urun-birim" type="select" className="form-control" name="birim" value={(!isNew && urunEntity.birim) || 'YOK'}>
+                  <option value="YOK">{translate('koopApp.Birim.YOK')}</option>
                   <option value="ADET">{translate('koopApp.Birim.ADET')}</option>
+                  <option value="GRAM">{translate('koopApp.Birim.GRAM')}</option>
                 </AvInput>
               </AvGroup>
               <AvGroup check>
@@ -128,8 +140,9 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="urunKategorisi"
-                  value={(!isNew && urunEntity.urunKategorisi) || 'GIDA'}
+                  value={(!isNew && urunEntity.urunKategorisi) || 'YOK'}
                 >
+                  <option value="YOK">{translate('koopApp.UrunKategorisi.YOK')}</option>
                   <option value="GIDA">{translate('koopApp.UrunKategorisi.GIDA')}</option>
                   <option value="GIDA_DISI">{translate('koopApp.UrunKategorisi.GIDA_DISI')}</option>
                 </AvInput>

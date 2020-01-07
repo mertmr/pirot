@@ -32,6 +32,12 @@ public class Urun implements Serializable {
     @Column(name = "urun_adi", nullable = false)
     private String urunAdi;
 
+    @Column(name = "stok", precision = 21, scale = 2)
+    private BigDecimal stok;
+
+    @Column(name = "stok_siniri", precision = 21, scale = 2)
+    private BigDecimal stokSiniri;
+
     @Column(name = "musteri_fiyati", precision = 21, scale = 2)
     private BigDecimal musteriFiyati;
 
@@ -73,6 +79,32 @@ public class Urun implements Serializable {
 
     public void setUrunAdi(String urunAdi) {
         this.urunAdi = urunAdi;
+    }
+
+    public BigDecimal getStok() {
+        return stok;
+    }
+
+    public Urun stok(BigDecimal stok) {
+        this.stok = stok;
+        return this;
+    }
+
+    public void setStok(BigDecimal stok) {
+        this.stok = stok;
+    }
+
+    public BigDecimal getStokSiniri() {
+        return stokSiniri;
+    }
+
+    public Urun stokSiniri(BigDecimal stokSiniri) {
+        this.stokSiniri = stokSiniri;
+        return this;
+    }
+
+    public void setStokSiniri(BigDecimal stokSiniri) {
+        this.stokSiniri = stokSiniri;
     }
 
     public BigDecimal getMusteriFiyati() {
@@ -175,6 +207,8 @@ public class Urun implements Serializable {
         return "Urun{" +
             "id=" + getId() +
             ", urunAdi='" + getUrunAdi() + "'" +
+            ", stok=" + getStok() +
+            ", stokSiniri=" + getStokSiniri() +
             ", musteriFiyati=" + getMusteriFiyati() +
             ", birim='" + getBirim() + "'" +
             ", dayanismaUrunu='" + isDayanismaUrunu() + "'" +

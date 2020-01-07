@@ -18,6 +18,12 @@
             <column name="urun_adi" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="stok" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="stok_siniri" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
             <column name="musteri_fiyati" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
@@ -60,6 +66,8 @@
                   tableName="urun">
             <column name="id" type="numeric"/>
             <column name="urun_adi" type="string"/>
+            <column name="stok" type="numeric"/>
+            <column name="stok_siniri" type="numeric"/>
             <column name="musteri_fiyati" type="numeric"/>
             <column name="birim" type="string"/>
             <column name="dayanisma_urunu" type="boolean"/>

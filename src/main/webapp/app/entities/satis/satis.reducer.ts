@@ -5,7 +5,6 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ISatis, defaultValue } from 'app/shared/model/satis.model';
-import { IUrun } from 'app/shared/model/urun.model';
 
 export const ACTION_TYPES = {
   FETCH_SATIS_LIST: 'satis/FETCH_SATIS_LIST',

@@ -118,8 +118,9 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="cikisHesabi"
-                  value={(!isNew && virmanEntity.cikisHesabi) || 'KASA'}
+                  value={(!isNew && virmanEntity.cikisHesabi) || 'YOK'}
                 >
+                  <option value="YOK">{translate('koopApp.Hesap.YOK')}</option>
                   <option value="KASA">{translate('koopApp.Hesap.KASA')}</option>
                   <option value="BANKA">{translate('koopApp.Hesap.BANKA')}</option>
                 </AvInput>
@@ -133,8 +134,9 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="girisHesabi"
-                  value={(!isNew && virmanEntity.girisHesabi) || 'KASA'}
+                  value={(!isNew && virmanEntity.girisHesabi) || 'YOK'}
                 >
+                  <option value="YOK">{translate('koopApp.Hesap.YOK')}</option>
                   <option value="KASA">{translate('koopApp.Hesap.KASA')}</option>
                   <option value="BANKA">{translate('koopApp.Hesap.BANKA')}</option>
                 </AvInput>

@@ -6,6 +6,8 @@ import { UrunKategorisi } from 'app/shared/model/enumerations/urun-kategorisi.mo
 export interface IUrun {
   id?: number;
   urunAdi?: string;
+  stok?: number;
+  stokSiniri?: number;
   musteriFiyati?: number;
   birim?: Birim;
   dayanismaUrunu?: boolean;

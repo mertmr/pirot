@@ -48,6 +48,22 @@ import urunFiyat, {
 import virman, {
   VirmanState
 } from 'app/entities/virman/virman.reducer';
+// prettier-ignore
+import borcAlacak, {
+  BorcAlacakState
+} from 'app/entities/borc-alacak/borc-alacak.reducer';
+// prettier-ignore
+import kasaHareketleri, {
+  KasaHareketleriState
+} from 'app/entities/kasa-hareketleri/kasa-hareketleri.reducer';
+// prettier-ignore
+import nobetHareketleri, {
+  NobetHareketleriState
+} from 'app/entities/nobet-hareketleri/nobet-hareketleri.reducer';
+// prettier-ignore
+import kisiler, {
+  KisilerState
+} from 'app/entities/kisiler/kisiler.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 import dashboardReportsState, { DashboardReportsState } from './dashboard-reports.reducer';
 
@@ -71,6 +87,10 @@ export interface IRootState {
   readonly urun: UrunState;
   readonly urunFiyat: UrunFiyatState;
   readonly virman: VirmanState;
+  readonly borcAlacak: BorcAlacakState;
+  readonly kasaHareketleri: KasaHareketleriState;
+  readonly nobetHareketleri: NobetHareketleriState;
+  readonly kisiler: KisilerState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly dashboardReportsState: DashboardReportsState;
@@ -96,6 +116,10 @@ const rootReducer = combineReducers<IRootState>({
   urun,
   urunFiyat,
   virman,
+  borcAlacak,
+  kasaHareketleri,
+  nobetHareketleri,
+  kisiler,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   dashboardReportsState,
   loadingBar

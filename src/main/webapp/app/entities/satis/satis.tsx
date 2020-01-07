@@ -72,11 +72,11 @@ export const Satis = (props: ISatisProps) => {
                 <th className="hand" onClick={sort('tarih')}>
                   <Translate contentKey="koopApp.satis.tarih">Tarih</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('toplamTutar')}>
+                  <Translate contentKey="koopApp.satis.toplamTutar">Toplam Tutar</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th>
                   <Translate contentKey="koopApp.satis.user">User</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand">
-                  <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
                 </th>
                 <th />
               </tr>
@@ -92,10 +92,8 @@ export const Satis = (props: ISatisProps) => {
                   <td>
                     <TextFormat type="date" value={satis.tarih} format={APP_DATE_FORMAT} />
                   </td>
+                  <td>{satis.toplamTutar}</td>
                   <td>{satis.user ? satis.user.login : ''}</td>
-                  <td>{satis.stokHareketleriLists && satis.stokHareketleriLists.length > 0 ?
-                    satis.stokHareketleriLists.reduce((total, stokHareketi) =>
-                      total + stokHareketi.tutar, 0) : '0'} TL</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${satis.id}`} color="info" size="sm">

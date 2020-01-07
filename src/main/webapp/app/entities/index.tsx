@@ -13,6 +13,10 @@ import Uretici from './uretici';
 import Urun from './urun';
 import UrunFiyat from './urun-fiyat';
 import Virman from './virman';
+import BorcAlacak from './borc-alacak';
+import KasaHareketleri from './kasa-hareketleri';
+import NobetHareketleri from './nobet-hareketleri';
+import Kisiler from './kisiler';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -28,6 +32,10 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}urun`} component={Urun} />
       <ErrorBoundaryRoute path={`${match.url}urun-fiyat`} component={UrunFiyat} />
       <ErrorBoundaryRoute path={`${match.url}virman`} component={Virman} />
+      <ErrorBoundaryRoute path={`${match.url}borc-alacak`} component={BorcAlacak} />
+      <ErrorBoundaryRoute path={`${match.url}kasa-hareketleri`} component={KasaHareketleri} />
+      <ErrorBoundaryRoute path={`${match.url}nobet-hareketleri`} component={NobetHareketleri} />
+      <ErrorBoundaryRoute path={`${match.url}kisiler`} component={Kisiler} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

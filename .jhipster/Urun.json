@@ -9,13 +9,21 @@
             ]
         },
         {
+            "fieldName": "stok",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "stokSiniri",
+            "fieldType": "BigDecimal"
+        },
+        {
             "fieldName": "musteriFiyati",
             "fieldType": "BigDecimal"
         },
         {
             "fieldName": "birim",
             "fieldType": "Birim",
-            "fieldValues": "KG,GR,ADET",
+            "fieldValues": "YOK,ADET,GRAM",
             "fieldValidateRules": [
                 "required"
             ]
@@ -27,7 +35,7 @@
         {
             "fieldName": "urunKategorisi",
             "fieldType": "UrunKategorisi",
-            "fieldValues": "GIDA,GIDA_DISI"
+            "fieldValues": "YOK,GIDA,GIDA_DISI"
         }
     ],
     "relationships": [

@@ -4,6 +4,10 @@
         {
             "fieldName": "tarih",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "toplamTutar",
+            "fieldType": "BigDecimal"
         }
     ],
     "relationships": [

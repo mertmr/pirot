@@ -1,11 +1,11 @@
-id;urun_adi;musteri_fiyati;birim;dayanisma_urunu;urun_kategorisi
-1;Massachusetts lime California;94838;GR;true;GIDA
-2;deposit Bahamian Dollar;73232;GR;false;GIDA
-3;6th generation monitor;27912;GR;false;GIDA_DISI
-4;Executive;84467;GR;false;GIDA
-5;Yen;67899;KG;true;GIDA
-6;Afghanistan back up Baby;36672;KG;true;GIDA
-7;optimize;4496;KG;true;GIDA
-8;optical;79946;KG;true;GIDA_DISI
-9;Credit Card Account;92875;ADET;false;GIDA
-10;synergistic;53448;GR;true;GIDA
+id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;urun_kategorisi
+1;Massachusetts lime California;94838;59151;40295;ADET;true;YOK
+2;deposit Bahamian Dollar;73232;39314;93805;ADET;false;YOK
+3;6th generation monitor;27912;66375;77243;ADET;false;GIDA_DISI
+4;Executive;84467;88460;27858;YOK;false;YOK
+5;override;93989;96444;29446;ADET;false;GIDA
+6;deposit backing up pixel;16230;81314;81780;GRAM;false;YOK
+7;Sleek Cotton;12074;55814;36437;YOK;true;GIDA_DISI
+8;Tasty Concrete Fish Assistant Kids;64854;92875;47747;YOK;false;GIDA_DISI
+9;Licensed seamless;71897;98327;48658;GRAM;true;YOK
+10;bus ivory overriding;26824;72934;11148;GRAM;true;GIDA_DISI

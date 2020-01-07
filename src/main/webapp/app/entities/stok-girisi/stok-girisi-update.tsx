@@ -129,8 +129,9 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="stokHareketiTipi"
-                  value={(!isNew && stokGirisiEntity.stokHareketiTipi) || 'STOK_GIRISI'}
+                  value={(!isNew && stokGirisiEntity.stokHareketiTipi) || 'YOK'}
                 >
+                  <option value="YOK">{translate('koopApp.StokHareketiTipi.YOK')}</option>
                   <option value="STOK_GIRISI">{translate('koopApp.StokHareketiTipi.STOK_GIRISI')}</option>
                   <option value="FIRE">{translate('koopApp.StokHareketiTipi.FIRE')}</option>
                   <option value="STOK_DUZELTME">{translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}</option>

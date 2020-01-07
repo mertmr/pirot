@@ -32,6 +32,18 @@ export const UrunDetail = (props: IUrunDetailProps) => {
           </dt>
           <dd>{urunEntity.urunAdi}</dd>
           <dt>
+            <span id="stok">
+              <Translate contentKey="koopApp.urun.stok">Stok</Translate>
+            </span>
+          </dt>
+          <dd>{urunEntity.stok}</dd>
+          <dt>
+            <span id="stokSiniri">
+              <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
+            </span>
+          </dt>
+          <dd>{urunEntity.stokSiniri}</dd>
+          <dt>
             <span id="musteriFiyati">
               <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate>
             </span>

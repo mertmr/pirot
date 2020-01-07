@@ -6,6 +6,7 @@ import { IUrun } from 'app/shared/model/urun.model';
 export interface ISatis {
   id?: number;
   tarih?: Moment;
+  toplamTutar?: number;
   stokHareketleriLists?: ISatisStokHareketleri[];
   user?: IUser;
 }

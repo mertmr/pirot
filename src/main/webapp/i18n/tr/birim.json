@@ -1,10 +1,10 @@
 {
   "koopApp": {
     "Birim": {
-      "null": "",
-      "KG": "KG",
-      "GR": "GR",
-      "ADET": "ADET"
+      "null": " ",
+      "YOK": "YOK",
+      "ADET": "ADET",
+      "GRAM": "GRAM"
     }
   }
 }

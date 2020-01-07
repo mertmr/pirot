@@ -51,11 +51,11 @@ public class GiderResourceIT {
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
 
-    private static final GiderTipi DEFAULT_GIDER_TIPI = GiderTipi.KARGO;
-    private static final GiderTipi UPDATED_GIDER_TIPI = GiderTipi.SU;
+    private static final GiderTipi DEFAULT_GIDER_TIPI = GiderTipi.YOK;
+    private static final GiderTipi UPDATED_GIDER_TIPI = GiderTipi.KARGO;
 
-    private static final OdemeAraci DEFAULT_ODEME_ARACI = OdemeAraci.ARAC1;
-    private static final OdemeAraci UPDATED_ODEME_ARACI = OdemeAraci.ARAC2;
+    private static final OdemeAraci DEFAULT_ODEME_ARACI = OdemeAraci.YOK;
+    private static final OdemeAraci UPDATED_ODEME_ARACI = OdemeAraci.NAKIT;
 
     @Autowired
     private GiderRepository giderRepository;

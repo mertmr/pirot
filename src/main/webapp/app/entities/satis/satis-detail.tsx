@@ -24,7 +24,7 @@ export const SatisDetail = (props: ISatisDetailProps) => {
         <h2>
           <Translate contentKey="koopApp.satis.detail.title">Satis</Translate> [<b>{satisEntity.id}</b>]
         </h2>
-        <dl className="hand">
+        <dl className="jh-entity-details">
           <dt>
             <span id="tarih">
               <Translate contentKey="koopApp.satis.tarih">Tarih</Translate>
@@ -33,6 +33,12 @@ export const SatisDetail = (props: ISatisDetailProps) => {
           <dd>
             <TextFormat value={satisEntity.tarih} type="date" format={APP_DATE_FORMAT} />
           </dd>
+          <dt>
+            <span id="toplamTutar">
+              <Translate contentKey="koopApp.satis.toplamTutar">Toplam Tutar</Translate>
+            </span>
+          </dt>
+          <dd>{satisEntity.toplamTutar}</dd>
           <dt>
             <Translate contentKey="koopApp.satis.user">User</Translate>
           </dt>

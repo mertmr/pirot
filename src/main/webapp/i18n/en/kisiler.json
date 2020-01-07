@@ -1,0 +1,24 @@
+{
+  "koopApp": {
+    "kisiler": {
+      "home": {
+        "title": "Kisilers",
+        "createLabel": "Create a new Kisiler",
+        "createOrEditLabel": "Create or edit a Kisiler",
+        "notFound": "No Kisilers found"
+      },
+      "created": "A new Kisiler is created with identifier {{ param }}",
+      "updated": "A Kisiler is updated with identifier {{ param }}",
+      "deleted": "A Kisiler is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Kisiler {{ id }}?"
+      },
+      "detail": {
+        "title": "Kisiler"
+      },
+      "kisiAdi": "Kisi Adi",
+      "notlar": "Notlar",
+      "tarih": "Tarih"
+    }
+  }
+}
