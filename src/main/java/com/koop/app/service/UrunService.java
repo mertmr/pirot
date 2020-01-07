@@ -19,8 +19,6 @@ public class UrunService {
     }
 
     public List<Urun> getAllUrunForSatis() {
-//        List<Long> urunIds = stokGirisiRepository.findStokWithMoreThanZero();
-//        return urunRepository.findAllById(urunIds);
-        return urunRepository.findAll();
+        return urunRepository.findStokWithMoreThanZero();
     }
 }
