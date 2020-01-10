@@ -114,34 +114,6 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
                   }}
                 />
               </AvGroup>
-              <AvGroup>
-                <Label id="tarihLabel" for="uretici-tarih">
-                  <Translate contentKey="koopApp.uretici.tarih">Tarih</Translate>
-                </Label>
-                <AvInput
-                  id="uretici-tarih"
-                  type="datetime-local"
-                  className="form-control"
-                  name="tarih"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.ureticiEntity.tarih)}
-                />
-              </AvGroup>
-              <AvGroup>
-                <Label for="uretici-user">
-                  <Translate contentKey="koopApp.uretici.user">User</Translate>
-                </Label>
-                <AvInput id="uretici-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/uretici" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

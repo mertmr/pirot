@@ -11,6 +11,7 @@ export interface IUrun {
   musteriFiyati?: number;
   birim?: Birim;
   dayanismaUrunu?: boolean;
+  satista?: boolean;
   urunKategorisi?: UrunKategorisi;
   user?: IUser;
   kdvKategorisi?: IKdvKategorisi;

@@ -72,6 +72,7 @@ entity Urun {
     musteriFiyati BigDecimal
     birim Birim required
     dayanismaUrunu Boolean
+    satista Boolean
     urunKategorisi UrunKategorisi
 }
 

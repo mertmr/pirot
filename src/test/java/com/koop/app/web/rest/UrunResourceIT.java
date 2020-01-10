@@ -2,6 +2,7 @@ package com.koop.app.web.rest;
 
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Urun;
+import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
@@ -56,6 +57,9 @@ public class UrunResourceIT {
     private static final Boolean DEFAULT_DAYANISMA_URUNU = false;
     private static final Boolean UPDATED_DAYANISMA_URUNU = true;
 
+    private static final Boolean DEFAULT_SATISTA = false;
+    private static final Boolean UPDATED_SATISTA = true;
+
     private static final UrunKategorisi DEFAULT_URUN_KATEGORISI = UrunKategorisi.YOK;
     private static final UrunKategorisi UPDATED_URUN_KATEGORISI = UrunKategorisi.GIDA;
 
@@ -81,6 +85,9 @@ public class UrunResourceIT {
     private UserService userService;
 
     @Autowired
+    private UrunFiyatRepository urunFiyatRepository;
+
+    @Autowired
     private UrunService urunService;
 
     private MockMvc restUrunMockMvc;
@@ -90,7 +97,7 @@ public class UrunResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UrunResource urunResource = new UrunResource(urunRepository, userService, urunService);
+        final UrunResource urunResource = new UrunResource(urunRepository, userService, urunService, urunFiyatRepository);
         this.restUrunMockMvc = MockMvcBuilders.standaloneSetup(urunResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -113,6 +120,7 @@ public class UrunResourceIT {
             .musteriFiyati(DEFAULT_MUSTERI_FIYATI)
             .birim(DEFAULT_BIRIM)
             .dayanismaUrunu(DEFAULT_DAYANISMA_URUNU)
+            .satista(DEFAULT_SATISTA)
             .urunKategorisi(DEFAULT_URUN_KATEGORISI);
         return urun;
     }
@@ -130,6 +138,7 @@ public class UrunResourceIT {
             .musteriFiyati(UPDATED_MUSTERI_FIYATI)
             .birim(UPDATED_BIRIM)
             .dayanismaUrunu(UPDATED_DAYANISMA_URUNU)
+            .satista(UPDATED_SATISTA)
             .urunKategorisi(UPDATED_URUN_KATEGORISI);
         return urun;
     }
@@ -160,6 +169,7 @@ public class UrunResourceIT {
         assertThat(testUrun.getMusteriFiyati()).isEqualTo(DEFAULT_MUSTERI_FIYATI);
         assertThat(testUrun.getBirim()).isEqualTo(DEFAULT_BIRIM);
         assertThat(testUrun.isDayanismaUrunu()).isEqualTo(DEFAULT_DAYANISMA_URUNU);
+        assertThat(testUrun.isSatista()).isEqualTo(DEFAULT_SATISTA);
         assertThat(testUrun.getUrunKategorisi()).isEqualTo(DEFAULT_URUN_KATEGORISI);
     }
 
@@ -236,6 +246,7 @@ public class UrunResourceIT {
             .andExpect(jsonPath("$.[*].musteriFiyati").value(hasItem(DEFAULT_MUSTERI_FIYATI.intValue())))
             .andExpect(jsonPath("$.[*].birim").value(hasItem(DEFAULT_BIRIM.toString())))
             .andExpect(jsonPath("$.[*].dayanismaUrunu").value(hasItem(DEFAULT_DAYANISMA_URUNU.booleanValue())))
+            .andExpect(jsonPath("$.[*].satista").value(hasItem(DEFAULT_SATISTA.booleanValue())))
             .andExpect(jsonPath("$.[*].urunKategorisi").value(hasItem(DEFAULT_URUN_KATEGORISI.toString())));
     }
 
@@ -256,6 +267,7 @@ public class UrunResourceIT {
             .andExpect(jsonPath("$.musteriFiyati").value(DEFAULT_MUSTERI_FIYATI.intValue()))
             .andExpect(jsonPath("$.birim").value(DEFAULT_BIRIM.toString()))
             .andExpect(jsonPath("$.dayanismaUrunu").value(DEFAULT_DAYANISMA_URUNU.booleanValue()))
+            .andExpect(jsonPath("$.satista").value(DEFAULT_SATISTA.booleanValue()))
             .andExpect(jsonPath("$.urunKategorisi").value(DEFAULT_URUN_KATEGORISI.toString()));
     }
 
@@ -286,6 +298,7 @@ public class UrunResourceIT {
             .musteriFiyati(UPDATED_MUSTERI_FIYATI)
             .birim(UPDATED_BIRIM)
             .dayanismaUrunu(UPDATED_DAYANISMA_URUNU)
+            .satista(UPDATED_SATISTA)
             .urunKategorisi(UPDATED_URUN_KATEGORISI);
 
         restUrunMockMvc.perform(put("/api/uruns")
@@ -303,6 +316,7 @@ public class UrunResourceIT {
         assertThat(testUrun.getMusteriFiyati()).isEqualTo(UPDATED_MUSTERI_FIYATI);
         assertThat(testUrun.getBirim()).isEqualTo(UPDATED_BIRIM);
         assertThat(testUrun.isDayanismaUrunu()).isEqualTo(UPDATED_DAYANISMA_URUNU);
+        assertThat(testUrun.isSatista()).isEqualTo(UPDATED_SATISTA);
         assertThat(testUrun.getUrunKategorisi()).isEqualTo(UPDATED_URUN_KATEGORISI);
     }
 

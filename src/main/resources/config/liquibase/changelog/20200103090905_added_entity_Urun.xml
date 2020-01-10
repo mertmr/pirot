@@ -33,6 +33,9 @@
             <column name="dayanisma_urunu" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="satista" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="urun_kategorisi" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -71,6 +74,7 @@
             <column name="musteri_fiyati" type="numeric"/>
             <column name="birim" type="string"/>
             <column name="dayanisma_urunu" type="boolean"/>
+            <column name="satista" type="boolean"/>
             <column name="urun_kategorisi" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>

@@ -55,11 +55,6 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
     <div>
       <h2 id="urun-fiyat-heading">
         <Translate contentKey="koopApp.urunFiyat.home.title">Urun Fiyats</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="koopApp.urunFiyat.home.createLabel">Create new Urun Fiyat</Translate>
-        </Link>
       </h2>
       <div className="table-responsive">
         {urunFiyatList && urunFiyatList.length > 0 ? (
@@ -104,28 +99,6 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${urunFiyat.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${urunFiyat.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
                       </Button>
                     </div>

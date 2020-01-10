@@ -1,11 +1,11 @@
-id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;urun_kategorisi
-1;Massachusetts lime California;94838;59151;40295;ADET;true;YOK
-2;deposit Bahamian Dollar;73232;39314;93805;ADET;false;YOK
-3;6th generation monitor;27912;66375;77243;ADET;false;GIDA_DISI
-4;Executive;84467;88460;27858;YOK;false;YOK
-5;override;93989;96444;29446;ADET;false;GIDA
-6;deposit backing up pixel;16230;81314;81780;GRAM;false;YOK
-7;Sleek Cotton;12074;55814;36437;YOK;true;GIDA_DISI
-8;Tasty Concrete Fish Assistant Kids;64854;92875;47747;YOK;false;GIDA_DISI
-9;Licensed seamless;71897;98327;48658;GRAM;true;YOK
-10;bus ivory overriding;26824;72934;11148;GRAM;true;GIDA_DISI
+id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;satista;urun_kategorisi
+1;Massachusetts lime California;94838;59151;40295;ADET;true;true;GIDA_DISI
+2;Small Plastic Tuna magenta Soft;39314;93805;11820;ADET;false;false;GIDA_DISI
+3;multi-tasking bypass circuit;60629;41557;86379;YOK;true;false;GIDA
+4;Distributed Fish;37405;20361;70204;GRAM;false;true;GIDA_DISI
+5;Bangladesh haptic;354;76567;316;GRAM;true;false;GIDA
+6;calculating optical Home;40191;7324;4496;YOK;true;false;YOK
+7;synthesizing Metrics Mauritius Rupee;6140;93976;81958;GRAM;true;true;GIDA_DISI
+8;Underpass Analyst;68698;17129;33047;GRAM;true;false;YOK
+9;Checking Account haptic web services;48282;14600;95495;GRAM;false;true;YOK
+10;Underpass sensor;18220;4060;59798;YOK;true;false;GIDA_DISI

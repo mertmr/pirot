@@ -131,6 +131,12 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <Translate contentKey="koopApp.urun.dayanismaUrunu">Dayanisma Urunu</Translate>
                 </Label>
               </AvGroup>
+              <AvGroup check>
+                <Label id="satistaLabel">
+                  <AvInput id="urun-satista" type="checkbox" className="form-check-input" name="satista" />
+                  <Translate contentKey="koopApp.urun.satista">Satista</Translate>
+                </Label>
+              </AvGroup>
               <AvGroup>
                 <Label id="urunKategorisiLabel" for="urun-urunKategorisi">
                   <Translate contentKey="koopApp.urun.urunKategorisi">Urun Kategorisi</Translate>

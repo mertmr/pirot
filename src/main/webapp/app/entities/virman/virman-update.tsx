@@ -141,34 +141,6 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                   <option value="BANKA">{translate('koopApp.Hesap.BANKA')}</option>
                 </AvInput>
               </AvGroup>
-              <AvGroup>
-                <Label id="tarihLabel" for="virman-tarih">
-                  <Translate contentKey="koopApp.virman.tarih">Tarih</Translate>
-                </Label>
-                <AvInput
-                  id="virman-tarih"
-                  type="datetime-local"
-                  className="form-control"
-                  name="tarih"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.virmanEntity.tarih)}
-                />
-              </AvGroup>
-              <AvGroup>
-                <Label for="virman-user">
-                  <Translate contentKey="koopApp.virman.user">User</Translate>
-                </Label>
-                <AvInput id="virman-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/virman" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

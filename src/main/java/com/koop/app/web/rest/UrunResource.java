@@ -1,12 +1,13 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Urun;
+import com.koop.app.domain.UrunFiyat;
 import com.koop.app.domain.User;
+import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -16,15 +17,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,23 +37,20 @@ import java.util.Optional;
 @Transactional
 public class UrunResource {
 
-    private final Logger log = LoggerFactory.getLogger(UrunResource.class);
-
     private static final String ENTITY_NAME = "urun";
-
+    private final Logger log = LoggerFactory.getLogger(UrunResource.class);
+    private final UrunRepository urunRepository;
+    private final UserService userService;
+    private final UrunService urunService;
+    private final UrunFiyatRepository urunFiyatRepository;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final UrunRepository urunRepository;
-
-    private final UserService userService;
-
-    private final UrunService urunService;
-
-    public UrunResource(UrunRepository urunRepository, UserService userService, UrunService urunService) {
+    public UrunResource(UrunRepository urunRepository, UserService userService, UrunService urunService, UrunFiyatRepository urunFiyatRepository) {
         this.urunRepository = urunRepository;
         this.userService = userService;
         this.urunService = urunService;
+        this.urunFiyatRepository = urunFiyatRepository;
     }
 
     /**
@@ -71,6 +69,7 @@ public class UrunResource {
         User currentUser = userService.getCurrentUser();
         urun.setUser(currentUser);
         Urun result = urunRepository.save(urun);
+        createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity.created(new URI("/api/uruns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -94,17 +93,25 @@ public class UrunResource {
         User currentUser = userService.getCurrentUser();
         urun.setUser(currentUser);
         Urun result = urunRepository.save(urun);
+        createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urun.getId().toString()))
             .body(result);
     }
 
+    private void createUrunFiyatEntry(Urun urun, User currentUser) {
+        UrunFiyat urunFiyat = new UrunFiyat();
+        urunFiyat.setTarih(ZonedDateTime.now());
+        urunFiyat.setUser(currentUser);
+        urunFiyat.setFiyat(urun.getMusteriFiyati());
+        urunFiyat.setUrun(urun);
+        urunFiyatRepository.save(urunFiyat);
+    }
+
     /**
      * {@code GET  /uruns} : get all the uruns.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of uruns in body.
      */
     @GetMapping("/uruns")

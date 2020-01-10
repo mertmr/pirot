@@ -48,6 +48,9 @@ public class Urun implements Serializable {
     @Column(name = "dayanisma_urunu")
     private Boolean dayanismaUrunu;
 
+    @Column(name = "satista")
+    private Boolean satista;
+
     @Column(name = "urun_kategorisi")
     private UrunKategorisi urunKategorisi;
 
@@ -146,6 +149,19 @@ public class Urun implements Serializable {
         this.dayanismaUrunu = dayanismaUrunu;
     }
 
+    public Boolean isSatista() {
+        return satista;
+    }
+
+    public Urun satista(Boolean satista) {
+        this.satista = satista;
+        return this;
+    }
+
+    public void setSatista(Boolean satista) {
+        this.satista = satista;
+    }
+
     public UrunKategorisi getUrunKategorisi() {
         return urunKategorisi;
     }
@@ -212,6 +228,7 @@ public class Urun implements Serializable {
             ", musteriFiyati=" + getMusteriFiyati() +
             ", birim='" + getBirim() + "'" +
             ", dayanismaUrunu='" + isDayanismaUrunu() + "'" +
+            ", satista='" + isSatista() + "'" +
             ", urunKategorisi='" + getUrunKategorisi() + "'" +
             "}";
     }

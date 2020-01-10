@@ -62,6 +62,12 @@ export const UrunDetail = (props: IUrunDetailProps) => {
           </dt>
           <dd>{urunEntity.dayanismaUrunu ? 'true' : 'false'}</dd>
           <dt>
+            <span id="satista">
+              <Translate contentKey="koopApp.urun.satista">Satista</Translate>
+            </span>
+          </dt>
+          <dd>{urunEntity.satista ? 'true' : 'false'}</dd>
+          <dt>
             <span id="urunKategorisi">
               <Translate contentKey="koopApp.urun.urunKategorisi">Urun Kategorisi</Translate>
             </span>

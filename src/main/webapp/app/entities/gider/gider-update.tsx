@@ -147,21 +147,6 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   <option value="BANKA">{translate('koopApp.OdemeAraci.BANKA')}</option>
                 </AvInput>
               </AvGroup>
-              <AvGroup>
-                <Label for="gider-user">
-                  <Translate contentKey="koopApp.gider.user">User</Translate>
-                </Label>
-                <AvInput id="gider-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/gider" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

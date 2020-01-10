@@ -86,6 +86,9 @@ export const Urun = (props: IUrunProps) => {
                 <th className="hand" onClick={sort('dayanismaUrunu')}>
                   <Translate contentKey="koopApp.urun.dayanismaUrunu">Dayanisma Urunu</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('satista')}>
+                  <Translate contentKey="koopApp.urun.satista">Satista</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th className="hand" onClick={sort('urunKategorisi')}>
                   <Translate contentKey="koopApp.urun.urunKategorisi">Urun Kategorisi</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -114,6 +117,7 @@ export const Urun = (props: IUrunProps) => {
                     <Translate contentKey={`koopApp.Birim.${urun.birim}`} />
                   </td>
                   <td>{urun.dayanismaUrunu ? 'true' : 'false'}</td>
+                  <td>{urun.satista ? 'true' : 'false'}</td>
                   <td>
                     <Translate contentKey={`koopApp.UrunKategorisi.${urun.urunKategorisi}`} />
                   </td>
