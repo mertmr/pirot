@@ -12,11 +12,16 @@ export interface ISatis {
 }
 
 export const defaultValue: Readonly<ISatis> = {
+  stokHareketleriLists: []
+};
+
+export const defaultValueWithNew: Readonly<ISatis> = {
   stokHareketleriLists: [
     {
       miktar: 0,
       urun: {
-        musteriFiyati: 0
+        urunAdi: 'Ürün seçiniz',
+        id: 1
       }
     }
   ]

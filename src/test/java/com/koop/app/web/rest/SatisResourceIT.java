@@ -4,6 +4,7 @@ import com.koop.app.KoopApp;
 import com.koop.app.domain.Satis;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
+import com.koop.app.service.SatisService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
@@ -73,12 +74,12 @@ public class SatisResourceIT {
     private Satis satis;
 
     @Autowired
-    private SatisStokHareketleriRepository satisStokHareketleriRepository;
+    private SatisService satisService;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SatisResource satisResource = new SatisResource(satisRepository, userService, satisStokHareketleriRepository, satisService);
+        final SatisResource satisResource = new SatisResource(satisRepository, userService, satisService);
         this.restSatisMockMvc = MockMvcBuilders.standaloneSetup(satisResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -101,7 +101,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="stokLabel" for="urun-stok">
                   <Translate contentKey="koopApp.urun.stok">Stok</Translate>
                 </Label>
-                <AvField id="urun-stok" type="text" name="stok" />
+                <AvField id="urun-stok" type="text" name="stok" disabled/>
               </AvGroup>
               <AvGroup>
                 <Label id="stokSiniriLabel" for="urun-stokSiniri">
@@ -148,21 +148,6 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="urun-user">
-                  <Translate contentKey="koopApp.urun.user">User</Translate>
-                </Label>
-                <AvInput id="urun-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
                 <Label for="urun-kdvKategorisi">
                   <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate>
                 </Label>
@@ -171,7 +156,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   {kdvKategorisis
                     ? kdvKategorisis.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.kategoriAdi}
                         </option>
                       ))
                     : null}

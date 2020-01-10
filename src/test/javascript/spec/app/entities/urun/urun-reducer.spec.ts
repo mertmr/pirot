@@ -34,7 +34,7 @@ describe('Entities reducer tests', () => {
     totalItems: 0,
     updating: false,
     updateSuccess: false,
-    satisUrunleri: [] as ReadonlyArray<IUrun>
+    satisUrunleri: [] as Array<IUrun>
   };
 
   function testInitialState(state) {

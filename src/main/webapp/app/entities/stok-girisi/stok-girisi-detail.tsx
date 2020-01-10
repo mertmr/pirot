@@ -32,12 +32,6 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
           </dt>
           <dd>{stokGirisiEntity.miktar}</dd>
           <dt>
-            <span id="agirlik">
-              <Translate contentKey="koopApp.stokGirisi.agirlik">Agirlik</Translate>
-            </span>
-          </dt>
-          <dd>{stokGirisiEntity.agirlik}</dd>
-          <dt>
             <span id="notlar">
               <Translate contentKey="koopApp.stokGirisi.notlar">Notlar</Translate>
             </span>
@@ -64,7 +58,7 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
           <dt>
             <Translate contentKey="koopApp.stokGirisi.urun">Urun</Translate>
           </dt>
-          <dd>{stokGirisiEntity.urun ? stokGirisiEntity.urun.id : ''}</dd>
+          <dd>{stokGirisiEntity.urun ? stokGirisiEntity.urun.urunAdi : ''}</dd>
         </dl>
         <Button tag={Link} to="/stok-girisi" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -16,6 +16,6 @@ export interface IUrun {
   kdvKategorisi?: IKdvKategorisi;
 }
 
-export const defaultValue: Readonly<IUrun> = {
+export const defaultValue: IUrun = {
   dayanismaUrunu: false
 };

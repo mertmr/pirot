@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.StokGirisi;
 import com.koop.app.repository.StokGirisiRepository;
+import com.koop.app.service.StokGirisiService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
@@ -74,6 +75,9 @@ public class StokGirisiResourceIT {
     private Validator validator;
 
     @Autowired
+    private StokGirisiService stokGirisiService;
+
+    @Autowired
     private UserService userService;
 
     private MockMvc restStokGirisiMockMvc;
@@ -83,7 +87,7 @@ public class StokGirisiResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final StokGirisiResource stokGirisiResource = new StokGirisiResource(stokGirisiRepository, userService);
+        final StokGirisiResource stokGirisiResource = new StokGirisiResource(stokGirisiRepository, userService, stokGirisiService);
         this.restStokGirisiMockMvc = MockMvcBuilders.standaloneSetup(stokGirisiResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -72,9 +72,6 @@ export const StokGirisi = (props: IStokGirisiProps) => {
                 <th className="hand" onClick={sort('miktar')}>
                   <Translate contentKey="koopApp.stokGirisi.miktar">Miktar</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('agirlik')}>
-                  <Translate contentKey="koopApp.stokGirisi.agirlik">Agirlik</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th className="hand" onClick={sort('notlar')}>
                   <Translate contentKey="koopApp.stokGirisi.notlar">Notlar</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -102,7 +99,6 @@ export const StokGirisi = (props: IStokGirisiProps) => {
                     </Button>
                   </td>
                   <td>{stokGirisi.miktar}</td>
-                  <td>{stokGirisi.agirlik}</td>
                   <td>{stokGirisi.notlar}</td>
                   <td>
                     <Translate contentKey={`koopApp.StokHareketiTipi.${stokGirisi.stokHareketiTipi}`} />
@@ -111,35 +107,13 @@ export const StokGirisi = (props: IStokGirisiProps) => {
                     <TextFormat type="date" value={stokGirisi.tarih} format={APP_DATE_FORMAT} />
                   </td>
                   <td>{stokGirisi.user ? stokGirisi.user.login : ''}</td>
-                  <td>{stokGirisi.urun ? <Link to={`urun/${stokGirisi.urun.id}`}>{stokGirisi.urun.id}</Link> : ''}</td>
+                  <td>{stokGirisi.urun ? <Link to={`urun/${stokGirisi.urun.id}`}>{stokGirisi.urun.urunAdi}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${stokGirisi.id}`} color="info" size="sm">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${stokGirisi.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${stokGirisi.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
                       </Button>
                     </div>

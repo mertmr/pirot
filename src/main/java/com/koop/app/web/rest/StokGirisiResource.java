@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.StokGirisi;
 import com.koop.app.domain.User;
 import com.koop.app.repository.StokGirisiRepository;
+import com.koop.app.service.StokGirisiService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
@@ -47,9 +48,12 @@ public class StokGirisiResource {
 
     private final UserService userService;
 
-    public StokGirisiResource(StokGirisiRepository stokGirisiRepository, UserService userService) {
+    private final StokGirisiService stokGirisiService;
+
+    public StokGirisiResource(StokGirisiRepository stokGirisiRepository, UserService userService, StokGirisiService stokGirisiService) {
         this.stokGirisiRepository = stokGirisiRepository;
         this.userService = userService;
+        this.stokGirisiService = stokGirisiService;
     }
 
     /**
@@ -68,7 +72,7 @@ public class StokGirisiResource {
         User currentUser = userService.getCurrentUser();
         stokGirisi.setUser(currentUser);
         stokGirisi.setTarih(ZonedDateTime.now());
-        StokGirisi result = stokGirisiRepository.save(stokGirisi);
+        StokGirisi result = stokGirisiService.save(stokGirisi);
         return ResponseEntity.created(new URI("/api/stok-girisis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -89,7 +93,7 @@ public class StokGirisiResource {
         if (stokGirisi.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        StokGirisi result = stokGirisiRepository.save(stokGirisi);
+        StokGirisi result = stokGirisiService.update(stokGirisi);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, stokGirisi.getId().toString()))
             .body(result);

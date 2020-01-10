@@ -39,7 +39,7 @@ public class DashboardReportService {
 //        Double tumSatisTutari = satisStokHareketleriRepository.findAllTutar();
 //        Double tumVirman = virmanRepository.findAllVirman();
 //        dashboardReports.setKasadaNeVar(tumSatisTutari - tumGiderTutari - tumVirman);
-        KasaHareketleri lastOrderByTarih = kasaHareketleriRepository.findFirstOrderByTarihDesc();
+        KasaHareketleri lastOrderByTarih = kasaHareketleriRepository.findFirstByOrderByTarihDesc();
         dashboardReports.setKasadaNeVar(lastOrderByTarih.getKasaMiktar().doubleValue());
 
         ZonedDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault());

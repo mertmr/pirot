@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Label, Row} from 'reactstrap';
+import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate, translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
+import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
+import {getEntities as getUruns, getSatisUrunleri} from 'app/entities/urun/urun.reducer';
+import {createEntity, getEntity, reset, updateEntity} from './stok-girisi.reducer';
+import {defaultValue, IStokGirisi} from 'app/shared/model/stok-girisi.model';
+import {convertDateTimeToServer} from 'app/shared/util/date-utils';
+import {Dropdown} from "primereact/dropdown";
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.css';
+import 'primeicons/primeicons.css';
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { IUrun } from 'app/shared/model/urun.model';
-import { getEntities as getUruns } from 'app/entities/urun/urun.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './stok-girisi.reducer';
-import { IStokGirisi } from 'app/shared/model/stok-girisi.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
-
-export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+}
 
 export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   const [userId, setUserId] = useState('0');
+  const [stokGirisi, setStokGirisi] = useState(defaultValue);
   const [urunId, setUrunId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { stokGirisiEntity, users, uruns, loading, updating } = props;
+  const {stokGirisiEntity, users, uruns, loading, updating, satisUrunleri} = props;
 
   const handleClose = () => {
     props.history.push('/stok-girisi' + props.location.search);
@@ -38,6 +40,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
 
     props.getUsers();
     props.getUruns();
+    props.getSatisUrunleri();
   }, []);
 
   useEffect(() => {
@@ -52,7 +55,8 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...stokGirisiEntity,
-        ...values
+        ...values,
+        ...stokGirisi
       };
 
       if (isNew) {
@@ -61,6 +65,13 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
         props.updateEntity(entity);
       }
     }
+  };
+
+  const updateStokGirisi = (e) => {
+    setStokGirisi({
+      ...stokGirisi,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
@@ -83,9 +94,20 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   <Label for="stok-girisi-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="stok-girisi-id" type="text" className="form-control" name="id" required readOnly />
+                  <AvInput id="stok-girisi-id" type="text" className="form-control" name="id" readOnly/>
                 </AvGroup>
               ) : null}
+              <AvGroup>
+                {!isNew ? (
+                  <AvInput id="stok-girisi-urun" type="text" className="form-control" name="urun.urunAdi" readOnly/>
+                ) : (
+                  <Dropdown value={stokGirisi.urun} options={satisUrunleri}
+                            optionLabel="urunAdi" style={{width: '400px'}}
+                            name="urun" onChange={updateStokGirisi}
+                            filter={true}
+                            filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
+                )}
+              </AvGroup>
               <AvGroup>
                 <Label id="miktarLabel" for="stok-girisi-miktar">
                   <Translate contentKey="koopApp.stokGirisi.miktar">Miktar</Translate>
@@ -96,16 +118,9 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   className="form-control"
                   name="miktar"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') }
+                    number: {value: true, errorMessage: translate('entity.validation.number')}
                   }}
                 />
-              </AvGroup>
-              <AvGroup>
-                <Label id="agirlikLabel" for="stok-girisi-agirlik">
-                  <Translate contentKey="koopApp.stokGirisi.agirlik">Agirlik</Translate>
-                </Label>
-                <AvField id="stok-girisi-agirlik" type="string" className="form-control" name="agirlik" />
               </AvGroup>
               <AvGroup>
                 <Label id="notlarLabel" for="stok-girisi-notlar">
@@ -116,7 +131,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   type="text"
                   name="notlar"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: {value: true, errorMessage: translate('entity.validation.required')}
                   }}
                 />
               </AvGroup>
@@ -138,51 +153,8 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   <option value="MASRAF">{translate('koopApp.StokHareketiTipi.MASRAF')}</option>
                 </AvInput>
               </AvGroup>
-              <AvGroup>
-                <Label id="tarihLabel" for="stok-girisi-tarih">
-                  <Translate contentKey="koopApp.stokGirisi.tarih">Tarih</Translate>
-                </Label>
-                <AvInput
-                  id="stok-girisi-tarih"
-                  type="datetime-local"
-                  className="form-control"
-                  name="tarih"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.stokGirisiEntity.tarih)}
-                />
-              </AvGroup>
-              <AvGroup>
-                <Label for="stok-girisi-user">
-                  <Translate contentKey="koopApp.stokGirisi.user">User</Translate>
-                </Label>
-                <AvInput id="stok-girisi-user" type="select" className="form-control" name="user.id">
-                  <option value="" key="0" />
-                  {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.login}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label for="stok-girisi-urun">
-                  <Translate contentKey="koopApp.stokGirisi.urun">Urun</Translate>
-                </Label>
-                <AvInput id="stok-girisi-urun" type="select" className="form-control" name="urun.id">
-                  <option value="" key="0" />
-                  {uruns
-                    ? uruns.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/stok-girisi" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -190,7 +162,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
@@ -205,6 +177,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   uruns: storeState.urun.entities,
+  satisUrunleri: storeState.urun.satisUrunleri,
   stokGirisiEntity: storeState.stokGirisi.entity,
   loading: storeState.stokGirisi.loading,
   updating: storeState.stokGirisi.updating,
@@ -217,7 +190,8 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  getSatisUrunleri
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

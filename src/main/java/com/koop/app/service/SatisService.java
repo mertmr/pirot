@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,10 +69,24 @@ public class SatisService {
 
         for (SatisStokHareketleri satisStokHareketi : stokHareketleriLists) {
             Urun urun = satisStokHareketi.getUrun();
-            SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository.findById(satisStokHareketi.getId()).get();
-            int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
-            urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
+            if (satisStokHareketi.getId() != null) {
+                SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository.findById(satisStokHareketi.getId()).get();
+                int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
+                urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
+            } else {
+                urun.setStok(urun.getStok().add(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
+            }
         }
+
+        Map<Long, SatisStokHareketleri> stokHareketMap = stokHareketleriLists.stream().
+            collect(Collectors.toMap(SatisStokHareketleri::getId, satisStokHareketleri -> satisStokHareketleri));
+        for (SatisStokHareketleri stokHareketleri : satisOncekiHali.getStokHareketleriLists()) {
+            if (!stokHareketMap.containsKey(stokHareketleri.getId())) {
+                satisStokHareketleriRepository.delete(stokHareketleri);
+            }
+        }
+
+
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
         urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));
 

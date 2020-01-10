@@ -25,7 +25,7 @@ const initialState = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
-  satisUrunleri: [] as ReadonlyArray<IUrun>
+  satisUrunleri: [] as Array<IUrun>
 };
 
 export type UrunState = Readonly<typeof initialState>;
@@ -123,7 +123,7 @@ export const getSatisUrunleri: ICrudGetAllAction<IUrun> = () => {
   const requestUrl = `${apiUrl}/satis`;
   return {
     type: ACTION_TYPES.FETCH_URUN_SATIS_LIST,
-    payload: axios.get<ISatis>(`${requestUrl}`)
+    payload: axios.get<IUrun>(`${requestUrl}`)
   };
 };
 

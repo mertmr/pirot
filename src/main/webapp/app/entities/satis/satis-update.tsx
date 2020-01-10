@@ -14,7 +14,7 @@ import {
 } from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {defaultValue} from "app/shared/model/urun.model";
-import {defaultValue as satisDefault} from "app/shared/model/satis.model";
+import {defaultValue as satisDefault, defaultValueWithNew} from "app/shared/model/satis.model";
 import {ISatisStokHareketleri} from "app/shared/model/satis-stok-hareketleri.model";
 import {DatePicker, InputNumber, Select} from 'antd';
 import 'antd/lib/input-number/style/index.css';
@@ -25,16 +25,25 @@ import {getSatisUrunleri} from "app/entities/urun/urun.reducer";
 import moment from 'moment';
 import 'moment/locale/tr';
 import {APP_LOCAL_DATETIME_FORMAT} from "app/config/constants";
+import {Dropdown} from 'primereact/dropdown';
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.css';
+import 'primeicons/primeicons.css';
+// import 'primeflex/primeflex.css';
+// import './sass/App.scss';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
-  const [userId, setUserId] = useState('0');
+  const [userId, setUserId] = useState(0);
+  const [toplamTutarState, setToplamTutarState] = useState('0');
   const [satis, setSatis] = useState(satisDefault);
   const [stokHareketleriLists, setStokHareketleriLists] = useState([{
     miktar: 0,
     urun: {
+      id: 0,
+      urunAdi: "Ürün seçiniz",
       musteriFiyati: 0
     }
   }] as ISatisStokHareketleri[]);
@@ -57,27 +66,45 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     setStokHareketleriLists([...stokHareketleriLists, yeniUrun]);
   };
 
+  const toplamHesapla = (stokHareketleriListesi) => {
+    let toplamTutar = 0;
+    for (const stokHareketi of stokHareketleriListesi) {
+      toplamTutar += stokHareketi.tutar;
+    }
+    toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
+    setSatis({
+      ...satis,
+      toplamTutar
+    });
+  };
+
   const deleteRow = (i) => {
     const yeniUrunler = [...stokHareketleriLists];
     yeniUrunler.splice(i, 1);
     setStokHareketleriLists(yeniUrunler);
+    toplamHesapla(yeniUrunler);
   };
 
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriLists];
     yeniUrunler[i].miktar = value;
-    yeniUrunler[i].tutar = value * yeniUrunler[i].urun.musteriFiyati;
+    if(yeniUrunler[i].urun.birim.toString() === 'GRAM')
+      yeniUrunler[i].tutar = value * 0.001 * yeniUrunler[i].urun.musteriFiyati;
+    else
+      yeniUrunler[i].tutar = value * yeniUrunler[i].urun.musteriFiyati;
     setStokHareketleriLists(yeniUrunler);
+    toplamHesapla(yeniUrunler);
   };
 
   const {satisUrunleri} = props;
 
-  const onChangeUrun = (value, i) => {
+  const onChangeUrun = (e) => {
     const yeniUrunler = [...stokHareketleriLists];
-    const secilenUrun = satisUrunleri[value];
-    yeniUrunler[i].urun.musteriFiyati = secilenUrun.musteriFiyati;
-    yeniUrunler[i].urun = secilenUrun;
+    const secilenUrun = e.value;
+    yeniUrunler[e.target.name].urun = secilenUrun;
+    yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
     setStokHareketleriLists(yeniUrunler);
+    toplamHesapla(yeniUrunler);
   };
 
   const updateDateSatisField = (value, dateString) => {
@@ -97,10 +124,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const {Option} = Select;
 
   useEffect(() => {
-    props.getSatisUrunleri();
-  }, []);
-
-  useEffect(() => {
     if (isNew) {
       props.reset();
     } else {
@@ -108,6 +131,27 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
 
     props.getUsers();
+  }, []);
+
+  useEffect(() => {
+    if (isNew) {
+      setStokHareketleriLists([{
+        miktar: 0,
+        urun: {
+          id: 0,
+          urunAdi: "Ürün seçiniz",
+          musteriFiyati: 0
+        }
+      }]);
+      setSatis(defaultValueWithNew);
+    } else {
+      setStokHareketleriLists([]);
+      setStokHareketleriLists([...satisEntity.stokHareketleriLists]);
+    }
+  }, [satisEntity.stokHareketleriLists]);
+
+  useEffect(() => {
+    props.getSatisUrunleri();
   }, []);
 
   useEffect(() => {
@@ -119,18 +163,30 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const saveEntity = (event, errors, values) => {
     values.tarih = convertDateTimeToServer(satis.tarih);
 
+    let toplamTutar = 0;
+    for (const stokHareketi of stokHareketleriLists) {
+      toplamTutar += stokHareketi.tutar;
+    }
+    toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
+
     if (errors.length === 0) {
       if (isNew) {
         const yenisatis = {
           ...satis,
-          stokHareketleriLists
+          satisEntity,
+          stokHareketleriLists,
+          toplamTutar
         };
         props.createEntity(yenisatis);
       } else {
-        const yenisatis = {
-          ...satis,
-          satisEntity,
-          stokHareketleriLists
+        let yenisatis = {
+          ...satisEntity
+        };
+        yenisatis = {
+          ...yenisatis,
+          stokHareketleriLists,
+          toplamTutar,
+          ...values
         };
         props.updateEntity(yenisatis);
       }
@@ -152,22 +208,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
             <p>Loading...</p>
           ) : (
             <AvForm model={isNew ? {} : satisEntity} onSubmit={saveEntity}>
-              {!isNew ? (
-                <AvGroup>
-                  <Label for="satis-id">
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </Label>
-                  <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly/>
-                </AvGroup>
-              ) : null}
-              <Row>
-                <DatePicker showTime
-                            name="tarih"
-                            placeholder="Tarih Seçin"
-                            onChange={updateDateSatisField}
-                            defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
-                              moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
-              </Row>
               <Button
                 tag={Link}
                 onClick={addRow}
@@ -189,6 +229,9 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                         Birim Fiyat
                       </th>
                       <th className="hand">
+                        Kalan Stok
+                      </th>
+                      <th className="hand">
                         <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                       </th>
                       <th className="hand">
@@ -198,24 +241,20 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {stokHareketleriLists.map((urun, i) => (
+                    {stokHareketleriLists.map((stokHareketi, i) => (
                       <tr key={`entity-${i}`}>
                         <td>
-                          <Select
-                            showSearch
-                            style={{width: 400}}
-                            placeholder="Ürün seç"
-                            optionFilterProp="children"
-                            onChange={(value) => onChangeUrun(value, i)}
-                          >
-                            {satisUrunleri.map((satisUrunu, k) => (
-                              <Option key={k} value={k}>{satisUrunu.urunAdi}</Option>
-                            ))}
-                          </Select>
+                          <Dropdown value={stokHareketi.urun} options={satisUrunleri}
+                                    optionLabel="urunAdi" onChange={onChangeUrun}
+                                    filter={true} name={`${i}`} style={{width:'400px'}}
+                                    filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
                         </td>
-                        <td>{urun.urun.musteriFiyati} TL</td>
-                        <td><InputNumber value={urun.miktar} onChange={(value) => onChangeMiktar(value, i)}/></td>
-                        <td>{urun.tutar} TL</td>
+                        <td>{stokHareketi.urun.musteriFiyati} TL</td>
+                        <td>{stokHareketi.urun.stok}</td>
+                        <td><InputNumber value={stokHareketi.miktar} max={stokHareketi.urun.stok}
+                                         onChange={(value) => onChangeMiktar(value, i)}/>
+                        </td>
+                        <td>{stokHareketi.tutar} TL</td>
                         <td className="text-right">
                           <div className="btn-group flex-btn-group-container">
                             <Button
@@ -240,6 +279,29 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   </div>
                 )}
               </div>
+              {!isNew ? (
+                <AvGroup>
+                  <Label for="satis-id">
+                    <Translate contentKey="global.field.id">ID</Translate>
+                  </Label>
+                  <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly on/>
+                </AvGroup>
+              ) : null}
+              <AvGroup>
+                <Label for="satis-toplamTutar">
+                  <Translate contentKey="koopApp.satis.toplamTutar"/>
+                </Label>
+                <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control" name="toplamTutar" disabled
+                         readOnly/>
+              </AvGroup>
+              <AvGroup>
+                <DatePicker showTime
+                            name="tarih"
+                            placeholder="Tarih Seçin"
+                            onChange={updateDateSatisField}
+                            defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
+                              moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/satis" replace color="info">
                 <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;

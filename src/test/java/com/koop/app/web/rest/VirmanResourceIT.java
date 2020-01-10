@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Virman;
 import com.koop.app.repository.VirmanRepository;
+import com.koop.app.service.KasaHareketleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
@@ -81,6 +82,9 @@ public class VirmanResourceIT {
     private MockMvc restVirmanMockMvc;
 
     private Virman virman;
+
+    @Autowired
+    private KasaHareketleriService kasaHareketleriService;
 
     @BeforeEach
     public void setup() {
