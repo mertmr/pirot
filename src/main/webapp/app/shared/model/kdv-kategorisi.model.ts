@@ -5,3 +5,4 @@ export interface IKdvKategorisi {
 }
 
 export const defaultValue: Readonly<IKdvKategorisi> = {};
+export const defaultValueList: Array<IKdvKategorisi> = [];

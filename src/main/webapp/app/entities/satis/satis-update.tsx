@@ -15,6 +15,7 @@ import {
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {defaultValue} from "app/shared/model/urun.model";
 import {defaultValue as satisDefault, defaultValueWithNew} from "app/shared/model/satis.model";
+import {defaultValueList as kdvDefaultList} from "app/shared/model/kdv-kategorisi.model";
 import {ISatisStokHareketleri} from "app/shared/model/satis-stok-hareketleri.model";
 import {DatePicker, InputNumber, Select} from 'antd';
 import 'antd/lib/input-number/style/index.css';
@@ -38,6 +39,7 @@ export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteCompo
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [userId, setUserId] = useState(0);
   const [toplamTutarState, setToplamTutarState] = useState('0');
+  const [kdvKategorisiList, setKdvKategorisiList] = useState(kdvDefaultList);
   const [satis, setSatis] = useState(satisDefault);
   const [stokHareketleriLists, setStokHareketleriLists] = useState([{
     miktar: 0,
@@ -78,20 +80,36 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     });
   };
 
+  const kdvListesiCikar = (secilenUrun) => {
+    const indexOfKdv = kdvKategorisiList.map(a => a.id).indexOf(secilenUrun.urun.kdvKategorisi.id);
+    const yeniKdvList = [...kdvKategorisiList];
+    yeniKdvList.splice(indexOfKdv, 1);
+    setKdvKategorisiList([...yeniKdvList]);
+  };
+
+  const kdvListesiEkle = (secilenUrun) => {
+    const exist = kdvKategorisiList.map(a => a.id).includes(secilenUrun.kdvKategorisi.id);
+    if (!exist) {
+      const yeniKdvList = [...kdvKategorisiList];
+      setKdvKategorisiList([...yeniKdvList, secilenUrun.kdvKategorisi]);
+    }
+  };
+
   const deleteRow = (i) => {
     const yeniUrunler = [...stokHareketleriLists];
     yeniUrunler.splice(i, 1);
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
+    kdvListesiCikar(stokHareketleriLists[i])
   };
 
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriLists];
     yeniUrunler[i].miktar = value;
-    if(yeniUrunler[i].urun.birim.toString() === 'GRAM')
-      yeniUrunler[i].tutar = value * 0.001 * yeniUrunler[i].urun.musteriFiyati;
+    if (yeniUrunler[i].urun.birim.toString() === 'GRAM')
+      yeniUrunler[i].tutar = Number((value * 0.001 * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
     else
-      yeniUrunler[i].tutar = value * yeniUrunler[i].urun.musteriFiyati;
+      yeniUrunler[i].tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
   };
@@ -105,6 +123,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
+    kdvListesiEkle(secilenUrun);
   };
 
   const updateDateSatisField = (value, dateString) => {
@@ -147,6 +166,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     } else {
       setStokHareketleriLists([]);
       setStokHareketleriLists([...satisEntity.stokHareketleriLists]);
+      const kdvKategorisis = satisEntity.stokHareketleriLists.map(value => value.urun.kdvKategorisi);
+      setKdvKategorisiList([...kdvKategorisis]);
     }
   }, [satisEntity.stokHareketleriLists]);
 
@@ -246,7 +267,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                         <td>
                           <Dropdown value={stokHareketi.urun} options={satisUrunleri}
                                     optionLabel="urunAdi" onChange={onChangeUrun}
-                                    filter={true} name={`${i}`} style={{width:'400px'}}
+                                    filter={true} name={`${i}`} style={{width: '400px'}}
                                     filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
                         </td>
                         <td>{stokHareketi.urun.musteriFiyati} TL</td>
@@ -271,11 +292,66 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       </tr>
                     ))}
                     </tbody>
+                    <tr>
+                      <td/>
+                      <td/>
+                      <td/>
+                      <td/>
+                      <td>
+                        <div className="text-right">
+                          <Label for="satis-toplamTutar">
+                            <Translate contentKey="koopApp.satis.toplamTutar"/>
+                          </Label>
+                          <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control"
+                                   name="toplamTutar" disabled
+                                   readOnly/>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr><AvGroup>
+                      <Label for="gider-user">
+                        Satış Tarihi
+                      </Label>
+                      <DatePicker showTime
+                                  name="tarih" className="form-control"
+                                  placeholder="Tarih Seçin"
+                                  onChange={updateDateSatisField}
+                                  defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
+                                    moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
+                    </AvGroup>
+                    </tr>
                   </Table>
                 ) : (
                   <div className="alert alert-warning">
-                    <Translate contentKey="koopApp.satisStokHareketleri.home.notFound">No Satis Stok Hareketleris
-                      found</Translate>
+                  </div>
+                )}
+              </div>
+              <div className="table-responsive">
+                {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
+                  <Table responsive>
+                    <thead>
+                    <tr>
+                      <th className="hand">
+                        <Translate contentKey="koopApp.kdvKategorisi.kategoriAdi">Kategori Adi</Translate>
+                        <FontAwesomeIcon icon="sort"/>
+                      </th>
+                      <th className="hand">
+                        <Translate contentKey="koopApp.kdvKategorisi.kdvOrani">Kdv Orani</Translate>
+                      </th>
+                      <th/>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {kdvKategorisiList.map((kdvKategorisi, i) => (
+                      <tr key={`entity-${i}`}>
+                        <td>{kdvKategorisi.kategoriAdi}</td>
+                        <td>{kdvKategorisi.kdvOrani}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <div className="alert alert-warning">
                   </div>
                 )}
               </div>
@@ -287,21 +363,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly on/>
                 </AvGroup>
               ) : null}
-              <AvGroup>
-                <Label for="satis-toplamTutar">
-                  <Translate contentKey="koopApp.satis.toplamTutar"/>
-                </Label>
-                <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control" name="toplamTutar" disabled
-                         readOnly/>
-              </AvGroup>
-              <AvGroup>
-                <DatePicker showTime
-                            name="tarih"
-                            placeholder="Tarih Seçin"
-                            onChange={updateDateSatisField}
-                            defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
-                              moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/satis" replace color="info">
                 <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;

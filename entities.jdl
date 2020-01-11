@@ -43,6 +43,7 @@ entity KdvKategorisi {
 entity Satis {
     tarih ZonedDateTime
     toplamTutar BigDecimal
+    ortagaSatis Boolean
 }
 
 entity SatisStokHareketleri {
