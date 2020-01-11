@@ -133,13 +133,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     });
   };
 
-  const updateSatisField = (e) => {
-    setSatis({
-      ...satis,
-      [e.target.name]: e.target.value
-    });
-  };
-
   const {Option} = Select;
 
   useEffect(() => {
@@ -182,7 +175,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   }, [props.updateSuccess]);
 
   const saveEntity = (event, errors, values) => {
-    values.tarih = convertDateTimeToServer(satis.tarih);
+    if (satis.tarih) {
+      values.tarih = convertDateTimeToServer(satis.tarih);
+    } else {
+      values.tarih = convertDateTimeToServer(satisEntity.tarih);
+    }
 
     let toplamTutar = 0;
     for (const stokHareketi of stokHareketleriLists) {

@@ -31,7 +31,7 @@ export const Home = (props: IHomeProp) => {
         <p className="lead">
           <Translate contentKey="home.subtitle">This is your homepage</Translate>
         </p>
-        {account && account.login ? (
+        {account && account.login && dashboardReports ? (
           <div>
             <Alert color="success">
               <Translate contentKey="home.logged.message" interpolate={{username: account.login}}>

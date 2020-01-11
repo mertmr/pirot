@@ -2,13 +2,11 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.Satis;
 import com.koop.app.domain.SatisStokHareketleri;
-import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
-import com.koop.app.repository.SatisStokHareketleriRepository;
+import com.koop.app.service.MailService;
 import com.koop.app.service.SatisService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,18 +16,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Satis}.
@@ -39,23 +35,20 @@ import java.util.Set;
 @Transactional
 public class SatisResource {
 
-    private final Logger log = LoggerFactory.getLogger(SatisResource.class);
-
     private static final String ENTITY_NAME = "satis";
-
+    private final Logger log = LoggerFactory.getLogger(SatisResource.class);
+    private final SatisRepository satisRepository;
+    private final UserService userService;
+    private final SatisService satisService;
+    private final MailService mailService;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SatisRepository satisRepository;
-
-    private final UserService userService;
-
-    private final SatisService satisService;
-
-    public SatisResource(SatisRepository satisRepository, UserService userService, SatisService satisService) {
+    public SatisResource(SatisRepository satisRepository, UserService userService, SatisService satisService, MailService mailService) {
         this.satisRepository = satisRepository;
         this.userService = userService;
         this.satisService = satisService;
+        this.mailService = mailService;
     }
 
     /**
@@ -72,9 +65,23 @@ public class SatisResource {
             throw new BadRequestAlertException("A new satis cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Satis result = satisService.createSatis(satis);
+        stokKontrolu(satis);
         return ResponseEntity.created(new URI("/api/satis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    private void stokKontrolu(Satis satis) {
+        for (SatisStokHareketleri stokHareketi : satis.getStokHareketleriLists()) {
+            BigDecimal stokSiniri = stokHareketi.getUrun().getStokSiniri();
+            if (stokSiniri != null && stokSiniri.compareTo(BigDecimal.ZERO) != 0) {
+                BigDecimal guncelStok = stokHareketi.getUrun().getStok();
+                if (guncelStok.compareTo(stokSiniri) <= 0) {
+                    String content = "Stok azaldı ==> Stok sınırı: " + stokSiniri + "  --  Güncel stok: " + guncelStok;
+                    mailService.sendEmail("mertmr@gmail.com", "Stok Uyarısı", content, false, true);
+                }
+            }
+        }
     }
 
     /**
@@ -93,6 +100,7 @@ public class SatisResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Satis result = satisService.updateSatis(satis);
+        stokKontrolu(satis);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satis.getId().toString()))
             .body(result);
@@ -101,9 +109,7 @@ public class SatisResource {
     /**
      * {@code GET  /satis} : get all the satis.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of satis in body.
      */
     @GetMapping("/satis")
