@@ -8,6 +8,10 @@
         {
             "fieldName": "toplamTutar",
             "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "ortagaSatis",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [

@@ -40,6 +40,12 @@ export const SatisDetail = (props: ISatisDetailProps) => {
           </dt>
           <dd>{satisEntity.toplamTutar}</dd>
           <dt>
+            <span id="ortagaSatis">
+              <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate>
+            </span>
+          </dt>
+          <dd>{satisEntity.ortagaSatis ? 'true' : 'false'}</dd>
+          <dt>
             <Translate contentKey="koopApp.satis.user">User</Translate>
           </dt>
           <dd>{satisEntity.user ? satisEntity.user.login : ''}</dd>

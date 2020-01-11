@@ -75,6 +75,9 @@ export const Satis = (props: ISatisProps) => {
                 <th className="hand" onClick={sort('toplamTutar')}>
                   <Translate contentKey="koopApp.satis.toplamTutar">Toplam Tutar</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('ortagaSatis')}>
+                  <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th>
                   <Translate contentKey="koopApp.satis.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -93,6 +96,7 @@ export const Satis = (props: ISatisProps) => {
                     <TextFormat type="date" value={satis.tarih} format={APP_DATE_FORMAT} />
                   </td>
                   <td>{satis.toplamTutar}</td>
+                  <td>{satis.ortagaSatis ? 'true' : 'false'}</td>
                   <td>{satis.user ? satis.user.login : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

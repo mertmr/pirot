@@ -48,6 +48,9 @@ public class SatisResourceIT {
     private static final BigDecimal DEFAULT_TOPLAM_TUTAR = new BigDecimal(1);
     private static final BigDecimal UPDATED_TOPLAM_TUTAR = new BigDecimal(2);
 
+    private static final Boolean DEFAULT_ORTAGA_SATIS = false;
+    private static final Boolean UPDATED_ORTAGA_SATIS = true;
+
     @Autowired
     private SatisRepository satisRepository;
 
@@ -97,7 +100,8 @@ public class SatisResourceIT {
     public static Satis createEntity(EntityManager em) {
         Satis satis = new Satis()
             .tarih(DEFAULT_TARIH)
-            .toplamTutar(DEFAULT_TOPLAM_TUTAR);
+            .toplamTutar(DEFAULT_TOPLAM_TUTAR)
+            .ortagaSatis(DEFAULT_ORTAGA_SATIS);
         return satis;
     }
     /**
@@ -109,7 +113,8 @@ public class SatisResourceIT {
     public static Satis createUpdatedEntity(EntityManager em) {
         Satis satis = new Satis()
             .tarih(UPDATED_TARIH)
-            .toplamTutar(UPDATED_TOPLAM_TUTAR);
+            .toplamTutar(UPDATED_TOPLAM_TUTAR)
+            .ortagaSatis(UPDATED_ORTAGA_SATIS);
         return satis;
     }
 
@@ -135,6 +140,7 @@ public class SatisResourceIT {
         Satis testSatis = satisList.get(satisList.size() - 1);
         assertThat(testSatis.getTarih()).isEqualTo(DEFAULT_TARIH);
         assertThat(testSatis.getToplamTutar()).isEqualTo(DEFAULT_TOPLAM_TUTAR);
+        assertThat(testSatis.isOrtagaSatis()).isEqualTo(DEFAULT_ORTAGA_SATIS);
     }
 
     @Test
@@ -169,7 +175,8 @@ public class SatisResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(satis.getId().intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))))
-            .andExpect(jsonPath("$.[*].toplamTutar").value(hasItem(DEFAULT_TOPLAM_TUTAR.intValue())));
+            .andExpect(jsonPath("$.[*].toplamTutar").value(hasItem(DEFAULT_TOPLAM_TUTAR.intValue())))
+            .andExpect(jsonPath("$.[*].ortagaSatis").value(hasItem(DEFAULT_ORTAGA_SATIS.booleanValue())));
     }
 
     @Test
@@ -184,7 +191,8 @@ public class SatisResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(satis.getId().intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)))
-            .andExpect(jsonPath("$.toplamTutar").value(DEFAULT_TOPLAM_TUTAR.intValue()));
+            .andExpect(jsonPath("$.toplamTutar").value(DEFAULT_TOPLAM_TUTAR.intValue()))
+            .andExpect(jsonPath("$.ortagaSatis").value(DEFAULT_ORTAGA_SATIS.booleanValue()));
     }
 
     @Test
@@ -209,7 +217,8 @@ public class SatisResourceIT {
         em.detach(updatedSatis);
         updatedSatis
             .tarih(UPDATED_TARIH)
-            .toplamTutar(UPDATED_TOPLAM_TUTAR);
+            .toplamTutar(UPDATED_TOPLAM_TUTAR)
+            .ortagaSatis(UPDATED_ORTAGA_SATIS);
 
         restSatisMockMvc.perform(put("/api/satis")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -222,6 +231,7 @@ public class SatisResourceIT {
         Satis testSatis = satisList.get(satisList.size() - 1);
         assertThat(testSatis.getTarih()).isEqualTo(UPDATED_TARIH);
         assertThat(testSatis.getToplamTutar()).isEqualTo(UPDATED_TOPLAM_TUTAR);
+        assertThat(testSatis.isOrtagaSatis()).isEqualTo(UPDATED_ORTAGA_SATIS);
     }
 
     @Test

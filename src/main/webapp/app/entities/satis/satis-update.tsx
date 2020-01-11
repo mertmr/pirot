@@ -308,17 +308,25 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                         </div>
                       </td>
                     </tr>
-                    <tr><AvGroup>
-                      <Label for="gider-user">
-                        Satış Tarihi
-                      </Label>
-                      <DatePicker showTime
-                                  name="tarih" className="form-control"
-                                  placeholder="Tarih Seçin"
-                                  onChange={updateDateSatisField}
-                                  defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
-                                    moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
-                    </AvGroup>
+                    <tr>
+                      <AvGroup>
+                        <Label for="gider-user">
+                          Satış Tarihi
+                        </Label>
+                        <DatePicker showTime
+                                    name="tarih" className="form-control"
+                                    placeholder="Tarih Seçin"
+                                    onChange={updateDateSatisField}
+                                    defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
+                                      moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
+                      </AvGroup>
+                      <AvGroup check>
+                        <Label id="ortagaSatisLabel">
+                          <AvInput id="satis-ortagaSatis" type="checkbox" className="form-check-input"
+                                   name="ortagaSatis"/>
+                          <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate>
+                        </Label>
+                      </AvGroup>
                     </tr>
                   </Table>
                 ) : (

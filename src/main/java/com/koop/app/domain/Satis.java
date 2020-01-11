@@ -31,6 +31,9 @@ public class Satis implements Serializable {
     @Column(name = "toplam_tutar", precision = 21, scale = 2)
     private BigDecimal toplamTutar;
 
+    @Column(name = "ortaga_satis")
+    private Boolean ortagaSatis;
+
     @OneToMany(mappedBy = "satis")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SatisStokHareketleri> stokHareketleriLists = new HashSet<>();
@@ -72,6 +75,19 @@ public class Satis implements Serializable {
 
     public void setToplamTutar(BigDecimal toplamTutar) {
         this.toplamTutar = toplamTutar;
+    }
+
+    public Boolean isOrtagaSatis() {
+        return ortagaSatis;
+    }
+
+    public Satis ortagaSatis(Boolean ortagaSatis) {
+        this.ortagaSatis = ortagaSatis;
+        return this;
+    }
+
+    public void setOrtagaSatis(Boolean ortagaSatis) {
+        this.ortagaSatis = ortagaSatis;
     }
 
     public Set<SatisStokHareketleri> getStokHareketleriLists() {
@@ -135,6 +151,7 @@ public class Satis implements Serializable {
             "id=" + getId() +
             ", tarih='" + getTarih() + "'" +
             ", toplamTutar=" + getToplamTutar() +
+            ", ortagaSatis='" + isOrtagaSatis() + "'" +
             "}";
     }
 }
