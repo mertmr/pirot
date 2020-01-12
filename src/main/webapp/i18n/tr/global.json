@@ -22,6 +22,10 @@
         "kisiler": "Kisiler",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
+      "reports": {
+        "main": "Raporlar",
+        "ciro": "Ciro"
+      },
       "account": {
         "main": "Hesap",
         "settings": "Ayarlar",

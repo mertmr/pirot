@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Satis;
+import com.koop.app.dto.Ciro;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -48,4 +49,10 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
 
     @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today")
     Double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
+
+    @Query("select new com.koop.app.dto.Ciro(sum(satis.toplamTutar), satis.tarih) " +
+        "from Satis satis " +
+        "where satis.tarih between :from and :to " +
+        "group by satis.tarih")
+    List<Ciro> getCiroReports(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
 }
