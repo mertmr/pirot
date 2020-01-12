@@ -159,4 +159,20 @@ public class UrunResource {
         List<Urun> urunler = urunService.getAllUrunForSatis();
         return ResponseEntity.ok().body(urunler);
     }
+
+    /**
+     * {@code SEARCH  /uruns/search?query=:query} : search for the collector corresponding
+     * to the query.
+     *
+     * @param query the query of the collector search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
+     */
+    @GetMapping("/uruns/search")
+    public ResponseEntity<List<Urun>> searchCollectors(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Uruns for query {}", query);
+        Page<Urun> page = urunService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

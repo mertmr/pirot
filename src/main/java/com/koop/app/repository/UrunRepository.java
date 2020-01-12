@@ -1,6 +1,8 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Urun;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +20,6 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
 
     @Query("select urun from Urun urun where urun.satista = true")
     List<Urun> findStokWithMoreThanZero();
+
+    Page<Urun> findByUrunAdiContainingIgnoreCase(String urunAdi, Pageable pageable);
 }
