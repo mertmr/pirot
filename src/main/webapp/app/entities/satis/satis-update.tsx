@@ -177,8 +177,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const saveEntity = (event, errors, values) => {
     if (satis.tarih) {
       values.tarih = convertDateTimeToServer(satis.tarih);
-    } else {
+    } else if (satisEntity.tarih) {
       values.tarih = convertDateTimeToServer(satisEntity.tarih);
+    } else {
+      values.tarih = new Date();
     }
 
     let toplamTutar = 0;
@@ -193,7 +195,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
           ...satis,
           satisEntity,
           stokHareketleriLists,
-          toplamTutar
+          toplamTutar,
+          ...values
         };
         props.createEntity(yenisatis);
       } else {

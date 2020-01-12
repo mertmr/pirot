@@ -47,5 +47,5 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     List<Long> findAllIdsToday(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 
     @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today")
-    double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
+    Double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 }

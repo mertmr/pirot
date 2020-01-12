@@ -29,8 +29,10 @@ public class DashboardReportService {
 
         ZonedDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault());
         ZonedDateTime startOfDay = LocalDate.now().atStartOfDay(ZoneId.systemDefault());
-        double bugununSatisi = satisRepository.findCiro(endOfDay, startOfDay);
-        dashboardReports.setGunlukCiro(bugununSatisi);
+        Double bugununSatisi = satisRepository.findCiro(endOfDay, startOfDay);
+        if (bugununSatisi != null) {
+            dashboardReports.setGunlukCiro(bugununSatisi);
+        }
 
         return dashboardReports;
     }
