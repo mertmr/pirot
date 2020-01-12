@@ -161,15 +161,15 @@ public class UrunResource {
     }
 
     /**
-     * {@code SEARCH  /uruns/search?query=:query} : search for the collector corresponding
+     * {@code SEARCH  /_search/uruns?query=:query} : search for the urun corresponding
      * to the query.
      *
-     * @param query the query of the collector search.
+     * @param query the query of the urun search.
      * @param pageable the pagination information.
      * @return the result of the search.
      */
-    @GetMapping("/uruns/search")
-    public ResponseEntity<List<Urun>> searchCollectors(@RequestParam String query, Pageable pageable) {
+    @GetMapping("/_search/uruns")
+    public ResponseEntity<List<Urun>> searchUruns(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Uruns for query {}", query);
         Page<Urun> page = urunService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);

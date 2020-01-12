@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction } from 'react-jhipster';
+import { ICrudSearchAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
+import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
-import { defaultValue, IUrun } from 'app/shared/model/urun.model';
+import { IUrun, defaultValue } from 'app/shared/model/urun.model';
 
 export const ACTION_TYPES = {
+  SEARCH_URUNS: 'urun/SEARCH_URUNS',
   FETCH_URUN_LIST: 'urun/FETCH_URUN_LIST',
-  SEARCH_URUNS: 'urun/SEARCH_URUN_LIST',
   FETCH_URUN_SATIS_LIST: 'urun/FETCH_URUN_SATIS_LIST',
   FETCH_URUN: 'urun/FETCH_URUN',
   CREATE_URUN: 'urun/CREATE_URUN',
@@ -67,24 +67,13 @@ export default (state: UrunState = initialState, action): UrunState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case SUCCESS(ACTION_TYPES.SEARCH_URUNS):
     case SUCCESS(ACTION_TYPES.FETCH_URUN_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
-      };
-    case SUCCESS(ACTION_TYPES.SEARCH_URUNS):
-      return {
-        ...state,
-        loading: false,
-        entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
-      };
-    case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
-      return {
-        ...state,
-        satisUrunleri: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN):
       return {
@@ -117,8 +106,14 @@ export default (state: UrunState = initialState, action): UrunState => {
 };
 
 const apiUrl = 'api/uruns';
+const apiSearchUrl = 'api/_search/uruns';
 
 // Actions
+
+export const getSearchEntities: ICrudSearchAction<IUrun> = (query, page, size, sort) => ({
+  type: ACTION_TYPES.SEARCH_URUNS,
+  payload: axios.get<IUrun>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+});
 
 export const getEntities: ICrudGetAllAction<IUrun> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
@@ -133,13 +128,6 @@ export const getSatisUrunleri: ICrudGetAllAction<IUrun> = () => {
   return {
     type: ACTION_TYPES.FETCH_URUN_SATIS_LIST,
     payload: axios.get<IUrun>(`${requestUrl}`)
-  };
-};
-
-export const getSearchEntities: ICrudSearchAction<IUrun> = (query, page, size, sort) => {
-  return {
-    type: ACTION_TYPES.SEARCH_URUNS,
-    payload: axios.get<IUrun>(`${apiUrl}/search/?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
   };
 };
 
