@@ -5,6 +5,8 @@ import com.koop.app.repository.SatisRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -17,6 +19,6 @@ public class ReportService {
     }
 
     public List<Ciro> getCiroReport(LocalDate from, LocalDate to) {
-        return satisRepository.getCiroReports(from, to);
+        return satisRepository.getCiroReports(from.atStartOfDay(ZoneId.systemDefault()), to.atStartOfDay(ZoneId.systemDefault()));
     }
 }
