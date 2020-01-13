@@ -2,14 +2,15 @@ package com.koop.app.dto;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class Ciro {
 
     private BigDecimal tutar;
 
-    private ZonedDateTime tarih;
+    private Date tarih;
 
-    public Ciro(BigDecimal tutar, ZonedDateTime tarih) {
+    public Ciro(BigDecimal tutar, Date tarih) {
         this.tutar = tutar;
         this.tarih = tarih;
     }
@@ -25,11 +26,11 @@ public class Ciro {
         this.tutar = tutar;
     }
 
-    public ZonedDateTime getTarih() {
+    public Date getTarih() {
         return tarih;
     }
 
-    public void setTarih(ZonedDateTime tarih) {
+    public void setTarih(Date tarih) {
         this.tarih = tarih;
     }
 }

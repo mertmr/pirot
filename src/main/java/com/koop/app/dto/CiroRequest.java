@@ -1,26 +1,26 @@
 package com.koop.app.dto;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 public class CiroRequest {
 
-    private ZonedDateTime to;
+    private LocalDate to;
 
-    private ZonedDateTime from;
+    private LocalDate from;
 
-    public ZonedDateTime getTo() {
+    public LocalDate getTo() {
         return to;
     }
 
-    public void setTo(ZonedDateTime to) {
+    public void setTo(LocalDate to) {
         this.to = to;
     }
 
-    public ZonedDateTime getFrom() {
+    public LocalDate getFrom() {
         return from;
     }
 
-    public void setFrom(ZonedDateTime from) {
+    public void setFrom(LocalDate from) {
         this.from = from;
     }
 }

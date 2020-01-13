@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -32,9 +31,10 @@ public class ReportsResource {
         this.reportService = reportService;
     }
 
-    @GetMapping("/reports/ciro")
-    public ResponseEntity<List<Ciro>> getCiroReport(CiroRequest ciroRequest) {
+    @GetMapping(params = {"fromDate", "toDate"}, path = "/reports/ciro")
+    public ResponseEntity<List<Ciro>> getCiroReport(@RequestParam(value = "fromDate") LocalDate fromDate,
+                                                    @RequestParam(value = "toDate") LocalDate toDate) {
         log.debug("REST request to get ciro report");
-        return ResponseEntity.ok().body(reportService.getCiroReport(ciroRequest));
+        return ResponseEntity.ok().body(reportService.getCiroReport(fromDate, toDate));
     }
 }

@@ -75,6 +75,11 @@ export default (state: UrunState = initialState, action): UrunState => {
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
+      return {
+        ...state,
+        satisUrunleri: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.FETCH_URUN):
       return {
         ...state,

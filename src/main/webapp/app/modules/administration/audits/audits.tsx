@@ -11,7 +11,7 @@ import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { IRootState } from 'app/shared/reducers';
 import { getAudits } from '../administration.reducer';
 
-export interface IAuditsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface  IAuditsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 const previousMonth = (): string => {
   const now: Date = new Date();

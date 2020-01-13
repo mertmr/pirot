@@ -1,24 +1,15 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
-import { cleanEntity } from 'app/shared/util/entity-utils';
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-
-import { ICiro, defaultValue } from 'app/shared/model/ciro.model';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
 export const ACTION_TYPES = {
-  FETCH_CIRO_LIST: 'ciro/FETCH_CIRO_LIST',
-  RESET: 'ciro/RESET'
+  FETCH_LOGS: 'ciro/FETCH_LIST'
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
-  entities: [] as ReadonlyArray<ICiro>,
-  entity: defaultValue,
-  updating: false,
-  totalItems: 0,
-  updateSuccess: false
+  entities: []
 };
 
 export type CiroState = Readonly<typeof initialState>;
@@ -27,36 +18,41 @@ export type CiroState = Readonly<typeof initialState>;
 
 export default (state: CiroState = initialState, action): CiroState => {
   switch (action.type) {
-    case REQUEST(ACTION_TYPES.FETCH_CIRO_LIST):
-    case FAILURE(ACTION_TYPES.FETCH_CIRO_LIST):
-    case SUCCESS(ACTION_TYPES.FETCH_CIRO_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_LOGS):
+      return {
+        ...state,
+        errorMessage: null,
+        loading: true
+      };
+    case FAILURE(ACTION_TYPES.FETCH_LOGS):
       return {
         ...state,
         loading: false,
-        entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        errorMessage: action.payload
       };
-    case ACTION_TYPES.RESET:
+    case SUCCESS(ACTION_TYPES.FETCH_LOGS):
       return {
-        ...initialState
+        ...state,
+        loading: false,
+        entities: action.payload.data
       };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/reports';
-
 // Actions
 
-export const getEntities: ICrudGetAllAction<ICiro> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}/ciro${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+export const getEntities = (fromDate, toDate) => {
+  let requestUrl = `api/reports/ciro`;
+  if (fromDate) {
+    requestUrl += `&fromDate=${fromDate}`;
+  }
+  if (toDate) {
+    requestUrl += `&toDate=${toDate}`;
+  }
   return {
-    type: ACTION_TYPES.FETCH_CIRO_LIST,
-    payload: axios.get<ICiro>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    type: ACTION_TYPES.FETCH_LOGS,
+    payload: axios.get(requestUrl)
   };
 };
-
-export const reset = () => ({
-  type: ACTION_TYPES.RESET
-});

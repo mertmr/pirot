@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {RouteComponentProps} from 'react-router-dom';
-import {Row, Table} from 'reactstrap';
+import {Col, Label, Row, Table, Button} from 'reactstrap';
+import {AvForm, AvGroup} from 'availity-reactstrap-validation';
 import {getSortState, JhiItemCount, JhiPagination, TextFormat, Translate} from 'react-jhipster';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
@@ -9,15 +10,20 @@ import {IRootState} from 'app/shared/reducers';
 import {getEntities} from './ciro.reducer';
 import {APP_DATE_FORMAT} from 'app/config/constants';
 import {ITEMS_PER_PAGE} from 'app/shared/util/pagination.constants';
+import {DatePicker} from "antd";
+import moment from "moment";
+import {defaultValue} from "app/shared/model/ciro.request.model";
+import {convertDateTimeToServer} from "app/shared/util/date-utils";
 
 export interface ICiroProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
 }
 
 export const Ciro = (props: ICiroProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [ciroRequest, setCiroRequest] = useState(defaultValue);
 
   const getAllEntities = () => {
-    props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    props.getEntities(null ,null);
   };
 
   useEffect(() => {
@@ -49,22 +55,69 @@ export const Ciro = (props: ICiroProps) => {
       activePage: currentPage
     });
 
-  const {ciroList, match, totalItems} = props;
+  const updateToDate = (value, dateString) => {
+    setCiroRequest({
+      ...ciroRequest,
+      ["to"]: dateString
+    });
+  };
+
+  const updateFromDate = (value, dateString) => {
+    setCiroRequest({
+      ...ciroRequest,
+      ["from"]: dateString
+    });
+  };
+
+  const getCiroReport = () => {
+    props.getEntities(ciroRequest.from, ciroRequest.to);
+  };
+
+  const {ciroList} = props;
   return (
     <div>
       <h2 id="ciro-heading">
         <Translate contentKey="koopApp.ciro.home.title">Ciro</Translate>
       </h2>
+      <Row>
+        <Col sm="12">
+          <AvForm onSubmit={getCiroReport}>
+            <AvGroup>
+              <Label for="gider-user">
+                Satış Tarihi
+              </Label>
+              <DatePicker name="from" className="form-control"
+                          placeholder="Tarih Seçin"
+                          onChange={updateFromDate}
+                          defaultValue={moment(new Date(), 'YYYY-MM-DD')}/>
+            </AvGroup>
+            <AvGroup>
+              <Label for="gider-user">
+                Satış Tarihi
+              </Label>
+              <DatePicker name="to" className="form-control"
+                          placeholder="Tarih Seçin"
+                          onChange={updateToDate}
+                          defaultValue={moment(new Date(), 'YYYY-MM-DD')}/>
+            </AvGroup>
+            <Button color="primary" id="search-ciro" type="submit">
+              <FontAwesomeIcon icon="save"/>
+              &nbsp;
+              Arat
+            </Button>
+          </AvForm>
+        </Col>
+      </Row>
       <div className="table-responsive">
         {ciroList && ciroList.length > 0 ? (
           <Table responsive>
             <thead>
             <tr>
-              <th className="hand" onClick={sort('tarih')}>
-                <Translate contentKey="koopApp.ciro.tarih">Tarih</Translate> <FontAwesomeIcon icon="sort"/>
+              <th className="hand">
+                <Translate contentKey="koopApp.ciro.tarih">Tarih</Translate>
               </th>
-              <th className="hand" onClick={sort('tutar')}>
-                <Translate contentKey="koopApp.ciro.tutar">Tutar</Translate> <FontAwesomeIcon icon="sort"/>
+              <th className="hand">
+                <Translate contentKey="koopApp.ciro.tutar">Tutar</Translate>
               </th>
             </tr>
             </thead>
@@ -85,28 +138,12 @@ export const Ciro = (props: ICiroProps) => {
           </div>
         )}
       </div>
-      <div className={ciroList && ciroList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage}
-                        i18nEnabled/>
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
     </div>
   );
 };
 
 const mapStateToProps = ({ciro}: IRootState) => ({
-  ciroList: ciro.entities,
-  totalItems: ciro.totalItems
+  ciroList: ciro.entities
 });
 
 const mapDispatchToProps = {
