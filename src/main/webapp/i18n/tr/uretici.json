@@ -2,21 +2,21 @@
   "koopApp": {
     "uretici": {
       "home": {
-        "title": "Ureticis",
-        "createLabel": "Create a new Uretici",
-        "createOrEditLabel": "Create or edit a Uretici",
-        "notFound": "No Ureticis found"
+        "title": "Üreticiler",
+        "createLabel": "Yeni Üretici",
+        "createOrEditLabel": "Yarat/Güncelle Üretici",
+        "notFound": "No Üreticiler found"
       },
-      "created": "A new Uretici is created with identifier {{ param }}",
-      "updated": "A Uretici is updated with identifier {{ param }}",
-      "deleted": "A Uretici is deleted with identifier {{ param }}",
+      "created": "Üretici yaratıldı {{ param }}",
+      "updated": "Üretici güncellendi {{ param }}",
+      "deleted": "Üretici güncellendi {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Uretici {{ id }}?"
+        "question": "Üreticiyi silmek istediğinizden emin misiniz {{ id }}?"
       },
       "detail": {
-        "title": "Uretici"
+        "title": "Üretici"
       },
-      "adi": "Adi",
+      "adi": "Adı",
       "adres": "Adres",
       "bankaBilgileri": "Banka Bilgileri",
       "tarih": "Tarih",

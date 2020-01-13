@@ -92,7 +92,7 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
                     <TextFormat type="date" value={urunFiyat.tarih} format={APP_DATE_FORMAT} />
                   </td>
                   <td>{urunFiyat.user ? urunFiyat.user.login : ''}</td>
-                  <td>{urunFiyat.urun ? <Link to={`urun/${urunFiyat.urun.id}`}>{urunFiyat.urun.id}</Link> : ''}</td>
+                  <td>{urunFiyat.urun ? <Link to={`urun/${urunFiyat.urun.id}`}>{urunFiyat.urun.urunAdi}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${urunFiyat.id}`} color="info" size="sm">

@@ -108,7 +108,6 @@ export const CirosPage = (props: ICirosPageProps) => {
         </Table>
       ) : (
         <div className="alert alert-warning">
-          <Translate contentKey="ciros.notFound">No ciro found</Translate>
         </div>
       )}
       <div className={ciros && ciros.length > 0 ? '' : 'd-none'}>

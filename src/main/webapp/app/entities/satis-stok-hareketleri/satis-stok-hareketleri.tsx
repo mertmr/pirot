@@ -10,11 +10,12 @@ import { getEntities } from './satis-stok-hareketleri.reducer';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import {getSortStateByIdDesc} from 'app/shared/util/pagination-utils';
 
 export interface ISatisStokHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [paginationState, setPaginationState] = useState(getSortStateByIdDesc(props.location, ITEMS_PER_PAGE));
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -95,7 +96,7 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
                   <td>{satisStokHareketleri.tutar}</td>
                   <td>
                     {satisStokHareketleri.urun ? (
-                      <Link to={`urun/${satisStokHareketleri.urun.id}`}>{satisStokHareketleri.urun.id}</Link>
+                      <Link to={`urun/${satisStokHareketleri.urun.id}`}>{satisStokHareketleri.urun.urunAdi}</Link>
                     ) : (
                       ''
                     )}

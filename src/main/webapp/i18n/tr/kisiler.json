@@ -2,21 +2,21 @@
   "koopApp": {
     "kisiler": {
       "home": {
-        "title": "Kisilers",
-        "createLabel": "Create a new Kisiler",
-        "createOrEditLabel": "Create or edit a Kisiler",
-        "notFound": "No Kisilers found"
+        "title": "Kişiler",
+        "createLabel": "Yeni Kisiler",
+        "createOrEditLabel": "Yarat/Güncelle Kisiler",
+        "notFound": "Kişiler bulanamadı"
       },
-      "created": "A new Kisiler is created with identifier {{ param }}",
-      "updated": "A Kisiler is updated with identifier {{ param }}",
-      "deleted": "A Kisiler is deleted with identifier {{ param }}",
+      "created": "Kisi yaratıldı {{ param }}",
+      "updated": "Kişi güncellendi {{ param }}",
+      "deleted": "Kişi silindi {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Kisiler {{ id }}?"
+        "question": "Bu Kişi girdisini silmek istediğinizden emin misiniz? {{ id }}?"
       },
       "detail": {
-        "title": "Kisiler"
+        "title": "Kişiler"
       },
-      "kisiAdi": "Kisi Adi",
+      "kisiAdi": "Kişi Adı",
       "notlar": "Notlar",
       "tarih": "Tarih"
     }

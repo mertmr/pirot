@@ -2,10 +2,10 @@
   "koopApp": {
     "nobetHareketleri": {
       "home": {
-        "title": "Nobet Hareketleris",
+        "title": "Nöbetçi Hareketleri",
         "createLabel": "Create a new Nobet Hareketleri",
         "createOrEditLabel": "Create or edit a Nobet Hareketleri",
-        "notFound": "No Nobet Hareketleris found"
+        "notFound": "No Nöbetçi Hareketleri found"
       },
       "created": "A new Nobet Hareketleri is created with identifier {{ param }}",
       "updated": "A Nobet Hareketleri is updated with identifier {{ param }}",

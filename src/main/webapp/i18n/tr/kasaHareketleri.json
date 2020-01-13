@@ -2,10 +2,10 @@
   "koopApp": {
     "kasaHareketleri": {
       "home": {
-        "title": "Kasa Hareketleris",
+        "title": "Kasa Hareketleri",
         "createLabel": "Create a new Kasa Hareketleri",
         "createOrEditLabel": "Create or edit a Kasa Hareketleri",
-        "notFound": "No Kasa Hareketleris found"
+        "notFound": "No Kasa Hareketleri found"
       },
       "created": "A new Kasa Hareketleri is created with identifier {{ param }}",
       "updated": "A Kasa Hareketleri is updated with identifier {{ param }}",

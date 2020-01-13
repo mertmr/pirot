@@ -2,28 +2,28 @@
   "koopApp": {
     "urun": {
       "home": {
-        "title": "Uruns",
-        "createLabel": "Create a new Urun",
-        "createOrEditLabel": "Create or edit a Urun",
-        "notFound": "No Uruns found"
+        "title": "Ürunler",
+        "createLabel": "Yeni Ürun",
+        "createOrEditLabel": "Yarat/Güncelle Ürun",
+        "notFound": "No Ürunler found"
       },
-      "created": "A new Urun is created with identifier {{ param }}",
-      "updated": "A Urun is updated with identifier {{ param }}",
-      "deleted": "A Urun is deleted with identifier {{ param }}",
+      "created": "Ürün yaratıldı {{ param }}",
+      "updated": "Ürün güncellendi {{ param }}",
+      "deleted": "Ürün silindi {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Urun {{ id }}?"
+        "question": "Bu ürünü silmek istediğinizden emin misiniz {{ id }}?"
       },
       "detail": {
-        "title": "Urun"
+        "title": "Ürun"
       },
-      "urunAdi": "Urun Adi",
+      "urunAdi": "Ürun Adi",
       "stok": "Stok",
-      "stokSiniri": "Stok Siniri",
-      "musteriFiyati": "Musteri Fiyati",
+      "stokSiniri": "Stok Sınırı",
+      "musteriFiyati": "Müşteri Fiyati",
       "birim": "Birim",
-      "dayanismaUrunu": "Dayanisma Urunu",
+      "dayanismaUrunu": "Dayanışma Ürünü",
       "satista": "Satışta",
-      "urunKategorisi": "Urun Kategorisi",
+      "urunKategorisi": "Ürun Kategorisi",
       "user": "User",
       "kdvKategorisi": "Kdv Kategorisi"
     }

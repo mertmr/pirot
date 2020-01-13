@@ -10,11 +10,12 @@ import { getEntities } from './kasa-hareketleri.reducer';
 import { IKasaHareketleri } from 'app/shared/model/kasa-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import {getSortStateByIdDesc} from "app/shared/util/pagination-utils";
 
 export interface IKasaHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const KasaHareketleri = (props: IKasaHareketleriProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [paginationState, setPaginationState] = useState(getSortStateByIdDesc(props.location, ITEMS_PER_PAGE));
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);

@@ -2,10 +2,10 @@
   "koopApp": {
     "borcAlacak": {
       "home": {
-        "title": "Borc Alacaks",
+        "title": "Borc Alacak",
         "createLabel": "Create a new Borc Alacak",
         "createOrEditLabel": "Create or edit a Borc Alacak",
-        "notFound": "No Borc Alacaks found"
+        "notFound": "No Borc Alacak found"
       },
       "created": "A new Borc Alacak is created with identifier {{ param }}",
       "updated": "A Borc Alacak is updated with identifier {{ param }}",

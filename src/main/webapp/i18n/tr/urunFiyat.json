@@ -2,10 +2,10 @@
   "koopApp": {
     "urunFiyat": {
       "home": {
-        "title": "Urun Fiyats",
+        "title": "Urun Fiyatlar",
         "createLabel": "Create a new Urun Fiyat",
         "createOrEditLabel": "Create or edit a Urun Fiyat",
-        "notFound": "No Urun Fiyats found"
+        "notFound": "No Urun Fiyatlar found"
       },
       "created": "A new Urun Fiyat is created with identifier {{ param }}",
       "updated": "A Urun Fiyat is updated with identifier {{ param }}",
