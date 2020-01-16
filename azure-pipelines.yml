@@ -33,8 +33,6 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
         displayName: 'Maven options'
-      - script: npm install
-        displayName: 'TESTS: npm'
       - script: ./mvnw package -Pprod -DskipTests=true
         displayName: 'TESTS: packaging'
         #----------------------------------------------------------------------
