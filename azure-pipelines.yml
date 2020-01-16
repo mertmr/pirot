@@ -1,0 +1,54 @@
+jobs:
+  - job: Test
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    variables:
+      NODE_VERSION: 10.15.3
+      SPRING_OUTPUT_ANSI_ENABLED: NEVER
+      SPRING_JPA_SHOW_SQL: false
+      JHI_DISABLE_WEBPACK_LOGS: true
+
+    steps:
+      #----------------------------------------------------------------------
+      # Install all tools and check configuration
+      #----------------------------------------------------------------------
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.15.3'
+        displayName: 'TOOLS: install Node.js'
+      - script: sudo npm install -g npm
+        displayName: 'TOOLS: update NPM'
+      - script: sudo chown -R vsts:docker /home/vsts/.npm/
+        displayName: 'BUGS-FIX: change /home/vsts/.npm/ permission'
+      - script: sudo /etc/init.d/mysql stop
+        displayName: 'TOOLS: stop MySQL'
+      #----------------------------------------------------------------------
+      # Tests
+      #----------------------------------------------------------------------
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+        displayName: 'Maven options'
+      - script: npm install
+        #        displayName: 'INSTALL: launch npm install'
+        #      - script: |
+        #          chmod +x mvnw
+        #          ./mvnw clean verify
+        #        displayName: 'TESTS: backend'
+        #      - script: ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test-ci'
+        displayName: 'TESTS: frontend'
+      - script: ./mvnw package -P prod -DskipTests
+        displayName: 'TESTS: packaging'
+        #----------------------------------------------------------------------
+        # Docker Push
+        #----------------------------------------------------------------------
+      - script: cp target/*.jar src/main/docker
+        displayName: 'Copy Resources'
+      - script: docker build -f src/main/docker/Dockerfile -t 164.68.100.154:5000/koop src/main/docker
+        displayName: 'Docker Build Resources'
+      - script: docker push 164.68.100.154:5000/koop
+        displayName: 'Docker Push'

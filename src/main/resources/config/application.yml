@@ -131,7 +131,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: koop@localhost
+    from: info@kadikoykoop.org
   swagger:
     default-include-pattern: /api/.*
     title: koop API
