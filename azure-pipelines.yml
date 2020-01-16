@@ -34,14 +34,8 @@ jobs:
           jdkArchitectureOption: 'x64'
         displayName: 'Maven options'
       - script: npm install
-        #        displayName: 'INSTALL: launch npm install'
-        #      - script: |
-        #          chmod +x mvnw
-        #          ./mvnw clean verify
-        #        displayName: 'TESTS: backend'
-        #      - script: ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='run test-ci'
-        displayName: 'TESTS: frontend'
-      - script: ./mvnw package -P prod -DskipTests
+        displayName: 'TESTS: npm'
+      - script: ./mvnw package -Pprod -DskipTests=true
         displayName: 'TESTS: packaging'
         #----------------------------------------------------------------------
         # Docker Push
