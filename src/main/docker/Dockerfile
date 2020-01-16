@@ -5,7 +5,7 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
     JAVA_OPTS=""
 
 # Add a jhipster user to run our application so that it doesn't need to run as root
-RUN adduser --disabled-password --shell /bin/sh jhipster
+RUN useradd -ms /bin/sh jhipster
 WORKDIR /home/jhipster
 
 ADD entrypoint.sh entrypoint.sh
