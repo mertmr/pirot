@@ -1,0 +1,37 @@
+name: Application CI
+on: [push, pull_request]
+jobs:
+    pipeline:
+        name: koop pipeline
+        runs-on: ubuntu-latest
+        if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')"
+        timeout-minutes: 40
+        env:
+            NODE_VERSION: 12.13.1
+            SPRING_OUTPUT_ANSI_ENABLED: DETECT
+            SPRING_JPA_SHOW_SQL: false
+            JHI_DISABLE_WEBPACK_LOGS: true
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12.13.1
+            - uses: actions/setup-java@v1
+              with:
+                  java-version: '11.x'
+            - name: Cache Primes
+              id: cache-primes
+              uses: actions/cache@v1
+              with:
+                path: ~/.m2/repository
+                key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+                restore-keys: |
+                  ${{ runner.os }}-maven-
+            - name: Package application
+              run: ./mvnw -ntp package -Pprod -DskipTests
+            - name: Build and publish docker image
+              if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/'))
+              run: |
+                  GIT_TAG=:${GITHUB_REF#refs/tags/}
+                  DOCKER_TAG=${GIT_TAG#:refs/heads/master}
+                  ./mvnw -ntp jib:build -Djib.to.image=164.68.100.154:5000/koop${DOCKER_TAG}
