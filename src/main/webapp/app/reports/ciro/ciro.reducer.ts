@@ -30,11 +30,11 @@ const initialState = {
   totalItems: 0
 };
 
-export type ReportState = Readonly<typeof initialState>;
+export type CiroState = Readonly<typeof initialState>;
 
 // Reducer
 
-export default (state: ReportState = initialState, action): ReportState => {
+export default (state: CiroState = initialState, action): CiroState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_METRICS):
     case REQUEST(ACTION_TYPES.FETCH_THREAD_DUMP):

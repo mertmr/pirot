@@ -55,11 +55,6 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
     <div>
       <h2 id="satis-stok-hareketleri-heading">
         <Translate contentKey="koopApp.satisStokHareketleri.home.title">Satis Stok Hareketleris</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="koopApp.satisStokHareketleri.home.createLabel">Create new Satis Stok Hareketleri</Translate>
-        </Link>
       </h2>
       <div className="table-responsive">
         {satisStokHareketleriList && satisStokHareketleriList.length > 0 ? (
@@ -114,28 +109,6 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${satisStokHareketleri.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.edit">Edit</Translate>
-                        </span>
-                      </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${satisStokHareketleri.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
                       </Button>
                     </div>

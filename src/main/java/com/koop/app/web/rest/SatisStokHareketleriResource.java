@@ -1,9 +1,10 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.SatisStokHareketleri;
+import com.koop.app.dto.AylikSatislar;
+import com.koop.app.dto.AylikSatislarRaporu;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -13,18 +14,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.chrono.ChronoZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.SatisStokHareketleri}.
@@ -34,14 +38,11 @@ import java.util.Optional;
 @Transactional
 public class SatisStokHareketleriResource {
 
-    private final Logger log = LoggerFactory.getLogger(SatisStokHareketleriResource.class);
-
     private static final String ENTITY_NAME = "satisStokHareketleri";
-
+    private final Logger log = LoggerFactory.getLogger(SatisStokHareketleriResource.class);
+    private final SatisStokHareketleriRepository satisStokHareketleriRepository;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final SatisStokHareketleriRepository satisStokHareketleriRepository;
 
     public SatisStokHareketleriResource(SatisStokHareketleriRepository satisStokHareketleriRepository) {
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
@@ -90,9 +91,7 @@ public class SatisStokHareketleriResource {
     /**
      * {@code GET  /satis-stok-hareketleris} : get all the satisStokHareketleris.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of satisStokHareketleris in body.
      */
     @GetMapping("/satis-stok-hareketleris")
@@ -127,5 +126,35 @@ public class SatisStokHareketleriResource {
         log.debug("REST request to delete SatisStokHareketleri : {}", id);
         satisStokHareketleriRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/satis-stok-hareketleris/getSatisRaporlari")
+    public AylikSatislarRaporu getSatisRaporlari() {
+        List<AylikSatislar> satisRaporlari = satisStokHareketleriRepository.getSatisRaporlari();
+        AylikSatislarRaporu aylikSatislarRaporu = new AylikSatislarRaporu();
+
+        aylikSatislarRaporu.setAylikSatisMap(satisRaporlari.stream().collect(Collectors.toMap(aylikSatislar -> {
+            if(String.valueOf(aylikSatislar.getMonth()).length() == 1) {
+                return aylikSatislar.getYear() + ".0" + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+            }
+                return aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+            }, AylikSatislar::getMiktar,
+            (aylikSatislar1, aylikSatislar2) -> aylikSatislar1)));
+
+        List<ZonedDateTime> tarihListesi = new ArrayList<>();
+        for (AylikSatislar satisRaporu : satisRaporlari) {
+            int month = satisRaporu.getMonth();
+            int year = satisRaporu.getYear();
+            ZonedDateTime yearMonth = ZonedDateTime.of(year, month, 1, 0, 0, 0,
+                0, ZoneId.systemDefault());
+            tarihListesi.add(yearMonth);
+        }
+        tarihListesi = tarihListesi.stream().distinct().collect(Collectors.toList());
+        tarihListesi.sort(ChronoZonedDateTime::compareTo);
+        aylikSatislarRaporu.setTarihListesi(tarihListesi);
+
+        aylikSatislarRaporu.setUrunAdiListesi(satisRaporlari.stream().map(AylikSatislar::getUrunAdi).
+            distinct().collect(Collectors.toList()));
+        return aylikSatislarRaporu;
     }
 }

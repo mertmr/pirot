@@ -15,6 +15,10 @@ public class Ciro {
         this.tarih = tarih;
     }
 
+    public Ciro(BigDecimal tutar, int tarih) {
+        this.tutar = tutar;
+    }
+
     public Ciro() {
     }
 

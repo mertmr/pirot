@@ -130,8 +130,8 @@ export const CirosPage = (props: ICirosPageProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  ciros: storeState.reportState.ciros,
-  totalItems: storeState.reportState.totalItems
+  ciros: storeState.ciroState.ciros,
+  totalItems: storeState.ciroState.totalItems
 });
 
 const mapDispatchToProps = {getCiros};

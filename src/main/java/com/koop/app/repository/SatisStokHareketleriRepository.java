@@ -1,8 +1,12 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.SatisStokHareketleri;
-import org.springframework.data.jpa.repository.*;
+import com.koop.app.dto.AylikSatislar;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**
@@ -14,4 +18,15 @@ public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokH
 
     @Query("select sum(satisStokHareketleri.tutar) from SatisStokHareketleri satisStokHareketleri")
     Double findAllTutar();
+
+    @Query("SELECT new com.koop.app.dto.AylikSatislar(year(s.tarih), " +
+        "       month(s.tarih), " +
+        "       u.urunAdi, " +
+        "       sum(st.miktar)) " +
+        "FROM SatisStokHareketleri st " +
+        "         join Satis s on st.satis.id = s.id " +
+        "         join Urun u on st.urun.id = u.id " +
+        "GROUP BY year(s.tarih), month(s.tarih), u.urunAdi  " +
+        "order by year(s.tarih), month(s.tarih) desc ")
+    List<AylikSatislar> getSatisRaporlari();
 }

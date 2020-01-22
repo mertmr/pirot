@@ -2,7 +2,6 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.Uretici;
 import com.koop.app.dto.Ciro;
-import com.koop.app.dto.CiroRequest;
 import com.koop.app.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**

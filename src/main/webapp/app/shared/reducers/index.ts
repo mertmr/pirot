@@ -66,7 +66,8 @@ import kisiler, {
 } from 'app/entities/kisiler/kisiler.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 import dashboardReportsState, { DashboardReportsState } from './dashboard-reports.reducer';
-import reportState, { ReportState } from 'app/reports/ciro/ciro.reducer';
+import ciroState, { CiroState } from 'app/reports/ciro/ciro.reducer';
+import aylikSatislarState, { AylikSatislarState } from 'app/reports/aylik-satis/aylik-satislar.reducer';
 
 export interface IRootState {
   readonly authentication: AuthenticationState;
@@ -95,7 +96,8 @@ export interface IRootState {
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly dashboardReportsState: DashboardReportsState;
-  readonly reportState: ReportState;
+  readonly ciroState: CiroState;
+  readonly aylikSatislarState: AylikSatislarState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -124,7 +126,8 @@ const rootReducer = combineReducers<IRootState>({
   kisiler,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   dashboardReportsState,
-  reportState,
+  ciroState,
+  aylikSatislarState,
   loadingBar
 });
 

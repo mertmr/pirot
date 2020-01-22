@@ -8,5 +8,8 @@ export const ReportsMenu = props => (
     <MenuItem icon="asterisk" to="/reports/ciro">
       <Translate contentKey="global.menu.reports.ciro"/>
     </MenuItem>
+    <MenuItem icon="asterisk" to="/reports/aylikSatislar">
+      Aylık Satışlar
+    </MenuItem>
   </NavDropdown>
 );
