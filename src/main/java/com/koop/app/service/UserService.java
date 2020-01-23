@@ -315,6 +315,6 @@ public class UserService {
                 return oneByLogin.get();
             }
         }
-        throw new UserNotFoundException();
+        throw new RuntimeException("User not found");
     }
 }

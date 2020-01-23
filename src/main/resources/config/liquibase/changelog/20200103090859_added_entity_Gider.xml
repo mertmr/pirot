@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity Gider.
     -->
@@ -24,10 +24,10 @@
             <column name="notlar" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="gider_tipi" type="varchar(255)">
+            <column name="gider_tipi" type="int">
                 <constraints nullable="false" />
             </column>
-            <column name="odeme_araci" type="varchar(255)">
+            <column name="odeme_araci" type="int">
                 <constraints nullable="false" />
             </column>
             <column name="user_id" type="bigint">

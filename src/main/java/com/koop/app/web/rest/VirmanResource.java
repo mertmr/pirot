@@ -6,7 +6,6 @@ import com.koop.app.repository.VirmanRepository;
 import com.koop.app.service.KasaHareketleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -16,15 +15,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,18 +35,13 @@ import java.util.Optional;
 @Transactional
 public class VirmanResource {
 
-    private final Logger log = LoggerFactory.getLogger(VirmanResource.class);
-
     private static final String ENTITY_NAME = "virman";
-
+    private final Logger log = LoggerFactory.getLogger(VirmanResource.class);
+    private final VirmanRepository virmanRepository;
+    private final UserService userService;
+    private final KasaHareketleriService kasaHareketleriService;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final VirmanRepository virmanRepository;
-
-    private final UserService userService;
-
-    private final KasaHareketleriService kasaHareketleriService;
 
     public VirmanResource(VirmanRepository virmanRepository, UserService userService, KasaHareketleriService kasaHareketleriService) {
         this.virmanRepository = virmanRepository;
@@ -71,7 +64,9 @@ public class VirmanResource {
         }
         User currentUser = userService.getCurrentUser();
         virman.setUser(currentUser);
-        virman.setTarih(ZonedDateTime.now());
+        if (virman.getTarih() == null) {
+            virman.setTarih(ZonedDateTime.now());
+        }
         Virman result = virmanRepository.save(virman);
         kasaHareketleriService.createKasaHareketi(virman.getTutar().negate(), "Kasadan Virman Cikti");
         return ResponseEntity.created(new URI("/api/virmen/" + result.getId()))
@@ -96,7 +91,9 @@ public class VirmanResource {
         }
         User currentUser = userService.getCurrentUser();
         virman.setUser(currentUser);
-        virman.setTarih(ZonedDateTime.now());
+        if (virman.getTarih() == null) {
+            virman.setTarih(ZonedDateTime.now());
+        }
         Virman oncekiVirman = virmanRepository.findById(virman.getId()).get();
         kasaHareketleriService.createKasaHareketi(virman.getTutar().subtract(oncekiVirman.getTutar()).negate(),
             "Virmanda Düzenleme");
@@ -109,9 +106,7 @@ public class VirmanResource {
     /**
      * {@code GET  /virmen} : get all the virmen.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of virmen in body.
      */
     @GetMapping("/virmen")

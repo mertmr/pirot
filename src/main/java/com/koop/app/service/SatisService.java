@@ -42,7 +42,8 @@ public class SatisService {
         }
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
-        satis.setTarih(ZonedDateTime.now());
+        if (satis.getTarih() == null)
+            satis.setTarih(ZonedDateTime.now());
         Satis result = satisRepository.save(satis);
 
         Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();

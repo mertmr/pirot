@@ -30,6 +30,10 @@ public class KasaHareketleriService {
     public KasaHareketleri createKasaHareketi(BigDecimal eklenecekTutar, String hareketMesaji){
         KasaHareketleri newKasaHareketi = new KasaHareketleri();
         KasaHareketleri sonKasaHareketi = kasaHareketleriRepository.findFirstByOrderByTarihDesc();
+        if(sonKasaHareketi == null) {
+            sonKasaHareketi = new KasaHareketleri();
+            sonKasaHareketi.setKasaMiktar(BigDecimal.ZERO);
+        }
 
         newKasaHareketi.setKasaMiktar(sonKasaHareketi.getKasaMiktar().add(eklenecekTutar));
         newKasaHareketi.setHareket(hareketMesaji);

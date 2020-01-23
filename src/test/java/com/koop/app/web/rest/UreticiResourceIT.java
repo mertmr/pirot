@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,6 +125,7 @@ public class UreticiResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void createUretici() throws Exception {
         int databaseSizeBeforeCreate = ureticiRepository.findAll().size();
 
@@ -243,6 +245,7 @@ public class UreticiResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void updateUretici() throws Exception {
         // Initialize the database
         ureticiRepository.saveAndFlush(uretici);

@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +107,7 @@ public class SatisStokHareketleriResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void createSatisStokHareketleri() throws Exception {
         int databaseSizeBeforeCreate = satisStokHareketleriRepository.findAll().size();
 
@@ -181,6 +183,7 @@ public class SatisStokHareketleriResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void getAllSatisStokHareketleris() throws Exception {
         // Initialize the database
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
@@ -193,7 +196,7 @@ public class SatisStokHareketleriResourceIT {
             .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR)))
             .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())));
     }
-    
+
     @Test
     @Transactional
     public void getSatisStokHareketleri() throws Exception {
@@ -219,6 +222,7 @@ public class SatisStokHareketleriResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void updateSatisStokHareketleri() throws Exception {
         // Initialize the database
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
@@ -266,6 +270,7 @@ public class SatisStokHareketleriResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void deleteSatisStokHareketleri() throws Exception {
         // Initialize the database
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
