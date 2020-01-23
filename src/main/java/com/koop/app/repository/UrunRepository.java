@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Urun;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
+@JaversSpringDataAuditable
 public interface UrunRepository extends JpaRepository<Urun, Long> {
 
     @Query("select urun from Urun urun where urun.user.login = ?#{principal.username}")

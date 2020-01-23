@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.KasaHareketleri;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
+@JaversSpringDataAuditable
 public interface KasaHareketleriRepository extends JpaRepository<KasaHareketleri, Long> {
 
     KasaHareketleri findFirstByOrderByTarihDesc();

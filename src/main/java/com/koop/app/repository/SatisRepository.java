@@ -2,6 +2,7 @@ package com.koop.app.repository;
 
 import com.koop.app.domain.Satis;
 import com.koop.app.dto.Ciro;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
+@JaversSpringDataAuditable
 public interface SatisRepository extends JpaRepository<Satis, Long> {
 
     String SATISLAR_BY_ID_CACHE = "satislarById";

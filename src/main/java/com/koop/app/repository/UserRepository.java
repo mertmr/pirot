@@ -2,6 +2,7 @@ package com.koop.app.repository;
 
 import com.koop.app.domain.User;
 
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 
@@ -18,6 +19,7 @@ import java.time.Instant;
  * Spring Data JPA repository for the {@link User} entity.
  */
 @Repository
+@JaversSpringDataAuditable
 public interface UserRepository extends JpaRepository<User, Long> {
 
     String USERS_BY_LOGIN_CACHE = "usersByLogin";
