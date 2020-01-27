@@ -321,6 +321,12 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                       moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
                       </AvGroup>
                       <AvGroup check>
+                        <Label id="kartliSatisLabel">
+                          <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input" name="kartliSatis" />
+                          <Translate contentKey="koopApp.satis.kartliSatis">Kartli Satis</Translate>
+                        </Label>
+                      </AvGroup>
+                      <AvGroup check>
                         <Label id="ortagaSatisLabel">
                           <AvInput id="satis-ortagaSatis" type="checkbox" className="form-check-input"
                                    name="ortagaSatis"/>

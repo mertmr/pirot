@@ -1,8 +1,7 @@
 package com.koop.app.domain;
 
-import com.koop.app.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.koop.app.config.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -93,6 +92,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    public User() {
+    }
+
+    public User(Long id, String login) {
+        this.id = id;
+        this.login = login;
+    }
 
     public Long getId() {
         return id;

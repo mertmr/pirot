@@ -47,7 +47,7 @@
             "relationshipType": "many-to-one",
             "otherEntityName": "user",
             "otherEntityRelationshipName": "urun",
-            "relationshipName": "user",
+            "relationshipName": "urunSorumlusu",
             "otherEntityField": "login"
         },
         {

@@ -24,6 +24,9 @@
             <column name="ortaga_satis" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="kartli_satis" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -54,6 +57,7 @@
             <column name="tarih" type="datetime"/>
             <column name="toplam_tutar" type="numeric"/>
             <column name="ortaga_satis" type="boolean"/>
+            <column name="kartli_satis" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

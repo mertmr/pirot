@@ -42,6 +42,7 @@ public class Urun implements Serializable {
     private BigDecimal musteriFiyati;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "birim", nullable = false)
     private Birim birim;
 
@@ -51,12 +52,13 @@ public class Urun implements Serializable {
     @Column(name = "satista")
     private Boolean satista;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "urun_kategorisi")
     private UrunKategorisi urunKategorisi;
 
     @ManyToOne
     @JsonIgnoreProperties("uruns")
-    private User user;
+    private User urunSorumlusu;
 
     @ManyToOne
     @JsonIgnoreProperties("uruns")
@@ -175,17 +177,17 @@ public class Urun implements Serializable {
         this.urunKategorisi = urunKategorisi;
     }
 
-    public User getUser() {
-        return user;
+    public User getUrunSorumlusu() {
+        return urunSorumlusu;
     }
 
-    public Urun user(User user) {
-        this.user = user;
+    public Urun urunSorumlusu(User user) {
+        this.urunSorumlusu = user;
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUrunSorumlusu(User user) {
+        this.urunSorumlusu = user;
     }
 
     public KdvKategorisi getKdvKategorisi() {

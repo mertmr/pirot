@@ -7,6 +7,7 @@ export interface ISatis {
   tarih?: Moment;
   toplamTutar?: number;
   ortagaSatis?: boolean;
+  kartliSatis?: boolean;
   stokHareketleriLists?: ISatisStokHareketleri[];
   user?: IUser;
 }

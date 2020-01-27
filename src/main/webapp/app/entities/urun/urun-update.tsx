@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Label, Row} from 'reactstrap';
+import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate, translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
+import {getEntities as getKdvKategorisis} from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
+import {createEntity, getEntity, getUrunUsers, reset, updateEntity} from './urun.reducer';
+import {defaultValue} from 'app/shared/model/urun.model';
+import {Dropdown} from "primereact/dropdown";
 
-import { IUser } from 'app/shared/model/user.model';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { IKdvKategorisi } from 'app/shared/model/kdv-kategorisi.model';
-import { getEntities as getKdvKategorisis } from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './urun.reducer';
-import { IUrun } from 'app/shared/model/urun.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
-
-export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+}
 
 export const UrunUpdate = (props: IUrunUpdateProps) => {
-  const [userId, setUserId] = useState('0');
+  const [urunSorumlusu, setUrunSorumlusu] = useState(null);
+  const [urunState, setUrunState] = useState(defaultValue);
   const [kdvKategorisiId, setKdvKategorisiId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { urunEntity, users, kdvKategorisis, loading, updating } = props;
+  const {urunEntity, urunUsers, kdvKategorisis, loading, updating} = props;
 
   const handleClose = () => {
     props.history.push('/urun' + props.location.search);
@@ -36,7 +33,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
       props.getEntity(props.match.params.id);
     }
 
-    props.getUsers();
+    props.getUrunUsers();
     props.getKdvKategorisis();
   }, []);
 
@@ -46,11 +43,23 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
     }
   }, [props.updateSuccess]);
 
+  useEffect(() => {
+    setUrunState({...urunEntity});
+  }, [urunEntity]);
+
+  const onChangeUrunSorumlusu = (e) => {
+    setUrunState({
+      ...urunState,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       const entity = {
         ...urunEntity,
-        ...values
+        ...values,
+        ...urunState
       };
 
       if (isNew) {
@@ -81,7 +90,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <Label for="urun-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="urun-id" type="text" className="form-control" name="id" required readOnly />
+                  <AvInput id="urun-id" type="text" className="form-control" name="id" required readOnly/>
                 </AvGroup>
               ) : null}
               <AvGroup>
@@ -93,7 +102,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   type="text"
                   name="urunAdi"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: {value: true, errorMessage: translate('entity.validation.required')}
                   }}
                 />
               </AvGroup>
@@ -107,19 +116,20 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="stokSiniriLabel" for="urun-stokSiniri">
                   <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
                 </Label>
-                <AvField id="urun-stokSiniri" type="text" name="stokSiniri" />
+                <AvField id="urun-stokSiniri" type="text" name="stokSiniri"/>
               </AvGroup>
               <AvGroup>
                 <Label id="musteriFiyatiLabel" for="urun-musteriFiyati">
                   <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate>
                 </Label>
-                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati" />
+                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati"/>
               </AvGroup>
               <AvGroup>
                 <Label id="birimLabel" for="urun-birim">
                   <Translate contentKey="koopApp.urun.birim">Birim</Translate>
                 </Label>
-                <AvInput id="urun-birim" type="select" className="form-control" name="birim" value={(!isNew && urunEntity.birim) || 'YOK'}>
+                <AvInput id="urun-birim" type="select" className="form-control" name="birim"
+                         value={(!isNew && urunEntity.birim) || 'YOK'}>
                   <option value="YOK">{translate('koopApp.Birim.YOK')}</option>
                   <option value="ADET">{translate('koopApp.Birim.ADET')}</option>
                   <option value="GRAM">{translate('koopApp.Birim.GRAM')}</option>
@@ -127,13 +137,13 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
               </AvGroup>
               <AvGroup check>
                 <Label id="dayanismaUrunuLabel">
-                  <AvInput id="urun-dayanismaUrunu" type="checkbox" className="form-check-input" name="dayanismaUrunu" />
+                  <AvInput id="urun-dayanismaUrunu" type="checkbox" className="form-check-input" name="dayanismaUrunu"/>
                   <Translate contentKey="koopApp.urun.dayanismaUrunu">Dayanisma Urunu</Translate>
                 </Label>
               </AvGroup>
               <AvGroup check>
                 <Label id="satistaLabel">
-                  <AvInput id="urun-satista" type="checkbox" className="form-check-input" name="satista" />
+                  <AvInput id="urun-satista" type="checkbox" className="form-check-input" name="satista"/>
                   <Translate contentKey="koopApp.urun.satista">Satista</Translate>
                 </Label>
               </AvGroup>
@@ -154,22 +164,35 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
+                <div>
+                  <Label for="urun-urunSorumlusu">
+                    <Translate contentKey="koopApp.urun.urunSorumlusu">Urun Sorumlusu</Translate>
+                  </Label>
+                </div>
+                <div>
+                  <Dropdown value={urunState.urunSorumlusu} options={urunUsers}
+                            optionLabel="login" onChange={onChangeUrunSorumlusu}
+                            filter={true} name="urunSorumlusu" style={{width: '400px'}}
+                            filterPlaceholder="Sorumlu Ara" filterBy="login" placeholder="Ürün sorumlusu seçin"/>
+                </div>
+              </AvGroup>
+              <AvGroup>
                 <Label for="urun-kdvKategorisi">
                   <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate>
                 </Label>
                 <AvInput id="urun-kdvKategorisi" type="select" className="form-control" name="kdvKategorisi.id">
-                  <option value="" key="0" />
+                  <option value="" key="0"/>
                   {kdvKategorisis
                     ? kdvKategorisis.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.kategoriAdi}
-                        </option>
-                      ))
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.kategoriAdi}
+                      </option>
+                    ))
                     : null}
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/urun" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -177,7 +200,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
@@ -193,18 +216,19 @@ const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   kdvKategorisis: storeState.kdvKategorisi.entities,
   urunEntity: storeState.urun.entity,
+  urunUsers: storeState.urun.users,
   loading: storeState.urun.loading,
   updating: storeState.urun.updating,
   updateSuccess: storeState.urun.updateSuccess
 });
 
 const mapDispatchToProps = {
-  getUsers,
   getKdvKategorisis,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  getUrunUsers
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

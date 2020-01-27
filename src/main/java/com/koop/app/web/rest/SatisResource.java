@@ -78,7 +78,8 @@ public class SatisResource {
                 BigDecimal guncelStok = stokHareketi.getUrun().getStok();
                 if (guncelStok.compareTo(stokSiniri) <= 0) {
                     String content = "Stok azaldı ==> Stok sınırı: " + stokSiniri + "  --  Güncel stok: " + guncelStok;
-                    mailService.sendEmail("mertmr@gmail.com", "Stok Uyarısı", content, false, true);
+                    mailService.sendEmail(stokHareketi.getUrun().getUrunSorumlusu().getEmail(),
+                        "Stok Uyarısı", content, false, true);
                 }
             }
         }

@@ -74,9 +74,9 @@ export const UrunDetail = (props: IUrunDetailProps) => {
           </dt>
           <dd>{urunEntity.urunKategorisi}</dd>
           <dt>
-            <Translate contentKey="koopApp.urun.user">User</Translate>
+            <Translate contentKey="koopApp.urun.urunSorumlusu">Urun Sorumlusu</Translate>
           </dt>
-          <dd>{urunEntity.user ? urunEntity.user.login : ''}</dd>
+          <dd>{urunEntity.urunSorumlusu ? urunEntity.urunSorumlusu.login : ''}</dd>
           <dt>
             <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate>
           </dt>

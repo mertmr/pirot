@@ -17,6 +17,7 @@ import reducer, {
 } from 'app/entities/urun/urun.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IUrun, defaultValue } from 'app/shared/model/urun.model';
+import { IUser } from 'app/shared/model/user.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -31,6 +32,7 @@ describe('Entities reducer tests', () => {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IUrun>,
+    users: [] as Array<IUser>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,

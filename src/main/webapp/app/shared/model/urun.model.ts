@@ -13,10 +13,11 @@ export interface IUrun {
   dayanismaUrunu?: boolean;
   satista?: boolean;
   urunKategorisi?: UrunKategorisi;
-  user?: IUser;
+  urunSorumlusu?: IUser;
   kdvKategorisi?: IKdvKategorisi;
 }
 
-export const defaultValue: IUrun = {
-  dayanismaUrunu: false
+export const defaultValue: Readonly<IUrun> = {
+  dayanismaUrunu: false,
+  satista: false
 };

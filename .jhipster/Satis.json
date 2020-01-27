@@ -12,6 +12,10 @@
         {
             "fieldName": "ortagaSatis",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "kartliSatis",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [

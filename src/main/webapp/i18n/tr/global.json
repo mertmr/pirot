@@ -20,6 +20,8 @@
         "kasaHareketleri": "Kasa Hareketleri",
         "nobetHareketleri": "Nöbet Hareketleri",
         "kisiler": "Kişiler",
+        "satis": "Satış",
+        "urun": "Ürün",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "reports": {

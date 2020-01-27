@@ -22,9 +22,9 @@
       "musteriFiyati": "Musteri Fiyati",
       "birim": "Birim",
       "dayanismaUrunu": "Dayanisma Urunu",
-      "satista": "Satışta",
+      "satista": "Satista",
       "urunKategorisi": "Urun Kategorisi",
-      "user": "User",
+      "urunSorumlusu": "Urun Sorumlusu",
       "kdvKategorisi": "Kdv Kategorisi"
     }
   }

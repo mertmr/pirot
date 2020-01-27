@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-
+    
     <!--
         Added the entity Urun.
     -->
@@ -27,7 +27,7 @@
             <column name="musteri_fiyati" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
-            <column name="birim" type="int">
+            <column name="birim" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="dayanisma_urunu" type="boolean">
@@ -36,10 +36,10 @@
             <column name="satista" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="urun_kategorisi" type="int">
+            <column name="urun_kategorisi" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="user_id" type="bigint">
+            <column name="urun_sorumlusu_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="kdv_kategorisi_id" type="bigint">
@@ -72,10 +72,10 @@
             <column name="stok" type="numeric"/>
             <column name="stok_siniri" type="numeric"/>
             <column name="musteri_fiyati" type="numeric"/>
-            <column name="birim" type="numeric"/>
+            <column name="birim" type="string"/>
             <column name="dayanisma_urunu" type="boolean"/>
             <column name="satista" type="boolean"/>
-            <column name="urun_kategorisi" type="numeric"/>
+            <column name="urun_kategorisi" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

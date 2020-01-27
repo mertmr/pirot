@@ -187,4 +187,10 @@ public class UserResource {
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }
+
+    @GetMapping("/users/findAll")
+    public ResponseEntity<List<User>> findAll() {
+        final List<User> users = userService.findAllUsersWithLogin();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 }

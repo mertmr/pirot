@@ -44,6 +44,7 @@ entity Satis {
     tarih ZonedDateTime
     toplamTutar BigDecimal
     ortagaSatis Boolean
+    kartliSatis Boolean
 }
 
 entity SatisStokHareketleri {
@@ -123,7 +124,7 @@ relationship ManyToOne {
   Satis{user(login)} to User
   StokGirisi{user(login)} to User
   Uretici{user(login)} to User
-  Urun{user(login)} to User
+  Urun{urunSorumlusu(login)} to User
   UrunFiyat{user(login)} to User
   Virman{user(login)} to User
   BorcAlacak{user(login)} to User

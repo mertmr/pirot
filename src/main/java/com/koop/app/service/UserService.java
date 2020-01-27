@@ -317,4 +317,8 @@ public class UserService {
         }
         throw new RuntimeException("User not found");
     }
+
+    public List<User> findAllUsersWithLogin() {
+        return userRepository.findAllUsersWithLogin();
+    }
 }

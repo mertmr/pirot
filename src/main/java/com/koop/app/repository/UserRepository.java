@@ -1,19 +1,18 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.User;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.time.Instant;
 
 /**
  * Spring Data JPA repository for the {@link User} entity.
@@ -35,6 +34,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneByEmailIgnoreCase(String email);
 
     Optional<User> findOneByLogin(String login);
+
+    @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
+    @Query("select user from User user where user.activated=true")
+    List<User> findAllUsersWithLogin();
 
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesById(Long id);

@@ -17,7 +17,7 @@ export const ACTION_TYPES = {
 const initialState = {
   loading: false,
   errorMessage: null,
-  users: [] as ReadonlyArray<IUser>,
+  users: [] as Array<IUser>,
   authorities: [] as any[],
   user: defaultValue,
   updating: false,

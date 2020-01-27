@@ -67,7 +67,6 @@ public class UrunResource {
             throw new BadRequestAlertException("A new urun cannot already have an ID", ENTITY_NAME, "idexists");
         }
         User currentUser = userService.getCurrentUser();
-        urun.setUser(currentUser);
         Urun result = urunRepository.save(urun);
         createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity.created(new URI("/api/uruns/" + result.getId()))
@@ -91,7 +90,6 @@ public class UrunResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         User currentUser = userService.getCurrentUser();
-        urun.setUser(currentUser);
         Urun result = urunRepository.save(urun);
         createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity.ok()
