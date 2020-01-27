@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Satis;
+import com.koop.app.domain.Urun;
 import com.koop.app.dto.Ciro;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,9 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     @Query("select satis from Satis satis where satis.user.login = ?#{principal.username}")
     List<Satis> findByUserIsCurrentUser();
 
+    @Query("select satis from Satis satis where satis.user.login like :login")
+    Page<Satis> findSatisByLogin(@Param("login") String login, Pageable pageable);
+
     @Query("select satis.id from Satis satis")
     Page<Long> findAllIds(Pageable var1);
 
@@ -45,9 +49,6 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
 
     @EntityGraph(attributePaths = "stokHareketleriLists")
     Optional<Satis> findOneWithStokHareketleriById(Long id);
-
-    @Query("select satis.id from Satis satis where satis.tarih between :yesterday and :today")
-    List<Long> findAllIdsToday(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 
     @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today")
     Double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);

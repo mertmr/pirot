@@ -2,6 +2,7 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.Satis;
 import com.koop.app.domain.SatisStokHareketleri;
+import com.koop.app.domain.Urun;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.service.MailService;
 import com.koop.app.service.SatisService;
@@ -146,5 +147,21 @@ public class SatisResource {
         log.debug("REST request to delete Satis : {}", id);
         satisRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * {@code SEARCH  /_search/satis?query=:query} : search for the urun corresponding
+     * to the query.
+     *
+     * @param query the query of the satis search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
+     */
+    @GetMapping("/_search/satis")
+    public ResponseEntity<List<Satis>> searchSatis(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Satis for query {}", query);
+        Page<Satis> page = satisService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

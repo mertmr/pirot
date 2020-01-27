@@ -7,6 +7,8 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -94,5 +96,9 @@ public class SatisService {
         BigDecimal kasaHareketiFarki = satis.getToplamTutar().subtract(satisOncekiHali.getToplamTutar());
         kasaHareketleriService.createKasaHareketi(kasaHareketiFarki, "Satis Guncellemesi");
         return satisRepository.save(satis);
+    }
+
+    public Page<Satis> search(String query, Pageable pageable) {
+        return satisRepository.findSatisByLogin(query, pageable);
     }
 }
