@@ -30,7 +30,7 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     @Query("select satis from Satis satis where satis.user.login = ?#{principal.username}")
     List<Satis> findByUserIsCurrentUser();
 
-    @Query("select satis from Satis satis where satis.user.login like :login")
+    @Query("select satis from Satis satis where satis.user.login like concat('%',:login,'%')")
     Page<Satis> findSatisByLogin(@Param("login") String login, Pageable pageable);
 
     @Query("select satis.id from Satis satis")
