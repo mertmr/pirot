@@ -2,6 +2,7 @@ package com.koop.app.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.javers.core.metamodel.annotation.DiffIgnore;
 
 import javax.persistence.*;
 
@@ -39,6 +40,7 @@ public class Satis implements Serializable {
 
     @OneToMany(mappedBy = "satis")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @DiffIgnore
     private Set<SatisStokHareketleri> stokHareketleriLists = new HashSet<>();
 
     @ManyToOne
