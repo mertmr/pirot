@@ -1,24 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, TextFormat, JhiPagination, JhiItemCount } from 'react-jhipster';
+import {Button, Col, InputGroup, Row, Table} from 'reactstrap';
+import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {JhiItemCount, JhiPagination, TextFormat, Translate} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './virman.reducer';
-import { IVirman } from 'app/shared/model/virman.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import {getEntities, getSearchEntities} from './virman.reducer';
+import {APP_DATE_FORMAT} from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { getSortState, IPaginationBaseState } from 'app/shared/util/pagination-utils';
+import {getSortState} from 'app/shared/util/pagination-utils';
 
 export interface IVirmanProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Virman = (props: IVirmanProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search, setSearch] = useState('');
 
   const getAllEntities = () => {
+    if (search) {
+      props.getSearchEntities(
+        search,
+        paginationState.activePage - 1,
+        paginationState.itemsPerPage,
+        `${paginationState.sort},${paginationState.order}`
+      );
+    } else {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    }
   };
 
   useEffect(() => {
@@ -44,6 +54,31 @@ export const Virman = (props: IVirmanProps) => {
     });
   };
 
+  const handleSearch = event => setSearch(event.target.value);
+
+  const startSearching = () => {
+    if (paginationState.activePage === 1 && (search || search === ''))
+      getAllEntities();
+    else if (search) {
+      setPaginationState({
+        ...paginationState,
+        activePage: 1
+      });
+    }
+  };
+
+  useEffect(() => {
+    getAllEntities();
+  }, [paginationState.activePage]);
+
+  const clear = () => {
+    setSearch('');
+    setPaginationState({
+      ...paginationState,
+      activePage: 1
+    });
+  };
+
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
@@ -61,6 +96,29 @@ export const Virman = (props: IVirmanProps) => {
           <Translate contentKey="koopApp.virman.home.createLabel">Create new Virman</Translate>
         </Link>
       </h2>
+      <Row>
+        <Col sm="12">
+          <AvForm onSubmit={startSearching}>
+            <AvGroup>
+              <InputGroup>
+                <AvInput
+                  type="text"
+                  name="search"
+                  value={search}
+                  onChange={handleSearch}
+                  placeholder="Kullanıcıya Göre Virman Ara"
+                />
+                <Button className="input-group-addon">
+                  <FontAwesomeIcon icon="search"/>
+                </Button>
+                <Button type="reset" className="input-group-addon" onClick={clear}>
+                  <FontAwesomeIcon icon="trash"/>
+                </Button>
+              </InputGroup>
+            </AvGroup>
+          </AvForm>
+        </Col>
+      </Row>
       <div className="table-responsive">
         {virmanList && virmanList.length > 0 ? (
           <Table responsive>
@@ -165,7 +223,8 @@ const mapStateToProps = ({ virman }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
+  getSearchEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

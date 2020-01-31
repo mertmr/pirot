@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import {Button, Col, InputGroup, Row, Table} from 'reactstrap';
+import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
 import { Translate, ICrudGetAllAction, TextFormat, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -11,15 +12,26 @@ import { IGider } from 'app/shared/model/gider.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { getSortState, IPaginationBaseState } from 'app/shared/util/pagination-utils';
+import {getSearchEntities} from "app/entities/gider/gider.reducer";
 
 
 export interface IGiderProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Gider = (props: IGiderProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search, setSearch] = useState('');
 
   const getAllEntities = () => {
-    props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    if (search) {
+      props.getSearchEntities(
+        search,
+        paginationState.activePage - 1,
+        paginationState.itemsPerPage,
+        `${paginationState.sort},${paginationState.order}`
+      );
+    } else {
+      props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    }
   };
 
   useEffect(() => {
@@ -45,6 +57,36 @@ export const Gider = (props: IGiderProps) => {
     });
   };
 
+  const handleSearch = event => setSearch(event.target.value);
+
+  const startSearching = () => {
+    if (paginationState.activePage === 1 && (search || search === ''))
+      getAllEntities();
+    else if (search) {
+      setPaginationState({
+        ...paginationState,
+        activePage: 1
+      });
+    }
+  };
+
+  useEffect(() => {
+    props.getSearchEntities(
+      search,
+      paginationState.activePage - 1,
+      paginationState.itemsPerPage,
+      `${paginationState.sort},${paginationState.order}`
+    );
+  }, [paginationState.activePage]);
+
+  const clear = () => {
+    setSearch('');
+    setPaginationState({
+      ...paginationState,
+      activePage: 1
+    });
+  };
+
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
@@ -62,6 +104,29 @@ export const Gider = (props: IGiderProps) => {
           <Translate contentKey="koopApp.gider.home.createLabel">Create new Gider</Translate>
         </Link>
       </h2>
+      <Row>
+        <Col sm="12">
+          <AvForm onSubmit={startSearching}>
+            <AvGroup>
+              <InputGroup>
+                <AvInput
+                  type="text"
+                  name="search"
+                  value={search}
+                  onChange={handleSearch}
+                  placeholder="Kullanıcıya Göre Gider Ara"
+                />
+                <Button className="input-group-addon">
+                  <FontAwesomeIcon icon="search"/>
+                </Button>
+                <Button type="reset" className="input-group-addon" onClick={clear}>
+                  <FontAwesomeIcon icon="trash"/>
+                </Button>
+              </InputGroup>
+            </AvGroup>
+          </AvForm>
+        </Col>
+      </Row>
       <div className="table-responsive">
         {giderList && giderList.length > 0 ? (
           <Table responsive>
@@ -166,7 +231,8 @@ const mapStateToProps = ({ gider }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
+  getSearchEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

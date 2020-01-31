@@ -142,4 +142,20 @@ public class VirmanResource {
         virmanRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * {@code SEARCH  /_search/virman?query=:query} : search for the urun corresponding
+     * to the query.
+     *
+     * @param query    the query of the virman search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
+     */
+    @GetMapping("/_search/virman")
+    public ResponseEntity<List<Virman>> searchVirman(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Virman for query {}", query);
+        Page<Virman> page = virmanRepository.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

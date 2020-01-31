@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
+import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util';
 
-import { IVirman, defaultValue } from 'app/shared/model/virman.model';
+import { defaultValue, IVirman } from 'app/shared/model/virman.model';
 
 export const ACTION_TYPES = {
+  SEARCH_VIRMAN: 'satis/SEARCH_VIRMAN',
   FETCH_VIRMAN_LIST: 'virman/FETCH_VIRMAN_LIST',
   FETCH_VIRMAN: 'virman/FETCH_VIRMAN',
   CREATE_VIRMAN: 'virman/CREATE_VIRMAN',
@@ -31,6 +32,7 @@ export type VirmanState = Readonly<typeof initialState>;
 
 export default (state: VirmanState = initialState, action): VirmanState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.SEARCH_VIRMAN):
     case REQUEST(ACTION_TYPES.FETCH_VIRMAN_LIST):
     case REQUEST(ACTION_TYPES.FETCH_VIRMAN):
       return {
@@ -48,6 +50,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
         updateSuccess: false,
         updating: true
       };
+    case FAILURE(ACTION_TYPES.SEARCH_VIRMAN):
     case FAILURE(ACTION_TYPES.FETCH_VIRMAN_LIST):
     case FAILURE(ACTION_TYPES.FETCH_VIRMAN):
     case FAILURE(ACTION_TYPES.CREATE_VIRMAN):
@@ -60,6 +63,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case SUCCESS(ACTION_TYPES.SEARCH_VIRMAN):
     case SUCCESS(ACTION_TYPES.FETCH_VIRMAN_LIST):
       return {
         ...state,
@@ -98,8 +102,14 @@ export default (state: VirmanState = initialState, action): VirmanState => {
 };
 
 const apiUrl = 'api/virmen';
+const apiSearchUrl = 'api/_search/virman';
 
 // Actions
+
+export const getSearchEntities: ICrudSearchAction<IVirman> = (query, page, size, sort) => ({
+  type: ACTION_TYPES.SEARCH_VIRMAN,
+  payload: axios.get<IVirman>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+});
 
 export const getEntities: ICrudGetAllAction<IVirman> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;

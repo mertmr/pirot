@@ -1,6 +1,7 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Gider;
+import com.koop.app.domain.Satis;
 import com.koop.app.domain.User;
 import com.koop.app.domain.enumeration.OdemeAraci;
 import com.koop.app.repository.GiderRepository;
@@ -143,5 +144,21 @@ public class GiderResource {
         log.debug("REST request to delete Gider : {}", id);
         giderRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * {@code SEARCH  /_search/gider?query=:query} : search for the urun corresponding
+     * to the query.
+     *
+     * @param query the query of the gider search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
+     */
+    @GetMapping("/_search/gider")
+    public ResponseEntity<List<Gider>> searchGider(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Gider for query {}", query);
+        Page<Gider> page = giderRepository.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

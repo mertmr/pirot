@@ -1,12 +1,14 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, ICrudSearchAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IGider, defaultValue } from 'app/shared/model/gider.model';
+import { ISatis } from 'app/shared/model/satis.model';
 
 export const ACTION_TYPES = {
+  SEARCH_GIDER: 'satis/SEARCH_GIDER',
   FETCH_GIDER_LIST: 'gider/FETCH_GIDER_LIST',
   FETCH_GIDER: 'gider/FETCH_GIDER',
   CREATE_GIDER: 'gider/CREATE_GIDER',
@@ -31,6 +33,7 @@ export type GiderState = Readonly<typeof initialState>;
 
 export default (state: GiderState = initialState, action): GiderState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.SEARCH_GIDER):
     case REQUEST(ACTION_TYPES.FETCH_GIDER_LIST):
     case REQUEST(ACTION_TYPES.FETCH_GIDER):
       return {
@@ -48,6 +51,7 @@ export default (state: GiderState = initialState, action): GiderState => {
         updateSuccess: false,
         updating: true
       };
+    case FAILURE(ACTION_TYPES.SEARCH_GIDER):
     case FAILURE(ACTION_TYPES.FETCH_GIDER_LIST):
     case FAILURE(ACTION_TYPES.FETCH_GIDER):
     case FAILURE(ACTION_TYPES.CREATE_GIDER):
@@ -60,6 +64,7 @@ export default (state: GiderState = initialState, action): GiderState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case SUCCESS(ACTION_TYPES.SEARCH_GIDER):
     case SUCCESS(ACTION_TYPES.FETCH_GIDER_LIST):
       return {
         ...state,
@@ -98,8 +103,14 @@ export default (state: GiderState = initialState, action): GiderState => {
 };
 
 const apiUrl = 'api/giders';
+const apiSearchUrl = 'api/_search/gider';
 
 // Actions
+
+export const getSearchEntities: ICrudSearchAction<IGider> = (query, page, size, sort) => ({
+  type: ACTION_TYPES.SEARCH_GIDER,
+  payload: axios.get<IGider>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+});
 
 export const getEntities: ICrudGetAllAction<IGider> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;

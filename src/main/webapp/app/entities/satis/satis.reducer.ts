@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, ICrudSearchAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -7,6 +7,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { ISatis, defaultValue } from 'app/shared/model/satis.model';
 
 export const ACTION_TYPES = {
+  SEARCH_SATIS: 'satis/SEARCH_SATIS',
   FETCH_SATIS_LIST: 'satis/FETCH_SATIS_LIST',
   FETCH_SATIS: 'satis/FETCH_SATIS',
   CREATE_SATIS: 'satis/CREATE_SATIS',
@@ -31,6 +32,7 @@ export type SatisState = Readonly<typeof initialState>;
 
 export default (state: SatisState = initialState, action): SatisState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.SEARCH_SATIS):
     case REQUEST(ACTION_TYPES.FETCH_SATIS_LIST):
     case REQUEST(ACTION_TYPES.FETCH_SATIS):
       return {
@@ -48,6 +50,7 @@ export default (state: SatisState = initialState, action): SatisState => {
         updateSuccess: false,
         updating: true
       };
+    case FAILURE(ACTION_TYPES.SEARCH_SATIS):
     case FAILURE(ACTION_TYPES.FETCH_SATIS_LIST):
     case FAILURE(ACTION_TYPES.FETCH_SATIS):
     case FAILURE(ACTION_TYPES.CREATE_SATIS):
@@ -60,6 +63,7 @@ export default (state: SatisState = initialState, action): SatisState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case SUCCESS(ACTION_TYPES.SEARCH_SATIS):
     case SUCCESS(ACTION_TYPES.FETCH_SATIS_LIST):
       return {
         ...state,
@@ -98,8 +102,14 @@ export default (state: SatisState = initialState, action): SatisState => {
 };
 
 const apiUrl = 'api/satis';
+const apiSearchUrl = 'api/_search/satis';
 
 // Actions
+
+export const getSearchEntities: ICrudSearchAction<ISatis> = (query, page, size, sort) => ({
+  type: ACTION_TYPES.SEARCH_SATIS,
+  payload: axios.get<ISatis>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+});
 
 export const getEntities: ICrudGetAllAction<ISatis> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;

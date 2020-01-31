@@ -25,9 +25,8 @@ public class KasaHareketleriService {
      *                       Eger bir hareket duzenlemeye ugruyorsa buraya gonderilen rakam duzenlemeye ugrayan tutarin
      *                       degisimi kadar olmalidir.
      * @param hareketMesaji Yapilan hareketi
-     * @return
      */
-    public KasaHareketleri createKasaHareketi(BigDecimal eklenecekTutar, String hareketMesaji){
+    public void createKasaHareketi(BigDecimal eklenecekTutar, String hareketMesaji){
         KasaHareketleri newKasaHareketi = new KasaHareketleri();
         KasaHareketleri sonKasaHareketi = kasaHareketleriRepository.findFirstByOrderByTarihDesc();
         if(sonKasaHareketi == null) {
@@ -39,6 +38,5 @@ public class KasaHareketleriService {
         newKasaHareketi.setHareket(hareketMesaji);
         newKasaHareketi.setTarih(ZonedDateTime.now());
         kasaHareketleriRepository.save(newKasaHareketi);
-        return newKasaHareketi;
     }
 }
