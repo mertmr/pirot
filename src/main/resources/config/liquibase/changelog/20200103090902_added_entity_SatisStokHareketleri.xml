@@ -11,7 +11,6 @@
         Added the entity SatisStokHareketleri.
     -->
     <changeSet id="20200103090902-1" author="jhipster">
-        <createSequence sequenceName="satis_stok_hareketleri_id_seq" startValue="1000" incrementBy="1"/>
         <createTable tableName="satis_stok_hareketleri">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

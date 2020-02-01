@@ -37,8 +37,8 @@ export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteCompo
 }
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
-  const [userId, setUserId] = useState(0);
-  const [toplamTutarState, setToplamTutarState] = useState('0');
+  const [paraUstu, setParaUstu] = useState(0);
+  const [nakit, setNakit] = useState(0);
   const [kdvKategorisiList, setKdvKategorisiList] = useState(kdvDefaultList);
   const [satis, setSatis] = useState(satisDefault);
   const [stokHareketleriLists, setStokHareketleriLists] = useState([{
@@ -68,6 +68,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     setStokHareketleriLists([...stokHareketleriLists, yeniUrun]);
   };
 
+  const onChangeParaUstu = (value) => {
+    setNakit(value);
+    setParaUstu(value - satis.toplamTutar);
+  };
+
   const toplamHesapla = (stokHareketleriListesi) => {
     let toplamTutar = 0;
     for (const stokHareketi of stokHareketleriListesi) {
@@ -78,6 +83,9 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
       ...satis,
       toplamTutar
     });
+    if (nakit && nakit > 0) {
+      setParaUstu(nakit - toplamTutar);
+    }
   };
 
   const kdvListesiCikar = (secilenUrun) => {
@@ -309,6 +317,34 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       </td>
                     </tr>
                     <tr>
+                      <td/>
+                      <td/>
+                      <td/>
+                      <td/>
+                      <td>
+                        <div className="text-right">
+                          <Label for="satis-nakitTutar">
+                            Nakit Verilen
+                          </Label>
+                          <InputNumber onChange={(value) => onChangeParaUstu(value)}/>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td/>
+                      <td/>
+                      <td/>
+                      <td/>
+                      <td>
+                        <div className="text-right">
+                          <Label for="satis-paraustu">
+                            Para Üstü
+                          </Label>
+                          <InputNumber value={paraUstu}/>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
                       <AvGroup>
                         <Label for="gider-user">
                           Satış Tarihi
@@ -322,7 +358,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       </AvGroup>
                       <AvGroup check>
                         <Label id="kartliSatisLabel">
-                          <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input" name="kartliSatis" />
+                          <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input"
+                                   name="kartliSatis"/>
                           <Translate contentKey="koopApp.satis.kartliSatis">Kartli Satis</Translate>
                         </Label>
                       </AvGroup>

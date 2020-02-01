@@ -11,7 +11,6 @@
         Added the entity Satis.
     -->
     <changeSet id="20200103090901-1" author="jhipster">
-        <createSequence sequenceName="satis_id_seq" startValue="1000" incrementBy="1"/>
         <createTable tableName="satis">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
