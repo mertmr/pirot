@@ -6,7 +6,6 @@ import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.service.StokGirisiService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -16,15 +15,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,18 +35,13 @@ import java.util.Optional;
 @Transactional
 public class StokGirisiResource {
 
-    private final Logger log = LoggerFactory.getLogger(StokGirisiResource.class);
-
     private static final String ENTITY_NAME = "stokGirisi";
-
+    private final Logger log = LoggerFactory.getLogger(StokGirisiResource.class);
+    private final StokGirisiRepository stokGirisiRepository;
+    private final UserService userService;
+    private final StokGirisiService stokGirisiService;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final StokGirisiRepository stokGirisiRepository;
-
-    private final UserService userService;
-
-    private final StokGirisiService stokGirisiService;
 
     public StokGirisiResource(StokGirisiRepository stokGirisiRepository, UserService userService, StokGirisiService stokGirisiService) {
         this.stokGirisiRepository = stokGirisiRepository;
@@ -71,7 +64,8 @@ public class StokGirisiResource {
         }
         User currentUser = userService.getCurrentUser();
         stokGirisi.setUser(currentUser);
-        stokGirisi.setTarih(ZonedDateTime.now());
+        if (stokGirisi.getTarih() == null)
+            stokGirisi.setTarih(ZonedDateTime.now());
         StokGirisi result = stokGirisiService.save(stokGirisi);
         return ResponseEntity.created(new URI("/api/stok-girisis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -102,9 +96,7 @@ public class StokGirisiResource {
     /**
      * {@code GET  /stok-girisis} : get all the stokGirisis.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stokGirisis in body.
      */
     @GetMapping("/stok-girisis")

@@ -1,7 +1,6 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Gider;
-import com.koop.app.domain.Satis;
 import com.koop.app.domain.User;
 import com.koop.app.domain.enumeration.OdemeAraci;
 import com.koop.app.repository.GiderRepository;
@@ -67,7 +66,8 @@ public class GiderResource {
 
         User currentUser = userService.getCurrentUser();
         gider.setUser(currentUser);
-        gider.setTarih(ZonedDateTime.now());
+        if (gider.getTarih() == null)
+            gider.setTarih(ZonedDateTime.now());
         Gider result = giderRepository.save(gider);
         if (gider.getOdemeAraci() == OdemeAraci.NAKIT) {
             kasaHareketleriService.createKasaHareketi(gider.getTutar().negate(), "Kasadan Nakit Gider");
@@ -94,7 +94,8 @@ public class GiderResource {
         }
         User currentUser = userService.getCurrentUser();
         gider.setUser(currentUser);
-        gider.setTarih(ZonedDateTime.now());
+        if (gider.getTarih() == null)
+            gider.setTarih(ZonedDateTime.now());
         Gider oncekiGider = giderRepository.findById(gider.getId()).get();
         if (gider.getOdemeAraci() == OdemeAraci.NAKIT) {
             kasaHareketleriService.createKasaHareketi(gider.getTutar().subtract(oncekiGider.getTutar()).negate(),
@@ -150,7 +151,7 @@ public class GiderResource {
      * {@code SEARCH  /_search/gider?query=:query} : search for the urun corresponding
      * to the query.
      *
-     * @param query the query of the gider search.
+     * @param query    the query of the gider search.
      * @param pageable the pagination information.
      * @return the result of the search.
      */

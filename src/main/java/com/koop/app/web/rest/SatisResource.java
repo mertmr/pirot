@@ -2,11 +2,9 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.Satis;
 import com.koop.app.domain.SatisStokHareketleri;
-import com.koop.app.domain.Urun;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.service.MailService;
 import com.koop.app.service.SatisService;
-import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -39,15 +37,13 @@ public class SatisResource {
     private static final String ENTITY_NAME = "satis";
     private final Logger log = LoggerFactory.getLogger(SatisResource.class);
     private final SatisRepository satisRepository;
-    private final UserService userService;
     private final SatisService satisService;
     private final MailService mailService;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public SatisResource(SatisRepository satisRepository, UserService userService, SatisService satisService, MailService mailService) {
+    public SatisResource(SatisRepository satisRepository, SatisService satisService, MailService mailService) {
         this.satisRepository = satisRepository;
-        this.userService = userService;
         this.satisService = satisService;
         this.mailService = mailService;
     }
@@ -153,7 +149,7 @@ public class SatisResource {
      * {@code SEARCH  /_search/satis?query=:query} : search for the urun corresponding
      * to the query.
      *
-     * @param query the query of the satis search.
+     * @param query    the query of the satis search.
      * @param pageable the pagination information.
      * @return the result of the search.
      */

@@ -6,11 +6,12 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity SatisStokHareketleri.
     -->
     <changeSet id="20200103090902-1" author="jhipster">
+        <createSequence sequenceName="satis_stok_hareketleri_id_seq" startValue="1000" incrementBy="1"/>
         <createTable tableName="satis_stok_hareketleri">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

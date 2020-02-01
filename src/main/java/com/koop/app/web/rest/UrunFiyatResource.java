@@ -5,7 +5,6 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -15,14 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -35,16 +33,12 @@ import java.util.Optional;
 @Transactional
 public class UrunFiyatResource {
 
-    private final Logger log = LoggerFactory.getLogger(UrunFiyatResource.class);
-
     private static final String ENTITY_NAME = "urunFiyat";
-
+    private final Logger log = LoggerFactory.getLogger(UrunFiyatResource.class);
+    private final UrunFiyatRepository urunFiyatRepository;
+    private final UserService userService;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final UrunFiyatRepository urunFiyatRepository;
-
-    private final UserService userService;
 
     public UrunFiyatResource(UrunFiyatRepository urunFiyatRepository, UserService userService) {
         this.urunFiyatRepository = urunFiyatRepository;
@@ -66,7 +60,8 @@ public class UrunFiyatResource {
         }
         User currentUser = userService.getCurrentUser();
         urunFiyat.setUser(currentUser);
-        urunFiyat.setTarih(ZonedDateTime.now());
+        if (urunFiyat.getTarih() == null)
+            urunFiyat.setTarih(ZonedDateTime.now());
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity.created(new URI("/api/urun-fiyats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -90,7 +85,8 @@ public class UrunFiyatResource {
         }
         User currentUser = userService.getCurrentUser();
         urunFiyat.setUser(currentUser);
-        urunFiyat.setTarih(ZonedDateTime.now());
+        if (urunFiyat.getTarih() == null)
+            urunFiyat.setTarih(ZonedDateTime.now());
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString()))
@@ -100,9 +96,7 @@ public class UrunFiyatResource {
     /**
      * {@code GET  /urun-fiyats} : get all the urunFiyats.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of urunFiyats in body.
      */
     @GetMapping("/urun-fiyats")

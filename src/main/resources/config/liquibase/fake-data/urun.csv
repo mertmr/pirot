@@ -1,11 +1,3 @@
 id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;satista;urun_kategorisi
-1;Massachusetts lime California;94838;59151;40295;ADET;true;true;GIDA_DISI
-2;Small Plastic Tuna magenta Soft;39314;93805;11820;ADET;false;false;GIDA_DISI
-3;multi-tasking bypass circuit;60629;41557;86379;YOK;true;false;GIDA
-4;Distributed Fish;37405;20361;70204;GRAM;false;true;GIDA_DISI
-5;Bangladesh haptic;354;76567;316;GRAM;true;false;GIDA
-6;calculating optical Home;40191;7324;4496;YOK;true;false;YOK
-7;synthesizing Metrics Mauritius Rupee;6140;93976;81958;GRAM;true;true;GIDA_DISI
-8;Underpass Analyst;68698;17129;33047;GRAM;true;false;YOK
-9;Checking Account haptic web services;48282;14600;95495;GRAM;false;true;YOK
-10;Underpass sensor;18220;4060;59798;YOK;true;false;GIDA_DISI
+1;Portakal;12000;1000;30;GRAM;false;true;GIDA
+1;Nohut;20;2;13;ADET;false;true;GIDA

@@ -28,7 +28,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Package application
-        run: ./mvnw -ntp package -Pprod -DskipTests
+        run: ./mvnw -ntp package -Pprod
       - name: Build and publish docker image
         if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/'))
         run: |

@@ -42,13 +42,13 @@ public class SatisService {
         if (satis.getTarih() == null) {
             satis.setTarih(ZonedDateTime.now());
         }
+        Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
         if (satis.getTarih() == null)
             satis.setTarih(ZonedDateTime.now());
         Satis result = satisRepository.save(satis);
 
-        Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
 
         for (SatisStokHareketleri stokHareketi : stokHareketleriLists) {

@@ -116,6 +116,7 @@ public class UrunFiyatResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void createUrunFiyat() throws Exception {
         int databaseSizeBeforeCreate = urunFiyatRepository.findAll().size();
 

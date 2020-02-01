@@ -51,7 +51,7 @@ public class StokGirisiResourceIT {
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
 
-    private static final StokHareketiTipi DEFAULT_STOK_HAREKETI_TIPI = StokHareketiTipi.YOK;
+    private static final StokHareketiTipi DEFAULT_STOK_HAREKETI_TIPI = StokHareketiTipi.FIRE;
     private static final StokHareketiTipi UPDATED_STOK_HAREKETI_TIPI = StokHareketiTipi.STOK_GIRISI;
 
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
@@ -138,6 +138,7 @@ public class StokGirisiResourceIT {
     @WithMockUser(value = "admin")
     public void createStokGirisi() throws Exception {
         int databaseSizeBeforeCreate = stokGirisiRepository.findAll().size();
+        stokGirisi.urun(UrunResourceIT.createEntity(em));
 
         // Create the StokGirisi
         restStokGirisiMockMvc.perform(post("/api/stok-girisis")
