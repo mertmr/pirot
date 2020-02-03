@@ -37,7 +37,15 @@
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
-    "blueprints": []
+    "blueprints": [],
+    "gcpProjectId": "koop-266915",
+    "gaeServiceName": "koop",
+    "gaeLocation": "northamerica-northeast1",
+    "gaeInstanceClass": "F2",
+    "gaeScalingType": "automatic",
+    "gaeMinInstances": "0",
+    "gaeMaxInstances": "1",
+    "gaeCloudSQLInstanceNeeded": "N"
   },
   "entities": []
 }
