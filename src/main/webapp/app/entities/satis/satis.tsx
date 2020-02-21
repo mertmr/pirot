@@ -5,6 +5,7 @@ import {Button, Col, InputGroup, Row, Table} from 'reactstrap';
 import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
 import {JhiItemCount, JhiPagination, TextFormat, Translate} from 'react-jhipster';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { Checkbox } from 'antd';
 
 import {IRootState} from 'app/shared/reducers';
 import {getEntities, getSearchEntities} from './satis.reducer';
@@ -166,8 +167,8 @@ export const Satis = (props: ISatisProps) => {
                   <TextFormat type="date" value={satis.tarih} format={APP_DATE_FORMAT}/>
                 </td>
                 <td>{satis.toplamTutar}</td>
-                <td>{satis.ortagaSatis ? 'true' : 'false'}</td>
-                <td>{satis.kartliSatis ? 'true' : 'false'}</td>
+                <td><Checkbox checked={satis.ortagaSatis} disabled /></td>
+                <td><Checkbox checked={satis.kartliSatis} disabled /></td>
                 <td>{satis.user ? satis.user.login : ''}</td>
                 <td className="text-right">
                   <div className="btn-group flex-btn-group-container">

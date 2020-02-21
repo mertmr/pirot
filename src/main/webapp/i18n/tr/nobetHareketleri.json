@@ -3,18 +3,18 @@
     "nobetHareketleri": {
       "home": {
         "title": "Nöbetçi Hareketleri",
-        "createLabel": "Create a new Nobet Hareketleri",
-        "createOrEditLabel": "Create or edit a Nobet Hareketleri",
-        "notFound": "No Nöbetçi Hareketleri found"
+        "createLabel": "Yeni Nöbet Hareketi",
+        "createOrEditLabel": "Nöbetçi Hareketi Yarat/Düzenle",
+        "notFound": "Nöbetçi Hareketi bulunamadı"
       },
-      "created": "A new Nobet Hareketleri is created with identifier {{ param }}",
-      "updated": "A Nobet Hareketleri is updated with identifier {{ param }}",
-      "deleted": "A Nobet Hareketleri is deleted with identifier {{ param }}",
+      "created": "{{ param }} id li nöbetçi hareketi yaratıldı",
+      "updated": "{{ param }} id li nöbet hareketi düzenlendi",
+      "deleted": "{{ param }} id li nöbetçi hareketi silindi",
       "delete": {
-        "question": "Are you sure you want to delete Nobet Hareketleri {{ id }}?"
+        "question": "{{ id }} id li nöbet hareketini silmek istediğinizden emin misiniz?"
       },
       "detail": {
-        "title": "Nobet Hareketleri"
+        "title": "Nöbet Hareketleri"
       },
       "kasa": "Kasa",
       "pirot": "Pirot",

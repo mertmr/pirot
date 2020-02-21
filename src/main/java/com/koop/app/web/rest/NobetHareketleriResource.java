@@ -16,12 +16,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,9 @@ public class NobetHareketleriResource {
         if (nobetHareketleri.getId() != null) {
             throw new BadRequestAlertException("A new nobetHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (nobetHareketleri.getTarih() == null) {
+            nobetHareketleri.setTarih(ZonedDateTime.now());
+        }
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity.created(new URI("/api/nobet-hareketleris/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -79,6 +83,9 @@ public class NobetHareketleriResource {
         log.debug("REST request to update NobetHareketleri : {}", nobetHareketleri);
         if (nobetHareketleri.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (nobetHareketleri.getTarih() == null) {
+            nobetHareketleri.setTarih(ZonedDateTime.now());
         }
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity.ok()

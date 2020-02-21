@@ -109,6 +109,7 @@ entity NobetHareketleri {
     kasa BigDecimal
     pirot BigDecimal
     fark BigDecimal
+    nobetSuresi BigDecimal
     notlar String
     tarih ZonedDateTime
 }
@@ -128,6 +129,7 @@ relationship ManyToOne {
   UrunFiyat{user(login)} to User
   Virman{user(login)} to User
   BorcAlacak{user(login)} to User
+  NobetHareketleri{user(login)} to User
   SatisStokHareketleri{urun} to Urun
   StokGirisi{urun} to Urun
   UrunFiyat{urun} to Urun

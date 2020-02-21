@@ -30,7 +30,9 @@ public class SatisService {
 
     private final UrunRepository urunRepository;
 
-    public SatisService(SatisRepository satisRepository, UserService userService, SatisStokHareketleriRepository satisStokHareketleriRepository, KasaHareketleriService kasaHareketleriService, UrunRepository urunRepository) {
+    public SatisService(SatisRepository satisRepository, UserService userService,
+                        SatisStokHareketleriRepository satisStokHareketleriRepository,
+                        KasaHareketleriService kasaHareketleriService, UrunRepository urunRepository) {
         this.satisRepository = satisRepository;
         this.userService = userService;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
