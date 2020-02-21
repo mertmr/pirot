@@ -102,9 +102,15 @@ public class SatisService {
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
         urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));
 
-        if (!satis.isKartliSatis()) {
+        if (!satisOncekiHali.isKartliSatis() && !satis.isKartliSatis()) {
             BigDecimal kasaHareketiFarki = satis.getToplamTutar().subtract(satisOncekiHali.getToplamTutar());
             kasaHareketleriService.createKasaHareketi(kasaHareketiFarki, "Satis Guncellemesi");
+        }
+        if (satisOncekiHali.isKartliSatis() && !satis.isKartliSatis()) {
+            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar(), "Satis Guncellemesi");
+        }
+        if (!satisOncekiHali.isKartliSatis() && satis.isKartliSatis()) {
+            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar().negate(), "Satis Guncellemesi");
         }
         return satisRepository.save(satis);
     }

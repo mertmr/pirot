@@ -19,6 +19,6 @@ public class ReportService {
     }
 
     public List<Ciro> getCiroReport(LocalDate from, LocalDate to) {
-        return satisRepository.getCiroReports(from.atStartOfDay(ZoneId.systemDefault()), to.atStartOfDay(ZoneId.systemDefault()));
+        return satisRepository.getCiroReports(from.atStartOfDay(ZoneId.systemDefault()), to.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
     }
 }
