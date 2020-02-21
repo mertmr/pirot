@@ -280,7 +280,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                         </td>
                         <td>{stokHareketi.urun.musteriFiyati} TL</td>
                         <td>{stokHareketi.urun.stok}</td>
-                        <td><InputNumber value={stokHareketi.miktar} max={stokHareketi.urun.stok}
+                        <td><InputNumber value={stokHareketi.miktar}
                                          onChange={(value) => onChangeMiktar(value, i)}/>
                         </td>
                         <td>{stokHareketi.tutar} TL</td>
