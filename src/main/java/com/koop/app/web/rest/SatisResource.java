@@ -71,7 +71,7 @@ public class SatisResource {
     private void stokKontrolu(Satis satis) {
         for (SatisStokHareketleri stokHareketi : satis.getStokHareketleriLists()) {
             BigDecimal stokSiniri = stokHareketi.getUrun().getStokSiniri();
-            if (stokSiniri != null && stokSiniri.compareTo(BigDecimal.ZERO) != 0) {
+            if (stokSiniri != null && stokHareketi.getUrun().getStok() != null && stokSiniri.compareTo(BigDecimal.ZERO) != 0) {
                 BigDecimal guncelStok = stokHareketi.getUrun().getStok();
                 if (guncelStok.compareTo(stokSiniri) <= 0) {
                     String content = "Stok azaldı ==> Stok sınırı: " + stokSiniri + "  --  Güncel stok: " + guncelStok;
