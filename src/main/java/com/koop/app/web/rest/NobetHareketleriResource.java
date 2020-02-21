@@ -1,7 +1,9 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.NobetHareketleri;
+import com.koop.app.domain.User;
 import com.koop.app.repository.NobetHareketleriRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,8 +44,11 @@ public class NobetHareketleriResource {
 
     private final NobetHareketleriRepository nobetHareketleriRepository;
 
-    public NobetHareketleriResource(NobetHareketleriRepository nobetHareketleriRepository) {
+    private final UserService userService;
+
+    public NobetHareketleriResource(NobetHareketleriRepository nobetHareketleriRepository, UserService userService) {
         this.nobetHareketleriRepository = nobetHareketleriRepository;
+        this.userService = userService;
     }
 
     /**
@@ -63,6 +67,8 @@ public class NobetHareketleriResource {
         if (nobetHareketleri.getTarih() == null) {
             nobetHareketleri.setTarih(ZonedDateTime.now());
         }
+        User currentUser = userService.getCurrentUser();
+        nobetHareketleri.setUser(currentUser);
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity.created(new URI("/api/nobet-hareketleris/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,6 +93,8 @@ public class NobetHareketleriResource {
         if (nobetHareketleri.getTarih() == null) {
             nobetHareketleri.setTarih(ZonedDateTime.now());
         }
+        User currentUser = userService.getCurrentUser();
+        nobetHareketleri.setUser(currentUser);
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, nobetHareketleri.getId().toString()))

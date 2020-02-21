@@ -44,6 +44,12 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
           </dt>
           <dd>{nobetHareketleriEntity.fark}</dd>
           <dt>
+            <span id="nobetSuresi">
+              <Translate contentKey="koopApp.nobetHareketleri.nobetSuresi">Nobet Suresi</Translate>
+            </span>
+          </dt>
+          <dd>{nobetHareketleriEntity.nobetSuresi}</dd>
+          <dt>
             <span id="notlar">
               <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate>
             </span>
@@ -57,6 +63,10 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
           <dd>
             <TextFormat value={nobetHareketleriEntity.tarih} type="date" format={APP_DATE_FORMAT} />
           </dd>
+          <dt>
+            <Translate contentKey="koopApp.nobetHareketleri.user">User</Translate>
+          </dt>
+          <dd>{nobetHareketleriEntity.user ? nobetHareketleriEntity.user.login : ''}</dd>
         </dl>
         <Button tag={Link} to="/nobet-hareketleri" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

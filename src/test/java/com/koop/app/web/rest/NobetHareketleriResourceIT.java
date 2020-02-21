@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.NobetHareketleri;
 import com.koop.app.repository.NobetHareketleriRepository;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +50,9 @@ public class NobetHareketleriResourceIT {
     private static final BigDecimal DEFAULT_FARK = new BigDecimal(1);
     private static final BigDecimal UPDATED_FARK = new BigDecimal(2);
 
+    private static final BigDecimal DEFAULT_NOBET_SURESI = new BigDecimal(1);
+    private static final BigDecimal UPDATED_NOBET_SURESI = new BigDecimal(2);
+
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
 
@@ -72,6 +77,9 @@ public class NobetHareketleriResourceIT {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private UserService userService;
+
     private MockMvc restNobetHareketleriMockMvc;
 
     private NobetHareketleri nobetHareketleri;
@@ -79,7 +87,7 @@ public class NobetHareketleriResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final NobetHareketleriResource nobetHareketleriResource = new NobetHareketleriResource(nobetHareketleriRepository);
+        final NobetHareketleriResource nobetHareketleriResource = new NobetHareketleriResource(nobetHareketleriRepository, userService);
         this.restNobetHareketleriMockMvc = MockMvcBuilders.standaloneSetup(nobetHareketleriResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -99,6 +107,7 @@ public class NobetHareketleriResourceIT {
             .kasa(DEFAULT_KASA)
             .pirot(DEFAULT_PIROT)
             .fark(DEFAULT_FARK)
+            .nobetSuresi(DEFAULT_NOBET_SURESI)
             .notlar(DEFAULT_NOTLAR)
             .tarih(DEFAULT_TARIH);
         return nobetHareketleri;
@@ -114,6 +123,7 @@ public class NobetHareketleriResourceIT {
             .kasa(UPDATED_KASA)
             .pirot(UPDATED_PIROT)
             .fark(UPDATED_FARK)
+            .nobetSuresi(UPDATED_NOBET_SURESI)
             .notlar(UPDATED_NOTLAR)
             .tarih(UPDATED_TARIH);
         return nobetHareketleri;
@@ -126,6 +136,7 @@ public class NobetHareketleriResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void createNobetHareketleri() throws Exception {
         int databaseSizeBeforeCreate = nobetHareketleriRepository.findAll().size();
 
@@ -142,6 +153,7 @@ public class NobetHareketleriResourceIT {
         assertThat(testNobetHareketleri.getKasa()).isEqualTo(DEFAULT_KASA);
         assertThat(testNobetHareketleri.getPirot()).isEqualTo(DEFAULT_PIROT);
         assertThat(testNobetHareketleri.getFark()).isEqualTo(DEFAULT_FARK);
+        assertThat(testNobetHareketleri.getNobetSuresi()).isEqualTo(DEFAULT_NOBET_SURESI);
         assertThat(testNobetHareketleri.getNotlar()).isEqualTo(DEFAULT_NOTLAR);
         assertThat(testNobetHareketleri.getTarih()).isEqualTo(DEFAULT_TARIH);
     }
@@ -180,10 +192,11 @@ public class NobetHareketleriResourceIT {
             .andExpect(jsonPath("$.[*].kasa").value(hasItem(DEFAULT_KASA.intValue())))
             .andExpect(jsonPath("$.[*].pirot").value(hasItem(DEFAULT_PIROT.intValue())))
             .andExpect(jsonPath("$.[*].fark").value(hasItem(DEFAULT_FARK.intValue())))
+            .andExpect(jsonPath("$.[*].nobetSuresi").value(hasItem(DEFAULT_NOBET_SURESI.intValue())))
             .andExpect(jsonPath("$.[*].notlar").value(hasItem(DEFAULT_NOTLAR)))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getNobetHareketleri() throws Exception {
@@ -198,6 +211,7 @@ public class NobetHareketleriResourceIT {
             .andExpect(jsonPath("$.kasa").value(DEFAULT_KASA.intValue()))
             .andExpect(jsonPath("$.pirot").value(DEFAULT_PIROT.intValue()))
             .andExpect(jsonPath("$.fark").value(DEFAULT_FARK.intValue()))
+            .andExpect(jsonPath("$.nobetSuresi").value(DEFAULT_NOBET_SURESI.intValue()))
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
@@ -212,6 +226,7 @@ public class NobetHareketleriResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(value = "admin")
     public void updateNobetHareketleri() throws Exception {
         // Initialize the database
         nobetHareketleriRepository.saveAndFlush(nobetHareketleri);
@@ -226,6 +241,7 @@ public class NobetHareketleriResourceIT {
             .kasa(UPDATED_KASA)
             .pirot(UPDATED_PIROT)
             .fark(UPDATED_FARK)
+            .nobetSuresi(UPDATED_NOBET_SURESI)
             .notlar(UPDATED_NOTLAR)
             .tarih(UPDATED_TARIH);
 
@@ -241,6 +257,7 @@ public class NobetHareketleriResourceIT {
         assertThat(testNobetHareketleri.getKasa()).isEqualTo(UPDATED_KASA);
         assertThat(testNobetHareketleri.getPirot()).isEqualTo(UPDATED_PIROT);
         assertThat(testNobetHareketleri.getFark()).isEqualTo(UPDATED_FARK);
+        assertThat(testNobetHareketleri.getNobetSuresi()).isEqualTo(UPDATED_NOBET_SURESI);
         assertThat(testNobetHareketleri.getNotlar()).isEqualTo(UPDATED_NOTLAR);
         assertThat(testNobetHareketleri.getTarih()).isEqualTo(UPDATED_TARIH);
     }

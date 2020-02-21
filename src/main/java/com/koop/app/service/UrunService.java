@@ -21,7 +21,7 @@ public class UrunService {
     }
 
     public List<Urun> getAllUrunForSatis() {
-        return urunRepository.findStokWithMoreThanZero();
+        return urunRepository.findSatistakiUrunler();
     }
 
     public Page<Urun> search(String query, Pageable pageable) {

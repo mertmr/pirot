@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Translate, ICrudGetAllAction, TextFormat, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -10,6 +10,7 @@ import { getEntities } from './nobet-hareketleri.reducer';
 import { INobetHareketleri } from 'app/shared/model/nobet-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import {getSortState} from 'app/shared/util/pagination-utils';
 
 export interface INobetHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -77,11 +78,17 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
                 <th className="hand" onClick={sort('fark')}>
                   <Translate contentKey="koopApp.nobetHareketleri.fark">Fark</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('nobetSuresi')}>
+                  <Translate contentKey="koopApp.nobetHareketleri.nobetSuresi">Nobet Suresi</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th className="hand" onClick={sort('notlar')}>
                   <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('tarih')}>
                   <Translate contentKey="koopApp.nobetHareketleri.tarih">Tarih</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="koopApp.nobetHareketleri.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -97,10 +104,12 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
                   <td>{nobetHareketleri.kasa}</td>
                   <td>{nobetHareketleri.pirot}</td>
                   <td>{nobetHareketleri.fark}</td>
+                  <td>{nobetHareketleri.nobetSuresi}</td>
                   <td>{nobetHareketleri.notlar}</td>
                   <td>
                     <TextFormat type="date" value={nobetHareketleri.tarih} format={APP_DATE_FORMAT} />
                   </td>
+                  <td>{nobetHareketleri.user ? nobetHareketleri.user.login : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${nobetHareketleri.id}`} color="info" size="sm">

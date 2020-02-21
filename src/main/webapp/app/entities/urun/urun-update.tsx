@@ -15,7 +15,6 @@ export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteCompon
 }
 
 export const UrunUpdate = (props: IUrunUpdateProps) => {
-  const [urunSorumlusu, setUrunSorumlusu] = useState(null);
   const [urunState, setUrunState] = useState(defaultValue);
   const [kdvKategorisiId, setKdvKategorisiId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
@@ -56,10 +55,11 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
 
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
+      const urunSorumlusu = urunState.urunSorumlusu;
       const entity = {
         ...urunEntity,
-        ...values,
-        ...urunState
+        urunSorumlusu,
+        ...values
       };
 
       if (isNew) {

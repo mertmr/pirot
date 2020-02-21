@@ -1,4 +1,5 @@
 package com.koop.app.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,11 +33,18 @@ public class NobetHareketleri implements Serializable {
     @Column(name = "fark", precision = 21, scale = 2)
     private BigDecimal fark;
 
+    @Column(name = "nobet_suresi", precision = 21, scale = 2)
+    private BigDecimal nobetSuresi;
+
     @Column(name = "notlar")
     private String notlar;
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
+
+    @ManyToOne
+    @JsonIgnoreProperties("nobetHareketleris")
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -86,6 +94,19 @@ public class NobetHareketleri implements Serializable {
         this.fark = fark;
     }
 
+    public BigDecimal getNobetSuresi() {
+        return nobetSuresi;
+    }
+
+    public NobetHareketleri nobetSuresi(BigDecimal nobetSuresi) {
+        this.nobetSuresi = nobetSuresi;
+        return this;
+    }
+
+    public void setNobetSuresi(BigDecimal nobetSuresi) {
+        this.nobetSuresi = nobetSuresi;
+    }
+
     public String getNotlar() {
         return notlar;
     }
@@ -110,6 +131,19 @@ public class NobetHareketleri implements Serializable {
 
     public void setTarih(ZonedDateTime tarih) {
         this.tarih = tarih;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public NobetHareketleri user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -136,6 +170,7 @@ public class NobetHareketleri implements Serializable {
             ", kasa=" + getKasa() +
             ", pirot=" + getPirot() +
             ", fark=" + getFark() +
+            ", nobetSuresi=" + getNobetSuresi() +
             ", notlar='" + getNotlar() + "'" +
             ", tarih='" + getTarih() + "'" +
             "}";

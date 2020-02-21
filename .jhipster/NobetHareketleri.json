@@ -14,6 +14,10 @@
             "fieldType": "BigDecimal"
         },
         {
+            "fieldName": "nobetSuresi",
+            "fieldType": "BigDecimal"
+        },
+        {
             "fieldName": "notlar",
             "fieldType": "String"
         },
@@ -22,7 +26,15 @@
             "fieldType": "ZonedDateTime"
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "nobetHareketleri",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        }
+    ],
     "changelogDate": "20200107161126",
     "entityTableName": "nobet_hareketleri",
     "dto": "no",

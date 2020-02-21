@@ -18,7 +18,7 @@ import java.util.List;
 public interface UrunRepository extends JpaRepository<Urun, Long> {
 
     @Query("select urun from Urun urun where urun.satista = true")
-    List<Urun> findStokWithMoreThanZero();
+    List<Urun> findSatistakiUrunler();
 
     Page<Urun> findByUrunAdiContainingIgnoreCase(String urunAdi, Pageable pageable);
 }

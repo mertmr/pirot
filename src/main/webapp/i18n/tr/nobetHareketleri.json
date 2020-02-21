@@ -19,8 +19,10 @@
       "kasa": "Kasa",
       "pirot": "Pirot",
       "fark": "Fark",
+      "nobetSuresi": "Nöbet Süresi",
       "notlar": "Notlar",
-      "tarih": "Tarih"
+      "tarih": "Tarih",
+      "user": "User"
     }
   }
 }
