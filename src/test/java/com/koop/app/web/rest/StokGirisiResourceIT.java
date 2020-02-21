@@ -131,7 +131,7 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi
         restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isCreated());
 
@@ -156,7 +156,7 @@ public class StokGirisiResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
@@ -176,7 +176,7 @@ public class StokGirisiResourceIT {
         // Create the StokGirisi, which fails.
 
         restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
@@ -194,7 +194,7 @@ public class StokGirisiResourceIT {
         // Create the StokGirisi, which fails.
 
         restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
@@ -212,7 +212,7 @@ public class StokGirisiResourceIT {
         // Create the StokGirisi, which fails.
 
         restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
@@ -229,7 +229,7 @@ public class StokGirisiResourceIT {
         // Get all the stokGirisiList
         restStokGirisiMockMvc.perform(get("/api/stok-girisis?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(stokGirisi.getId().intValue())))
             .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR)))
             .andExpect(jsonPath("$.[*].agirlik").value(hasItem(DEFAULT_AGIRLIK)))
@@ -247,7 +247,7 @@ public class StokGirisiResourceIT {
         // Get the stokGirisi
         restStokGirisiMockMvc.perform(get("/api/stok-girisis/{id}", stokGirisi.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(stokGirisi.getId().intValue()))
             .andExpect(jsonPath("$.miktar").value(DEFAULT_MIKTAR))
             .andExpect(jsonPath("$.agirlik").value(DEFAULT_AGIRLIK))
@@ -284,7 +284,7 @@ public class StokGirisiResourceIT {
             .tarih(UPDATED_TARIH);
 
         restStokGirisiMockMvc.perform(put("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedStokGirisi)))
             .andExpect(status().isOk());
 
@@ -308,7 +308,7 @@ public class StokGirisiResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restStokGirisiMockMvc.perform(put("/api/stok-girisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
@@ -327,7 +327,7 @@ public class StokGirisiResourceIT {
 
         // Delete the stokGirisi
         restStokGirisiMockMvc.perform(delete("/api/stok-girisis/{id}", stokGirisi.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

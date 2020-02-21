@@ -13,7 +13,7 @@ import { IKdvKategorisi } from 'app/shared/model/kdv-kategorisi.model';
 import { getEntities as getKdvKategorisis } from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './urun.reducer';
 import { IUrun } from 'app/shared/model/urun.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}

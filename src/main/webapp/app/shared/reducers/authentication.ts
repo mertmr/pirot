@@ -12,7 +12,7 @@ export const ACTION_TYPES = {
   ERROR_MESSAGE: 'authentication/ERROR_MESSAGE'
 };
 
-const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
+const AUTH_TOKEN_KEY = 'koop-authenticationToken';
 
 const initialState = {
   loading: false,

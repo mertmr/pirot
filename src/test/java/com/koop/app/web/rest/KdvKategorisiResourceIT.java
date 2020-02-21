@@ -110,7 +110,7 @@ public class KdvKategorisiResourceIT {
 
         // Create the KdvKategorisi
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isCreated());
 
@@ -132,7 +132,7 @@ public class KdvKategorisiResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -152,7 +152,7 @@ public class KdvKategorisiResourceIT {
         // Create the KdvKategorisi, which fails.
 
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -170,7 +170,7 @@ public class KdvKategorisiResourceIT {
         // Create the KdvKategorisi, which fails.
 
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -187,7 +187,7 @@ public class KdvKategorisiResourceIT {
         // Get all the kdvKategorisiList
         restKdvKategorisiMockMvc.perform(get("/api/kdv-kategorisis?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(kdvKategorisi.getId().intValue())))
             .andExpect(jsonPath("$.[*].kategoriAdi").value(hasItem(DEFAULT_KATEGORI_ADI)))
             .andExpect(jsonPath("$.[*].kdvOrani").value(hasItem(DEFAULT_KDV_ORANI)));
@@ -202,7 +202,7 @@ public class KdvKategorisiResourceIT {
         // Get the kdvKategorisi
         restKdvKategorisiMockMvc.perform(get("/api/kdv-kategorisis/{id}", kdvKategorisi.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(kdvKategorisi.getId().intValue()))
             .andExpect(jsonPath("$.kategoriAdi").value(DEFAULT_KATEGORI_ADI))
             .andExpect(jsonPath("$.kdvOrani").value(DEFAULT_KDV_ORANI));
@@ -233,7 +233,7 @@ public class KdvKategorisiResourceIT {
             .kdvOrani(UPDATED_KDV_ORANI);
 
         restKdvKategorisiMockMvc.perform(put("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedKdvKategorisi)))
             .andExpect(status().isOk());
 
@@ -254,7 +254,7 @@ public class KdvKategorisiResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKdvKategorisiMockMvc.perform(put("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -273,7 +273,7 @@ public class KdvKategorisiResourceIT {
 
         // Delete the kdvKategorisi
         restKdvKategorisiMockMvc.perform(delete("/api/kdv-kategorisis/{id}", kdvKategorisi.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

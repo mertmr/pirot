@@ -20,10 +20,6 @@ export const StokGirisi = (props: IStokGirisiProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const StokGirisi = (props: IStokGirisiProps) => {
       activePage: currentPage
     });
 
-  const { stokGirisiList, match, totalItems } = props;
+  const { stokGirisiList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="stok-girisi-heading">
@@ -148,9 +144,11 @@ export const StokGirisi = (props: IStokGirisiProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.stokGirisi.home.notFound">No Stok Girisis found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.stokGirisi.home.notFound">No Stok Girisis found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={stokGirisiList && stokGirisiList.length > 0 ? '' : 'd-none'}>
@@ -173,6 +171,7 @@ export const StokGirisi = (props: IStokGirisiProps) => {
 
 const mapStateToProps = ({ stokGirisi }: IRootState) => ({
   stokGirisiList: stokGirisi.entities,
+  loading: stokGirisi.loading,
   totalItems: stokGirisi.totalItems
 });
 

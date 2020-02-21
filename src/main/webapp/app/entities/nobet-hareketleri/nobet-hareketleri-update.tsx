@@ -11,7 +11,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './nobet-hareketleri.reducer';
 import { INobetHareketleri } from 'app/shared/model/nobet-hareketleri.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface INobetHareketleriUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -122,7 +122,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.nobetHareketleriEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.nobetHareketleriEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>

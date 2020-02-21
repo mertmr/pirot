@@ -90,12 +90,16 @@
         <loadData
                   file="config/liquibase/data/authority.csv"
                   separator=";"
-                  tableName="koop_authority"/>
+                  tableName="koop_authority">
+            <column name="name" type="string"/>
+        </loadData>
 
         <loadData
                   file="config/liquibase/data/user_authority.csv"
                   separator=";"
-                  tableName="koop_user_authority"/>
+                  tableName="koop_user_authority">
+            <column name="user_id" type="numeric"/>
+        </loadData>
         <createTable tableName="koop_persistent_audit_event">
             <column name="event_id" type="bigint" >
                 <constraints primaryKey="true" nullable="false"/>

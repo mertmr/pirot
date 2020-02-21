@@ -11,7 +11,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './uretici.reducer';
 import { IUretici } from 'app/shared/model/uretici.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IUreticiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -124,7 +124,7 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.ureticiEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.ureticiEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>

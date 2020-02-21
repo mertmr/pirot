@@ -20,10 +20,6 @@ export const Urun = (props: IUrunProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const Urun = (props: IUrunProps) => {
       activePage: currentPage
     });
 
-  const { urunList, match, totalItems } = props;
+  const { urunList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="urun-heading">
@@ -160,9 +156,11 @@ export const Urun = (props: IUrunProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.urun.home.notFound">No Uruns found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.urun.home.notFound">No Uruns found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={urunList && urunList.length > 0 ? '' : 'd-none'}>
@@ -185,6 +183,7 @@ export const Urun = (props: IUrunProps) => {
 
 const mapStateToProps = ({ urun }: IRootState) => ({
   urunList: urun.entities,
+  loading: urun.loading,
   totalItems: urun.totalItems
 });
 

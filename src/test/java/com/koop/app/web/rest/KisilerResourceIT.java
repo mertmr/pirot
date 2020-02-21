@@ -120,7 +120,7 @@ public class KisilerResourceIT {
 
         // Create the Kisiler
         restKisilerMockMvc.perform(post("/api/kisilers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kisiler)))
             .andExpect(status().isCreated());
 
@@ -143,7 +143,7 @@ public class KisilerResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restKisilerMockMvc.perform(post("/api/kisilers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kisiler)))
             .andExpect(status().isBadRequest());
 
@@ -162,7 +162,7 @@ public class KisilerResourceIT {
         // Get all the kisilerList
         restKisilerMockMvc.perform(get("/api/kisilers?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(kisiler.getId().intValue())))
             .andExpect(jsonPath("$.[*].kisiAdi").value(hasItem(DEFAULT_KISI_ADI)))
             .andExpect(jsonPath("$.[*].notlar").value(hasItem(DEFAULT_NOTLAR)))
@@ -178,7 +178,7 @@ public class KisilerResourceIT {
         // Get the kisiler
         restKisilerMockMvc.perform(get("/api/kisilers/{id}", kisiler.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(kisiler.getId().intValue()))
             .andExpect(jsonPath("$.kisiAdi").value(DEFAULT_KISI_ADI))
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
@@ -211,7 +211,7 @@ public class KisilerResourceIT {
             .tarih(UPDATED_TARIH);
 
         restKisilerMockMvc.perform(put("/api/kisilers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedKisiler)))
             .andExpect(status().isOk());
 
@@ -233,7 +233,7 @@ public class KisilerResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKisilerMockMvc.perform(put("/api/kisilers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kisiler)))
             .andExpect(status().isBadRequest());
 
@@ -252,7 +252,7 @@ public class KisilerResourceIT {
 
         // Delete the kisiler
         restKisilerMockMvc.perform(delete("/api/kisilers/{id}", kisiler.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -11,7 +11,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './satis.reducer';
 import { ISatis } from 'app/shared/model/satis.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -92,7 +92,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.satisEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.satisEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>

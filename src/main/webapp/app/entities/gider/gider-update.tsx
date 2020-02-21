@@ -11,7 +11,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './gider.reducer';
 import { IGider } from 'app/shared/model/gider.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IGiderUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -92,7 +92,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.giderEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.giderEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>

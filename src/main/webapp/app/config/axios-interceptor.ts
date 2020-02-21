@@ -9,7 +9,7 @@ axios.defaults.baseURL = SERVER_API_URL;
 
 const setupAxiosInterceptors = onUnauthenticated => {
   const onRequestSuccess = config => {
-    const token = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
+    const token = Storage.local.get('koop-authenticationToken') || Storage.session.get('koop-authenticationToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

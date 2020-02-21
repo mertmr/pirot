@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.BorcAlacak;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

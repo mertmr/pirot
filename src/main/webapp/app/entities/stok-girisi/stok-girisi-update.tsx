@@ -13,7 +13,7 @@ import { IUrun } from 'app/shared/model/urun.model';
 import { getEntities as getUruns } from 'app/entities/urun/urun.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './stok-girisi.reducer';
 import { IStokGirisi } from 'app/shared/model/stok-girisi.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -148,7 +148,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.stokGirisiEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.stokGirisiEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>

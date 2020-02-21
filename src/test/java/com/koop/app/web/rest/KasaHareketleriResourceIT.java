@@ -121,7 +121,7 @@ public class KasaHareketleriResourceIT {
 
         // Create the KasaHareketleri
         restKasaHareketleriMockMvc.perform(post("/api/kasa-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kasaHareketleri)))
             .andExpect(status().isCreated());
 
@@ -144,7 +144,7 @@ public class KasaHareketleriResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restKasaHareketleriMockMvc.perform(post("/api/kasa-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kasaHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -163,7 +163,7 @@ public class KasaHareketleriResourceIT {
         // Get all the kasaHareketleriList
         restKasaHareketleriMockMvc.perform(get("/api/kasa-hareketleris?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(kasaHareketleri.getId().intValue())))
             .andExpect(jsonPath("$.[*].kasaMiktar").value(hasItem(DEFAULT_KASA_MIKTAR.intValue())))
             .andExpect(jsonPath("$.[*].hareket").value(hasItem(DEFAULT_HAREKET)))
@@ -179,7 +179,7 @@ public class KasaHareketleriResourceIT {
         // Get the kasaHareketleri
         restKasaHareketleriMockMvc.perform(get("/api/kasa-hareketleris/{id}", kasaHareketleri.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(kasaHareketleri.getId().intValue()))
             .andExpect(jsonPath("$.kasaMiktar").value(DEFAULT_KASA_MIKTAR.intValue()))
             .andExpect(jsonPath("$.hareket").value(DEFAULT_HAREKET))
@@ -212,7 +212,7 @@ public class KasaHareketleriResourceIT {
             .tarih(UPDATED_TARIH);
 
         restKasaHareketleriMockMvc.perform(put("/api/kasa-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedKasaHareketleri)))
             .andExpect(status().isOk());
 
@@ -234,7 +234,7 @@ public class KasaHareketleriResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKasaHareketleriMockMvc.perform(put("/api/kasa-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kasaHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -253,7 +253,7 @@ public class KasaHareketleriResourceIT {
 
         // Delete the kasaHareketleri
         restKasaHareketleriMockMvc.perform(delete("/api/kasa-hareketleris/{id}", kasaHareketleri.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

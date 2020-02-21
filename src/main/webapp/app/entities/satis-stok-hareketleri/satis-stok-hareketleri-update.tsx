@@ -13,7 +13,7 @@ import { ISatis } from 'app/shared/model/satis.model';
 import { getEntities as getSatis } from 'app/entities/satis/satis.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './satis-stok-hareketleri.reducer';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface ISatisStokHareketleriUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}

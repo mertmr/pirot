@@ -20,10 +20,6 @@ export const Virman = (props: IVirmanProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const Virman = (props: IVirmanProps) => {
       activePage: currentPage
     });
 
-  const { virmanList, match, totalItems } = props;
+  const { virmanList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="virman-heading">
@@ -146,9 +142,11 @@ export const Virman = (props: IVirmanProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.virman.home.notFound">No Virmen found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.virman.home.notFound">No Virmen found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={virmanList && virmanList.length > 0 ? '' : 'd-none'}>
@@ -171,6 +169,7 @@ export const Virman = (props: IVirmanProps) => {
 
 const mapStateToProps = ({ virman }: IRootState) => ({
   virmanList: virman.entities,
+  loading: virman.loading,
   totalItems: virman.totalItems
 });
 

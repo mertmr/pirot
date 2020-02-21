@@ -111,7 +111,7 @@ public class SatisStokHareketleriResourceIT {
 
         // Create the SatisStokHareketleri
         restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isCreated());
 
@@ -133,7 +133,7 @@ public class SatisStokHareketleriResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -153,7 +153,7 @@ public class SatisStokHareketleriResourceIT {
         // Create the SatisStokHareketleri, which fails.
 
         restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -171,7 +171,7 @@ public class SatisStokHareketleriResourceIT {
         // Create the SatisStokHareketleri, which fails.
 
         restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -188,7 +188,7 @@ public class SatisStokHareketleriResourceIT {
         // Get all the satisStokHareketleriList
         restSatisStokHareketleriMockMvc.perform(get("/api/satis-stok-hareketleris?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(satisStokHareketleri.getId().intValue())))
             .andExpect(jsonPath("$.[*].miktar").value(hasItem(DEFAULT_MIKTAR)))
             .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())));
@@ -203,7 +203,7 @@ public class SatisStokHareketleriResourceIT {
         // Get the satisStokHareketleri
         restSatisStokHareketleriMockMvc.perform(get("/api/satis-stok-hareketleris/{id}", satisStokHareketleri.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(satisStokHareketleri.getId().intValue()))
             .andExpect(jsonPath("$.miktar").value(DEFAULT_MIKTAR))
             .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()));
@@ -234,7 +234,7 @@ public class SatisStokHareketleriResourceIT {
             .tutar(UPDATED_TUTAR);
 
         restSatisStokHareketleriMockMvc.perform(put("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedSatisStokHareketleri)))
             .andExpect(status().isOk());
 
@@ -255,7 +255,7 @@ public class SatisStokHareketleriResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSatisStokHareketleriMockMvc.perform(put("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -274,7 +274,7 @@ public class SatisStokHareketleriResourceIT {
 
         // Delete the satisStokHareketleri
         restSatisStokHareketleriMockMvc.perform(delete("/api/satis-stok-hareketleris/{id}", satisStokHareketleri.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

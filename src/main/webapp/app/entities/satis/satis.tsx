@@ -20,10 +20,6 @@ export const Satis = (props: ISatisProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const Satis = (props: ISatisProps) => {
       activePage: currentPage
     });
 
-  const { satisList, match, totalItems } = props;
+  const { satisList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="satis-heading">
@@ -138,9 +134,11 @@ export const Satis = (props: ISatisProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.satis.home.notFound">No Satis found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.satis.home.notFound">No Satis found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={satisList && satisList.length > 0 ? '' : 'd-none'}>
@@ -163,6 +161,7 @@ export const Satis = (props: ISatisProps) => {
 
 const mapStateToProps = ({ satis }: IRootState) => ({
   satisList: satis.entities,
+  loading: satis.loading,
   totalItems: satis.totalItems
 });
 

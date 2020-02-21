@@ -9,7 +9,7 @@ import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './kisiler.reducer';
 import { IKisiler } from 'app/shared/model/kisiler.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IKisilerUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -99,7 +99,7 @@ export const KisilerUpdate = (props: IKisilerUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.kisilerEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.kisilerEntity.tarih)}
                 />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/kisiler" replace color="info">

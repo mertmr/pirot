@@ -20,10 +20,6 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
       activePage: currentPage
     });
 
-  const { urunFiyatList, match, totalItems } = props;
+  const { urunFiyatList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="urun-fiyat-heading">
@@ -134,9 +130,11 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.urunFiyat.home.notFound">No Urun Fiyats found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.urunFiyat.home.notFound">No Urun Fiyats found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={urunFiyatList && urunFiyatList.length > 0 ? '' : 'd-none'}>
@@ -159,6 +157,7 @@ export const UrunFiyat = (props: IUrunFiyatProps) => {
 
 const mapStateToProps = ({ urunFiyat }: IRootState) => ({
   urunFiyatList: urunFiyat.entities,
+  loading: urunFiyat.loading,
   totalItems: urunFiyat.totalItems
 });
 

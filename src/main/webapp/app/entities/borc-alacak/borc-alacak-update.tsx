@@ -13,7 +13,7 @@ import { IUrun } from 'app/shared/model/urun.model';
 import { getEntities as getUruns } from 'app/entities/urun/urun.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './borc-alacak.reducer';
 import { IBorcAlacak } from 'app/shared/model/borc-alacak.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IBorcAlacakUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -139,7 +139,7 @@ export const BorcAlacakUpdate = (props: IBorcAlacakUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.borcAlacakEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.borcAlacakEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>

@@ -133,7 +133,7 @@ public class GiderResourceIT {
 
         // Create the Gider
         restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isCreated());
 
@@ -158,7 +158,7 @@ public class GiderResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
@@ -178,7 +178,7 @@ public class GiderResourceIT {
         // Create the Gider, which fails.
 
         restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
@@ -196,7 +196,7 @@ public class GiderResourceIT {
         // Create the Gider, which fails.
 
         restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
@@ -214,7 +214,7 @@ public class GiderResourceIT {
         // Create the Gider, which fails.
 
         restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
@@ -232,7 +232,7 @@ public class GiderResourceIT {
         // Create the Gider, which fails.
 
         restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
@@ -249,7 +249,7 @@ public class GiderResourceIT {
         // Get all the giderList
         restGiderMockMvc.perform(get("/api/giders?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(gider.getId().intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))))
             .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())))
@@ -267,7 +267,7 @@ public class GiderResourceIT {
         // Get the gider
         restGiderMockMvc.perform(get("/api/giders/{id}", gider.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(gider.getId().intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)))
             .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()))
@@ -304,7 +304,7 @@ public class GiderResourceIT {
             .odemeAraci(UPDATED_ODEME_ARACI);
 
         restGiderMockMvc.perform(put("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedGider)))
             .andExpect(status().isOk());
 
@@ -328,7 +328,7 @@ public class GiderResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restGiderMockMvc.perform(put("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
@@ -347,7 +347,7 @@ public class GiderResourceIT {
 
         // Delete the gider
         restGiderMockMvc.perform(delete("/api/giders/{id}", gider.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

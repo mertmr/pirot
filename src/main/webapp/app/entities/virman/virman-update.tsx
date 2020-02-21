@@ -11,7 +11,7 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './virman.reducer';
 import { IVirman } from 'app/shared/model/virman.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IVirmanUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -151,7 +151,7 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                   className="form-control"
                   name="tarih"
                   placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? null : convertDateTimeFromServer(props.virmanEntity.tarih)}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.virmanEntity.tarih)}
                 />
               </AvGroup>
               <AvGroup>
