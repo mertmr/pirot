@@ -55,7 +55,9 @@ public class SatisService {
 
         for (SatisStokHareketleri stokHareketi : stokHareketleriLists) {
             Urun urun = stokHareketi.getUrun();
-            urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokHareketi.getMiktar())));
+            if (urun.getStok() != null) {
+                urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokHareketi.getMiktar())));
+            }
         }
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
         urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));
@@ -77,12 +79,14 @@ public class SatisService {
 
         for (SatisStokHareketleri satisStokHareketi : stokHareketleriLists) {
             Urun urun = satisStokHareketi.getUrun();
-            if (satisStokHareketi.getId() != null) {
-                SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository.findById(satisStokHareketi.getId()).get();
-                int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
-                urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
-            } else {
-                urun.setStok(urun.getStok().add(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
+            if (satisStokHareketi.getUrun().getStok() != null) {
+                if (satisStokHareketi.getId() != null) {
+                    SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository.findById(satisStokHareketi.getId()).get();
+                    int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
+                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
+                } else {
+                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
+                }
             }
         }
 
