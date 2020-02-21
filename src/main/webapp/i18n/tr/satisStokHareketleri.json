@@ -1,0 +1,25 @@
+{
+  "koopApp": {
+    "satisStokHareketleri": {
+      "home": {
+        "title": "Satis Stok Hareketleris",
+        "createLabel": "Create a new Satis Stok Hareketleri",
+        "createOrEditLabel": "Create or edit a Satis Stok Hareketleri",
+        "notFound": "No Satis Stok Hareketleris found"
+      },
+      "created": "A new Satis Stok Hareketleri is created with identifier {{ param }}",
+      "updated": "A Satis Stok Hareketleri is updated with identifier {{ param }}",
+      "deleted": "A Satis Stok Hareketleri is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Satis Stok Hareketleri {{ id }}?"
+      },
+      "detail": {
+        "title": "Satis Stok Hareketleri"
+      },
+      "miktar": "Miktar",
+      "tutar": "Tutar",
+      "urun": "Urun",
+      "satis": "Satis"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "koopApp": {
+    "stokGirisi": {
+      "home": {
+        "title": "Stok Girisis",
+        "createLabel": "Create a new Stok Girisi",
+        "createOrEditLabel": "Create or edit a Stok Girisi",
+        "notFound": "No Stok Girisis found"
+      },
+      "created": "A new Stok Girisi is created with identifier {{ param }}",
+      "updated": "A Stok Girisi is updated with identifier {{ param }}",
+      "deleted": "A Stok Girisi is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Stok Girisi {{ id }}?"
+      },
+      "detail": {
+        "title": "Stok Girisi"
+      },
+      "miktar": "Miktar",
+      "agirlik": "Agirlik",
+      "notlar": "Notlar",
+      "stokHareketiTipi": "Stok Hareketi Tipi",
+      "tarih": "Tarih",
+      "user": "User",
+      "urun": "Urun"
+    }
+  }
+}

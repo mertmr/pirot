@@ -1,0 +1,39 @@
+{
+    "name": "UrunFiyat",
+    "fields": [
+        {
+            "fieldName": "fiyat",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "urunFiyat",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "urun",
+            "otherEntityRelationshipName": "urunFiyat",
+            "relationshipName": "urun",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200103090906",
+    "entityTableName": "urun_fiyat",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

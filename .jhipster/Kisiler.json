@@ -1,0 +1,28 @@
+{
+    "name": "Kisiler",
+    "fields": [
+        {
+            "fieldName": "kisiAdi",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "notlar",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200107161127",
+    "entityTableName": "kisiler",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

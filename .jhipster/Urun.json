@@ -1,0 +1,71 @@
+{
+    "name": "Urun",
+    "fields": [
+        {
+            "fieldName": "urunAdi",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "stok",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "stokSiniri",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "musteriFiyati",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "birim",
+            "fieldType": "Birim",
+            "fieldValues": "YOK,ADET,GRAM",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dayanismaUrunu",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "satista",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "urunKategorisi",
+            "fieldType": "UrunKategorisi",
+            "fieldValues": "YOK,GIDA,GIDA_DISI"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "urun",
+            "relationshipName": "urunSorumlusu",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "kdvKategorisi",
+            "otherEntityRelationshipName": "urun",
+            "relationshipName": "kdvKategorisi",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200103090905",
+    "entityTableName": "urun",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
