@@ -20,10 +20,6 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
       activePage: currentPage
     });
 
-  const { kdvKategorisiList, match, totalItems } = props;
+  const { kdvKategorisiList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="kdv-kategorisi-heading">
@@ -124,9 +120,11 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.kdvKategorisi.home.notFound">No Kdv Kategorisis found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.kdvKategorisi.home.notFound">No Kdv Kategorisis found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={kdvKategorisiList && kdvKategorisiList.length > 0 ? '' : 'd-none'}>
@@ -149,6 +147,7 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
 
 const mapStateToProps = ({ kdvKategorisi }: IRootState) => ({
   kdvKategorisiList: kdvKategorisi.entities,
+  loading: kdvKategorisi.loading,
   totalItems: kdvKategorisi.totalItems
 });
 

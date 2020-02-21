@@ -143,7 +143,7 @@ public class VirmanResourceIT {
 
         // Create the Virman
         restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isCreated());
 
@@ -168,7 +168,7 @@ public class VirmanResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
@@ -188,7 +188,7 @@ public class VirmanResourceIT {
         // Create the Virman, which fails.
 
         restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
@@ -206,7 +206,7 @@ public class VirmanResourceIT {
         // Create the Virman, which fails.
 
         restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
@@ -223,7 +223,7 @@ public class VirmanResourceIT {
         // Get all the virmanList
         restVirmanMockMvc.perform(get("/api/virmen?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(virman.getId().intValue())))
             .andExpect(jsonPath("$.[*].tutar").value(hasItem(DEFAULT_TUTAR.intValue())))
             .andExpect(jsonPath("$.[*].notlar").value(hasItem(DEFAULT_NOTLAR)))
@@ -241,7 +241,7 @@ public class VirmanResourceIT {
         // Get the virman
         restVirmanMockMvc.perform(get("/api/virmen/{id}", virman.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(virman.getId().intValue()))
             .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()))
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
@@ -279,7 +279,7 @@ public class VirmanResourceIT {
             .tarih(UPDATED_TARIH);
 
         restVirmanMockMvc.perform(put("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedVirman)))
             .andExpect(status().isOk());
 
@@ -303,7 +303,7 @@ public class VirmanResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVirmanMockMvc.perform(put("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
@@ -322,7 +322,7 @@ public class VirmanResourceIT {
 
         // Delete the virman
         restVirmanMockMvc.perform(delete("/api/virmen/{id}", virman.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

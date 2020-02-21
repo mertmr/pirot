@@ -122,7 +122,7 @@ public class UrunFiyatResourceIT {
 
         // Create the UrunFiyat
         restUrunFiyatMockMvc.perform(post("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isCreated());
 
@@ -144,7 +144,7 @@ public class UrunFiyatResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUrunFiyatMockMvc.perform(post("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isBadRequest());
 
@@ -163,7 +163,7 @@ public class UrunFiyatResourceIT {
         // Get all the urunFiyatList
         restUrunFiyatMockMvc.perform(get("/api/urun-fiyats?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urunFiyat.getId().intValue())))
             .andExpect(jsonPath("$.[*].fiyat").value(hasItem(DEFAULT_FIYAT.intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
@@ -178,7 +178,7 @@ public class UrunFiyatResourceIT {
         // Get the urunFiyat
         restUrunFiyatMockMvc.perform(get("/api/urun-fiyats/{id}", urunFiyat.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(urunFiyat.getId().intValue()))
             .andExpect(jsonPath("$.fiyat").value(DEFAULT_FIYAT.intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
@@ -210,7 +210,7 @@ public class UrunFiyatResourceIT {
             .tarih(UPDATED_TARIH);
 
         restUrunFiyatMockMvc.perform(put("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyat)))
             .andExpect(status().isOk());
 
@@ -231,7 +231,7 @@ public class UrunFiyatResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunFiyatMockMvc.perform(put("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isBadRequest());
 
@@ -250,7 +250,7 @@ public class UrunFiyatResourceIT {
 
         // Delete the urunFiyat
         restUrunFiyatMockMvc.perform(delete("/api/urun-fiyats/{id}", urunFiyat.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

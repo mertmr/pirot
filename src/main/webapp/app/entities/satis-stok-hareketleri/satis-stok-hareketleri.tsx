@@ -21,10 +21,6 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -50,7 +46,7 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
       activePage: currentPage
     });
 
-  const { satisStokHareketleriList, match, totalItems } = props;
+  const { satisStokHareketleriList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="satis-stok-hareketleri-heading">
@@ -118,9 +114,11 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.satisStokHareketleri.home.notFound">No Satis Stok Hareketleris found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.satisStokHareketleri.home.notFound">No Satis Stok Hareketleris found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={satisStokHareketleriList && satisStokHareketleriList.length > 0 ? '' : 'd-none'}>
@@ -143,6 +141,7 @@ export const SatisStokHareketleri = (props: ISatisStokHareketleriProps) => {
 
 const mapStateToProps = ({ satisStokHareketleri }: IRootState) => ({
   satisStokHareketleriList: satisStokHareketleri.entities,
+  loading: satisStokHareketleri.loading,
   totalItems: satisStokHareketleri.totalItems
 });
 

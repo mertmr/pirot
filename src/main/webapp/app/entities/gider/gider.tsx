@@ -34,10 +34,6 @@ export const Gider = (props: IGiderProps) => {
     }
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -93,7 +89,7 @@ export const Gider = (props: IGiderProps) => {
       activePage: currentPage
     });
 
-  const { giderList, match, totalItems } = props;
+  const { giderList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="gider-heading">
@@ -202,9 +198,11 @@ export const Gider = (props: IGiderProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.gider.home.notFound">No Giders found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.gider.home.notFound">No Giders found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={giderList && giderList.length > 0 ? '' : 'd-none'}>
@@ -227,6 +225,7 @@ export const Gider = (props: IGiderProps) => {
 
 const mapStateToProps = ({ gider }: IRootState) => ({
   giderList: gider.entities,
+  loading: gider.loading,
   totalItems: gider.totalItems
 });
 

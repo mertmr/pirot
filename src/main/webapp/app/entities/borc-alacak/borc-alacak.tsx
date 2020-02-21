@@ -20,10 +20,6 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
       activePage: currentPage
     });
 
-  const { borcAlacakList, match, totalItems } = props;
+  const { borcAlacakList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="borc-alacak-heading">
@@ -150,9 +146,11 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.borcAlacak.home.notFound">No Borc Alacaks found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.borcAlacak.home.notFound">No Borc Alacaks found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={borcAlacakList && borcAlacakList.length > 0 ? '' : 'd-none'}>
@@ -175,6 +173,7 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
 
 const mapStateToProps = ({ borcAlacak }: IRootState) => ({
   borcAlacakList: borcAlacak.entities,
+  loading: borcAlacak.loading,
   totalItems: borcAlacak.totalItems
 });
 

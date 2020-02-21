@@ -21,10 +21,6 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -50,7 +46,7 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
       activePage: currentPage
     });
 
-  const { nobetHareketleriList, match, totalItems } = props;
+  const { nobetHareketleriList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="nobet-hareketleri-heading">
@@ -147,9 +143,11 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.nobetHareketleri.home.notFound">No Nobet Hareketleris found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.nobetHareketleri.home.notFound">No Nobet Hareketleris found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={nobetHareketleriList && nobetHareketleriList.length > 0 ? '' : 'd-none'}>
@@ -172,6 +170,7 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
 
 const mapStateToProps = ({ nobetHareketleri }: IRootState) => ({
   nobetHareketleriList: nobetHareketleri.entities,
+  loading: nobetHareketleri.loading,
   totalItems: nobetHareketleri.totalItems
 });
 

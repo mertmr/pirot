@@ -137,7 +137,7 @@ public class SatisResourceIT {
 
         // Create the Satis
         restSatisMockMvc.perform(post("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satis)))
             .andExpect(status().isCreated());
 
@@ -161,7 +161,7 @@ public class SatisResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSatisMockMvc.perform(post("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satis)))
             .andExpect(status().isBadRequest());
 
@@ -180,7 +180,7 @@ public class SatisResourceIT {
         // Get all the satisList
         restSatisMockMvc.perform(get("/api/satis?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(satis.getId().intValue())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))))
             .andExpect(jsonPath("$.[*].toplamTutar").value(hasItem(DEFAULT_TOPLAM_TUTAR.intValue())))
@@ -197,7 +197,7 @@ public class SatisResourceIT {
         // Get the satis
         restSatisMockMvc.perform(get("/api/satis/{id}", satis.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(satis.getId().intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)))
             .andExpect(jsonPath("$.toplamTutar").value(DEFAULT_TOPLAM_TUTAR.intValue()))
@@ -233,7 +233,7 @@ public class SatisResourceIT {
             .kartliSatis(UPDATED_KARTLI_SATIS);
 
         restSatisMockMvc.perform(put("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedSatis)))
             .andExpect(status().isOk());
 
@@ -256,7 +256,7 @@ public class SatisResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSatisMockMvc.perform(put("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satis)))
             .andExpect(status().isBadRequest());
 
@@ -275,7 +275,7 @@ public class SatisResourceIT {
 
         // Delete the satis
         restSatisMockMvc.perform(delete("/api/satis/{id}", satis.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

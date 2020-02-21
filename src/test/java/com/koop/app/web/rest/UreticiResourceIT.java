@@ -131,7 +131,7 @@ public class UreticiResourceIT {
 
         // Create the Uretici
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isCreated());
 
@@ -155,7 +155,7 @@ public class UreticiResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -175,7 +175,7 @@ public class UreticiResourceIT {
         // Create the Uretici, which fails.
 
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -193,7 +193,7 @@ public class UreticiResourceIT {
         // Create the Uretici, which fails.
 
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -210,7 +210,7 @@ public class UreticiResourceIT {
         // Get all the ureticiList
         restUreticiMockMvc.perform(get("/api/ureticis?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(uretici.getId().intValue())))
             .andExpect(jsonPath("$.[*].adi").value(hasItem(DEFAULT_ADI)))
             .andExpect(jsonPath("$.[*].adres").value(hasItem(DEFAULT_ADRES)))
@@ -227,7 +227,7 @@ public class UreticiResourceIT {
         // Get the uretici
         restUreticiMockMvc.perform(get("/api/ureticis/{id}", uretici.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(uretici.getId().intValue()))
             .andExpect(jsonPath("$.adi").value(DEFAULT_ADI))
             .andExpect(jsonPath("$.adres").value(DEFAULT_ADRES))
@@ -263,7 +263,7 @@ public class UreticiResourceIT {
             .tarih(UPDATED_TARIH);
 
         restUreticiMockMvc.perform(put("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedUretici)))
             .andExpect(status().isOk());
 
@@ -286,7 +286,7 @@ public class UreticiResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUreticiMockMvc.perform(put("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -305,7 +305,7 @@ public class UreticiResourceIT {
 
         // Delete the uretici
         restUreticiMockMvc.perform(delete("/api/ureticis/{id}", uretici.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

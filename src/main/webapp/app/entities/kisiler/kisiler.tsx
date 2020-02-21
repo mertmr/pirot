@@ -20,10 +20,6 @@ export const Kisiler = (props: IKisilerProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const Kisiler = (props: IKisilerProps) => {
       activePage: currentPage
     });
 
-  const { kisilerList, match, totalItems } = props;
+  const { kisilerList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="kisiler-heading">
@@ -130,9 +126,11 @@ export const Kisiler = (props: IKisilerProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.kisiler.home.notFound">No Kisilers found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.kisiler.home.notFound">No Kisilers found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={kisilerList && kisilerList.length > 0 ? '' : 'd-none'}>
@@ -155,6 +153,7 @@ export const Kisiler = (props: IKisilerProps) => {
 
 const mapStateToProps = ({ kisiler }: IRootState) => ({
   kisilerList: kisiler.entities,
+  loading: kisiler.loading,
   totalItems: kisiler.totalItems
 });
 

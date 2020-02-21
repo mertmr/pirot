@@ -13,6 +13,7 @@
     "indicator": {
       "diskSpace": "Disk alanı",
       "mail": "E-posta",
+      "ping": "Application",
       "db": "Veritabanı"
     },
     "table": {

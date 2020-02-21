@@ -21,10 +21,6 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -50,7 +46,7 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
       activePage: currentPage
     });
 
-  const { kasaHareketleriList, match, totalItems } = props;
+  const { kasaHareketleriList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="kasa-hareketleri-heading">
@@ -94,9 +90,11 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.kasaHareketleri.home.notFound">No Kasa Hareketleris found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.kasaHareketleri.home.notFound">No Kasa Hareketleris found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={kasaHareketleriList && kasaHareketleriList.length > 0 ? '' : 'd-none'}>
@@ -119,6 +117,7 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
 
 const mapStateToProps = ({ kasaHareketleri }: IRootState) => ({
   kasaHareketleriList: kasaHareketleri.entities,
+  loading: kasaHareketleri.loading,
   totalItems: kasaHareketleri.totalItems
 });
 

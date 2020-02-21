@@ -157,7 +157,7 @@ public class UrunResourceIT {
 
         // Create the Urun
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isCreated());
 
@@ -185,7 +185,7 @@ public class UrunResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -205,7 +205,7 @@ public class UrunResourceIT {
         // Create the Urun, which fails.
 
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -223,7 +223,7 @@ public class UrunResourceIT {
         // Create the Urun, which fails.
 
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -240,7 +240,7 @@ public class UrunResourceIT {
         // Get all the urunList
         restUrunMockMvc.perform(get("/api/uruns?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urun.getId().intValue())))
             .andExpect(jsonPath("$.[*].urunAdi").value(hasItem(DEFAULT_URUN_ADI)))
             .andExpect(jsonPath("$.[*].stok").value(hasItem(DEFAULT_STOK.intValue())))
@@ -261,7 +261,7 @@ public class UrunResourceIT {
         // Get the urun
         restUrunMockMvc.perform(get("/api/uruns/{id}", urun.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(urun.getId().intValue()))
             .andExpect(jsonPath("$.urunAdi").value(DEFAULT_URUN_ADI))
             .andExpect(jsonPath("$.stok").value(DEFAULT_STOK.intValue()))
@@ -305,7 +305,7 @@ public class UrunResourceIT {
             .urunKategorisi(UPDATED_URUN_KATEGORISI);
 
         restUrunMockMvc.perform(put("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedUrun)))
             .andExpect(status().isOk());
 
@@ -332,7 +332,7 @@ public class UrunResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunMockMvc.perform(put("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -351,7 +351,7 @@ public class UrunResourceIT {
 
         // Delete the urun
         restUrunMockMvc.perform(delete("/api/uruns/{id}", urun.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

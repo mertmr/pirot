@@ -20,10 +20,6 @@ export const Uretici = (props: IUreticiProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
-  useEffect(() => {
-    getAllEntities();
-  }, []);
-
   const sortEntities = () => {
     getAllEntities();
     props.history.push(
@@ -49,7 +45,7 @@ export const Uretici = (props: IUreticiProps) => {
       activePage: currentPage
     });
 
-  const { ureticiList, match, totalItems } = props;
+  const { ureticiList, match, loading, totalItems } = props;
   return (
     <div>
       <h2 id="uretici-heading">
@@ -138,9 +134,11 @@ export const Uretici = (props: IUreticiProps) => {
             </tbody>
           </Table>
         ) : (
-          <div className="alert alert-warning">
-            <Translate contentKey="koopApp.uretici.home.notFound">No Ureticis found</Translate>
-          </div>
+          !loading && (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.uretici.home.notFound">No Ureticis found</Translate>
+            </div>
+          )
         )}
       </div>
       <div className={ureticiList && ureticiList.length > 0 ? '' : 'd-none'}>
@@ -163,6 +161,7 @@ export const Uretici = (props: IUreticiProps) => {
 
 const mapStateToProps = ({ uretici }: IRootState) => ({
   ureticiList: uretici.entities,
+  loading: uretici.loading,
   totalItems: uretici.totalItems
 });
 

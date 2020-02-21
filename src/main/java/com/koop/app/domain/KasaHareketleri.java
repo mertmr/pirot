@@ -1,4 +1,5 @@
 package com.koop.app.domain;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

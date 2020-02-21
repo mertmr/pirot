@@ -142,7 +142,7 @@ public class NobetHareketleriResourceIT {
 
         // Create the NobetHareketleri
         restNobetHareketleriMockMvc.perform(post("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
             .andExpect(status().isCreated());
 
@@ -168,7 +168,7 @@ public class NobetHareketleriResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restNobetHareketleriMockMvc.perform(post("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -187,7 +187,7 @@ public class NobetHareketleriResourceIT {
         // Get all the nobetHareketleriList
         restNobetHareketleriMockMvc.perform(get("/api/nobet-hareketleris?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(nobetHareketleri.getId().intValue())))
             .andExpect(jsonPath("$.[*].kasa").value(hasItem(DEFAULT_KASA.intValue())))
             .andExpect(jsonPath("$.[*].pirot").value(hasItem(DEFAULT_PIROT.intValue())))
@@ -206,7 +206,7 @@ public class NobetHareketleriResourceIT {
         // Get the nobetHareketleri
         restNobetHareketleriMockMvc.perform(get("/api/nobet-hareketleris/{id}", nobetHareketleri.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(nobetHareketleri.getId().intValue()))
             .andExpect(jsonPath("$.kasa").value(DEFAULT_KASA.intValue()))
             .andExpect(jsonPath("$.pirot").value(DEFAULT_PIROT.intValue()))
@@ -246,7 +246,7 @@ public class NobetHareketleriResourceIT {
             .tarih(UPDATED_TARIH);
 
         restNobetHareketleriMockMvc.perform(put("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedNobetHareketleri)))
             .andExpect(status().isOk());
 
@@ -271,7 +271,7 @@ public class NobetHareketleriResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNobetHareketleriMockMvc.perform(put("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(TestUtil.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -290,7 +290,7 @@ public class NobetHareketleriResourceIT {
 
         // Delete the nobetHareketleri
         restNobetHareketleriMockMvc.perform(delete("/api/nobet-hareketleris/{id}", nobetHareketleri.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(TestUtil.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
