@@ -67,8 +67,10 @@ public class UrunResource {
             throw new BadRequestAlertException("A new urun cannot already have an ID", ENTITY_NAME, "idexists");
         }
         User currentUser = userService.getCurrentUser();
+        Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
         Urun result = urunRepository.save(urun);
-        createUrunFiyatEntry(urun, currentUser);
+        if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0)
+            createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity.created(new URI("/api/uruns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -91,7 +93,9 @@ public class UrunResource {
         }
         User currentUser = userService.getCurrentUser();
         Urun result = urunRepository.save(urun);
-        createUrunFiyatEntry(urun, currentUser);
+        Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
+        if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0)
+            createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urun.getId().toString()))
             .body(result);
@@ -162,7 +166,7 @@ public class UrunResource {
      * {@code SEARCH  /_search/uruns?query=:query} : search for the urun corresponding
      * to the query.
      *
-     * @param query the query of the urun search.
+     * @param query    the query of the urun search.
      * @param pageable the pagination information.
      * @return the result of the search.
      */
