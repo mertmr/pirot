@@ -32,8 +32,8 @@ public class StokGirisiService {
         } else if (stokGirisi.getStokHareketiTipi() == StokHareketiTipi.FIRE) {
             urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokGirisi.getMiktar())));
         } else if (stokGirisi.getStokHareketiTipi() == StokHareketiTipi.STOK_DUZELTME) {
-            urun.setStok(BigDecimal.valueOf(stokGirisi.getMiktar()));
-        } else if (stokGirisi.getStokHareketiTipi() == StokHareketiTipi.MASRAF) { //todo sorulmali
+            urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokGirisi.getMiktar())));
+        } else if (stokGirisi.getStokHareketiTipi() == StokHareketiTipi.MASRAF) {
             urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokGirisi.getMiktar())));
         }
         urunRepository.save(urun);
