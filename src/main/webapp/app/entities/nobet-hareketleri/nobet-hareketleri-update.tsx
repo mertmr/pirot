@@ -116,45 +116,45 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
               <AvGroup>
                 <Row>
                   <Col>
-                    <label htmlFor="200moneyField" className="col-sm-2 col-form-label">200</label>
+                    <label htmlFor="200moneyField" className="col-sm-3 col-form-label">200</label>
                     <InputNumber id="200moneyField" name="money200" value={money200}
                                  onChange={(value) => setMoney200(value)}/>
                   </Col>
                   <Col>
-                    <label htmlFor="100moneyField" className="col-sm-2 col-form-label">100</label>
+                    <label htmlFor="100moneyField" className="col-sm-3 col-form-label">100</label>
                     <InputNumber id="100moneyField" name="money100" value={money100}
                                  onChange={(value) => setMoney100(value)}/>
                   </Col>
                   <Col>
-                    <label htmlFor="50moneyField" className="col-sm-2 col-form-label">50</label>
+                    <label htmlFor="50moneyField" className="col-sm-3 col-form-label">50</label>
                     <InputNumber id="50moneyField" onChange={(value) => setMoney50(value)}/>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <label htmlFor="20moneyField" className="col-sm-2 col-form-label">20</label>
+                    <label htmlFor="20moneyField" className="col-sm-3 col-form-label">20</label>
                     <InputNumber id="20moneyField" onChange={(value) => setMoney20(value)}/>
                   </Col>
                   <Col>
-                    <label htmlFor="10moneyField" className="col-sm-2 col-form-label">10</label>
+                    <label htmlFor="10moneyField" className="col-sm-3 col-form-label">10</label>
                     <InputNumber id="10moneyField" onChange={(value) => setMoney10(value)}/>
                   </Col>
                   <Col>
-                    <label htmlFor="5moneyField" className="col-sm-2 col-form-label">5</label>
+                    <label htmlFor="5moneyField" className="col-sm-3 col-form-label">5</label>
                     <InputNumber id="5moneyField" onChange={(value) => setMoney5(value)}/>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <label htmlFor="1moneyField" className="col-sm-2 col-form-label">1</label>
+                    <label htmlFor="1moneyField" className="col-sm-3 col-form-label">1</label>
                     <InputNumber id="1moneyField" onChange={(value) => setMoney1(value)}/>
                   </Col>
                   <Col>
-                    <label htmlFor="05moneyField" className="col-sm-2 col-form-label">0.50</label>
+                    <label htmlFor="05moneyField" className="col-sm-3 col-form-label">0.50</label>
                     <InputNumber id="05moneyField" onChange={(value) => setMoney05(value)}/>
                   </Col>
                   <Col>
-                    <label htmlFor="025moneyField" className="col-sm-2 col-form-label">0.25</label>
+                    <label htmlFor="025moneyField" className="col-sm-3 col-form-label">0.25</label>
                     <InputNumber id="025moneyField" onChange={(value) => setMoney025(value)}/>
                   </Col>
                 </Row>
