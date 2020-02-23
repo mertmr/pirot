@@ -4,5 +4,5 @@ package com.koop.app.domain.enumeration;
  * The Hesap enumeration.
  */
 public enum Hesap {
-    YOK, KASA, BANKA
+    KASA, BANKA
 }

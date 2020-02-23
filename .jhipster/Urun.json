@@ -23,7 +23,7 @@
         {
             "fieldName": "birim",
             "fieldType": "Birim",
-            "fieldValues": "YOK,ADET,GRAM",
+            "fieldValues": "ADET,GRAM",
             "fieldValidateRules": [
                 "required"
             ]
@@ -39,7 +39,7 @@
         {
             "fieldName": "urunKategorisi",
             "fieldType": "UrunKategorisi",
-            "fieldValues": "YOK,GIDA,GIDA_DISI"
+            "fieldValues": "GIDA,GIDA_DISI"
         }
     ],
     "relationships": [

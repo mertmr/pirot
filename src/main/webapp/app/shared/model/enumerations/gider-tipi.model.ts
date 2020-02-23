@@ -1,5 +1,4 @@
 export const enum GiderTipi {
-  YOK,
   KARGO,
   SU,
   DIGER,

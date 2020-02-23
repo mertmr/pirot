@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-
+    
     <!--
         Added the entity StokGirisi.
     -->
@@ -24,7 +24,7 @@
             <column name="notlar" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="stok_hareketi_tipi" type="int">
+            <column name="stok_hareketi_tipi" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="tarih" type="datetime">

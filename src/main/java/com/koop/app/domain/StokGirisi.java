@@ -39,6 +39,7 @@ public class StokGirisi implements Serializable {
     private String notlar;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "stok_hareketi_tipi", nullable = false)
     private StokHareketiTipi stokHareketiTipi;
 

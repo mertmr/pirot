@@ -131,8 +131,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <Translate contentKey="koopApp.urun.birim">Birim</Translate>
                 </Label>
                 <AvInput id="urun-birim" type="select" className="form-control" name="birim"
-                         value={(!isNew && urunEntity.birim) || 'YOK'}>
-                  <option value="YOK">{translate('koopApp.Birim.YOK')}</option>
+                         value={(!isNew && urunEntity.birim) || 'ADET'}>
                   <option value="ADET">{translate('koopApp.Birim.ADET')}</option>
                   <option value="GRAM">{translate('koopApp.Birim.GRAM')}</option>
                 </AvInput>

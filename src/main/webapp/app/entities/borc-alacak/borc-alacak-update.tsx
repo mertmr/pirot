@@ -107,9 +107,8 @@ export const BorcAlacakUpdate = (props: IBorcAlacakUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="odemeAraci"
-                  value={(!isNew && borcAlacakEntity.odemeAraci) || 'YOK'}
+                  value={(!isNew && borcAlacakEntity.odemeAraci) || 'NAKIT'}
                 >
-                  <option value="YOK">{translate('koopApp.OdemeAraci.YOK')}</option>
                   <option value="NAKIT">{translate('koopApp.OdemeAraci.NAKIT')}</option>
                   <option value="BANKA">{translate('koopApp.OdemeAraci.BANKA')}</option>
                 </AvInput>

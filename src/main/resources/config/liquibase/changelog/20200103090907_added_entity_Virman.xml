@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-
+    
     <!--
         Added the entity Virman.
     -->
@@ -21,10 +21,10 @@
             <column name="notlar" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="cikis_hesabi" type="int">
+            <column name="cikis_hesabi" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="giris_hesabi" type="int">
+            <column name="giris_hesabi" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="tarih" type="datetime">

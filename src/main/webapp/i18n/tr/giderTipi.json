@@ -1,8 +1,7 @@
 {
   "koopApp": {
     "GiderTipi": {
-      "null": " ",
-      "YOK": "YOK",
+      "null": "",
       "KARGO": "KARGO",
       "SU": "SU",
       "DIGER": "DIGER",

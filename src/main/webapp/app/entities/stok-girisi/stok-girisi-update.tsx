@@ -148,7 +148,6 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   name="stokHareketiTipi"
                   value={(!isNew && stokGirisiEntity.stokHareketiTipi) || 'STOK_GIRISI'}
                 >
-                  <option value="YOK">{translate('koopApp.StokHareketiTipi.YOK')}</option>
                   <option value="STOK_GIRISI">{translate('koopApp.StokHareketiTipi.STOK_GIRISI')}</option>
                   <option value="FIRE">{translate('koopApp.StokHareketiTipi.FIRE')}</option>
                   <option style={isAdmin ? {} : { display: 'none' }}  value="STOK_DUZELTME">{translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}</option>

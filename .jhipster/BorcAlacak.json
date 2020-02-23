@@ -12,7 +12,7 @@
         {
             "fieldName": "odemeAraci",
             "fieldType": "OdemeAraci",
-            "fieldValues": "YOK,NAKIT,BANKA"
+            "fieldValues": "NAKIT,BANKA"
         },
         {
             "fieldName": "hareketTipi",

@@ -47,7 +47,7 @@ public class BorcAlacakResourceIT {
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
 
-    private static final OdemeAraci DEFAULT_ODEME_ARACI = OdemeAraci.YOK;
+    private static final OdemeAraci DEFAULT_ODEME_ARACI = OdemeAraci.BANKA;
     private static final OdemeAraci UPDATED_ODEME_ARACI = OdemeAraci.NAKIT;
 
     private static final HareketTipi DEFAULT_HAREKET_TIPI = HareketTipi.URUN_GIRISI;
@@ -185,7 +185,7 @@ public class BorcAlacakResourceIT {
             .andExpect(jsonPath("$.[*].hareketTipi").value(hasItem(DEFAULT_HAREKET_TIPI.toString())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getBorcAlacak() throws Exception {

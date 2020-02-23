@@ -118,9 +118,8 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="giderTipi"
-                  value={(!isNew && giderEntity.giderTipi) || 'YOK'}
+                  value={(!isNew && giderEntity.giderTipi) || 'KARGO'}
                 >
-                  <option value="YOK">{translate('koopApp.GiderTipi.YOK')}</option>
                   <option value="KARGO">{translate('koopApp.GiderTipi.KARGO')}</option>
                   <option value="SU">{translate('koopApp.GiderTipi.SU')}</option>
                   <option value="DIGER">{translate('koopApp.GiderTipi.DIGER')}</option>
@@ -140,9 +139,8 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="odemeAraci"
-                  value={(!isNew && giderEntity.odemeAraci) || 'YOK'}
+                  value={(!isNew && giderEntity.odemeAraci) || 'NAKIT'}
                 >
-                  <option value="YOK">{translate('koopApp.OdemeAraci.YOK')}</option>
                   <option value="NAKIT">{translate('koopApp.OdemeAraci.NAKIT')}</option>
                   <option value="BANKA">{translate('koopApp.OdemeAraci.BANKA')}</option>
                 </AvInput>

@@ -36,9 +36,11 @@ public class Virman implements Serializable {
     @Column(name = "notlar", nullable = false)
     private String notlar;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "cikis_hesabi")
     private Hesap cikisHesabi;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "giris_hesabi")
     private Hesap girisHesabi;
 

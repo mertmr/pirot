@@ -52,7 +52,7 @@ public class UrunResourceIT {
     private static final BigDecimal DEFAULT_MUSTERI_FIYATI = new BigDecimal(1);
     private static final BigDecimal UPDATED_MUSTERI_FIYATI = new BigDecimal(2);
 
-    private static final Birim DEFAULT_BIRIM = Birim.YOK;
+    private static final Birim DEFAULT_BIRIM = Birim.GRAM;
     private static final Birim UPDATED_BIRIM = Birim.ADET;
 
     private static final Boolean DEFAULT_DAYANISMA_URUNU = false;
@@ -61,7 +61,7 @@ public class UrunResourceIT {
     private static final Boolean DEFAULT_SATISTA = false;
     private static final Boolean UPDATED_SATISTA = true;
 
-    private static final UrunKategorisi DEFAULT_URUN_KATEGORISI = UrunKategorisi.YOK;
+    private static final UrunKategorisi DEFAULT_URUN_KATEGORISI = UrunKategorisi.GIDA_DISI;
     private static final UrunKategorisi UPDATED_URUN_KATEGORISI = UrunKategorisi.GIDA;
 
     @Autowired

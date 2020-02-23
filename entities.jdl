@@ -1,25 +1,25 @@
 enum Birim {
-    YOK, ADET, GRAM
+    ADET, GRAM
 }
 
 enum GiderTipi {
-    YOK, KARGO, SU, DIGER, VERGI, KIRA, AIDAT, TAKSI, ELEKTRIK, SU
+    KARGO, SU, DIGER, VERGI, KIRA, AIDAT, TAKSI, ELEKTRIK, SU
 }
 
 enum OdemeAraci {
-    YOK, NAKIT, BANKA
+    NAKIT, BANKA
 }
 
 enum StokHareketiTipi {
-    YOK, STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF
+    STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF
 }
 
 enum UrunKategorisi {
-    YOK, GIDA, GIDA_DISI
+    GIDA, GIDA_DISI
 }
 
 enum Hesap {
-    YOK, KASA, BANKA
+    KASA, BANKA
 }
 
 enum HareketTipi {

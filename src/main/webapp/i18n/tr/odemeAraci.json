@@ -1,8 +1,7 @@
 {
   "koopApp": {
     "OdemeAraci": {
-      "null": " ",
-      "YOK": "YOK",
+      "null": "",
       "NAKIT": "NAKIT",
       "BANKA": "BANKA"
     }

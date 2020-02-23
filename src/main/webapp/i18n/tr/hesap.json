@@ -1,8 +1,7 @@
 {
   "koopApp": {
     "Hesap": {
-      "null": " ",
-      "YOK": "YOK",
+      "null": "",
       "KASA": "KASA",
       "BANKA": "BANKA"
     }

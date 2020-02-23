@@ -42,10 +42,12 @@ public class Gider implements Serializable {
     private String notlar;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "gider_tipi", nullable = false)
     private GiderTipi giderTipi;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "odeme_araci", nullable = false)
     private OdemeAraci odemeAraci;
 
