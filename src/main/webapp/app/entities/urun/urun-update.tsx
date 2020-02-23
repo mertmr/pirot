@@ -10,6 +10,8 @@ import {getEntities as getKdvKategorisis} from 'app/entities/kdv-kategorisi/kdv-
 import {createEntity, getEntity, getUrunUsers, reset, updateEntity} from './urun.reducer';
 import {defaultValue} from 'app/shared/model/urun.model';
 import {Dropdown} from "primereact/dropdown";
+import {hasAnyAuthority} from "app/shared/auth/private-route";
+import {AUTHORITIES} from "app/config/constants";
 
 export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
@@ -19,7 +21,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
   const [kdvKategorisiId, setKdvKategorisiId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const {urunEntity, urunUsers, kdvKategorisis, loading, updating} = props;
+  const {urunEntity, urunUsers, kdvKategorisis, loading, updating, isAdmin} = props;
 
   const handleClose = () => {
     props.history.push('/urun' + props.location.search);
@@ -122,7 +124,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="musteriFiyatiLabel" for="urun-musteriFiyati">
                   <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate>
                 </Label>
-                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati"/>
+                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati" disabled={!isAdmin}/>
               </AvGroup>
               <AvGroup>
                 <Label id="birimLabel" for="urun-birim">
@@ -219,7 +221,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   urunUsers: storeState.urun.users,
   loading: storeState.urun.loading,
   updating: storeState.urun.updating,
-  updateSuccess: storeState.urun.updateSuccess
+  updateSuccess: storeState.urun.updateSuccess,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN])
 });
 
 const mapDispatchToProps = {

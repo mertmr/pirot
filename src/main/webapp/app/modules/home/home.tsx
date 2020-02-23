@@ -49,6 +49,16 @@ export const Home = (props: IHomeProp) => {
                   <Statistic title="Günlük Ciro" value={dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} suffix="TL"/>
                 </Card>
               </Col>
+              <Col span={6}>
+                <Card>
+                  <Statistic title="Kartlı Satış" value={dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} suffix="TL"/>
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card>
+                  <Statistic title="Nakit Satış" value={dashboardReports.nakitSatis ? dashboardReports.nakitSatis : 0} suffix="TL"/>
+                </Card>
+              </Col>
             </Row>
           </div>
         ) : (

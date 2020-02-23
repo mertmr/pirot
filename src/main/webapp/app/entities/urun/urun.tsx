@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import {getEntities, getSearchEntities} from './urun.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import {hasAnyAuthority} from "app/shared/auth/private-route";
+import {AUTHORITIES} from "app/config/constants";
 
 export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -92,7 +94,7 @@ export const Urun = (props: IUrunProps) => {
       activePage: currentPage
     });
 
-  const { urunList, match, totalItems } = props;
+  const { urunList, match, totalItems, isAdmin } = props;
   return (
     <div>
       <h2 id="urun-heading">
@@ -191,16 +193,11 @@ export const Urun = (props: IUrunProps) => {
                   <td>{urun.kdvKategorisi ? <Link to={`kdv-kategorisi/${urun.kdvKategorisi.id}`}>{urun.kdvKategorisi.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${urun.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                      </Button>
                       <Button
                         tag={Link}
                         to={`${match.url}/${urun.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
+                        disabled={!isAdmin}
                         size="sm"
                       >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
@@ -249,9 +246,10 @@ export const Urun = (props: IUrunProps) => {
   );
 };
 
-const mapStateToProps = ({ urun }: IRootState) => ({
+const mapStateToProps = ({ urun, authentication }: IRootState) => ({
   urunList: urun.entities,
-  totalItems: urun.totalItems
+  totalItems: urun.totalItems,
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN])
 });
 
 const mapDispatchToProps = {

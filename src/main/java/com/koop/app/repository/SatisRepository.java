@@ -53,6 +53,9 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today")
     Double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 
+    @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today and satis.kartliSatis = true")
+    Double findCiroKartli(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
+
     @Query("select new com.koop.app.dto.Ciro(sum(satis.toplamTutar), cast(satis.tarih as date)) " +
         "from Satis satis " +
         "where satis.tarih between :from and :to " +

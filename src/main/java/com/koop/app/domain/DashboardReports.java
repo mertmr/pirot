@@ -8,6 +8,10 @@ public class DashboardReports {
 
     private double gunlukCiro = 0;
 
+    private double kartliSatis = 0;
+
+    private double nakitSatis = 0;
+
     public double getKasadaNeVar() {
         return kasadaNeVar;
     }
@@ -30,5 +34,21 @@ public class DashboardReports {
 
     public void setGunlukCiro(double gunlukCiro) {
         this.gunlukCiro = gunlukCiro;
+    }
+
+    public double getKartliSatis() {
+        return kartliSatis;
+    }
+
+    public void setKartliSatis(double kartliSatis) {
+        this.kartliSatis = kartliSatis;
+    }
+
+    public double getNakitSatis() {
+        return nakitSatis;
+    }
+
+    public void setNakitSatis(double nakitSatis) {
+        this.nakitSatis = nakitSatis;
     }
 }
