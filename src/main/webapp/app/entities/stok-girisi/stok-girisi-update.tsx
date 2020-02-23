@@ -15,6 +15,8 @@ import {Dropdown} from "primereact/dropdown";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
+import {hasAnyAuthority} from "app/shared/auth/private-route";
+import {AUTHORITIES} from "app/config/constants";
 
 export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
@@ -25,7 +27,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   const [urunId, setUrunId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const {stokGirisiEntity, users, uruns, loading, updating, satisUrunleri} = props;
+  const {stokGirisiEntity, users, uruns, loading, updating, satisUrunleri, isAdmin} = props;
 
   const handleClose = () => {
     props.history.push('/stok-girisi' + props.location.search);
@@ -144,12 +146,12 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="stokHareketiTipi"
-                  value={(!isNew && stokGirisiEntity.stokHareketiTipi) || 'YOK'}
+                  value={(!isNew && stokGirisiEntity.stokHareketiTipi) || 'STOK_GIRISI'}
                 >
                   <option value="YOK">{translate('koopApp.StokHareketiTipi.YOK')}</option>
                   <option value="STOK_GIRISI">{translate('koopApp.StokHareketiTipi.STOK_GIRISI')}</option>
                   <option value="FIRE">{translate('koopApp.StokHareketiTipi.FIRE')}</option>
-                  <option value="STOK_DUZELTME">{translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}</option>
+                  <option style={isAdmin ? {} : { display: 'none' }}  value="STOK_DUZELTME">{translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}</option>
                   <option value="MASRAF">{translate('koopApp.StokHareketiTipi.MASRAF')}</option>
                 </AvInput>
               </AvGroup>
@@ -181,7 +183,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   stokGirisiEntity: storeState.stokGirisi.entity,
   loading: storeState.stokGirisi.loading,
   updating: storeState.stokGirisi.updating,
-  updateSuccess: storeState.stokGirisi.updateSuccess
+  updateSuccess: storeState.stokGirisi.updateSuccess,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN])
 });
 
 const mapDispatchToProps = {
