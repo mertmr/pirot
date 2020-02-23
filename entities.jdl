@@ -11,7 +11,7 @@ enum OdemeAraci {
 }
 
 enum StokHareketiTipi {
-    STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF
+    STOK_GIRISI, FIRE, STOK_DUZELTME, MASRAF, IADE
 }
 
 enum UrunKategorisi {

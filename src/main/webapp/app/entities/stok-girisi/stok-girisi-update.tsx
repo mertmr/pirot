@@ -152,6 +152,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   <option value="FIRE">{translate('koopApp.StokHareketiTipi.FIRE')}</option>
                   <option style={isAdmin ? {} : { display: 'none' }}  value="STOK_DUZELTME">{translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}</option>
                   <option value="MASRAF">{translate('koopApp.StokHareketiTipi.MASRAF')}</option>
+                  <option value="IADE">{translate('koopApp.StokHareketiTipi.IADE')}</option>
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/stok-girisi" replace color="info">

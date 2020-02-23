@@ -22,7 +22,7 @@
         {
             "fieldName": "stokHareketiTipi",
             "fieldType": "StokHareketiTipi",
-            "fieldValues": "STOK_GIRISI,FIRE,STOK_DUZELTME,MASRAF",
+            "fieldValues": "STOK_GIRISI,FIRE,STOK_DUZELTME,MASRAF,IADE",
             "fieldValidateRules": [
                 "required"
             ]
