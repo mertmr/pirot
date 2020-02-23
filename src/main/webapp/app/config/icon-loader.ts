@@ -28,6 +28,17 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faRoad } from '@fortawesome/free-solid-svg-icons/faRoad';
 import { faCloud } from '@fortawesome/free-solid-svg-icons/faCloud';
+import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons/faMoneyCheck';
+import { faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons/faHandHoldingUsd';
+import { faWallet } from '@fortawesome/free-solid-svg-icons/faWallet';
+import { faWarehouse } from '@fortawesome/free-solid-svg-icons/faWarehouse';
+import { faKeyboard } from '@fortawesome/free-solid-svg-icons/faKeyboard';
+import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons/faChalkboardTeacher';
+import { faFunnelDollar } from '@fortawesome/free-solid-svg-icons/faFunnelDollar';
+import { faPeopleCarry } from '@fortawesome/free-solid-svg-icons/faPeopleCarry';
+import { faBoxOpen } from '@fortawesome/free-solid-svg-icons/faBoxOpen';
+import { faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons/faEnvelopeOpenText';
+import { faCashRegister } from '@fortawesome/free-solid-svg-icons/faCashRegister';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -62,6 +73,17 @@ export const loadIcons = () => {
     faRoad,
     faCloud,
     faTimesCircle,
-    faSearch
+    faSearch,
+    faMoneyCheck,
+    faHandHoldingUsd,
+    faWallet,
+    faWarehouse,
+    faKeyboard,
+    faChalkboardTeacher,
+    faFunnelDollar,
+    faPeopleCarry,
+    faBoxOpen,
+    faEnvelopeOpenText,
+    faCashRegister
   );
 };

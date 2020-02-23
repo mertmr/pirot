@@ -13,43 +13,43 @@ export const EntitiesMenu = props => (
     id="entity-menu"
     style={{ maxHeight: '80vh', overflow: 'auto' }}
   >
-    <MenuItem icon="asterisk" to="/gider">
-      <Translate contentKey="global.menu.entities.gider" />
-    </MenuItem>
-    <MenuItem icon="asterisk" to="/kdv-kategorisi">
-      <Translate contentKey="global.menu.entities.kdvKategorisi" />
-    </MenuItem>
-    <MenuItem icon="asterisk" to="/satis">
+    <MenuItem icon="money-check" to="/satis">
       <Translate contentKey="global.menu.entities.satis" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/satis-stok-hareketleri">
-      <Translate contentKey="global.menu.entities.satisStokHareketleri" />
+    <MenuItem icon="hand-holding-usd" to="/virman">
+      <Translate contentKey="global.menu.entities.virman" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/stok-girisi">
+    <MenuItem icon="wallet" to="/gider">
+      <Translate contentKey="global.menu.entities.gider" />
+    </MenuItem>
+    <MenuItem icon="keyboard" to="/stok-girisi">
       <Translate contentKey="global.menu.entities.stokGirisi" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/uretici">
+    <MenuItem icon="chalkboard-teacher" to="/nobet-hareketleri">
+      <Translate contentKey="global.menu.entities.nobetHareketleri" />
+    </MenuItem>
+    <MenuItem icon="funnel-dollar" to="/kdv-kategorisi">
+      <Translate contentKey="global.menu.entities.kdvKategorisi" />
+    </MenuItem>
+    <MenuItem icon="warehouse" to="/satis-stok-hareketleri">
+      <Translate contentKey="global.menu.entities.satisStokHareketleri" />
+    </MenuItem>
+    <MenuItem icon="people-carry" to="/uretici">
       <Translate contentKey="global.menu.entities.uretici" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/urun">
+    <MenuItem icon="box-open" to="/urun">
       <Translate contentKey="global.menu.entities.urun" />
     </MenuItem>
     <MenuItem icon="asterisk" to="/urun-fiyat">
       <Translate contentKey="global.menu.entities.urunFiyat" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/virman">
-      <Translate contentKey="global.menu.entities.virman" />
-    </MenuItem>
-    <MenuItem icon="asterisk" to="/borc-alacak">
+    <MenuItem icon="envelope-open-text" to="/borc-alacak">
       <Translate contentKey="global.menu.entities.borcAlacak" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/kasa-hareketleri">
+    <MenuItem icon="cash-register" to="/kasa-hareketleri">
       <Translate contentKey="global.menu.entities.kasaHareketleri" />
     </MenuItem>
-    <MenuItem icon="asterisk" to="/nobet-hareketleri">
-      <Translate contentKey="global.menu.entities.nobetHareketleri" />
-    </MenuItem>
-    <MenuItem icon="asterisk" to="/kisiler">
+    <MenuItem icon="user" to="/kisiler">
       <Translate contentKey="global.menu.entities.kisiler" />
     </MenuItem>
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
