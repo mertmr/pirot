@@ -2,6 +2,7 @@ package com.koop.app.web.rest;
 
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Satis;
+import com.koop.app.domain.Urun;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.service.MailService;
 import com.koop.app.service.SatisService;
@@ -28,6 +29,7 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static com.koop.app.web.rest.TestUtil.sameInstant;
@@ -106,7 +108,8 @@ public class SatisResourceIT {
             .tarih(DEFAULT_TARIH)
             .toplamTutar(DEFAULT_TOPLAM_TUTAR)
             .ortagaSatis(DEFAULT_ORTAGA_SATIS)
-            .kartliSatis(DEFAULT_KARTLI_SATIS);
+            .kartliSatis(DEFAULT_KARTLI_SATIS)
+            .stokHareketleriLists(Collections.singleton(SatisStokHareketleriResourceIT.createEntity(em)));
         return satis;
     }
     /**
@@ -143,12 +146,14 @@ public class SatisResourceIT {
 
         // Validate the Satis in the database
         List<Satis> satisList = satisRepository.findAll();
+        Urun urun = UrunResourceIT.createEntity(null);
         assertThat(satisList).hasSize(databaseSizeBeforeCreate + 1);
         Satis testSatis = satisList.get(satisList.size() - 1);
         assertThat(testSatis.getTarih()).isEqualTo(DEFAULT_TARIH);
         assertThat(testSatis.getToplamTutar()).isEqualTo(DEFAULT_TOPLAM_TUTAR);
         assertThat(testSatis.isOrtagaSatis()).isEqualTo(DEFAULT_ORTAGA_SATIS);
         assertThat(testSatis.isKartliSatis()).isEqualTo(DEFAULT_KARTLI_SATIS);
+        assertThat(testSatis.getStokHareketleriLists().iterator().next().getUrun().getStok()).isEqualTo(urun.getStok().subtract(BigDecimal.ONE));
     }
 
     @Test

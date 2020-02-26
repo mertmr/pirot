@@ -13,7 +13,6 @@ import {
   updateEntity as updateStokHareketi
 } from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
 import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
-import {defaultValue} from "app/shared/model/urun.model";
 import {defaultValue as satisDefault, defaultValueWithNew} from "app/shared/model/satis.model";
 import {defaultValueList as kdvDefaultList} from "app/shared/model/kdv-kategorisi.model";
 import {ISatisStokHareketleri} from "app/shared/model/satis-stok-hareketleri.model";
@@ -37,18 +36,21 @@ export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteCompo
 }
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
+
   const [paraUstu, setParaUstu] = useState(0);
   const [nakit, setNakit] = useState(0);
   const [kdvKategorisiList, setKdvKategorisiList] = useState(kdvDefaultList);
   const [satis, setSatis] = useState(satisDefault);
-  const [stokHareketleriLists, setStokHareketleriLists] = useState([{
+
+  const yeniUrun = {
     miktar: 0,
     urun: {
       id: 0,
       urunAdi: "Ürün seçiniz",
       musteriFiyati: 0
     }
-  }] as ISatisStokHareketleri[]);
+  };
+  const [stokHareketleriListState, setStokHareketleriLists] = useState([yeniUrun] as ISatisStokHareketleri[]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
   const {satisEntity, users, loading, updating} = props;
@@ -58,14 +60,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   };
 
   const addRow = () => {
-    const yeniUrun = {
-      index: stokHareketleriLists.length,
-      miktar: undefined,
-      birimFiyat: undefined,
-      urun: defaultValue,
-      tutar: 0
-    };
-    setStokHareketleriLists([...stokHareketleriLists, yeniUrun]);
+    setStokHareketleriLists([...stokHareketleriListState, yeniUrun]);
   };
 
   const onChangeParaUstu = (value) => {
@@ -104,15 +99,15 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   };
 
   const deleteRow = (i) => {
-    const yeniUrunler = [...stokHareketleriLists];
+    const yeniUrunler = [...stokHareketleriListState];
     yeniUrunler.splice(i, 1);
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
-    kdvListesiCikar(stokHareketleriLists[i])
+    kdvListesiCikar(stokHareketleriListState[i])
   };
 
   const onChangeMiktar = (value, i) => {
-    const yeniUrunler = [...stokHareketleriLists];
+    const yeniUrunler = [...stokHareketleriListState];
     yeniUrunler[i].miktar = value;
     if (yeniUrunler[i].urun.birim.toString() === 'GRAM')
       yeniUrunler[i].tutar = Number((value * 0.001 * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
@@ -125,13 +120,15 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const {satisUrunleri} = props;
 
   const onChangeUrun = (e) => {
-    const yeniUrunler = [...stokHareketleriLists];
+    const yeniUrunler = [...stokHareketleriListState];
     const secilenUrun = e.value;
     yeniUrunler[e.target.name].urun = secilenUrun;
+    yeniUrunler[e.target.name].miktar = 1;
     yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
     kdvListesiEkle(secilenUrun);
+    addRow();
   };
 
   const updateDateSatisField = (value, dateString) => {
@@ -192,7 +189,9 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
 
     let toplamTutar = 0;
+    const stokHareketleriLists = stokHareketleriListState.filter(stokHareketi => (stokHareketi.urun.id !== 0));
     for (const stokHareketi of stokHareketleriLists) {
+      if(stokHareketi.urun == null)
       toplamTutar += stokHareketi.tutar;
     }
     toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
@@ -247,7 +246,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
               </Button>
               <div className="table-responsive">
-                {stokHareketleriLists && stokHareketleriLists.length > 0 ? (
+                {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
                   <Table responsive>
                     <thead>
                     <tr>
@@ -270,7 +269,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {stokHareketleriLists.map((stokHareketi, i) => (
+                    {stokHareketleriListState.map((stokHareketi, i) => (
                       <tr key={`entity-${i}`}>
                         <td>
                           <Dropdown value={stokHareketi.urun} options={satisUrunleri}

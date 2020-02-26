@@ -84,7 +84,8 @@ public class SatisStokHareketleriResourceIT {
     public static SatisStokHareketleri createEntity(EntityManager em) {
         SatisStokHareketleri satisStokHareketleri = new SatisStokHareketleri()
             .miktar(DEFAULT_MIKTAR)
-            .tutar(DEFAULT_TUTAR);
+            .tutar(DEFAULT_TUTAR)
+            .urun(UrunResourceIT.createEntity(em));
         return satisStokHareketleri;
     }
     /**
