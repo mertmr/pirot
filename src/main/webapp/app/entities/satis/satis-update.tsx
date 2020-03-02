@@ -60,7 +60,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   };
 
   const addRow = () => {
-    setStokHareketleriLists([...stokHareketleriListState, yeniUrun]);
+    if (stokHareketleriListState[stokHareketleriListState.length - 1].urun.id !== 0)
+      setStokHareketleriLists([...stokHareketleriListState, yeniUrun]);
   };
 
   const onChangeParaUstu = (value) => {
@@ -71,7 +72,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const toplamHesapla = (stokHareketleriListesi) => {
     let toplamTutar = 0;
     for (const stokHareketi of stokHareketleriListesi) {
-      toplamTutar += stokHareketi.tutar;
+      if(stokHareketi.tutar != null)
+        toplamTutar += stokHareketi.tutar;
     }
     toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
     setSatis({
@@ -191,8 +193,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     let toplamTutar = 0;
     const stokHareketleriLists = stokHareketleriListState.filter(stokHareketi => (stokHareketi.urun.id !== 0));
     for (const stokHareketi of stokHareketleriLists) {
-      if(stokHareketi.urun == null)
-      toplamTutar += stokHareketi.tutar;
+      if (stokHareketi.urun == null)
+        toplamTutar += stokHareketi.tutar;
     }
     toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
 
