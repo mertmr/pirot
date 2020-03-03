@@ -21,7 +21,7 @@ export const Satis = (props: ISatisProps) => {
   const [search, setSearch] = useState('');
 
   const getAllEntities = () => {
-    if (search) {
+    if (search && search !== '') {
       props.getSearchEntities(
         search,
         paginationState.activePage - 1,
@@ -68,15 +68,6 @@ export const Satis = (props: ISatisProps) => {
       });
     }
   };
-
-  useEffect(() => {
-    props.getSearchEntities(
-      search,
-      paginationState.activePage - 1,
-      paginationState.itemsPerPage,
-      `${paginationState.sort},${paginationState.order}`
-    );
-  }, [paginationState.activePage]);
 
   const clear = () => {
     setSearch('');

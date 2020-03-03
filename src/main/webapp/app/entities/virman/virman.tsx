@@ -19,7 +19,7 @@ export const Virman = (props: IVirmanProps) => {
   const [search, setSearch] = useState('');
 
   const getAllEntities = () => {
-    if (search) {
+    if (search && search !== '') {
       props.getSearchEntities(
         search,
         paginationState.activePage - 1,
@@ -62,10 +62,6 @@ export const Virman = (props: IVirmanProps) => {
       });
     }
   };
-
-  useEffect(() => {
-    getAllEntities();
-  }, [paginationState.activePage]);
 
   const clear = () => {
     setSearch('');
