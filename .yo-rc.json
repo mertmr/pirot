@@ -16,7 +16,7 @@
     "serviceDiscoveryType": false,
     "skipClient": false,
     "skipServer": false,
-    "testFrameworks": [],
+    "testFrameworks": ["protractor"],
     "websocket": false,
     "baseName": "koop",
     "authenticationType": "jwt",
