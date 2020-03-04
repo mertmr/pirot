@@ -276,7 +276,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                         <td>
                           <Dropdown value={stokHareketi.urun} options={satisUrunleri}
                                     optionLabel="urunAdi" onChange={onChangeUrun}
-                                    filter={true} name={`${i}`} style={{width: '400px'}}
+                                    filter={true} name={`${i}`}
                                     filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
                         </td>
                         <td>{stokHareketi.urun.musteriFiyati} TL</td>

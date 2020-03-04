@@ -104,7 +104,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   <AvInput id="stok-girisi-urun" type="text" className="form-control" name="urun.urunAdi" readOnly/>
                 ) : (
                   <Dropdown value={stokGirisi.urun} options={satisUrunleri}
-                            optionLabel="urunAdi" style={{width: '400px'}}
+                            optionLabel="urunAdi"
                             name="urun" onChange={updateStokGirisi}
                             filter={true}
                             filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
