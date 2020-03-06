@@ -74,7 +74,8 @@ public class SatisResource {
             if (stokSiniri != null && stokHareketi.getUrun().getStok() != null && stokSiniri.compareTo(BigDecimal.ZERO) != 0) {
                 BigDecimal guncelStok = stokHareketi.getUrun().getStok();
                 if (guncelStok.compareTo(stokSiniri) <= 0) {
-                    String content = "Stok azaldı ==> Stok sınırı: " + stokSiniri + "  --  Güncel stok: " + guncelStok;
+                    String content = "Ürün: " + stokHareketi.getUrun().getUrunAdi() +
+                        "  Stok azaldı ==> Stok sınırı: " + stokSiniri + "  --  Güncel stok: " + guncelStok;
                     if (stokHareketi.getUrun().getUrunSorumlusu() != null) {
                         mailService.sendEmail(stokHareketi.getUrun().getUrunSorumlusu().getEmail(),
                             "Stok Uyarısı", content, false, true);

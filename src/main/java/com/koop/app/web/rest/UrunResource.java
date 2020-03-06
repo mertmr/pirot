@@ -66,11 +66,17 @@ public class UrunResource {
         if (urun.getId() != null) {
             throw new BadRequestAlertException("A new urun cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        User currentUser = userService.getCurrentUser();
-        Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
         Urun result = urunRepository.save(urun);
-        if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0)
-            createUrunFiyatEntry(urun, currentUser);
+        if (urun.getId() != null) {
+            Optional<Urun> oncekiHaliUrunOptional = urunRepository.findById(urun.getId());
+            if (oncekiHaliUrunOptional.isPresent()) {
+                Urun oncekiHaliUrun = oncekiHaliUrunOptional.get();
+                if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0) {
+                    User currentUser = userService.getCurrentUser();
+                    createUrunFiyatEntry(urun, currentUser);
+                }
+            }
+        }
         return ResponseEntity.created(new URI("/api/uruns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);

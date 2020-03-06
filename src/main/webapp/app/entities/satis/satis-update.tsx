@@ -72,7 +72,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const toplamHesapla = (stokHareketleriListesi) => {
     let toplamTutar = 0;
     for (const stokHareketi of stokHareketleriListesi) {
-      if(stokHareketi.tutar != null)
+      if (stokHareketi.tutar != null)
         toplamTutar += stokHareketi.tutar;
     }
     toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
@@ -247,105 +247,76 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 <FontAwesomeIcon icon="pencil-alt"/>{' '}
                 <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
               </Button>
-              <div className="table-responsive">
                 {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
-                  <Table responsive>
-                    <thead>
-                    <tr>
-                      <th>
-                        <Translate contentKey="koopApp.satisStokHareketleri.urun">Urun</Translate>
-                      </th>
-                      <th className="hand">
-                        Birim Fiyat
-                      </th>
-                      <th className="hand">
-                        Kalan Stok
-                      </th>
-                      <th className="hand">
-                        <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
-                      </th>
-                      <th className="hand">
-                        <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
-                      </th>
-                      <th/>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {stokHareketleriListState.map((stokHareketi, i) => (
-                      <tr key={`entity-${i}`}>
-                        <td>
-                          <Dropdown value={stokHareketi.urun} options={satisUrunleri}
-                                    optionLabel="urunAdi" onChange={onChangeUrun}
-                                    filter={true} name={`${i}`}
-                                    filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
-                        </td>
-                        <td>{stokHareketi.urun.musteriFiyati} TL</td>
-                        <td>{stokHareketi.urun.stok}</td>
-                        <td><InputNumber value={stokHareketi.miktar}
-                                         onChange={(value) => onChangeMiktar(value, i)}/>
-                        </td>
-                        <td>{stokHareketi.tutar} TL</td>
-                        <td className="text-right">
-                          <div className="btn-group flex-btn-group-container">
-                            <Button
-                              tag={Link}
-                              color="danger"
-                              size="sm"
-                              onClick={(() => deleteRow(i))}
-                            >
-                              <FontAwesomeIcon icon="trash"/>{' '}
-                              <span className="d-none d-md-inline">SİL</span>
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    </tbody>
-                    <tr>
-                      <td/>
-                      <td/>
-                      <td/>
-                      <td/>
-                      <td>
-                        <div className="text-right">
-                          <Label for="satis-toplamTutar">
-                            <Translate contentKey="koopApp.satis.toplamTutar"/>
-                          </Label>
-                          <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control"
-                                   name="toplamTutar" disabled
-                                   readOnly/>
+                  <div style={{marginTop: '10px'}}>
+                      {stokHareketleriListState.map((stokHareketi, i) => (
+                        <div key={`entity-${i}`} className="urun-sinir">
+                        <AvGroup>
+                          <Col>
+                            <Dropdown value={stokHareketi.urun} options={satisUrunleri}
+                                      optionLabel="urunAdi" onChange={onChangeUrun}
+                                      filter={true} name={`${i}`} style={{width: '100%'}}
+                                      filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
+                            <Row style={{marginTop: '20px'}}>
+                              <Col style={{marginTop: '10px'}}>
+                                <Col>
+                                  Birim Fiyat
+                                </Col>
+                                <Col>
+                                  {stokHareketi.urun.musteriFiyati} TL
+                                </Col>
+                              </Col>
+                              <Col style={{marginTop: '10px'}}>
+                                <Col>
+                                  Kalan Stok
+                                </Col>
+                                <Col>
+                                  {stokHareketi.urun.stok}
+                                </Col>
+                              </Col>
+                              <Col style={{marginTop: '10px'}}>
+                                <Col>
+                                  <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
+                                </Col>
+                                <Col>
+                                  <InputNumber value={stokHareketi.miktar} max={stokHareketi.urun.stok}
+                                               onChange={(value) => onChangeMiktar(value, i)}/>
+                                </Col>
+                              </Col>
+                              <Col style={{marginTop: '10px'}}>
+                                <Col>
+                                  <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
+                                </Col>
+                                <Col>
+                                  {stokHareketi.tutar} TL
+                                </Col>
+                              </Col>
+                            </Row>
+                            <Col style={{marginTop: '10px'}}>
+                              <div className="btn-group flex-btn-group-container">
+                                <Button
+                                  tag={Link}
+                                  color="danger"
+                                  size="sm"
+                                  onClick={(() => deleteRow(i))}
+                                >
+                                  <FontAwesomeIcon icon="trash"/>{' '}
+                                  <span className="d-none d-md-inline">SİL</span>
+                                </Button>
+                              </div>
+                            </Col>
+                          </Col>
+                        </AvGroup>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td/>
-                      <td/>
-                      <td/>
-                      <td/>
-                      <td>
-                        <div className="text-right">
-                          <Label for="satis-nakitTutar">
-                            Nakit Verilen
-                          </Label>
-                          <InputNumber onChange={(value) => onChangeParaUstu(value)}/>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td/>
-                      <td/>
-                      <td/>
-                      <td/>
-                      <td>
-                        <div className="text-right">
-                          <Label for="satis-paraustu">
-                            Para Üstü
-                          </Label>
-                          <InputNumber value={paraUstu}/>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
+                      ))}
+                      <AvGroup>
+                        <Label for="satis-toplamTutar">
+                          <Translate contentKey="koopApp.satis.toplamTutar"/>
+                        </Label>
+                        <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control"
+                                 name="toplamTutar" disabled
+                                 readOnly/>
+                      </AvGroup>
                       <AvGroup>
                         <Label for="gider-user">
                           Satış Tarihi
@@ -371,13 +342,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                           <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate>
                         </Label>
                       </AvGroup>
-                    </tr>
-                  </Table>
+                  </div>
                 ) : (
                   <div className="alert alert-warning">
                   </div>
                 )}
-              </div>
               <div className="table-responsive">
                 {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
                   <Table responsive>

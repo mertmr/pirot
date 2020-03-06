@@ -45,8 +45,8 @@ public class StokGirisiService {
             if(urun.getBirim() == Birim.GRAM) {
                 musteriFiyati = urun.getMusteriFiyati().multiply(BigDecimal.valueOf(0.001));
             }
-            kasaHareketleriService.createKasaHareketi(musteriFiyati.multiply(BigDecimal.valueOf(stokGirisi.getMiktar())),
-                "Musteri iadesi: Para kasaya geri dondu");
+            kasaHareketleriService.createKasaHareketi(musteriFiyati.multiply(BigDecimal.valueOf(stokGirisi.getMiktar()).negate()),
+                "Musteri iadesi: Kasadan para cikti");
         }
 
         urunRepository.save(urun);
