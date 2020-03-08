@@ -54,7 +54,6 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
         ...urunFiyatEntity,
         ...values
       };
-      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
