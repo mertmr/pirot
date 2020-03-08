@@ -31,6 +31,13 @@
             "otherEntityRelationshipName": "satis",
             "relationshipName": "user",
             "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "kisiler",
+            "otherEntityRelationshipName": "satis",
+            "relationshipName": "kisi",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20200103090901",

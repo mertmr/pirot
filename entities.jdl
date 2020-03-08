@@ -135,6 +135,7 @@ relationship ManyToOne {
   UrunFiyat{urun} to Urun
   BorcAlacak{urun(urunAdi)} to Urun
   Urun{kdvKategorisi} to KdvKategorisi
+  Satis{kisi} to Kisiler
 }
 
 relationship OneToMany {

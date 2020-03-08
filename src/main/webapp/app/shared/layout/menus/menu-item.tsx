@@ -15,7 +15,7 @@ export default class MenuItem extends React.Component<IMenuItem> {
     const { to, icon, id, children } = this.props;
 
     return (
-      <DropdownItem tag={Link} to={to} id={id} data-toggle="multi-collapse" data-target=".multi-collapse">
+      <DropdownItem tag={Link} to={to} id={id} data-toggle="collapse" data-target=".jh-navbar">
         <FontAwesomeIcon icon={icon} fixedWidth /> {children}
       </DropdownItem>
     );

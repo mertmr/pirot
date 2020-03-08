@@ -247,51 +247,50 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 <FontAwesomeIcon icon="pencil-alt"/>{' '}
                 <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
               </Button>
-                {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
-                  <div style={{marginTop: '10px'}}>
-                      {stokHareketleriListState.map((stokHareketi, i) => (
-                        <div key={`entity-${i}`} className="urun-sinir">
-                        <AvGroup>
-                          <Col>
+              {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
+                <div style={{marginTop: '10px'}}>
+                  {stokHareketleriListState.map((stokHareketi, i) => (
+                    <div key={`entity-${i}`} className="urun-sinir">
+                      <AvGroup>
+                        <Col>
+                          <Row style={{marginTop: '20px'}}>
                             <Dropdown value={stokHareketi.urun} options={satisUrunleri}
                                       optionLabel="urunAdi" onChange={onChangeUrun}
-                                      filter={true} name={`${i}`} style={{width: '100%'}}
+                                      filter={true} name={`${i}`} className="col-12 col-md-4"
                                       filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
-                            <Row style={{marginTop: '20px'}}>
-                              <Col style={{marginTop: '10px'}}>
-                                <Col>
-                                  Birim Fiyat
-                                </Col>
-                                <Col>
-                                  {stokHareketi.urun.musteriFiyati} TL
-                                </Col>
+                            <Col style={{marginTop: '10px'}}>
+                              <Col>
+                                Birim Fiyat
                               </Col>
-                              <Col style={{marginTop: '10px'}}>
-                                <Col>
-                                  Kalan Stok
-                                </Col>
-                                <Col>
-                                  {stokHareketi.urun.stok}
-                                </Col>
+                              <Col>
+                                {stokHareketi.urun.musteriFiyati} TL
                               </Col>
-                              <Col style={{marginTop: '10px'}}>
-                                <Col>
-                                  <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
-                                </Col>
-                                <Col>
-                                  <InputNumber value={stokHareketi.miktar} max={stokHareketi.urun.stok}
-                                               onChange={(value) => onChangeMiktar(value, i)}/>
-                                </Col>
+                            </Col>
+                            <Col style={{marginTop: '10px'}}>
+                              <Col>
+                                Kalan Stok
                               </Col>
-                              <Col style={{marginTop: '10px'}}>
-                                <Col>
-                                  <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
-                                </Col>
-                                <Col>
-                                  {stokHareketi.tutar} TL
-                                </Col>
+                              <Col>
+                                {stokHareketi.urun.stok}
                               </Col>
-                            </Row>
+                            </Col>
+                            <Col style={{marginTop: '10px'}}>
+                              <Col>
+                                <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
+                              </Col>
+                              <Col>
+                                <InputNumber value={stokHareketi.miktar} max={stokHareketi.urun.stok}
+                                             onChange={(value) => onChangeMiktar(value, i)}/>
+                              </Col>
+                            </Col>
+                            <Col style={{marginTop: '10px'}}>
+                              <Col>
+                                <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
+                              </Col>
+                              <Col>
+                                {stokHareketi.tutar} TL
+                              </Col>
+                            </Col>
                             <Col style={{marginTop: '10px'}}>
                               <div className="btn-group flex-btn-group-container">
                                 <Button
@@ -305,48 +304,49 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                 </Button>
                               </div>
                             </Col>
-                          </Col>
-                        </AvGroup>
-                        </div>
-                      ))}
-                      <AvGroup>
-                        <Label for="satis-toplamTutar">
-                          <Translate contentKey="koopApp.satis.toplamTutar"/>
-                        </Label>
-                        <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control"
-                                 name="toplamTutar" disabled
-                                 readOnly/>
+                          </Row>
+                        </Col>
                       </AvGroup>
-                      <AvGroup>
-                        <Label for="gider-user">
-                          Satış Tarihi
-                        </Label>
-                        <DatePicker showTime
-                                    name="tarih" className="form-control"
-                                    placeholder="Tarih Seçin"
-                                    onChange={updateDateSatisField}
-                                    defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
-                                      moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
-                      </AvGroup>
-                      <AvGroup check>
-                        <Label id="kartliSatisLabel">
-                          <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input"
-                                   name="kartliSatis"/>
-                          <Translate contentKey="koopApp.satis.kartliSatis">Kartli Satis</Translate>
-                        </Label>
-                      </AvGroup>
-                      <AvGroup check>
-                        <Label id="ortagaSatisLabel">
-                          <AvInput id="satis-ortagaSatis" type="checkbox" className="form-check-input"
-                                   name="ortagaSatis"/>
-                          <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate>
-                        </Label>
-                      </AvGroup>
-                  </div>
-                ) : (
-                  <div className="alert alert-warning">
-                  </div>
-                )}
+                    </div>
+                  ))}
+                  <AvGroup>
+                    <Label for="satis-toplamTutar">
+                      <Translate contentKey="koopApp.satis.toplamTutar"/>
+                    </Label>
+                    <AvInput id="satis-toplamTutar" type="text" value={satis.toplamTutar} className="form-control"
+                             name="toplamTutar" disabled
+                             readOnly/>
+                  </AvGroup>
+                  <AvGroup>
+                    <Label for="gider-user">
+                      Satış Tarihi
+                    </Label>
+                    <DatePicker showTime
+                                name="tarih" className="form-control"
+                                placeholder="Tarih Seçin"
+                                onChange={updateDateSatisField}
+                                defaultValue={isNew ? moment(new Date(), 'YYYY-MM-DD') :
+                                  moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)}/>
+                  </AvGroup>
+                  <AvGroup check>
+                    <Label id="kartliSatisLabel">
+                      <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input"
+                               name="kartliSatis"/>
+                      <Translate contentKey="koopApp.satis.kartliSatis">Kartli Satis</Translate>
+                    </Label>
+                  </AvGroup>
+                  <AvGroup check>
+                    <Label id="ortagaSatisLabel">
+                      <AvInput id="satis-ortagaSatis" type="checkbox" className="form-check-input"
+                               name="ortagaSatis"/>
+                      <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate>
+                    </Label>
+                  </AvGroup>
+                </div>
+              ) : (
+                <div className="alert alert-warning">
+                </div>
+              )}
               <div className="table-responsive">
                 {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
                   <Table responsive>

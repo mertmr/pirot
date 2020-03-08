@@ -30,14 +30,17 @@ public class SatisService {
 
     private final UrunRepository urunRepository;
 
+    private final KisilerService kisilerService;
+
     public SatisService(SatisRepository satisRepository, UserService userService,
                         SatisStokHareketleriRepository satisStokHareketleriRepository,
-                        KasaHareketleriService kasaHareketleriService, UrunRepository urunRepository) {
+                        KasaHareketleriService kasaHareketleriService, UrunRepository urunRepository, KisilerService kisilerService) {
         this.satisRepository = satisRepository;
         this.userService = userService;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.kasaHareketleriService = kasaHareketleriService;
         this.urunRepository = urunRepository;
+        this.kisilerService = kisilerService;
     }
 
     public Satis createSatis(Satis satis) {
@@ -49,6 +52,8 @@ public class SatisService {
         satis.setUser(currentUser);
         if (satis.getTarih() == null)
             satis.setTarih(ZonedDateTime.now());
+
+        satis.setKisi(kisilerService.getRandomKisi());
         Satis result = satisRepository.save(satis);
 
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));

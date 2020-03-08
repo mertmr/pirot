@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="koop_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="kisi_id"
+                                 baseTableName="satis"
+                                 constraintName="fk_satis_kisi_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="kisiler"/>
+
     </changeSet>
 </databaseChangeLog>

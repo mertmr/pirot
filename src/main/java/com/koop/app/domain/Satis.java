@@ -49,6 +49,10 @@ public class Satis implements Serializable {
     @JsonIgnoreProperties("satis")
     private User user;
 
+    @ManyToOne
+    @JsonIgnoreProperties("satis")
+    private Kisiler kisi;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -146,6 +150,19 @@ public class Satis implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Kisiler getKisi() {
+        return kisi;
+    }
+
+    public Satis kisi(Kisiler kisiler) {
+        this.kisi = kisiler;
+        return this;
+    }
+
+    public void setKisi(Kisiler kisiler) {
+        this.kisi = kisiler;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
