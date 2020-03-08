@@ -9,6 +9,12 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.StokGirisi}.
  */
@@ -34,12 +33,12 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class StokGirisiResource {
-
     private static final String ENTITY_NAME = "stokGirisi";
     private final Logger log = LoggerFactory.getLogger(StokGirisiResource.class);
     private final StokGirisiRepository stokGirisiRepository;
     private final UserService userService;
     private final StokGirisiService stokGirisiService;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -64,10 +63,10 @@ public class StokGirisiResource {
         }
         User currentUser = userService.getCurrentUser();
         stokGirisi.setUser(currentUser);
-        if (stokGirisi.getTarih() == null)
-            stokGirisi.setTarih(ZonedDateTime.now());
+        if (stokGirisi.getTarih() == null) stokGirisi.setTarih(ZonedDateTime.now());
         StokGirisi result = stokGirisiService.save(stokGirisi);
-        return ResponseEntity.created(new URI("/api/stok-girisis/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/stok-girisis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -88,7 +87,8 @@ public class StokGirisiResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         StokGirisi result = stokGirisiService.update(stokGirisi);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, stokGirisi.getId().toString()))
             .body(result);
     }
@@ -130,6 +130,9 @@ public class StokGirisiResource {
     public ResponseEntity<Void> deleteStokGirisi(@PathVariable Long id) {
         log.debug("REST request to delete StokGirisi : {}", id);
         stokGirisiRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

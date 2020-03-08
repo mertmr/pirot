@@ -1,18 +1,15 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.koop.app.domain.enumeration.Birim;
+import com.koop.app.domain.enumeration.UrunKategorisi;
 import java.io.Serializable;
 import java.math.BigDecimal;
-
-import com.koop.app.domain.enumeration.Birim;
-
-import com.koop.app.domain.enumeration.UrunKategorisi;
+import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Urun.
@@ -21,7 +18,6 @@ import com.koop.app.domain.enumeration.UrunKategorisi;
 @Table(name = "urun")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Urun implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -203,6 +199,7 @@ public class Urun implements Serializable {
     public void setKdvKategorisi(KdvKategorisi kdvKategorisi) {
         this.kdvKategorisi = kdvKategorisi;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -223,16 +220,32 @@ public class Urun implements Serializable {
 
     @Override
     public String toString() {
-        return "Urun{" +
-            "id=" + getId() +
-            ", urunAdi='" + getUrunAdi() + "'" +
-            ", stok=" + getStok() +
-            ", stokSiniri=" + getStokSiniri() +
-            ", musteriFiyati=" + getMusteriFiyati() +
-            ", birim='" + getBirim() + "'" +
-            ", dayanismaUrunu='" + isDayanismaUrunu() + "'" +
-            ", satista='" + isSatista() + "'" +
-            ", urunKategorisi='" + getUrunKategorisi() + "'" +
-            "}";
+        return (
+            "Urun{" +
+            "id=" +
+            getId() +
+            ", urunAdi='" +
+            getUrunAdi() +
+            "'" +
+            ", stok=" +
+            getStok() +
+            ", stokSiniri=" +
+            getStokSiniri() +
+            ", musteriFiyati=" +
+            getMusteriFiyati() +
+            ", birim='" +
+            getBirim() +
+            "'" +
+            ", dayanismaUrunu='" +
+            isDayanismaUrunu() +
+            "'" +
+            ", satista='" +
+            isSatista() +
+            "'" +
+            ", urunKategorisi='" +
+            getUrunKategorisi() +
+            "'" +
+            "}"
+        );
     }
 }

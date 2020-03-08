@@ -54,6 +54,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
         ...urunFiyatEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -109,11 +110,11 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 <Label for="urun-fiyat-user">
                   <Translate contentKey="koopApp.urunFiyat.user">User</Translate>
                 </Label>
-                <AvInput id="urun-fiyat-user" type="select" className="form-control" name="user.id">
+                <AvInput id="urun-fiyat-user" type="select" className="form-control" name="user">
                   <option value="" key="0" />
                   {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
+                    ? users.map((otherEntity, index) => (
+                        <option value={index} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))

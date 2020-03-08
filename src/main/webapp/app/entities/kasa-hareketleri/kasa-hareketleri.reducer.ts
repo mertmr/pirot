@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<IKasaHareketleri> = entity => async di
     type: ACTION_TYPES.UPDATE_KASAHAREKETLERI,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<IKasaHareketleri> = id => async dis
     type: ACTION_TYPES.DELETE_KASAHAREKETLERI,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Virman;
+import java.util.List;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * Spring Data  repository for the Virman entity.
  */
@@ -18,7 +17,6 @@ import java.util.List;
 @Repository
 @JaversSpringDataAuditable
 public interface VirmanRepository extends JpaRepository<Virman, Long> {
-
     @Query("select virman from Virman virman where virman.user.login = ?#{principal.username}")
     List<Virman> findByUserIsCurrentUser();
 

@@ -1,7 +1,6 @@
 package com.koop.app.dto;
 
 public class AylikSatislar {
-
     private int year;
 
     private int month;
@@ -17,8 +16,7 @@ public class AylikSatislar {
         this.miktar = miktar;
     }
 
-    public AylikSatislar() {
-    }
+    public AylikSatislar() {}
 
     public int getYear() {
         return year;

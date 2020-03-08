@@ -11,6 +11,12 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,13 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.Urun}.
  */
@@ -36,17 +35,22 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class UrunResource {
-
     private static final String ENTITY_NAME = "urun";
     private final Logger log = LoggerFactory.getLogger(UrunResource.class);
     private final UrunRepository urunRepository;
     private final UserService userService;
     private final UrunService urunService;
     private final UrunFiyatRepository urunFiyatRepository;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public UrunResource(UrunRepository urunRepository, UserService userService, UrunService urunService, UrunFiyatRepository urunFiyatRepository) {
+    public UrunResource(
+        UrunRepository urunRepository,
+        UserService userService,
+        UrunService urunService,
+        UrunFiyatRepository urunFiyatRepository
+    ) {
         this.urunRepository = urunRepository;
         this.userService = userService;
         this.urunService = urunService;
@@ -77,7 +81,8 @@ public class UrunResource {
                 }
             }
         }
-        return ResponseEntity.created(new URI("/api/uruns/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/uruns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -100,9 +105,9 @@ public class UrunResource {
         User currentUser = userService.getCurrentUser();
         Urun result = urunRepository.save(urun);
         Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
-        if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0)
-            createUrunFiyatEntry(urun, currentUser);
-        return ResponseEntity.ok()
+        if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0) createUrunFiyatEntry(urun, currentUser);
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urun.getId().toString()))
             .body(result);
     }
@@ -153,7 +158,10 @@ public class UrunResource {
     public ResponseEntity<Void> deleteUrun(@PathVariable Long id) {
         log.debug("REST request to delete Urun : {}", id);
         urunRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     /**

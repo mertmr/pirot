@@ -6,20 +6,22 @@ import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.domain.enumeration.StokHareketiTipi;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.repository.UrunRepository;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
+import org.springframework.stereotype.Service;
 
 @Service
 public class StokGirisiService {
-
     private final StokGirisiRepository stokGirisiRepository;
 
     private final UrunRepository urunRepository;
 
     private final KasaHareketleriService kasaHareketleriService;
 
-    public StokGirisiService(StokGirisiRepository stokGirisiRepository, UrunRepository urunRepository, KasaHareketleriService kasaHareketleriService) {
+    public StokGirisiService(
+        StokGirisiRepository stokGirisiRepository,
+        UrunRepository urunRepository,
+        KasaHareketleriService kasaHareketleriService
+    ) {
         this.stokGirisiRepository = stokGirisiRepository;
         this.urunRepository = urunRepository;
         this.kasaHareketleriService = kasaHareketleriService;
@@ -42,11 +44,13 @@ public class StokGirisiService {
         } else if (stokGirisi.getStokHareketiTipi() == StokHareketiTipi.IADE) {
             urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokGirisi.getMiktar())));
             BigDecimal musteriFiyati = urun.getMusteriFiyati();
-            if(urun.getBirim() == Birim.GRAM) {
+            if (urun.getBirim() == Birim.GRAM) {
                 musteriFiyati = urun.getMusteriFiyati().multiply(BigDecimal.valueOf(0.001));
             }
-            kasaHareketleriService.createKasaHareketi(musteriFiyati.multiply(BigDecimal.valueOf(stokGirisi.getMiktar()).negate()),
-                "Musteri iadesi: Kasadan para cikti");
+            kasaHareketleriService.createKasaHareketi(
+                musteriFiyati.multiply(BigDecimal.valueOf(stokGirisi.getMiktar()).negate()),
+                "Musteri iadesi: Kasadan para cikti"
+            );
         }
 
         urunRepository.save(urun);

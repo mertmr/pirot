@@ -63,6 +63,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
         urunSorumlusu,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -157,9 +158,8 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="urunKategorisi"
-                  value={(!isNew && urunEntity.urunKategorisi) || 'YOK'}
+                  value={(!isNew && urunEntity.urunKategorisi) || 'GIDA'}
                 >
-                  <option value="YOK">{translate('koopApp.UrunKategorisi.YOK')}</option>
                   <option value="GIDA">{translate('koopApp.UrunKategorisi.GIDA')}</option>
                   <option value="GIDA_DISI">{translate('koopApp.UrunKategorisi.GIDA_DISI')}</option>
                 </AvInput>

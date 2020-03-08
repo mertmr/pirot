@@ -1,14 +1,13 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A SatisStokHareketleri.
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
 @Table(name = "satis_stok_hareketleri")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SatisStokHareketleri implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -101,6 +99,7 @@ public class SatisStokHareketleri implements Serializable {
     public void setSatis(Satis satis) {
         this.satis = satis;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -121,10 +120,6 @@ public class SatisStokHareketleri implements Serializable {
 
     @Override
     public String toString() {
-        return "SatisStokHareketleri{" +
-            "id=" + getId() +
-            ", miktar=" + getMiktar() +
-            ", tutar=" + getTutar() +
-            "}";
+        return "SatisStokHareketleri{" + "id=" + getId() + ", miktar=" + getMiktar() + ", tutar=" + getTutar() + "}";
     }
 }

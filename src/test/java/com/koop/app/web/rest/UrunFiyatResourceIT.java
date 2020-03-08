@@ -1,46 +1,47 @@
 package com.koop.app.web.rest;
 
+import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
+import static com.koop.app.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.koop.app.KoopApp;
 import com.koop.app.domain.UrunFiyat;
 import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
-
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
-
-import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Integration tests for the {@link UrunFiyatResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+@AutoConfigureMockMvc
+@WithMockUser
 public class UrunFiyatResourceIT {
-
     private static final BigDecimal DEFAULT_FIYAT = new BigDecimal(1);
     private static final BigDecimal UPDATED_FIYAT = new BigDecimal(2);
 
@@ -76,12 +77,15 @@ public class UrunFiyatResourceIT {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final UrunFiyatResource urunFiyatResource = new UrunFiyatResource(urunFiyatRepository, userService);
-        this.restUrunFiyatMockMvc = MockMvcBuilders.standaloneSetup(urunFiyatResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
+        this.restUrunFiyatMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(urunFiyatResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .setValidator(validator)
+                .build();
     }
 
     /**
@@ -91,11 +95,10 @@ public class UrunFiyatResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UrunFiyat createEntity(EntityManager em) {
-        UrunFiyat urunFiyat = new UrunFiyat()
-            .fiyat(DEFAULT_FIYAT)
-            .tarih(DEFAULT_TARIH);
+        UrunFiyat urunFiyat = new UrunFiyat().fiyat(DEFAULT_FIYAT).tarih(DEFAULT_TARIH);
         return urunFiyat;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -103,9 +106,7 @@ public class UrunFiyatResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UrunFiyat createUpdatedEntity(EntityManager em) {
-        UrunFiyat urunFiyat = new UrunFiyat()
-            .fiyat(UPDATED_FIYAT)
-            .tarih(UPDATED_TARIH);
+        UrunFiyat urunFiyat = new UrunFiyat().fiyat(UPDATED_FIYAT).tarih(UPDATED_TARIH);
         return urunFiyat;
     }
 
@@ -121,9 +122,8 @@ public class UrunFiyatResourceIT {
         int databaseSizeBeforeCreate = urunFiyatRepository.findAll().size();
 
         // Create the UrunFiyat
-        restUrunFiyatMockMvc.perform(post("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
+        restUrunFiyatMockMvc
+            .perform(post("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isCreated());
 
         // Validate the UrunFiyat in the database
@@ -143,16 +143,14 @@ public class UrunFiyatResourceIT {
         urunFiyat.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restUrunFiyatMockMvc.perform(post("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
+        restUrunFiyatMockMvc
+            .perform(post("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isBadRequest());
 
         // Validate the UrunFiyat in the database
         List<UrunFiyat> urunFiyatList = urunFiyatRepository.findAll();
         assertThat(urunFiyatList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -161,7 +159,8 @@ public class UrunFiyatResourceIT {
         urunFiyatRepository.saveAndFlush(urunFiyat);
 
         // Get all the urunFiyatList
-        restUrunFiyatMockMvc.perform(get("/api/urun-fiyats?sort=id,desc"))
+        restUrunFiyatMockMvc
+            .perform(get("/api/urun-fiyats?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urunFiyat.getId().intValue())))
@@ -176,7 +175,8 @@ public class UrunFiyatResourceIT {
         urunFiyatRepository.saveAndFlush(urunFiyat);
 
         // Get the urunFiyat
-        restUrunFiyatMockMvc.perform(get("/api/urun-fiyats/{id}", urunFiyat.getId()))
+        restUrunFiyatMockMvc
+            .perform(get("/api/urun-fiyats/{id}", urunFiyat.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(urunFiyat.getId().intValue()))
@@ -188,8 +188,7 @@ public class UrunFiyatResourceIT {
     @Transactional
     public void getNonExistingUrunFiyat() throws Exception {
         // Get the urunFiyat
-        restUrunFiyatMockMvc.perform(get("/api/urun-fiyats/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restUrunFiyatMockMvc.perform(get("/api/urun-fiyats/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -205,13 +204,12 @@ public class UrunFiyatResourceIT {
         UrunFiyat updatedUrunFiyat = urunFiyatRepository.findById(urunFiyat.getId()).get();
         // Disconnect from session so that the updates on updatedUrunFiyat are not directly saved in db
         em.detach(updatedUrunFiyat);
-        updatedUrunFiyat
-            .fiyat(UPDATED_FIYAT)
-            .tarih(UPDATED_TARIH);
+        updatedUrunFiyat.fiyat(UPDATED_FIYAT).tarih(UPDATED_TARIH);
 
-        restUrunFiyatMockMvc.perform(put("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyat)))
+        restUrunFiyatMockMvc
+            .perform(
+                put("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyat))
+            )
             .andExpect(status().isOk());
 
         // Validate the UrunFiyat in the database
@@ -230,9 +228,8 @@ public class UrunFiyatResourceIT {
         // Create the UrunFiyat
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restUrunFiyatMockMvc.perform(put("/api/urun-fiyats")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
+        restUrunFiyatMockMvc
+            .perform(put("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isBadRequest());
 
         // Validate the UrunFiyat in the database
@@ -249,8 +246,8 @@ public class UrunFiyatResourceIT {
         int databaseSizeBeforeDelete = urunFiyatRepository.findAll().size();
 
         // Delete the urunFiyat
-        restUrunFiyatMockMvc.perform(delete("/api/urun-fiyats/{id}", urunFiyat.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+        restUrunFiyatMockMvc
+            .perform(delete("/api/urun-fiyats/{id}", urunFiyat.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

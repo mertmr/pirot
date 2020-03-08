@@ -1,49 +1,49 @@
 package com.koop.app.web.rest;
 
+import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
+import static com.koop.app.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Virman;
+import com.koop.app.domain.enumeration.Hesap;
 import com.koop.app.repository.VirmanRepository;
 import com.koop.app.service.KasaHareketleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
-
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
-
-import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.koop.app.domain.enumeration.Hesap;
-
 /**
  * Integration tests for the {@link VirmanResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+@AutoConfigureMockMvc
+@WithMockUser
 public class VirmanResourceIT {
-
     private static final BigDecimal DEFAULT_TUTAR = new BigDecimal(1);
     private static final BigDecimal UPDATED_TUTAR = new BigDecimal(2);
 
@@ -91,12 +91,15 @@ public class VirmanResourceIT {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final VirmanResource virmanResource = new VirmanResource(virmanRepository, userService, kasaHareketleriService);
-        this.restVirmanMockMvc = MockMvcBuilders.standaloneSetup(virmanResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
+        this.restVirmanMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(virmanResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .setValidator(validator)
+                .build();
     }
 
     /**
@@ -114,6 +117,7 @@ public class VirmanResourceIT {
             .tarih(DEFAULT_TARIH);
         return virman;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -142,9 +146,8 @@ public class VirmanResourceIT {
         int databaseSizeBeforeCreate = virmanRepository.findAll().size();
 
         // Create the Virman
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isCreated());
 
         // Validate the Virman in the database
@@ -167,16 +170,14 @@ public class VirmanResourceIT {
         virman.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
         // Validate the Virman in the database
         List<Virman> virmanList = virmanRepository.findAll();
         assertThat(virmanList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -187,9 +188,8 @@ public class VirmanResourceIT {
 
         // Create the Virman, which fails.
 
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
         List<Virman> virmanList = virmanRepository.findAll();
@@ -205,9 +205,8 @@ public class VirmanResourceIT {
 
         // Create the Virman, which fails.
 
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
         List<Virman> virmanList = virmanRepository.findAll();
@@ -221,7 +220,8 @@ public class VirmanResourceIT {
         virmanRepository.saveAndFlush(virman);
 
         // Get all the virmanList
-        restVirmanMockMvc.perform(get("/api/virmen?sort=id,desc"))
+        restVirmanMockMvc
+            .perform(get("/api/virmen?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(virman.getId().intValue())))
@@ -239,7 +239,8 @@ public class VirmanResourceIT {
         virmanRepository.saveAndFlush(virman);
 
         // Get the virman
-        restVirmanMockMvc.perform(get("/api/virmen/{id}", virman.getId()))
+        restVirmanMockMvc
+            .perform(get("/api/virmen/{id}", virman.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(virman.getId().intValue()))
@@ -254,8 +255,7 @@ public class VirmanResourceIT {
     @Transactional
     public void getNonExistingVirman() throws Exception {
         // Get the virman
-        restVirmanMockMvc.perform(get("/api/virmen/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restVirmanMockMvc.perform(get("/api/virmen/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -278,9 +278,8 @@ public class VirmanResourceIT {
             .girisHesabi(UPDATED_GIRIS_HESABI)
             .tarih(UPDATED_TARIH);
 
-        restVirmanMockMvc.perform(put("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedVirman)))
+        restVirmanMockMvc
+            .perform(put("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedVirman)))
             .andExpect(status().isOk());
 
         // Validate the Virman in the database
@@ -302,9 +301,8 @@ public class VirmanResourceIT {
         // Create the Virman
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restVirmanMockMvc.perform(put("/api/virmen")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(put("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
         // Validate the Virman in the database
@@ -321,8 +319,8 @@ public class VirmanResourceIT {
         int databaseSizeBeforeDelete = virmanRepository.findAll().size();
 
         // Delete the virman
-        restVirmanMockMvc.perform(delete("/api/virmen/{id}", virman.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+        restVirmanMockMvc
+            .perform(delete("/api/virmen/{id}", virman.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

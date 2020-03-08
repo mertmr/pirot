@@ -7,19 +7,17 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SatisService {
-
     private final SatisRepository satisRepository;
 
     private final UserService userService;
@@ -32,9 +30,14 @@ public class SatisService {
 
     private final KisilerService kisilerService;
 
-    public SatisService(SatisRepository satisRepository, UserService userService,
-                        SatisStokHareketleriRepository satisStokHareketleriRepository,
-                        KasaHareketleriService kasaHareketleriService, UrunRepository urunRepository, KisilerService kisilerService) {
+    public SatisService(
+        SatisRepository satisRepository,
+        UserService userService,
+        SatisStokHareketleriRepository satisStokHareketleriRepository,
+        KasaHareketleriService kasaHareketleriService,
+        UrunRepository urunRepository,
+        KisilerService kisilerService
+    ) {
         this.satisRepository = satisRepository;
         this.userService = userService;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
@@ -50,8 +53,7 @@ public class SatisService {
         Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
-        if (satis.getTarih() == null)
-            satis.setTarih(ZonedDateTime.now());
+        if (satis.getTarih() == null) satis.setTarih(ZonedDateTime.now());
 
         satis.setKisi(kisilerService.getRandomKisi());
         Satis result = satisRepository.save(satis);
@@ -95,14 +97,14 @@ public class SatisService {
             }
         }
 
-        Map<Long, SatisStokHareketleri> stokHareketMap = stokHareketleriLists.stream().
-            collect(Collectors.toMap(SatisStokHareketleri::getId, satisStokHareketleri -> satisStokHareketleri));
+        Map<Long, SatisStokHareketleri> stokHareketMap = stokHareketleriLists
+            .stream()
+            .collect(Collectors.toMap(SatisStokHareketleri::getId, satisStokHareketleri -> satisStokHareketleri));
         for (SatisStokHareketleri stokHareketleri : satisOncekiHali.getStokHareketleriLists()) {
             if (!stokHareketMap.containsKey(stokHareketleri.getId())) {
                 satisStokHareketleriRepository.delete(stokHareketleri);
             }
         }
-
 
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
         urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));

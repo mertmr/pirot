@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 public class AylikSatislarRaporu {
-
     private Map<String, Long> aylikSatisMap;
 
     private List<ZonedDateTime> tarihListesi;

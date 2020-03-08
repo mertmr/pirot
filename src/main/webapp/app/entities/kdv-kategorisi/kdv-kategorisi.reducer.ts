@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<IKdvKategorisi> = entity => async disp
     type: ACTION_TYPES.UPDATE_KDVKATEGORISI,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<IKdvKategorisi> = id => async dispa
     type: ACTION_TYPES.DELETE_KDVKATEGORISI,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

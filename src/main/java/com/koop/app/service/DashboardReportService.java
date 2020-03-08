@@ -4,15 +4,13 @@ import com.koop.app.domain.DashboardReports;
 import com.koop.app.domain.KasaHareketleri;
 import com.koop.app.repository.KasaHareketleriRepository;
 import com.koop.app.repository.SatisRepository;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DashboardReportService {
-
     private final SatisRepository satisRepository;
 
     private final KasaHareketleriRepository kasaHareketleriRepository;
@@ -33,7 +31,7 @@ public class DashboardReportService {
         Double kartliSatis = satisRepository.findCiroKartli(endOfDay, startOfDay);
         if (bugununSatisi != null) {
             dashboardReports.setGunlukCiro(bugununSatisi);
-            if(kartliSatis == null) {
+            if (kartliSatis == null) {
                 kartliSatis = 0d;
             }
             dashboardReports.setKartliSatis(kartliSatis);

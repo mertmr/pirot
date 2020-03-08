@@ -9,6 +9,12 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.Virman}.
  */
@@ -34,12 +33,12 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class VirmanResource {
-
     private static final String ENTITY_NAME = "virman";
     private final Logger log = LoggerFactory.getLogger(VirmanResource.class);
     private final VirmanRepository virmanRepository;
     private final UserService userService;
     private final KasaHareketleriService kasaHareketleriService;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -69,7 +68,8 @@ public class VirmanResource {
         }
         Virman result = virmanRepository.save(virman);
         kasaHareketleriService.createKasaHareketi(virman.getTutar().negate(), "Kasadan Virman Cikti");
-        return ResponseEntity.created(new URI("/api/virmen/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/virmen/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -95,10 +95,10 @@ public class VirmanResource {
             virman.setTarih(ZonedDateTime.now());
         }
         Virman oncekiVirman = virmanRepository.findById(virman.getId()).get();
-        kasaHareketleriService.createKasaHareketi(virman.getTutar().subtract(oncekiVirman.getTutar()).negate(),
-            "Virmanda Düzenleme");
+        kasaHareketleriService.createKasaHareketi(virman.getTutar().subtract(oncekiVirman.getTutar()).negate(), "Virmanda Düzenleme");
         Virman result = virmanRepository.save(virman);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, virman.getId().toString()))
             .body(result);
     }
@@ -140,7 +140,10 @@ public class VirmanResource {
     public ResponseEntity<Void> deleteVirman(@PathVariable Long id) {
         log.debug("REST request to delete Virman : {}", id);
         virmanRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     /**

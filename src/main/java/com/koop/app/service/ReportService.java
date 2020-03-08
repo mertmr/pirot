@@ -2,16 +2,14 @@ package com.koop.app.service;
 
 import com.koop.app.dto.Ciro;
 import com.koop.app.repository.SatisRepository;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {
-
     private final SatisRepository satisRepository;
 
     public ReportService(SatisRepository satisRepository) {
@@ -19,6 +17,9 @@ public class ReportService {
     }
 
     public List<Ciro> getCiroReport(LocalDate from, LocalDate to) {
-        return satisRepository.getCiroReports(from.atStartOfDay(ZoneId.systemDefault()), to.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
+        return satisRepository.getCiroReports(
+            from.atStartOfDay(ZoneId.systemDefault()),
+            to.plusDays(1).atStartOfDay(ZoneId.systemDefault())
+        );
     }
 }

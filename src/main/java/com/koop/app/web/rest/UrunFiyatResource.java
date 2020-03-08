@@ -8,6 +8,11 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,12 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.UrunFiyat}.
  */
@@ -32,11 +31,11 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class UrunFiyatResource {
-
     private static final String ENTITY_NAME = "urunFiyat";
     private final Logger log = LoggerFactory.getLogger(UrunFiyatResource.class);
     private final UrunFiyatRepository urunFiyatRepository;
     private final UserService userService;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -60,10 +59,10 @@ public class UrunFiyatResource {
         }
         User currentUser = userService.getCurrentUser();
         urunFiyat.setUser(currentUser);
-        if (urunFiyat.getTarih() == null)
-            urunFiyat.setTarih(ZonedDateTime.now());
+        if (urunFiyat.getTarih() == null) urunFiyat.setTarih(ZonedDateTime.now());
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
-        return ResponseEntity.created(new URI("/api/urun-fiyats/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/urun-fiyats/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -85,10 +84,10 @@ public class UrunFiyatResource {
         }
         User currentUser = userService.getCurrentUser();
         urunFiyat.setUser(currentUser);
-        if (urunFiyat.getTarih() == null)
-            urunFiyat.setTarih(ZonedDateTime.now());
+        if (urunFiyat.getTarih() == null) urunFiyat.setTarih(ZonedDateTime.now());
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString()))
             .body(result);
     }
@@ -130,6 +129,9 @@ public class UrunFiyatResource {
     public ResponseEntity<Void> deleteUrunFiyat(@PathVariable Long id) {
         log.debug("REST request to delete UrunFiyat : {}", id);
         urunFiyatRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

@@ -8,6 +8,16 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.chrono.ChronoZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,17 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.chrono.ChronoZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.SatisStokHareketleri}.
  */
@@ -37,10 +36,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 @Transactional
 public class SatisStokHareketleriResource {
-
     private static final String ENTITY_NAME = "satisStokHareketleri";
     private final Logger log = LoggerFactory.getLogger(SatisStokHareketleriResource.class);
     private final SatisStokHareketleriRepository satisStokHareketleriRepository;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -56,13 +55,15 @@ public class SatisStokHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/satis-stok-hareketleris")
-    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri) throws URISyntaxException {
+    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri)
+        throws URISyntaxException {
         log.debug("REST request to save SatisStokHareketleri : {}", satisStokHareketleri);
         if (satisStokHareketleri.getId() != null) {
             throw new BadRequestAlertException("A new satisStokHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
         }
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
-        return ResponseEntity.created(new URI("/api/satis-stok-hareketleris/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/satis-stok-hareketleris/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -77,13 +78,15 @@ public class SatisStokHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/satis-stok-hareketleris")
-    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri) throws URISyntaxException {
+    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri)
+        throws URISyntaxException {
         log.debug("REST request to update SatisStokHareketleri : {}", satisStokHareketleri);
         if (satisStokHareketleri.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satisStokHareketleri.getId().toString()))
             .body(result);
     }
@@ -125,7 +128,10 @@ public class SatisStokHareketleriResource {
     public ResponseEntity<Void> deleteSatisStokHareketleri(@PathVariable Long id) {
         log.debug("REST request to delete SatisStokHareketleri : {}", id);
         satisStokHareketleriRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @GetMapping("/satis-stok-hareketleris/getSatisRaporlari")
@@ -133,28 +139,37 @@ public class SatisStokHareketleriResource {
         List<AylikSatislar> satisRaporlari = satisStokHareketleriRepository.getSatisRaporlari();
         AylikSatislarRaporu aylikSatislarRaporu = new AylikSatislarRaporu();
 
-        aylikSatislarRaporu.setAylikSatisMap(satisRaporlari.stream().collect(Collectors.toMap(aylikSatislar -> {
-            if(String.valueOf(aylikSatislar.getMonth()).length() == 1) {
-                return aylikSatislar.getYear() + ".0" + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
-            }
-                return aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
-            }, AylikSatislar::getMiktar,
-            (aylikSatislar1, aylikSatislar2) -> aylikSatislar1)));
+        aylikSatislarRaporu.setAylikSatisMap(
+            satisRaporlari
+                .stream()
+                .collect(
+                    Collectors.toMap(
+                        aylikSatislar -> {
+                            if (String.valueOf(aylikSatislar.getMonth()).length() == 1) {
+                                return aylikSatislar.getYear() + ".0" + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+                            }
+                            return aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+                        },
+                        AylikSatislar::getMiktar,
+                        (aylikSatislar1, aylikSatislar2) -> aylikSatislar1
+                    )
+                )
+        );
 
         List<ZonedDateTime> tarihListesi = new ArrayList<>();
         for (AylikSatislar satisRaporu : satisRaporlari) {
             int month = satisRaporu.getMonth();
             int year = satisRaporu.getYear();
-            ZonedDateTime yearMonth = ZonedDateTime.of(year, month, 1, 0, 0, 0,
-                0, ZoneId.systemDefault());
+            ZonedDateTime yearMonth = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.systemDefault());
             tarihListesi.add(yearMonth);
         }
         tarihListesi = tarihListesi.stream().distinct().collect(Collectors.toList());
         tarihListesi.sort(ChronoZonedDateTime::compareTo);
         aylikSatislarRaporu.setTarihListesi(tarihListesi);
 
-        aylikSatislarRaporu.setUrunAdiListesi(satisRaporlari.stream().map(AylikSatislar::getUrunAdi).
-            distinct().collect(Collectors.toList()));
+        aylikSatislarRaporu.setUrunAdiListesi(
+            satisRaporlari.stream().map(AylikSatislar::getUrunAdi).distinct().collect(Collectors.toList())
+        );
         return aylikSatislarRaporu;
     }
 }

@@ -1,19 +1,16 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.koop.app.domain.enumeration.GiderTipi;
+import com.koop.app.domain.enumeration.OdemeAraci;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-
-import com.koop.app.domain.enumeration.GiderTipi;
-
-import com.koop.app.domain.enumeration.OdemeAraci;
+import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Gider.
@@ -22,7 +19,6 @@ import com.koop.app.domain.enumeration.OdemeAraci;
 @Table(name = "gider")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Gider implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -141,6 +137,7 @@ public class Gider implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -161,13 +158,25 @@ public class Gider implements Serializable {
 
     @Override
     public String toString() {
-        return "Gider{" +
-            "id=" + getId() +
-            ", tarih='" + getTarih() + "'" +
-            ", tutar=" + getTutar() +
-            ", notlar='" + getNotlar() + "'" +
-            ", giderTipi='" + getGiderTipi() + "'" +
-            ", odemeAraci='" + getOdemeAraci() + "'" +
-            "}";
+        return (
+            "Gider{" +
+            "id=" +
+            getId() +
+            ", tarih='" +
+            getTarih() +
+            "'" +
+            ", tutar=" +
+            getTutar() +
+            ", notlar='" +
+            getNotlar() +
+            "'" +
+            ", giderTipi='" +
+            getGiderTipi() +
+            "'" +
+            ", odemeAraci='" +
+            getOdemeAraci() +
+            "'" +
+            "}"
+        );
     }
 }

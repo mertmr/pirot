@@ -1,14 +1,13 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A NobetHareketleri.
@@ -17,7 +16,6 @@ import java.time.ZonedDateTime;
 @Table(name = "nobet_hareketleri")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class NobetHareketleri implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -146,6 +144,7 @@ public class NobetHareketleri implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -166,14 +165,25 @@ public class NobetHareketleri implements Serializable {
 
     @Override
     public String toString() {
-        return "NobetHareketleri{" +
-            "id=" + getId() +
-            ", kasa=" + getKasa() +
-            ", pirot=" + getPirot() +
-            ", fark=" + getFark() +
-            ", nobetSuresi=" + getNobetSuresi() +
-            ", notlar='" + getNotlar() + "'" +
-            ", tarih='" + getTarih() + "'" +
-            "}";
+        return (
+            "NobetHareketleri{" +
+            "id=" +
+            getId() +
+            ", kasa=" +
+            getKasa() +
+            ", pirot=" +
+            getPirot() +
+            ", fark=" +
+            getFark() +
+            ", nobetSuresi=" +
+            getNobetSuresi() +
+            ", notlar='" +
+            getNotlar() +
+            "'" +
+            ", tarih='" +
+            getTarih() +
+            "'" +
+            "}"
+        );
     }
 }

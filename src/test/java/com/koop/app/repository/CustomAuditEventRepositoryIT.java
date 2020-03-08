@@ -1,9 +1,18 @@
 package com.koop.app.repository;
 
+import static com.koop.app.repository.CustomAuditEventRepository.EVENT_DATA_COLUMN_MAX_LENGTH;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.koop.app.KoopApp;
 import com.koop.app.config.Constants;
 import com.koop.app.config.audit.AuditEventConverter;
 import com.koop.app.domain.PersistentAuditEvent;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +23,12 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static com.koop.app.repository.CustomAuditEventRepository.EVENT_DATA_COLUMN_MAX_LENGTH;
-
 /**
  * Integration tests for {@link CustomAuditEventRepository}.
  */
 @SpringBootTest(classes = KoopApp.class)
 @Transactional
 public class CustomAuditEventRepositoryIT {
-
     @Autowired
     private PersistenceAuditEventRepository persistenceAuditEventRepository;
 
@@ -153,5 +151,4 @@ public class CustomAuditEventRepositoryIT {
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(0);
     }
-
 }

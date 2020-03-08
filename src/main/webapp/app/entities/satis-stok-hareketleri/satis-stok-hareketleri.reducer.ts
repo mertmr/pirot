@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<ISatisStokHareketleri> = entity => asy
     type: ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<ISatisStokHareketleri> = id => asyn
     type: ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

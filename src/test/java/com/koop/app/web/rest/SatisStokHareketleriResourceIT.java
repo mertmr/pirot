@@ -1,40 +1,34 @@
 package com.koop.app.web.rest;
 
-import com.koop.app.KoopApp;
-import com.koop.app.domain.SatisStokHareketleri;
-import com.koop.app.repository.SatisStokHareketleriRepository;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.util.List;
-
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.koop.app.KoopApp;
+import com.koop.app.domain.SatisStokHareketleri;
+import com.koop.app.repository.SatisStokHareketleriRepository;
+import java.math.BigDecimal;
+import java.util.List;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link SatisStokHareketleriResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+@AutoConfigureMockMvc
+@WithMockUser
 public class SatisStokHareketleriResourceIT {
-
     private static final Integer DEFAULT_MIKTAR = 1;
     private static final Integer UPDATED_MIKTAR = 2;
 
@@ -45,35 +39,12 @@ public class SatisStokHareketleriResourceIT {
     private SatisStokHareketleriRepository satisStokHareketleriRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restSatisStokHareketleriMockMvc;
 
     private SatisStokHareketleri satisStokHareketleri;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final SatisStokHareketleriResource satisStokHareketleriResource = new SatisStokHareketleriResource(satisStokHareketleriRepository);
-        this.restSatisStokHareketleriMockMvc = MockMvcBuilders.standaloneSetup(satisStokHareketleriResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -88,6 +59,7 @@ public class SatisStokHareketleriResourceIT {
             .urun(UrunResourceIT.createEntity(em));
         return satisStokHareketleri;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -95,9 +67,7 @@ public class SatisStokHareketleriResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SatisStokHareketleri createUpdatedEntity(EntityManager em) {
-        SatisStokHareketleri satisStokHareketleri = new SatisStokHareketleri()
-            .miktar(UPDATED_MIKTAR)
-            .tutar(UPDATED_TUTAR);
+        SatisStokHareketleri satisStokHareketleri = new SatisStokHareketleri().miktar(UPDATED_MIKTAR).tutar(UPDATED_TUTAR);
         return satisStokHareketleri;
     }
 
@@ -113,9 +83,12 @@ public class SatisStokHareketleriResourceIT {
         int databaseSizeBeforeCreate = satisStokHareketleriRepository.findAll().size();
 
         // Create the SatisStokHareketleri
-        restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
+        restSatisStokHareketleriMockMvc
+            .perform(
+                post("/api/satis-stok-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
+            )
             .andExpect(status().isCreated());
 
         // Validate the SatisStokHareketleri in the database
@@ -135,16 +108,18 @@ public class SatisStokHareketleriResourceIT {
         satisStokHareketleri.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
+        restSatisStokHareketleriMockMvc
+            .perform(
+                post("/api/satis-stok-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the SatisStokHareketleri in the database
         List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAll();
         assertThat(satisStokHareketleriList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -155,9 +130,12 @@ public class SatisStokHareketleriResourceIT {
 
         // Create the SatisStokHareketleri, which fails.
 
-        restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
+        restSatisStokHareketleriMockMvc
+            .perform(
+                post("/api/satis-stok-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
+            )
             .andExpect(status().isBadRequest());
 
         List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAll();
@@ -173,9 +151,12 @@ public class SatisStokHareketleriResourceIT {
 
         // Create the SatisStokHareketleri, which fails.
 
-        restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
+        restSatisStokHareketleriMockMvc
+            .perform(
+                post("/api/satis-stok-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
+            )
             .andExpect(status().isBadRequest());
 
         List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAll();
@@ -190,7 +171,8 @@ public class SatisStokHareketleriResourceIT {
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
 
         // Get all the satisStokHareketleriList
-        restSatisStokHareketleriMockMvc.perform(get("/api/satis-stok-hareketleris?sort=id,desc"))
+        restSatisStokHareketleriMockMvc
+            .perform(get("/api/satis-stok-hareketleris?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(satisStokHareketleri.getId().intValue())))
@@ -205,7 +187,8 @@ public class SatisStokHareketleriResourceIT {
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
 
         // Get the satisStokHareketleri
-        restSatisStokHareketleriMockMvc.perform(get("/api/satis-stok-hareketleris/{id}", satisStokHareketleri.getId()))
+        restSatisStokHareketleriMockMvc
+            .perform(get("/api/satis-stok-hareketleris/{id}", satisStokHareketleri.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(satisStokHareketleri.getId().intValue()))
@@ -217,8 +200,7 @@ public class SatisStokHareketleriResourceIT {
     @Transactional
     public void getNonExistingSatisStokHareketleri() throws Exception {
         // Get the satisStokHareketleri
-        restSatisStokHareketleriMockMvc.perform(get("/api/satis-stok-hareketleris/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restSatisStokHareketleriMockMvc.perform(get("/api/satis-stok-hareketleris/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -234,13 +216,14 @@ public class SatisStokHareketleriResourceIT {
         SatisStokHareketleri updatedSatisStokHareketleri = satisStokHareketleriRepository.findById(satisStokHareketleri.getId()).get();
         // Disconnect from session so that the updates on updatedSatisStokHareketleri are not directly saved in db
         em.detach(updatedSatisStokHareketleri);
-        updatedSatisStokHareketleri
-            .miktar(UPDATED_MIKTAR)
-            .tutar(UPDATED_TUTAR);
+        updatedSatisStokHareketleri.miktar(UPDATED_MIKTAR).tutar(UPDATED_TUTAR);
 
-        restSatisStokHareketleriMockMvc.perform(put("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSatisStokHareketleri)))
+        restSatisStokHareketleriMockMvc
+            .perform(
+                put("/api/satis-stok-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedSatisStokHareketleri))
+            )
             .andExpect(status().isOk());
 
         // Validate the SatisStokHareketleri in the database
@@ -259,9 +242,12 @@ public class SatisStokHareketleriResourceIT {
         // Create the SatisStokHareketleri
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restSatisStokHareketleriMockMvc.perform(put("/api/satis-stok-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
+        restSatisStokHareketleriMockMvc
+            .perform(
+                put("/api/satis-stok-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the SatisStokHareketleri in the database
@@ -279,8 +265,8 @@ public class SatisStokHareketleriResourceIT {
         int databaseSizeBeforeDelete = satisStokHareketleriRepository.findAll().size();
 
         // Delete the satisStokHareketleri
-        restSatisStokHareketleriMockMvc.perform(delete("/api/satis-stok-hareketleris/{id}", satisStokHareketleri.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+        restSatisStokHareketleriMockMvc
+            .perform(delete("/api/satis-stok-hareketleris/{id}", satisStokHareketleri.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

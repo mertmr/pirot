@@ -1,12 +1,11 @@
 package com.koop.app.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A KdvKategorisi.
@@ -15,7 +14,6 @@ import java.io.Serializable;
 @Table(name = "kdv_kategorisi")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class KdvKategorisi implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -65,6 +63,7 @@ public class KdvKategorisi implements Serializable {
     public void setKdvOrani(Integer kdvOrani) {
         this.kdvOrani = kdvOrani;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -85,10 +84,6 @@ public class KdvKategorisi implements Serializable {
 
     @Override
     public String toString() {
-        return "KdvKategorisi{" +
-            "id=" + getId() +
-            ", kategoriAdi='" + getKategoriAdi() + "'" +
-            ", kdvOrani=" + getKdvOrani() +
-            "}";
+        return "KdvKategorisi{" + "id=" + getId() + ", kategoriAdi='" + getKategoriAdi() + "'" + ", kdvOrani=" + getKdvOrani() + "}";
     }
 }

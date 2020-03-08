@@ -1,14 +1,13 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Uretici.
@@ -17,7 +16,6 @@ import java.time.ZonedDateTime;
 @Table(name = "uretici")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Uretici implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -116,6 +114,7 @@ public class Uretici implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -136,12 +135,23 @@ public class Uretici implements Serializable {
 
     @Override
     public String toString() {
-        return "Uretici{" +
-            "id=" + getId() +
-            ", adi='" + getAdi() + "'" +
-            ", adres='" + getAdres() + "'" +
-            ", bankaBilgileri='" + getBankaBilgileri() + "'" +
-            ", tarih='" + getTarih() + "'" +
-            "}";
+        return (
+            "Uretici{" +
+            "id=" +
+            getId() +
+            ", adi='" +
+            getAdi() +
+            "'" +
+            ", adres='" +
+            getAdres() +
+            "'" +
+            ", bankaBilgileri='" +
+            getBankaBilgileri() +
+            "'" +
+            ", tarih='" +
+            getTarih() +
+            "'" +
+            "}"
+        );
     }
 }

@@ -1,17 +1,16 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.javers.core.metamodel.annotation.DiffIgnore;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.javers.core.metamodel.annotation.DiffIgnore;
 
 /**
  * A Satis.
@@ -20,7 +19,6 @@ import java.util.Set;
 @Table(name = "satis")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Satis implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -164,6 +162,7 @@ public class Satis implements Serializable {
     public void setKisi(Kisiler kisiler) {
         this.kisi = kisiler;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -184,12 +183,22 @@ public class Satis implements Serializable {
 
     @Override
     public String toString() {
-        return "Satis{" +
-            "id=" + getId() +
-            ", tarih='" + getTarih() + "'" +
-            ", toplamTutar=" + getToplamTutar() +
-            ", ortagaSatis='" + isOrtagaSatis() + "'" +
-            ", kartliSatis='" + isKartliSatis() + "'" +
-            "}";
+        return (
+            "Satis{" +
+            "id=" +
+            getId() +
+            ", tarih='" +
+            getTarih() +
+            "'" +
+            ", toplamTutar=" +
+            getToplamTutar() +
+            ", ortagaSatis='" +
+            isOrtagaSatis() +
+            "'" +
+            ", kartliSatis='" +
+            isKartliSatis() +
+            "'" +
+            "}"
+        );
     }
 }

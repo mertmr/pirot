@@ -1,7 +1,6 @@
 package com.koop.app.domain;
 
 public class DashboardReports {
-
     private double kasadaNeVar = 0;
 
     private double bankadaNeVar = 0;

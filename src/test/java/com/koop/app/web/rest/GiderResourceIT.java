@@ -1,49 +1,50 @@
 package com.koop.app.web.rest;
 
+import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
+import static com.koop.app.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Gider;
+import com.koop.app.domain.enumeration.GiderTipi;
+import com.koop.app.domain.enumeration.OdemeAraci;
 import com.koop.app.repository.GiderRepository;
 import com.koop.app.service.KasaHareketleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
-
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
-
-import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.koop.app.domain.enumeration.GiderTipi;
-import com.koop.app.domain.enumeration.OdemeAraci;
 /**
  * Integration tests for the {@link GiderResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+@AutoConfigureMockMvc
+@WithMockUser
 public class GiderResourceIT {
-
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
@@ -91,12 +92,15 @@ public class GiderResourceIT {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         final GiderResource giderResource = new GiderResource(giderRepository, userService, kasaHareketleriService);
-        this.restGiderMockMvc = MockMvcBuilders.standaloneSetup(giderResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
+        this.restGiderMockMvc =
+            MockMvcBuilders
+                .standaloneSetup(giderResource)
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setConversionService(createFormattingConversionService())
+                .setMessageConverters(jacksonMessageConverter)
+                .setValidator(validator)
+                .build();
     }
 
     /**
@@ -114,6 +118,7 @@ public class GiderResourceIT {
             .odemeAraci(DEFAULT_ODEME_ARACI);
         return gider;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -142,9 +147,8 @@ public class GiderResourceIT {
         int databaseSizeBeforeCreate = giderRepository.findAll().size();
 
         // Create the Gider
-        restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(post("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isCreated());
 
         // Validate the Gider in the database
@@ -167,16 +171,14 @@ public class GiderResourceIT {
         gider.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(post("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
         // Validate the Gider in the database
         List<Gider> giderList = giderRepository.findAll();
         assertThat(giderList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -187,9 +189,8 @@ public class GiderResourceIT {
 
         // Create the Gider, which fails.
 
-        restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(post("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
         List<Gider> giderList = giderRepository.findAll();
@@ -205,9 +206,8 @@ public class GiderResourceIT {
 
         // Create the Gider, which fails.
 
-        restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(post("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
         List<Gider> giderList = giderRepository.findAll();
@@ -223,9 +223,8 @@ public class GiderResourceIT {
 
         // Create the Gider, which fails.
 
-        restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(post("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
         List<Gider> giderList = giderRepository.findAll();
@@ -241,9 +240,8 @@ public class GiderResourceIT {
 
         // Create the Gider, which fails.
 
-        restGiderMockMvc.perform(post("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(post("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
         List<Gider> giderList = giderRepository.findAll();
@@ -257,7 +255,8 @@ public class GiderResourceIT {
         giderRepository.saveAndFlush(gider);
 
         // Get all the giderList
-        restGiderMockMvc.perform(get("/api/giders?sort=id,desc"))
+        restGiderMockMvc
+            .perform(get("/api/giders?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(gider.getId().intValue())))
@@ -275,7 +274,8 @@ public class GiderResourceIT {
         giderRepository.saveAndFlush(gider);
 
         // Get the gider
-        restGiderMockMvc.perform(get("/api/giders/{id}", gider.getId()))
+        restGiderMockMvc
+            .perform(get("/api/giders/{id}", gider.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(gider.getId().intValue()))
@@ -290,8 +290,7 @@ public class GiderResourceIT {
     @Transactional
     public void getNonExistingGider() throws Exception {
         // Get the gider
-        restGiderMockMvc.perform(get("/api/giders/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restGiderMockMvc.perform(get("/api/giders/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -314,9 +313,8 @@ public class GiderResourceIT {
             .giderTipi(UPDATED_GIDER_TIPI)
             .odemeAraci(UPDATED_ODEME_ARACI);
 
-        restGiderMockMvc.perform(put("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedGider)))
+        restGiderMockMvc
+            .perform(put("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedGider)))
             .andExpect(status().isOk());
 
         // Validate the Gider in the database
@@ -338,9 +336,8 @@ public class GiderResourceIT {
         // Create the Gider
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restGiderMockMvc.perform(put("/api/giders")
-            .contentType(TestUtil.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(gider)))
+        restGiderMockMvc
+            .perform(put("/api/giders").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(gider)))
             .andExpect(status().isBadRequest());
 
         // Validate the Gider in the database
@@ -357,8 +354,8 @@ public class GiderResourceIT {
         int databaseSizeBeforeDelete = giderRepository.findAll().size();
 
         // Delete the gider
-        restGiderMockMvc.perform(delete("/api/giders/{id}", gider.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+        restGiderMockMvc
+            .perform(delete("/api/giders/{id}", gider.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -8,6 +8,12 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,13 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.Uretici}.
  */
@@ -33,11 +32,11 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class UreticiResource {
-
     private static final String ENTITY_NAME = "uretici";
     private final Logger log = LoggerFactory.getLogger(UreticiResource.class);
     private final UreticiRepository ureticiRepository;
     private final UserService userService;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -61,10 +60,10 @@ public class UreticiResource {
         }
         User currentUser = userService.getCurrentUser();
         uretici.setUser(currentUser);
-        if (uretici.getTarih() == null)
-            uretici.setTarih(ZonedDateTime.now());
+        if (uretici.getTarih() == null) uretici.setTarih(ZonedDateTime.now());
         Uretici result = ureticiRepository.save(uretici);
-        return ResponseEntity.created(new URI("/api/ureticis/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/ureticis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -86,10 +85,10 @@ public class UreticiResource {
         }
         User currentUser = userService.getCurrentUser();
         uretici.setUser(currentUser);
-        if (uretici.getTarih() == null)
-            uretici.setTarih(ZonedDateTime.now());
+        if (uretici.getTarih() == null) uretici.setTarih(ZonedDateTime.now());
         Uretici result = ureticiRepository.save(uretici);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, uretici.getId().toString()))
             .body(result);
     }
@@ -131,6 +130,9 @@ public class UreticiResource {
     public ResponseEntity<Void> deleteUretici(@PathVariable Long id) {
         log.debug("REST request to delete Uretici : {}", id);
         ureticiRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

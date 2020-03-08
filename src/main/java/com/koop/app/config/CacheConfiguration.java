@@ -1,12 +1,10 @@
 package com.koop.app.config;
 
 import com.github.benmanes.caffeine.jcache.configuration.CaffeineConfiguration;
+import io.github.jhipster.config.JHipsterProperties;
 import java.util.OptionalLong;
 import java.util.concurrent.TimeUnit;
-
 import org.hibernate.cache.jcache.ConfigSettings;
-import io.github.jhipster.config.JHipsterProperties;
-
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.*;
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
-
     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
 
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
@@ -65,5 +62,4 @@ public class CacheConfiguration {
             cm.createCache(cacheName, jcacheConfiguration);
         }
     }
-
 }

@@ -1,7 +1,6 @@
 export const enum StokHareketiTipi {
-  STOK_GIRISI,
-  FIRE,
-  STOK_DUZELTME,
-  MASRAF,
-  IADE
+  STOK_GIRISI = 'STOK_GIRISI',
+  FIRE = 'FIRE',
+  STOK_DUZELTME = 'STOK_DUZELTME',
+  MASRAF = 'MASRAF'
 }

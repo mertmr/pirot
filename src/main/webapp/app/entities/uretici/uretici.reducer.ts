@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<IUretici> = entity => async dispatch =
     type: ACTION_TYPES.UPDATE_URETICI,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<IUretici> = id => async dispatch =>
     type: ACTION_TYPES.DELETE_URETICI,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

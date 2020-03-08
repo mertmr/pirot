@@ -2,14 +2,12 @@ package com.koop.app.service;
 
 import com.koop.app.domain.KasaHareketleri;
 import com.koop.app.repository.KasaHareketleriRepository;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import org.springframework.stereotype.Service;
 
 @Service
 public class KasaHareketleriService {
-
     private final KasaHareketleriRepository kasaHareketleriRepository;
 
     public KasaHareketleriService(KasaHareketleriRepository kasaHareketleriRepository) {
@@ -26,10 +24,10 @@ public class KasaHareketleriService {
      *                       degisimi kadar olmalidir.
      * @param hareketMesaji Yapilan hareketi
      */
-    public void createKasaHareketi(BigDecimal eklenecekTutar, String hareketMesaji){
+    public void createKasaHareketi(BigDecimal eklenecekTutar, String hareketMesaji) {
         KasaHareketleri newKasaHareketi = new KasaHareketleri();
         KasaHareketleri sonKasaHareketi = kasaHareketleriRepository.findFirstByOrderByTarihDesc();
-        if(sonKasaHareketi == null) {
+        if (sonKasaHareketi == null) {
             sonKasaHareketi = new KasaHareketleri();
             sonKasaHareketi.setKasaMiktar(BigDecimal.ZERO);
         }

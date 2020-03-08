@@ -9,6 +9,11 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.koop.app.domain.Satis}.
  */
@@ -33,12 +32,12 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class SatisResource {
-
     private static final String ENTITY_NAME = "satis";
     private final Logger log = LoggerFactory.getLogger(SatisResource.class);
     private final SatisRepository satisRepository;
     private final SatisService satisService;
     private final MailService mailService;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -63,7 +62,8 @@ public class SatisResource {
         }
         Satis result = satisService.createSatis(satis);
         stokKontrolu(satis);
-        return ResponseEntity.created(new URI("/api/satis/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/satis/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -74,11 +74,15 @@ public class SatisResource {
             if (stokSiniri != null && stokHareketi.getUrun().getStok() != null && stokSiniri.compareTo(BigDecimal.ZERO) != 0) {
                 BigDecimal guncelStok = stokHareketi.getUrun().getStok();
                 if (guncelStok.compareTo(stokSiniri) <= 0) {
-                    String content = "Ürün: " + stokHareketi.getUrun().getUrunAdi() +
-                        "  Stok azaldı ==> Stok sınırı: " + stokSiniri + "  --  Güncel stok: " + guncelStok;
+                    String content =
+                        "Ürün: " +
+                        stokHareketi.getUrun().getUrunAdi() +
+                        "  Stok azaldı ==> Stok sınırı: " +
+                        stokSiniri +
+                        "  --  Güncel stok: " +
+                        guncelStok;
                     if (stokHareketi.getUrun().getUrunSorumlusu() != null) {
-                        mailService.sendEmail(stokHareketi.getUrun().getUrunSorumlusu().getEmail(),
-                            "Stok Uyarısı", content, false, true);
+                        mailService.sendEmail(stokHareketi.getUrun().getUrunSorumlusu().getEmail(), "Stok Uyarısı", content, false, true);
                     }
                 }
             }
@@ -102,7 +106,8 @@ public class SatisResource {
         }
         Satis result = satisService.updateSatis(satis);
         stokKontrolu(satis);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satis.getId().toString()))
             .body(result);
     }
@@ -145,7 +150,10 @@ public class SatisResource {
     public ResponseEntity<Void> deleteSatis(@PathVariable Long id) {
         log.debug("REST request to delete Satis : {}", id);
         satisRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     /**

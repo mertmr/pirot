@@ -3,10 +3,13 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.BorcAlacak;
 import com.koop.app.repository.BorcAlacakRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,15 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.BorcAlacak}.
@@ -31,7 +29,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class BorcAlacakResource {
-
     private final Logger log = LoggerFactory.getLogger(BorcAlacakResource.class);
 
     private static final String ENTITY_NAME = "borcAlacak";
@@ -59,7 +56,8 @@ public class BorcAlacakResource {
             throw new BadRequestAlertException("A new borcAlacak cannot already have an ID", ENTITY_NAME, "idexists");
         }
         BorcAlacak result = borcAlacakRepository.save(borcAlacak);
-        return ResponseEntity.created(new URI("/api/borc-alacaks/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/borc-alacaks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -80,7 +78,8 @@ public class BorcAlacakResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         BorcAlacak result = borcAlacakRepository.save(borcAlacak);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, borcAlacak.getId().toString()))
             .body(result);
     }
@@ -122,6 +121,9 @@ public class BorcAlacakResource {
     public ResponseEntity<Void> deleteBorcAlacak(@PathVariable Long id) {
         log.debug("REST request to delete BorcAlacak : {}", id);
         borcAlacakRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

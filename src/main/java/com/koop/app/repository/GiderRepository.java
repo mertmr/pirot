@@ -1,16 +1,15 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Gider;
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.List;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 /**
  * Spring Data  repository for the Gider entity.
@@ -19,7 +18,6 @@ import java.util.List;
 @Repository
 @JaversSpringDataAuditable
 public interface GiderRepository extends JpaRepository<Gider, Long> {
-
     @Query("select gider from Gider gider where gider.user.login = ?#{principal.username}")
     List<Gider> findByUserIsCurrentUser();
 

@@ -5,27 +5,24 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.NobetHareketleriRepository;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.NobetHareketleri}.
@@ -34,7 +31,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class NobetHareketleriResource {
-
     private final Logger log = LoggerFactory.getLogger(NobetHareketleriResource.class);
 
     private static final String ENTITY_NAME = "nobetHareketleri";
@@ -59,7 +55,8 @@ public class NobetHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/nobet-hareketleris")
-    public ResponseEntity<NobetHareketleri> createNobetHareketleri(@RequestBody NobetHareketleri nobetHareketleri) throws URISyntaxException {
+    public ResponseEntity<NobetHareketleri> createNobetHareketleri(@RequestBody NobetHareketleri nobetHareketleri)
+        throws URISyntaxException {
         log.debug("REST request to save NobetHareketleri : {}", nobetHareketleri);
         if (nobetHareketleri.getId() != null) {
             throw new BadRequestAlertException("A new nobetHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
@@ -70,7 +67,8 @@ public class NobetHareketleriResource {
         User currentUser = userService.getCurrentUser();
         nobetHareketleri.setUser(currentUser);
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
-        return ResponseEntity.created(new URI("/api/nobet-hareketleris/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/nobet-hareketleris/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -85,7 +83,8 @@ public class NobetHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/nobet-hareketleris")
-    public ResponseEntity<NobetHareketleri> updateNobetHareketleri(@RequestBody NobetHareketleri nobetHareketleri) throws URISyntaxException {
+    public ResponseEntity<NobetHareketleri> updateNobetHareketleri(@RequestBody NobetHareketleri nobetHareketleri)
+        throws URISyntaxException {
         log.debug("REST request to update NobetHareketleri : {}", nobetHareketleri);
         if (nobetHareketleri.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -96,7 +95,8 @@ public class NobetHareketleriResource {
         User currentUser = userService.getCurrentUser();
         nobetHareketleri.setUser(currentUser);
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, nobetHareketleri.getId().toString()))
             .body(result);
     }
@@ -140,6 +140,9 @@ public class NobetHareketleriResource {
     public ResponseEntity<Void> deleteNobetHareketleri(@PathVariable Long id) {
         log.debug("REST request to delete NobetHareketleri : {}", id);
         nobetHareketleriRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

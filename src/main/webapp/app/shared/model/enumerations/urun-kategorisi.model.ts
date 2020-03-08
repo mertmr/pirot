@@ -1,4 +1,4 @@
 export const enum UrunKategorisi {
-  GIDA,
-  GIDA_DISI
+  GIDA = 'GIDA',
+  GIDA_DISI = 'GIDA_DISI'
 }
