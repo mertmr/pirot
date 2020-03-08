@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<ISatis> = entity => async dispatch => 
     type: ACTION_TYPES.UPDATE_SATIS,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<ISatis> = id => async dispatch => {
     type: ACTION_TYPES.DELETE_SATIS,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

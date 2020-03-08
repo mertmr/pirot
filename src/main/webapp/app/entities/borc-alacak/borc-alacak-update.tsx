@@ -54,6 +54,7 @@ export const BorcAlacakUpdate = (props: IBorcAlacakUpdateProps) => {
         ...borcAlacakEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -146,11 +147,11 @@ export const BorcAlacakUpdate = (props: IBorcAlacakUpdateProps) => {
                 <Label for="borc-alacak-user">
                   <Translate contentKey="koopApp.borcAlacak.user">User</Translate>
                 </Label>
-                <AvInput id="borc-alacak-user" type="select" className="form-control" name="user.id">
+                <AvInput id="borc-alacak-user" type="select" className="form-control" name="user">
                   <option value="" key="0" />
                   {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
+                    ? users.map((otherEntity, index) => (
+                        <option value={index} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))

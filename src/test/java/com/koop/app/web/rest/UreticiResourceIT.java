@@ -3,21 +3,16 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Uretici;
 import com.koop.app.repository.UreticiRepository;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -26,7 +21,6 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link UreticiResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class UreticiResourceIT {
 
     private static final String DEFAULT_ADI = "AAAAAAAAAA";
@@ -54,35 +51,12 @@ public class UreticiResourceIT {
     private UreticiRepository ureticiRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restUreticiMockMvc;
 
     private Uretici uretici;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final UreticiResource ureticiResource = new UreticiResource(ureticiRepository);
-        this.restUreticiMockMvc = MockMvcBuilders.standaloneSetup(ureticiResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -125,7 +99,7 @@ public class UreticiResourceIT {
 
         // Create the Uretici
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isCreated());
 
@@ -149,7 +123,7 @@ public class UreticiResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -169,7 +143,7 @@ public class UreticiResourceIT {
         // Create the Uretici, which fails.
 
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -187,7 +161,7 @@ public class UreticiResourceIT {
         // Create the Uretici, which fails.
 
         restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -256,7 +230,7 @@ public class UreticiResourceIT {
             .tarih(UPDATED_TARIH);
 
         restUreticiMockMvc.perform(put("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedUretici)))
             .andExpect(status().isOk());
 
@@ -279,7 +253,7 @@ public class UreticiResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUreticiMockMvc.perform(put("/api/ureticis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
@@ -298,7 +272,7 @@ public class UreticiResourceIT {
 
         // Delete the uretici
         restUreticiMockMvc.perform(delete("/api/ureticis/{id}", uretici.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

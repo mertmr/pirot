@@ -3,26 +3,20 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Urun;
 import com.koop.app.repository.UrunRepository;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,6 +28,9 @@ import com.koop.app.domain.enumeration.UrunKategorisi;
  * Integration tests for the {@link UrunResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class UrunResourceIT {
 
     private static final String DEFAULT_URUN_ADI = "AAAAAAAAAA";
@@ -64,35 +61,12 @@ public class UrunResourceIT {
     private UrunRepository urunRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restUrunMockMvc;
 
     private Urun urun;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final UrunResource urunResource = new UrunResource(urunRepository);
-        this.restUrunMockMvc = MockMvcBuilders.standaloneSetup(urunResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -143,7 +117,7 @@ public class UrunResourceIT {
 
         // Create the Urun
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isCreated());
 
@@ -171,7 +145,7 @@ public class UrunResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -191,7 +165,7 @@ public class UrunResourceIT {
         // Create the Urun, which fails.
 
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -209,7 +183,7 @@ public class UrunResourceIT {
         // Create the Urun, which fails.
 
         restUrunMockMvc.perform(post("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -290,7 +264,7 @@ public class UrunResourceIT {
             .urunKategorisi(UPDATED_URUN_KATEGORISI);
 
         restUrunMockMvc.perform(put("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedUrun)))
             .andExpect(status().isOk());
 
@@ -317,7 +291,7 @@ public class UrunResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunMockMvc.perform(put("/api/uruns")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
@@ -336,7 +310,7 @@ public class UrunResourceIT {
 
         // Delete the urun
         restUrunMockMvc.perform(delete("/api/uruns/{id}", urun.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

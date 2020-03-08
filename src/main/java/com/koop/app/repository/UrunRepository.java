@@ -16,5 +16,4 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
 
     @Query("select urun from Urun urun where urun.urunSorumlusu.login = ?#{principal.username}")
     List<Urun> findByUrunSorumlusuIsCurrentUser();
-
 }

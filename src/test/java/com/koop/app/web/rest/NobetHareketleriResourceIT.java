@@ -3,21 +3,16 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.NobetHareketleri;
 import com.koop.app.repository.NobetHareketleriRepository;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,7 +22,6 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,6 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link NobetHareketleriResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class NobetHareketleriResourceIT {
 
     private static final BigDecimal DEFAULT_KASA = new BigDecimal(1);
@@ -61,35 +58,12 @@ public class NobetHareketleriResourceIT {
     private NobetHareketleriRepository nobetHareketleriRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restNobetHareketleriMockMvc;
 
     private NobetHareketleri nobetHareketleri;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final NobetHareketleriResource nobetHareketleriResource = new NobetHareketleriResource(nobetHareketleriRepository);
-        this.restNobetHareketleriMockMvc = MockMvcBuilders.standaloneSetup(nobetHareketleriResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -136,7 +110,7 @@ public class NobetHareketleriResourceIT {
 
         // Create the NobetHareketleri
         restNobetHareketleriMockMvc.perform(post("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
             .andExpect(status().isCreated());
 
@@ -162,7 +136,7 @@ public class NobetHareketleriResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restNobetHareketleriMockMvc.perform(post("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -239,7 +213,7 @@ public class NobetHareketleriResourceIT {
             .tarih(UPDATED_TARIH);
 
         restNobetHareketleriMockMvc.perform(put("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedNobetHareketleri)))
             .andExpect(status().isOk());
 
@@ -264,7 +238,7 @@ public class NobetHareketleriResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNobetHareketleriMockMvc.perform(put("/api/nobet-hareketleris")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
             .andExpect(status().isBadRequest());
 
@@ -283,7 +257,7 @@ public class NobetHareketleriResourceIT {
 
         // Delete the nobetHareketleri
         restNobetHareketleriMockMvc.perform(delete("/api/nobet-hareketleris/{id}", nobetHareketleri.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

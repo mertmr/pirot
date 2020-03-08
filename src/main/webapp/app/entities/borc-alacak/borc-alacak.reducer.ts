@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<IBorcAlacak> = entity => async dispatc
     type: ACTION_TYPES.UPDATE_BORCALACAK,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<IBorcAlacak> = id => async dispatch
     type: ACTION_TYPES.DELETE_BORCALACAK,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

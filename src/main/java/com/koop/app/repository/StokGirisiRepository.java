@@ -16,5 +16,4 @@ public interface StokGirisiRepository extends JpaRepository<StokGirisi, Long> {
 
     @Query("select stokGirisi from StokGirisi stokGirisi where stokGirisi.user.login = ?#{principal.username}")
     List<StokGirisi> findByUserIsCurrentUser();
-
 }

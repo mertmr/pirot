@@ -1,6 +1,7 @@
 package com.koop.app.repository;
 
 import com.koop.app.KoopApp;
+
 import com.koop.app.config.Constants;
 import com.koop.app.config.audit.AuditEventConverter;
 import com.koop.app.domain.PersistentAuditEvent;

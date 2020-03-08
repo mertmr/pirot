@@ -52,6 +52,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
         ...urunEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);

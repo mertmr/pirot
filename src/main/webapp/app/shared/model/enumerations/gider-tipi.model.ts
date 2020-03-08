@@ -1,11 +1,11 @@
 export const enum GiderTipi {
-  YOK,
-  KARGO,
-  SU,
-  DIGER,
-  VERGI,
-  KIRA,
-  AIDAT,
-  TAKSI,
-  ELEKTRIK
+  YOK = 'YOK',
+  KARGO = 'KARGO',
+  SU = 'SU',
+  DIGER = 'DIGER',
+  VERGI = 'VERGI',
+  KIRA = 'KIRA',
+  AIDAT = 'AIDAT',
+  TAKSI = 'TAKSI',
+  ELEKTRIK = 'ELEKTRIK'
 }

@@ -50,6 +50,7 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
         ...ureticiEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -131,11 +132,11 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
                 <Label for="uretici-user">
                   <Translate contentKey="koopApp.uretici.user">User</Translate>
                 </Label>
-                <AvInput id="uretici-user" type="select" className="form-control" name="user.id">
+                <AvInput id="uretici-user" type="select" className="form-control" name="user">
                   <option value="" key="0" />
                   {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
+                    ? users.map((otherEntity, index) => (
+                        <option value={index} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))

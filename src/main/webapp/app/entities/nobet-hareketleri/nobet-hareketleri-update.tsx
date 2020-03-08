@@ -50,6 +50,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
         ...nobetHareketleriEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -129,11 +130,11 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 <Label for="nobet-hareketleri-user">
                   <Translate contentKey="koopApp.nobetHareketleri.user">User</Translate>
                 </Label>
-                <AvInput id="nobet-hareketleri-user" type="select" className="form-control" name="user.id">
+                <AvInput id="nobet-hareketleri-user" type="select" className="form-control" name="user">
                   <option value="" key="0" />
                   {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
+                    ? users.map((otherEntity, index) => (
+                        <option value={index} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))

@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<INobetHareketleri> = entity => async d
     type: ACTION_TYPES.UPDATE_NOBETHAREKETLERI,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<INobetHareketleri> = id => async di
     type: ACTION_TYPES.DELETE_NOBETHAREKETLERI,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

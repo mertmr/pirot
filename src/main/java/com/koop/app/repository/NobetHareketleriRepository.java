@@ -16,5 +16,4 @@ public interface NobetHareketleriRepository extends JpaRepository<NobetHareketle
 
     @Query("select nobetHareketleri from NobetHareketleri nobetHareketleri where nobetHareketleri.user.login = ?#{principal.username}")
     List<NobetHareketleri> findByUserIsCurrentUser();
-
 }

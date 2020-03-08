@@ -54,6 +54,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
         ...stokGirisiEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -155,11 +156,11 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                 <Label for="stok-girisi-user">
                   <Translate contentKey="koopApp.stokGirisi.user">User</Translate>
                 </Label>
-                <AvInput id="stok-girisi-user" type="select" className="form-control" name="user.id">
+                <AvInput id="stok-girisi-user" type="select" className="form-control" name="user">
                   <option value="" key="0" />
                   {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
+                    ? users.map((otherEntity, index) => (
+                        <option value={index} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))

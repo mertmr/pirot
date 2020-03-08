@@ -3,25 +3,19 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.KdvKategorisi;
 import com.koop.app.repository.KdvKategorisiRepository;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,6 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link KdvKategorisiResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class KdvKategorisiResourceIT {
 
     private static final String DEFAULT_KATEGORI_ADI = "AAAAAAAAAA";
@@ -43,35 +40,12 @@ public class KdvKategorisiResourceIT {
     private KdvKategorisiRepository kdvKategorisiRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restKdvKategorisiMockMvc;
 
     private KdvKategorisi kdvKategorisi;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final KdvKategorisiResource kdvKategorisiResource = new KdvKategorisiResource(kdvKategorisiRepository);
-        this.restKdvKategorisiMockMvc = MockMvcBuilders.standaloneSetup(kdvKategorisiResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -110,7 +84,7 @@ public class KdvKategorisiResourceIT {
 
         // Create the KdvKategorisi
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isCreated());
 
@@ -132,7 +106,7 @@ public class KdvKategorisiResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -152,7 +126,7 @@ public class KdvKategorisiResourceIT {
         // Create the KdvKategorisi, which fails.
 
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -170,7 +144,7 @@ public class KdvKategorisiResourceIT {
         // Create the KdvKategorisi, which fails.
 
         restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -233,7 +207,7 @@ public class KdvKategorisiResourceIT {
             .kdvOrani(UPDATED_KDV_ORANI);
 
         restKdvKategorisiMockMvc.perform(put("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedKdvKategorisi)))
             .andExpect(status().isOk());
 
@@ -254,7 +228,7 @@ public class KdvKategorisiResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKdvKategorisiMockMvc.perform(put("/api/kdv-kategorisis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
@@ -273,7 +247,7 @@ public class KdvKategorisiResourceIT {
 
         // Delete the kdvKategorisi
         restKdvKategorisiMockMvc.perform(delete("/api/kdv-kategorisis/{id}", kdvKategorisi.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

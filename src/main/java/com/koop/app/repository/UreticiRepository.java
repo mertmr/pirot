@@ -16,5 +16,4 @@ public interface UreticiRepository extends JpaRepository<Uretici, Long> {
 
     @Query("select uretici from Uretici uretici where uretici.user.login = ?#{principal.username}")
     List<Uretici> findByUserIsCurrentUser();
-
 }

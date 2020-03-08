@@ -16,5 +16,4 @@ public interface GiderRepository extends JpaRepository<Gider, Long> {
 
     @Query("select gider from Gider gider where gider.user.login = ?#{principal.username}")
     List<Gider> findByUserIsCurrentUser();
-
 }

@@ -1,5 +1,5 @@
 export const enum OdemeAraci {
-  YOK,
-  NAKIT,
-  BANKA
+  YOK = 'YOK',
+  NAKIT = 'NAKIT',
+  BANKA = 'BANKA'
 }

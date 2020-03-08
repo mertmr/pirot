@@ -16,5 +16,4 @@ public interface BorcAlacakRepository extends JpaRepository<BorcAlacak, Long> {
 
     @Query("select borcAlacak from BorcAlacak borcAlacak where borcAlacak.user.login = ?#{principal.username}")
     List<BorcAlacak> findByUserIsCurrentUser();
-
 }

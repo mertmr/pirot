@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<IKisiler> = entity => async dispatch =
     type: ACTION_TYPES.UPDATE_KISILER,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<IKisiler> = id => async dispatch =>
     type: ACTION_TYPES.DELETE_KISILER,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

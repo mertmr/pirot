@@ -16,5 +16,4 @@ public interface UrunFiyatRepository extends JpaRepository<UrunFiyat, Long> {
 
     @Query("select urunFiyat from UrunFiyat urunFiyat where urunFiyat.user.login = ?#{principal.username}")
     List<UrunFiyat> findByUserIsCurrentUser();
-
 }

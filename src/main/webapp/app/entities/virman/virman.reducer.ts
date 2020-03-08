@@ -131,7 +131,6 @@ export const updateEntity: ICrudPutAction<IVirman> = entity => async dispatch =>
     type: ACTION_TYPES.UPDATE_VIRMAN,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -141,7 +140,6 @@ export const deleteEntity: ICrudDeleteAction<IVirman> = id => async dispatch => 
     type: ACTION_TYPES.DELETE_VIRMAN,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 

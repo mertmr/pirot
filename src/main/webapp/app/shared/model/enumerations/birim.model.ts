@@ -1,5 +1,5 @@
 export const enum Birim {
-  YOK,
-  ADET,
-  GRAM
+  YOK = 'YOK',
+  ADET = 'ADET',
+  GRAM = 'GRAM'
 }

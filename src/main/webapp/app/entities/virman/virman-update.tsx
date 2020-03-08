@@ -50,6 +50,7 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
         ...virmanEntity,
         ...values
       };
+      entity.user = users[values.user];
 
       if (isNew) {
         props.createEntity(entity);
@@ -158,11 +159,11 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                 <Label for="virman-user">
                   <Translate contentKey="koopApp.virman.user">User</Translate>
                 </Label>
-                <AvInput id="virman-user" type="select" className="form-control" name="user.id">
+                <AvInput id="virman-user" type="select" className="form-control" name="user">
                   <option value="" key="0" />
                   {users
-                    ? users.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
+                    ? users.map((otherEntity, index) => (
+                        <option value={index} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))

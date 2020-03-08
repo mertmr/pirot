@@ -3,21 +3,16 @@ package com.koop.app.web.rest;
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Satis;
 import com.koop.app.repository.SatisRepository;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,7 +22,6 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,6 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link SatisResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class SatisResourceIT {
 
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
@@ -55,35 +52,12 @@ public class SatisResourceIT {
     private SatisRepository satisRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restSatisMockMvc;
 
     private Satis satis;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final SatisResource satisResource = new SatisResource(satisRepository);
-        this.restSatisMockMvc = MockMvcBuilders.standaloneSetup(satisResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -126,7 +100,7 @@ public class SatisResourceIT {
 
         // Create the Satis
         restSatisMockMvc.perform(post("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satis)))
             .andExpect(status().isCreated());
 
@@ -150,7 +124,7 @@ public class SatisResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSatisMockMvc.perform(post("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satis)))
             .andExpect(status().isBadRequest());
 
@@ -221,7 +195,7 @@ public class SatisResourceIT {
             .kartliSatis(UPDATED_KARTLI_SATIS);
 
         restSatisMockMvc.perform(put("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(updatedSatis)))
             .andExpect(status().isOk());
 
@@ -244,7 +218,7 @@ public class SatisResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSatisMockMvc.perform(put("/api/satis")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(satis)))
             .andExpect(status().isBadRequest());
 
@@ -263,7 +237,7 @@ public class SatisResourceIT {
 
         // Delete the satis
         restSatisMockMvc.perform(delete("/api/satis/{id}", satis.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -16,5 +16,4 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
 
     @Query("select satis from Satis satis where satis.user.login = ?#{principal.username}")
     List<Satis> findByUserIsCurrentUser();
-
 }

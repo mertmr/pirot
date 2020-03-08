@@ -1,5 +1,5 @@
 export const enum Hesap {
-  YOK,
-  KASA,
-  BANKA
+  YOK = 'YOK',
+  KASA = 'KASA',
+  BANKA = 'BANKA'
 }
