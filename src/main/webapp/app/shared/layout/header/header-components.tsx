@@ -28,9 +28,9 @@ export const Brand = props => (
   </NavbarBrand>
 );
 
-export const Home = props => (
+export const Home = ({onClick}) => (
   <NavItem>
-    <NavLink tag={Link} to="/" className="d-flex align-items-center">
+    <NavLink tag={Link} to="/" className="d-flex align-items-center" onClick={onClick}>
       <FontAwesomeIcon icon="home"/>
       <span>
         <Translate contentKey="global.menu.home">Home</Translate>

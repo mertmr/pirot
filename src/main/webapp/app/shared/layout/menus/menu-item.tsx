@@ -8,14 +8,15 @@ export interface IMenuItem {
   icon: IconProp;
   to: string;
   id?: string;
+  onClick?: any;
 }
 
 export default class MenuItem extends React.Component<IMenuItem> {
   render() {
-    const { to, icon, id, children } = this.props;
+    const { to, icon, id, children, onClick } = this.props;
 
     return (
-      <DropdownItem tag={Link} to={to} id={id} data-toggle="collapse" data-target=".jh-navbar">
+      <DropdownItem tag={Link} to={to} id={id} onClick={onClick}>
         <FontAwesomeIcon icon={icon} fixedWidth /> {children}
       </DropdownItem>
     );

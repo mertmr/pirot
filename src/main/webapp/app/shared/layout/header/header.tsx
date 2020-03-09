@@ -39,7 +39,20 @@ const Header = (props: IHeaderProps) => {
       </div>
     ) : null;
 
+  const [collapse, setCollapse] = useState(false);
+  const [status, setStatus] = useState('Closed');
+
+  const onEntering = () => setStatus('Opening...');
+
+  const onEntered = () => setStatus('Opened');
+
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const toggleMenuOnClick = event => {
+    const langKey = event.target.value;
+    Storage.session.set('locale', langKey);
+    props.onLocaleChange(langKey);
+  };
 
   /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
@@ -48,13 +61,13 @@ const Header = (props: IHeaderProps) => {
       {renderDevRibbon()}
       <LoadingBar className="loading-bar" />
       <Navbar dark expand="sm" fixed="top" className="jh-navbar">
-        <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
+        <NavbarToggler aria-label="Menu" onClick={toggleMenu} href="javascript:void(0);" />
         <Brand />
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ml-auto" navbar>
-            <Home />
-            {props.isAuthenticated && <EntitiesMenu />}
-            {props.isAuthenticated && <ReportsMenu />}
+            <Home onClick={toggleMenu}/>
+            {props.isAuthenticated && <EntitiesMenu onClick={toggleMenu}/>}
+            {props.isAuthenticated && <ReportsMenu  onClick={toggleMenu}/>}
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showSwagger={props.isSwaggerEnabled} showDatabase={!props.isInProduction} />
             )}
