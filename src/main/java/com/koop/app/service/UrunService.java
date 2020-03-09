@@ -1,22 +1,20 @@
 package com.koop.app.service;
 
 import com.koop.app.domain.Urun;
-import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.repository.UrunRepository;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UrunService {
     private final UrunRepository urunRepository;
 
-    private final StokGirisiRepository stokGirisiRepository;
-
-    public UrunService(UrunRepository urunRepository, StokGirisiRepository stokGirisiRepository) {
+    public UrunService(UrunRepository urunRepository) {
         this.urunRepository = urunRepository;
-        this.stokGirisiRepository = stokGirisiRepository;
     }
 
     public List<Urun> getAllUrunForSatis() {
@@ -25,5 +23,12 @@ public class UrunService {
 
     public Page<Urun> search(String query, Pageable pageable) {
         return urunRepository.findByUrunAdiContainingIgnoreCase(query, pageable);
+    }
+
+    public void deleteUrun(Long id) {
+        Optional<Urun> urun = urunRepository.findById(id);
+        urun.ifPresent(urunToDelete -> {
+            urunToDelete.set
+        });
     }
 }

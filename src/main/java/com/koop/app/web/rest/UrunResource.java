@@ -157,7 +157,7 @@ public class UrunResource {
     @DeleteMapping("/uruns/{id}")
     public ResponseEntity<Void> deleteUrun(@PathVariable Long id) {
         log.debug("REST request to delete Urun : {}", id);
-        urunRepository.deleteById(id);
+        urunService.deleteUrun(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

@@ -227,7 +227,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="koopApp.satis.home.createOrEditLabel">
+          <h2 id="koopApp.satis.home.createOrEditLabel" className="d-none d-md-inline">
             <Translate contentKey="koopApp.satis.home.createOrEditLabel">Create or edit a Satis</Translate>
           </h2>
         </Col>
@@ -260,14 +260,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                       filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
                             <Col style={{marginTop: '10px'}}>
                               <Col>
-                                Birim Fiyat
-                              </Col>
-                              <Col>
-                                {stokHareketi.urun.musteriFiyati} TL
-                              </Col>
-                            </Col>
-                            <Col style={{marginTop: '10px'}}>
-                              <Col>
                                 Kalan Stok
                               </Col>
                               <Col>
@@ -281,6 +273,14 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                               <Col>
                                 <InputNumber value={stokHareketi.miktar} max={stokHareketi.urun.stok}
                                              onChange={(value) => onChangeMiktar(value, i)}/>
+                              </Col>
+                            </Col>
+                            <Col style={{marginTop: '10px'}}>
+                              <Col>
+                                Birim Fiyat
+                              </Col>
+                              <Col>
+                                {stokHareketi.urun.musteriFiyati} TL
                               </Col>
                             </Col>
                             <Col style={{marginTop: '10px'}}>

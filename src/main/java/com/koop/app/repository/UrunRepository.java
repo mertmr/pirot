@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @JaversSpringDataAuditable
 public interface UrunRepository extends JpaRepository<Urun, Long> {
-    @Query("select urun from Urun urun where urun.satista = true")
+    @Query("select urun from Urun urun where urun.satista = true and urun.stok > 0")
     List<Urun> findSatistakiUrunler();
 
     Page<Urun> findByUrunAdiContainingIgnoreCase(String urunAdi, Pageable pageable);
