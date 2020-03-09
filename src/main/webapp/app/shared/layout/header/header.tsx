@@ -61,7 +61,7 @@ const Header = (props: IHeaderProps) => {
       {renderDevRibbon()}
       <LoadingBar className="loading-bar" />
       <Navbar dark expand="sm" fixed="top" className="jh-navbar">
-        <NavbarToggler aria-label="Menu" onClick={toggleMenu} href="javascript:void(0);" />
+        <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
         <Brand />
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ml-auto" navbar>
