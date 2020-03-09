@@ -19,11 +19,7 @@ export const OrtakFaturalarPage = (props: IOrtakFaturalarPageProps) => {
 
   const onChangeReportDate = evt => {
     setReportDate(evt.target.value);
-    getAllOrtakFaturalar(evt.target.value)
-  };
-
-  const getAllOrtakFaturalar = (reportDate) => {
-    props.getOrtakFaturas(reportDate);
+    props.getOrtakFaturas(evt.target.value)
   };
 
   const {ortakFaturalar, reportDateList} = props;
