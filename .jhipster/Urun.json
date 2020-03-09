@@ -40,6 +40,10 @@
             "fieldName": "urunKategorisi",
             "fieldType": "UrunKategorisi",
             "fieldValues": "GIDA,GIDA_DISI"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
@@ -67,5 +71,6 @@
     "fluentMethods": true,
     "readOnly": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "embedded": false
 }

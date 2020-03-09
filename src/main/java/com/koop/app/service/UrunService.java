@@ -22,13 +22,14 @@ public class UrunService {
     }
 
     public Page<Urun> search(String query, Pageable pageable) {
-        return urunRepository.findByUrunAdiContainingIgnoreCase(query, pageable);
+        return urunRepository.findByUrunAdiContainingIgnoreCaseAndActive(query, true, pageable);
     }
 
     public void deleteUrun(Long id) {
         Optional<Urun> urun = urunRepository.findById(id);
         urun.ifPresent(urunToDelete -> {
-            urunToDelete.set
+            urunToDelete.setActive(false);
+            urunRepository.save(urunToDelete);
         });
     }
 }

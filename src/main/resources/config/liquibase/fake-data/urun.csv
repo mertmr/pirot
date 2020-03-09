@@ -1,3 +1,3 @@
-id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;satista;urun_kategorisi
-1;Portakal;12000;1000;30;GRAM;false;true;GIDA
-1;Nohut;20;2;13;ADET;false;true;GIDA
+id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;satista;urun_kategorisi;active
+1;Portakal;12000;1000;30;GRAM;false;true;GIDA;true
+1;Nohut;20;2;13;ADET;false;true;GIDA;true

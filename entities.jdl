@@ -76,6 +76,7 @@ entity Urun {
     dayanismaUrunu Boolean
     satista Boolean
     urunKategorisi UrunKategorisi
+    active Boolean
 }
 
 entity UrunFiyat {

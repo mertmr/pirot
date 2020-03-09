@@ -53,6 +53,9 @@ public class Urun implements Serializable {
     @Column(name = "urun_kategorisi")
     private UrunKategorisi urunKategorisi;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @ManyToOne
     @JsonIgnoreProperties("uruns")
     private User urunSorumlusu;
@@ -174,6 +177,19 @@ public class Urun implements Serializable {
         this.urunKategorisi = urunKategorisi;
     }
 
+    public Boolean isActive() {
+        return active;
+    }
+
+    public Urun active(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public User getUrunSorumlusu() {
         return urunSorumlusu;
     }
@@ -244,6 +260,9 @@ public class Urun implements Serializable {
             "'" +
             ", urunKategorisi='" +
             getUrunKategorisi() +
+            "'" +
+            ", active='" +
+            isActive() +
             "'" +
             "}"
         );

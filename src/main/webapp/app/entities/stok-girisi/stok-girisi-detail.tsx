@@ -66,13 +66,6 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
             <Translate contentKey="entity.action.back">Back</Translate>
           </span>
         </Button>
-        &nbsp;
-        <Button tag={Link} to={`/stok-girisi/${stokGirisiEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
-        </Button>
       </Col>
     </Row>
   );
