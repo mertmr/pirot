@@ -68,6 +68,7 @@ import kisiler, {
 import dashboardReportsState, { DashboardReportsState } from './dashboard-reports.reducer';
 import ciroState, { CiroState } from 'app/reports/ciro/ciro.reducer';
 import aylikSatislarState, { AylikSatislarState } from 'app/reports/aylik-satis/aylik-satislar.reducer';
+import ortakFaturalarState, { OrtakFaturaState } from 'app/reports/ortak-faturalar/ortak-faturalar.reducer';
 
 export interface IRootState {
   readonly authentication: AuthenticationState;
@@ -98,6 +99,7 @@ export interface IRootState {
   readonly dashboardReportsState: DashboardReportsState;
   readonly ciroState: CiroState;
   readonly aylikSatislarState: AylikSatislarState;
+  readonly ortakFaturalarState: OrtakFaturaState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -128,6 +130,7 @@ const rootReducer = combineReducers<IRootState>({
   dashboardReportsState,
   ciroState,
   aylikSatislarState,
+  ortakFaturalarState,
   loadingBar
 });
 

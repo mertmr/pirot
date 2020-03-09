@@ -11,5 +11,8 @@ export const ReportsMenu = ({onClick}) => (
         <MenuItem icon="asterisk" to="/reports/aylikSatislar" onClick={onClick}>
             Aylık Satışlar
         </MenuItem>
+      <MenuItem icon="asterisk" to="/reports/ortakFaturalar" onClick={onClick}>
+        Ortaklara Kesilen Faturalar
+      </MenuItem>
     </NavDropdown>
 );

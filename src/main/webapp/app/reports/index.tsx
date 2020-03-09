@@ -4,6 +4,7 @@ import {Switch} from 'react-router-dom';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import Ciro from './ciro';
 import AylikSatislar from './aylik-satis';
+import OrtakFaturalar from './ortak-faturalar';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({match}) => (
@@ -12,6 +13,7 @@ const Routes = ({match}) => (
       {/* prettier-ignore */}
       <ErrorBoundaryRoute path={`${match.url}/ciro`} component={Ciro}/>
       <ErrorBoundaryRoute path={`${match.url}/aylikSatislar`} component={AylikSatislar}/>
+      <ErrorBoundaryRoute path={`${match.url}/ortakFaturalar`} component={OrtakFaturalar}/>
     </Switch>
   </div>
 );
