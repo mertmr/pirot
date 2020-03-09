@@ -236,35 +236,16 @@ public class Urun implements Serializable {
 
     @Override
     public String toString() {
-        return (
-            "Urun{" +
-            "id=" +
-            getId() +
-            ", urunAdi='" +
-            getUrunAdi() +
-            "'" +
-            ", stok=" +
-            getStok() +
-            ", stokSiniri=" +
-            getStokSiniri() +
-            ", musteriFiyati=" +
-            getMusteriFiyati() +
-            ", birim='" +
-            getBirim() +
-            "'" +
-            ", dayanismaUrunu='" +
-            isDayanismaUrunu() +
-            "'" +
-            ", satista='" +
-            isSatista() +
-            "'" +
-            ", urunKategorisi='" +
-            getUrunKategorisi() +
-            "'" +
-            ", active='" +
-            isActive() +
-            "'" +
-            "}"
-        );
+        return "Urun{" +
+            "id=" + getId() +
+            ", urunAdi='" + getUrunAdi() + "'" +
+            ", stok=" + getStok() +
+            ", stokSiniri=" + getStokSiniri() +
+            ", musteriFiyati=" + getMusteriFiyati() +
+            ", birim='" + getBirim() + "'" +
+            ", dayanismaUrunu='" + isDayanismaUrunu() + "'" +
+            ", satista='" + isSatista() + "'" +
+            ", urunKategorisi='" + getUrunKategorisi() + "'" +
+            "}";
     }
 }

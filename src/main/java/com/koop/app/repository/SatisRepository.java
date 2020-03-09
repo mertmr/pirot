@@ -6,6 +6,8 @@ import com.koop.app.dto.Ciro;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-@JaversSpringDataAuditable
+//@JaversSpringDataAuditable
 public interface SatisRepository extends JpaRepository<Satis, Long> {
     String SATISLAR_BY_ID_CACHE = "satislarById";
 
@@ -37,16 +39,14 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     @Query("select satis.id from Satis satis")
     List<Long> findAllIds();
 
-    @EntityGraph(attributePaths = "stokHareketleriLists.tutar")
-    @Query("select satis from Satis satis where satis.id in :ids")
+    @Query("select satis from Satis satis join fetch satis.stokHareketleriLists where satis.id in :ids")
     List<Satis> findAllByIds(@Param("ids") List<Long> ids, Sort sort);
 
-    @EntityGraph(attributePaths = "stokHareketleriLists.tutar")
-    @Query("select satis from Satis satis where satis.id in :ids")
-    List<Satis> findAllByIds(@Param("ids") List<Long> ids);
+    @Query("select satis from Satis satis join fetch satis.stokHareketleriLists where satis.id in :ids")
+    List<Satis> findAllByIds(@Param("ids") Set<Long> ids);
 
-    @EntityGraph(attributePaths = "stokHareketleriLists")
-    Optional<Satis> findOneWithStokHareketleriById(Long id);
+    @Query("select satis from Satis satis join fetch satis.stokHareketleriLists where satis.id = :id")
+    Optional<Satis> findOneWithStokHareketleriById(@Param("id") Long id);
 
     @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today")
     Double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);

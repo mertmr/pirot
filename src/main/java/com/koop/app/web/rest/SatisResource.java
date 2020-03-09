@@ -121,10 +121,9 @@ public class SatisResource {
     @GetMapping("/satis")
     public ResponseEntity<List<Satis>> getAllSatis(Pageable pageable) {
         log.debug("REST request to get a page of Satis");
-        Page<Long> ids = satisRepository.findAllIds(pageable);
-        List<Satis> satislar = satisRepository.findAllByIds(ids.getContent(), pageable.getSort());
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ids);
-        return ResponseEntity.ok().headers(headers).body(satislar);
+        Page<Satis> satislar = satisRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), satislar);
+        return ResponseEntity.ok().headers(headers).body(satislar.getContent());
     }
 
     /**
@@ -170,5 +169,19 @@ public class SatisResource {
         Page<Satis> page = satisService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+
+
+    /**
+     * Migrationdan sonra kaldirilacak
+     */
+    @GetMapping("/satis/migrate-toplam-tutar")
+    public ResponseEntity<Void> migrateToplamTutar() {
+        log.debug("REST request to migrate toplam tutar");
+        satisService.migrateToplamTutar();
+        return ResponseEntity
+            .noContent()
+            .build();
     }
 }

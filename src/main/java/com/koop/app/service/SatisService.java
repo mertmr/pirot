@@ -7,14 +7,16 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class SatisService {
@@ -124,5 +126,30 @@ public class SatisService {
 
     public Page<Satis> search(String query, Pageable pageable) {
         return satisRepository.findSatisByLogin(query, pageable);
+    }
+
+    /**
+     * Eski pirottan gecis yapilabilmesi icin bir migration kodu, sonrasinda kaldirilmali
+     */
+    public void migrateToplamTutar() {
+        List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAllWithSatis();
+        Map<Long, List<SatisStokHareketleri>> satisStokMap = satisStokHareketleriList.stream()
+            .collect(groupingBy(satisStokHareketleri -> satisStokHareketleri.getSatis().getId()));
+
+        List<Satis> satisListToSave = new ArrayList<>();
+        for (Long satisId : satisStokMap.keySet()) {
+            List<SatisStokHareketleri> satisStokHareketleris = satisStokMap.get(satisId);
+            double sum = satisStokHareketleris.stream().
+                mapToDouble(satisStokHareketleri -> satisStokHareketleri.getTutar().doubleValue()).sum();
+            Optional<SatisStokHareketleri> satisStokHareketi = satisStokHareketleris.stream().findFirst();
+            satisStokHareketi.ifPresent(satisStok -> {
+                Satis satis = satisStok.getSatis();
+                satis.setToplamTutar(BigDecimal.valueOf(sum));
+                satisListToSave.add(satis);
+            });
+        }
+
+        satisRepository.saveAll(satisListToSave);
+        //todo duzgun calistiktan sonra diff i tekrar ac
     }
 }

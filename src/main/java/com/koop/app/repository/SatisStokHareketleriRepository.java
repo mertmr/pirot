@@ -28,4 +28,9 @@ public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokH
         "order by year(s.tarih), month(s.tarih) desc "
     )
     List<AylikSatislar> getSatisRaporlari();
+
+    @Query("select satisStokHareketleri from SatisStokHareketleri satisStokHareketleri " +
+        "join fetch satisStokHareketleri.satis " +
+        "join fetch satisStokHareketleri.urun")
+    List<SatisStokHareketleri> findAllWithSatis();
 }

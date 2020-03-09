@@ -183,22 +183,12 @@ public class Satis implements Serializable {
 
     @Override
     public String toString() {
-        return (
-            "Satis{" +
-            "id=" +
-            getId() +
-            ", tarih='" +
-            getTarih() +
-            "'" +
-            ", toplamTutar=" +
-            getToplamTutar() +
-            ", ortagaSatis='" +
-            isOrtagaSatis() +
-            "'" +
-            ", kartliSatis='" +
-            isKartliSatis() +
-            "'" +
-            "}"
-        );
+        return "Satis{" +
+            "id=" + getId() +
+            ", tarih='" + getTarih() + "'" +
+            ", toplamTutar=" + getToplamTutar() +
+            ", ortagaSatis='" + isOrtagaSatis() + "'" +
+            ", kartliSatis='" + isKartliSatis() + "'" +
+            "}";
     }
 }

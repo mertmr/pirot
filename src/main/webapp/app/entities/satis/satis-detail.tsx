@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Table } from 'reactstrap';
-import {Translate, ICrudGetAction, TextFormat, JhiItemCount, JhiPagination} from 'react-jhipster';
+import { Translate, ICrudGetAction, TextFormat, JhiItemCount, JhiPagination } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -56,10 +56,10 @@ export const SatisDetail = (props: ISatisDetailProps) => {
           </dt>
           <dd>{satisEntity.user ? satisEntity.user.login : ''}</dd>
         </dl>
-          <div className="table-responsive">
-            {satisEntity.stokHareketleriLists && satisEntity.stokHareketleriLists.length > 0 ? (
-              <Table responsive>
-                <thead>
+        <div className="table-responsive">
+          {satisEntity.stokHareketleriLists && satisEntity.stokHareketleriLists.length > 0 ? (
+            <Table responsive>
+              <thead>
                 <tr>
                   <th className="hand">
                     <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
@@ -72,8 +72,8 @@ export const SatisDetail = (props: ISatisDetailProps) => {
                   </th>
                   <th />
                 </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                 {satisEntity.stokHareketleriLists.map((satisStokHareketleri, i) => (
                   <tr key={`entity-${i}`}>
                     <td>{satisStokHareketleri.miktar}</td>
@@ -81,14 +81,14 @@ export const SatisDetail = (props: ISatisDetailProps) => {
                     <td>{satisStokHareketleri.urun.urunAdi}</td>
                   </tr>
                 ))}
-                </tbody>
-              </Table>
-            ) : (
-              <div className="alert alert-warning">
-                <Translate contentKey="koopApp.satisStokHareketleri.home.notFound">No Satis Stok Hareketleris found</Translate>
-              </div>
-            )}
-          </div>
+              </tbody>
+            </Table>
+          ) : (
+            <div className="alert alert-warning">
+              <Translate contentKey="koopApp.satisStokHareketleri.home.notFound">No Satis Stok Hareketleris found</Translate>
+            </div>
+          )}
+        </div>
         <Button tag={Link} to="/satis" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
