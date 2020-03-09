@@ -125,13 +125,13 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
         vertical={false}
       >
         <Component
-            onClick={[Function]}
+          onClick={[Function]}
         />
         <Component
-            onClick={[Function]}
+          onClick={[Function]}
         />
         <Component
-            onClick={[Function]}
+          onClick={[Function]}
         />
         <Component
           showDatabase={false}
