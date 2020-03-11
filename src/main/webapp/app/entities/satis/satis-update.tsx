@@ -310,6 +310,18 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     />
                   </AvGroup>
                   <AvGroup>
+                    <Label for="satis-nakitTutar">
+                      Nakit Verilen
+                    </Label>
+                    <InputNumber style={{ marginLeft: '10px' }} onChange={(value) => onChangeParaUstu(value)}/>
+                  </AvGroup>
+                  <AvGroup>
+                    <Label for="satis-paraustu">
+                      Para Üstü
+                    </Label>
+                    <InputNumber style={{ marginLeft: '10px' }} className="form-control" value={paraUstu}/>
+                  </AvGroup>
+                  <AvGroup>
                     <Label for="gider-user">Satış Tarihi</Label>
                     <DatePicker
                       showTime
