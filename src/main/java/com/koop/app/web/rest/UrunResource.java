@@ -70,6 +70,7 @@ public class UrunResource {
         if (urun.getId() != null) {
             throw new BadRequestAlertException("A new urun cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        urun.setActive(true);
         Urun result = urunRepository.save(urun);
         if (urun.getId() != null) {
             Optional<Urun> oncekiHaliUrunOptional = urunRepository.findById(urun.getId());

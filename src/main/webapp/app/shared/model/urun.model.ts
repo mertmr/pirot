@@ -15,6 +15,7 @@ export interface IUrun {
   urunKategorisi?: UrunKategorisi;
   urunSorumlusu?: IUser;
   kdvKategorisi?: IKdvKategorisi;
+  active?: boolean;
 }
 
 export const defaultValue: Readonly<IUrun> = {
