@@ -191,4 +191,16 @@ public class UrunResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    /**
+     * {@code GET  /satis} : get all the urun list for stok girisi.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of urunler in body.
+     */
+    @GetMapping("/uruns/stok-girisi")
+    public ResponseEntity<List<Urun>> getAllUrunForStokGirisi() {
+        log.debug("REST request to get a page of Satis");
+        List<Urun> urunler = urunService.getAllUrunForStokGirisi();
+        return ResponseEntity.ok().body(urunler);
+    }
 }

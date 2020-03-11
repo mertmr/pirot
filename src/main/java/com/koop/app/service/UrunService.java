@@ -32,4 +32,8 @@ public class UrunService {
             urunRepository.save(urunToDelete);
         });
     }
+
+    public List<Urun> getAllUrunForStokGirisi() {
+        return urunRepository.getAllUrunForStokGirisi();
+    }
 }

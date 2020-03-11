@@ -25,4 +25,7 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     @Override
     @Query("select urun from Urun urun where urun.active=true")
     Page<Urun> findAll(@NonNull Pageable var1);
+
+    @Query("select urun from Urun urun where urun.satista=true")
+    List<Urun> getAllUrunForStokGirisi();
 }

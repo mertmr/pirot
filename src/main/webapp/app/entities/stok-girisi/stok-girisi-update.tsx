@@ -1,25 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Col, Label, Row} from 'reactstrap';
-import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
-import {Translate, translate} from 'react-jhipster';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {IRootState} from 'app/shared/reducers';
-import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
-import {getEntities as getUruns, getSatisUrunleri} from 'app/entities/urun/urun.reducer';
-import {createEntity, getEntity, reset, updateEntity} from './stok-girisi.reducer';
-import {defaultValue, IStokGirisi} from 'app/shared/model/stok-girisi.model';
-import {convertDateTimeToServer} from 'app/shared/util/date-utils';
-import {Dropdown} from "primereact/dropdown";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Col, Label, Row } from 'reactstrap';
+import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Translate, translate } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IRootState } from 'app/shared/reducers';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
+import { getAllUrunForStokGirisi, getEntities as getUruns, getSatisUrunleri } from 'app/entities/urun/urun.reducer';
+import { createEntity, getEntity, reset, updateEntity } from './stok-girisi.reducer';
+import { defaultValue, IStokGirisi } from 'app/shared/model/stok-girisi.model';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
-import {hasAnyAuthority} from "app/shared/auth/private-route";
-import {AUTHORITIES} from "app/config/constants";
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
 
-export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
-}
+export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   const [userId, setUserId] = useState('0');
@@ -27,7 +26,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   const [urunId, setUrunId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const {stokGirisiEntity, users, uruns, loading, updating, satisUrunleri, isAdmin} = props;
+  const { stokGirisiEntity, users, uruns, loading, updating, satisUrunleri, isAdmin } = props;
 
   const handleClose = () => {
     props.history.push('/stok-girisi' + props.location.search);
@@ -42,7 +41,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
 
     props.getUsers();
     props.getUruns();
-    props.getSatisUrunleri();
+    props.getAllUrunForStokGirisi();
   }, []);
 
   useEffect(() => {
@@ -69,7 +68,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
     }
   };
 
-  const updateStokGirisi = (e) => {
+  const updateStokGirisi = e => {
     setStokGirisi({
       ...stokGirisi,
       [e.target.name]: e.target.value
@@ -96,18 +95,24 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   <Label for="stok-girisi-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="stok-girisi-id" type="text" className="form-control" name="id" readOnly/>
+                  <AvInput id="stok-girisi-id" type="text" className="form-control" name="id" readOnly />
                 </AvGroup>
               ) : null}
               <AvGroup>
                 {!isNew ? (
-                  <AvInput id="stok-girisi-urun" type="text" className="form-control" name="urun.urunAdi" readOnly/>
+                  <AvInput id="stok-girisi-urun" type="text" className="form-control" name="urun.urunAdi" readOnly />
                 ) : (
-                  <Dropdown value={stokGirisi.urun} options={satisUrunleri}
-                            optionLabel="urunAdi"
-                            name="urun" onChange={updateStokGirisi}
-                            filter={true}
-                            filterPlaceholder="Ürün seçiniz" filterBy="urunAdi" placeholder="Ürün seçiniz"/>
+                  <Dropdown
+                    value={stokGirisi.urun}
+                    options={satisUrunleri}
+                    optionLabel="urunAdi"
+                    name="urun"
+                    onChange={updateStokGirisi}
+                    filter={true}
+                    filterPlaceholder="Ürün seçiniz"
+                    filterBy="urunAdi"
+                    placeholder="Ürün seçiniz"
+                  />
                 )}
               </AvGroup>
               <AvGroup>
@@ -120,7 +125,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   className="form-control"
                   name="miktar"
                   validate={{
-                    number: {value: true, errorMessage: translate('entity.validation.number')}
+                    number: { value: true, errorMessage: translate('entity.validation.number') }
                   }}
                 />
               </AvGroup>
@@ -133,7 +138,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   type="text"
                   name="notlar"
                   validate={{
-                    required: {value: true, errorMessage: translate('entity.validation.required')}
+                    required: { value: true, errorMessage: translate('entity.validation.required') }
                   }}
                 />
               </AvGroup>
@@ -150,13 +155,15 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                 >
                   <option value="STOK_GIRISI">{translate('koopApp.StokHareketiTipi.STOK_GIRISI')}</option>
                   <option value="FIRE">{translate('koopApp.StokHareketiTipi.FIRE')}</option>
-                  <option style={isAdmin ? {} : { display: 'none' }}  value="STOK_DUZELTME">{translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}</option>
+                  <option style={isAdmin ? {} : { display: 'none' }} value="STOK_DUZELTME">
+                    {translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}
+                  </option>
                   <option value="MASRAF">{translate('koopApp.StokHareketiTipi.MASRAF')}</option>
                   <option value="IADE">{translate('koopApp.StokHareketiTipi.IADE')}</option>
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/stok-girisi" replace color="info">
-                <FontAwesomeIcon icon="arrow-left"/>
+                <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -164,7 +171,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save"/>
+                <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
@@ -194,7 +201,7 @@ const mapDispatchToProps = {
   updateEntity,
   createEntity,
   reset,
-  getSatisUrunleri
+  getAllUrunForStokGirisi
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

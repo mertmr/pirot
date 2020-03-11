@@ -12,6 +12,7 @@ export const ACTION_TYPES = {
   FETCH_URUN_LIST: 'urun/FETCH_URUN_LIST',
   FETCH_URUN_USER_LIST: 'urun/FETCH_URUN_USER_LIST',
   FETCH_URUN_SATIS_LIST: 'urun/FETCH_URUN_SATIS_LIST',
+  FETCH_URUN_STOK_GIRISI: 'urun/FETCH_URUN_STOK_GIRISI',
   FETCH_URUN: 'urun/FETCH_URUN',
   CREATE_URUN: 'urun/CREATE_URUN',
   UPDATE_URUN: 'urun/UPDATE_URUN',
@@ -41,6 +42,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case REQUEST(ACTION_TYPES.FETCH_URUN_LIST):
     case REQUEST(ACTION_TYPES.FETCH_URUN_USER_LIST):
     case REQUEST(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_URUN_STOK_GIRISI):
     case REQUEST(ACTION_TYPES.FETCH_URUN):
       return {
         ...state,
@@ -60,6 +62,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case FAILURE(ACTION_TYPES.SEARCH_URUNS):
     case FAILURE(ACTION_TYPES.FETCH_URUN_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUN_USER_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_URUN_STOK_GIRISI):
     case FAILURE(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUN):
     case FAILURE(ACTION_TYPES.CREATE_URUN):
@@ -87,6 +90,11 @@ export default (state: UrunState = initialState, action): UrunState => {
         users: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
+      return {
+        ...state,
+        satisUrunleri: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_URUN_STOK_GIRISI):
       return {
         ...state,
         satisUrunleri: action.payload.data
@@ -144,6 +152,14 @@ export const getUrunUsers: ICrudGetAllAction<IUrun> = () => {
   return {
     type: ACTION_TYPES.FETCH_URUN_USER_LIST,
     payload: axios.get<IUser>(`${requestUrl}`)
+  };
+};
+
+export const getAllUrunForStokGirisi: ICrudGetAllAction<IUrun> = () => {
+  const requestUrl = `${apiUrl}/stok-girisi`;
+  return {
+    type: ACTION_TYPES.FETCH_URUN_SATIS_LIST,
+    payload: axios.get<IUrun>(`${requestUrl}`)
   };
 };
 
