@@ -319,7 +319,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     <Label for="satis-paraustu">
                       Para Üstü
                     </Label>
-                    <InputNumber style={{ marginLeft: '10px' }} className="form-control" value={paraUstu}/>
+                    <InputNumber style={{ marginLeft: '10px' }} value={paraUstu}/>
                   </AvGroup>
                   <AvGroup>
                     <Label for="gider-user">Satış Tarihi</Label>
