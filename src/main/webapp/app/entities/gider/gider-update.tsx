@@ -79,7 +79,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   <Label for="gider-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="gider-id" type="text" className="form-control" name="id" required readOnly />
+                  <AvInput id="gider-id" type="number" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
               <AvGroup>

@@ -266,7 +266,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                 <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                               </Col>
                               <Col>
-                                <InputNumber
+                                <InputNumber type="number"
                                   value={stokHareketi.miktar}
                                   max={stokHareketi.urun.stok}
                                   onChange={value => onChangeMiktar(value, i)}
@@ -313,13 +313,13 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     <Label for="satis-nakitTutar">
                       Nakit Verilen
                     </Label>
-                    <InputNumber style={{ marginLeft: '10px' }} onChange={(value) => onChangeParaUstu(value)}/>
+                    <InputNumber type="number" style={{ marginLeft: '10px' }} onChange={(value) => onChangeParaUstu(value)}/>
                   </AvGroup>
                   <AvGroup>
                     <Label for="satis-paraustu">
                       Para Üstü
                     </Label>
-                    <InputNumber style={{ marginLeft: '10px' }} value={paraUstu}/>
+                    <InputNumber type="number" style={{ marginLeft: '10px' }} value={paraUstu}/>
                   </AvGroup>
                   <AvGroup>
                     <Label for="gider-user">Satış Tarihi</Label>
