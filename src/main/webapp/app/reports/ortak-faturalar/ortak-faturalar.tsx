@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField, Table, Label, Translate, Input } from 'availity-reactstrap-validation';
-import {getSortState, JhiItemCount, JhiPagination, TextFormat} from 'react-jhipster';
-
-import {FATURA_DATE_FORMAT} from 'app/config/constants';
-import {ITEMS_PER_PAGE} from 'app/shared/util/pagination.constants';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Table} from 'reactstrap';
+import {TextFormat, Translate} from 'react-jhipster';
 
 import {IRootState} from 'app/shared/reducers';
-import {getOrtakFaturas, getReportDateList} from './ortak-faturalar.reducer';
+import {APP_DATE_FORMAT} from 'app/config/constants';
+import {Dropdown} from 'primereact/dropdown';
+import {getOrtakFaturas, getReportDateList} from "app/reports/ortak-faturalar/ortak-faturalar.reducer";
 
 export interface IOrtakFaturalarPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
 }
@@ -17,69 +16,79 @@ export const OrtakFaturalarPage = (props: IOrtakFaturalarPageProps) => {
 
   const [reportDate, setReportDate] = useState();
 
+  useEffect(() => {
+    props.getReportDateList();
+  }, []);
+
   const onChangeReportDate = evt => {
-    setReportDate(evt.target.value);
-    props.getOrtakFaturas(evt.target.value)
+    setReportDate(evt.value);
+    props.getOrtakFaturas(evt.value.reportDate)
   };
 
-  const {ortakFaturalar, reportDateList} = props;
+  const {ortakFaturaKisiList, match, reportDateList} = props;
 
   return (
     <div>
-      <h2 id="ortakFaturalar-page-heading">Ortak Faturalar</h2>
-      <span>
-        Fatura Dönemi
-      </span>
-      <Input type="date" value={reportDate} onChange={onChangeReportDate} name="reportDate" id="reportDate"/>
-      <AvGroup>
-        <Label for="stok-girisi-urun">
-          <Translate contentKey="koopApp.stokGirisi.urun">Urun</Translate>
-        </Label>
-        <AvInput id="stok-girisi-urun" type="select" className="form-control" value={reportDate} name="urun.id" onChange={onChangeReportDate}>
-          <option value="" key="0" />
-          {reportDateList
-            ? reportDateList.map(otherEntity => (
-              <option value={otherEntity.id} key={otherEntity.id}>
-                {otherEntity.id}
-              </option>
-            ))
-            : null}
-        </AvInput>
-      </AvGroup>
-      {ortakFaturalar && ortakFaturalar.length > 0 ? (
-        <Table striped responsive>
-          <thead>
-          <tr>
-            <th>
-              Tarih
-            </th>
-            <th>
-              Tutar
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          {ortakFaturalar.map((ortakFatura, i) => (
-            <tr key={`ortakFatura-${i}`}>
-              <td>
-                {ortakFatura.tutar}
-              </td>
+      <h2 id="OrtakFaturalar-page-heading">OrtakFaturalar</h2>
+      <Dropdown
+        value={reportDate}
+        options={reportDateList}
+        optionLabel="reportDate"
+        onChange={onChangeReportDate}
+        className="col-12 col-md-4"
+        filterPlaceholder="Tarih"
+        placeholder="Tarih seçiniz"
+      />
+      <div className="table-responsive">
+        {ortakFaturaKisiList && ortakFaturaKisiList.length > 0 ? (
+          <Table responsive>
+            <thead>
+            <tr>
+              <th className="hand">
+                <Translate contentKey="global.field.id">ID</Translate>
+              </th>
+              <th className="hand">
+                <Translate contentKey="koopApp.kisiler.kisiAdi">Kisi Adi</Translate>
+              </th>
+              <th className="hand">
+                <Translate contentKey="koopApp.kisiler.notlar">Notlar</Translate>
+              </th>
+              <th className="hand">
+                <Translate contentKey="koopApp.kisiler.tarih">Tarih</Translate>
+              </th>
+              <th/>
             </tr>
-          ))}
-          </tbody>
-        </Table>
-      ) : (
-        <div className="alert alert-warning">
-        </div>
-      )}
+            </thead>
+            <tbody>
+            {ortakFaturaKisiList.map((kisiler, i) => (
+              <tr key={`entity-${i}`}>
+                <td>
+                  <Button tag={Link} to={`${match.url}/${kisiler.id}-${reportDate.reportDate}`} color="link" size="sm">
+                    {kisiler.id}
+                  </Button>
+                </td>
+                <td>{kisiler.kisiAdi}</td>
+                <td>{kisiler.notlar}</td>
+                <td>
+                  <TextFormat type="date" value={kisiler.tarih} format={APP_DATE_FORMAT}/>
+                </td>
+              </tr>
+            ))}
+            </tbody>
+          </Table>
+        ) : (
+          <div className="alert alert-warning">
+            <Translate contentKey="koopApp.kisiler.home.notFound">No Kisilers found</Translate>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  ortakFaturalar: storeState.ortakFaturalarState.ortakFaturas,
-  reportDateList: storeState.ortakFaturalarState.reportDateList,
-  totalItems: storeState.ciroState.totalItems
+  ortakFaturaKisiList: storeState.ortakFaturalarState.ortakFaturaKisiList,
+  reportDateList: storeState.ortakFaturalarState.reportDateList
 });
 
 const mapDispatchToProps = {getOrtakFaturas, getReportDateList};

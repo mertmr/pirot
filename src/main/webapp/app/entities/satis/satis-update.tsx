@@ -1,38 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, Table } from 'reactstrap';
-import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
-import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { createEntity, getEntity, reset, updateEntity } from './satis.reducer';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Col, Label, Row, Table} from 'reactstrap';
+import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
+import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
+import {createEntity, getEntity, reset, updateEntity} from './satis.reducer';
 import {
   createEntity as createStokHareketi,
   updateEntity as updateStokHareketi
 } from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/model/satis.model';
-import { defaultValueList as kdvDefaultList } from 'app/shared/model/kdv-kategorisi.model';
-import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
-import { DatePicker, InputNumber, Select } from 'antd';
+import {convertDateTimeFromServer, convertDateTimeToServer} from 'app/shared/util/date-utils';
+import {defaultValue as satisDefault, defaultValueWithNew} from 'app/shared/model/satis.model';
+import {defaultValueList as kdvDefaultList} from 'app/shared/model/kdv-kategorisi.model';
+import {ISatisStokHareketleri} from 'app/shared/model/satis-stok-hareketleri.model';
+import {DatePicker, InputNumber, Select} from 'antd';
 import 'antd/lib/input-number/style/index.css';
 import 'antd/lib/date-picker/style/index.css';
 import 'antd/lib/select/style/index.css';
 import 'antd/lib/input/style/index.css';
-import { getSatisUrunleri } from 'app/entities/urun/urun.reducer';
+import {getAllUrunForStokGirisi, getSatisUrunleri} from 'app/entities/urun/urun.reducer';
 import moment from 'moment';
 import 'moment/locale/tr';
-import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
-import { Dropdown } from 'primereact/dropdown';
+import {APP_LOCAL_DATETIME_FORMAT} from 'app/config/constants';
+import {Dropdown} from 'primereact/dropdown';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
+import {Birim} from "app/shared/model/enumerations/birim.model";
+import {toast} from 'react-toastify';
 // import 'primeflex/primeflex.css';
 // import './sass/App.scss';
 
-export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+}
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [paraUstu, setParaUstu] = useState(0);
@@ -51,7 +54,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [stokHareketleriListState, setStokHareketleriLists] = useState([yeniUrun] as ISatisStokHareketleri[]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { satisEntity, users, loading, updating } = props;
+  const {satisEntity, users, loading, updating} = props;
 
   const handleClose = () => {
     props.history.push('/satis' + props.location.search);
@@ -107,15 +110,21 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriListState];
+    if (value > yeniUrunler[i].urun.stok) {
+      toast.error("Stoktan daha fazla miktar girdiniz!");
+      value = yeniUrunler[i].urun.stok;
+    }
+
     yeniUrunler[i].miktar = value;
-    if (yeniUrunler[i].urun.birim.toString() === 'GRAM')
+    if (yeniUrunler[i].urun.birim === Birim.GRAM)
       yeniUrunler[i].tutar = Number((value * 0.001 * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
     else yeniUrunler[i].tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
+
   };
 
-  const { satisUrunleri } = props;
+  const {satisUrunleri} = props;
 
   const onChangeUrun = e => {
     const yeniUrunler = [...stokHareketleriListState];
@@ -136,7 +145,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     });
   };
 
-  const { Option } = Select;
+  const {Option} = Select;
 
   useEffect(() => {
     if (isNew) {
@@ -170,7 +179,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   }, [satisEntity.stokHareketleriLists]);
 
   useEffect(() => {
-    props.getSatisUrunleri();
+    if (isNew)
+      props.getSatisUrunleri();
+    else
+      props.getAllUrunForStokGirisi();
   }, []);
 
   useEffect(() => {
@@ -236,15 +248,15 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
           ) : (
             <AvForm model={isNew ? {} : satisEntity} onSubmit={saveEntity}>
               <Button tag={Link} onClick={addRow} color="primary" size="sm">
-                <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
+                <FontAwesomeIcon icon="pencil-alt"/> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
               </Button>
               {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
-                <div style={{ marginTop: '10px' }}>
+                <div style={{marginTop: '10px'}}>
                   {stokHareketleriListState.map((stokHareketi, i) => (
                     <div key={`entity-${i}`} className="urun-sinir">
                       <AvGroup>
                         <Col>
-                          <Row style={{ marginTop: '20px' }}>
+                          <Row style={{marginTop: '20px'}}>
                             <Dropdown
                               value={stokHareketi.urun}
                               options={satisUrunleri}
@@ -257,36 +269,35 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                               filterBy="urunAdi"
                               placeholder="Ürün seçiniz"
                             />
-                            <Col style={{ marginTop: '10px' }}>
+                            <Col style={{marginTop: '10px'}}>
                               <Col>Kalan Stok</Col>
                               <Col>{stokHareketi.urun.stok}</Col>
                             </Col>
-                            <Col style={{ marginTop: '10px' }}>
+                            <Col style={{marginTop: '10px'}}>
                               <Col>
                                 <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                               </Col>
                               <Col>
                                 <InputNumber type="number"
-                                  value={stokHareketi.miktar}
-                                  max={stokHareketi.urun.stok}
-                                  onChange={value => onChangeMiktar(value, i)}
+                                             value={stokHareketi.miktar}
+                                             onChange={value => onChangeMiktar(value, i)}
                                 />
                               </Col>
                             </Col>
-                            <Col style={{ marginTop: '10px' }}>
+                            <Col style={{marginTop: '10px'}}>
                               <Col>Birim Fiyat</Col>
                               <Col>{stokHareketi.urun.musteriFiyati} TL</Col>
                             </Col>
-                            <Col style={{ marginTop: '10px' }}>
+                            <Col style={{marginTop: '10px'}}>
                               <Col>
                                 <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
                               </Col>
                               <Col>{stokHareketi.tutar} TL</Col>
                             </Col>
-                            <Col style={{ marginTop: '10px' }}>
+                            <Col style={{marginTop: '10px'}}>
                               <div className="btn-group flex-btn-group-container">
                                 <Button tag={Link} color="danger" size="sm" onClick={() => deleteRow(i)}>
-                                  <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">SİL</span>
+                                  <FontAwesomeIcon icon="trash"/> <span className="d-none d-md-inline">SİL</span>
                                 </Button>
                               </div>
                             </Col>
@@ -297,7 +308,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   ))}
                   <AvGroup>
                     <Label for="satis-toplamTutar">
-                      <Translate contentKey="koopApp.satis.toplamTutar" />
+                      <Translate contentKey="koopApp.satis.toplamTutar"/>
                     </Label>
                     <AvInput
                       id="satis-toplamTutar"
@@ -313,13 +324,14 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     <Label for="satis-nakitTutar">
                       Nakit Verilen
                     </Label>
-                    <InputNumber type="number" style={{ marginLeft: '10px' }} onChange={(value) => onChangeParaUstu(value)}/>
+                    <InputNumber type="number" style={{marginLeft: '10px'}}
+                                 onChange={(value) => onChangeParaUstu(value)}/>
                   </AvGroup>
                   <AvGroup>
                     <Label for="satis-paraustu">
                       Para Üstü
                     </Label>
-                    <InputNumber type="number" style={{ marginLeft: '10px' }} value={paraUstu}/>
+                    <InputNumber type="number" style={{marginLeft: '10px'}} value={paraUstu}/>
                   </AvGroup>
                   <AvGroup>
                     <Label for="gider-user">Satış Tarihi</Label>
@@ -338,13 +350,13 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   </AvGroup>
                   <AvGroup check>
                     <Label id="kartliSatisLabel">
-                      <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input" name="kartliSatis" />
+                      <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input" name="kartliSatis"/>
                       <Translate contentKey="koopApp.satis.kartliSatis">Kartli Satis</Translate>
                     </Label>
                   </AvGroup>
                   <AvGroup check>
                     <Label id="ortagaSatisLabel">
-                      <AvInput id="satis-ortagaSatis" type="checkbox" className="form-check-input" name="ortagaSatis" />
+                      <AvInput id="satis-ortagaSatis" type="checkbox" className="form-check-input" name="ortagaSatis"/>
                       <Translate contentKey="koopApp.satis.ortagaSatis">Ortaga Satis</Translate>
                     </Label>
                   </AvGroup>
@@ -356,24 +368,24 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
                   <Table responsive>
                     <thead>
-                      <tr>
-                        <th className="hand">
-                          <Translate contentKey="koopApp.kdvKategorisi.kategoriAdi">Kategori Adi</Translate>
-                          <FontAwesomeIcon icon="sort" />
-                        </th>
-                        <th className="hand">
-                          <Translate contentKey="koopApp.kdvKategorisi.kdvOrani">Kdv Orani</Translate>
-                        </th>
-                        <th />
-                      </tr>
+                    <tr>
+                      <th className="hand">
+                        <Translate contentKey="koopApp.kdvKategorisi.kategoriAdi">Kategori Adi</Translate>
+                        <FontAwesomeIcon icon="sort"/>
+                      </th>
+                      <th className="hand">
+                        <Translate contentKey="koopApp.kdvKategorisi.kdvOrani">Kdv Orani</Translate>
+                      </th>
+                      <th/>
+                    </tr>
                     </thead>
                     <tbody>
-                      {kdvKategorisiList.map((kdvKategorisi, i) => (
-                        <tr key={`entity-${i}`}>
-                          <td>{kdvKategorisi.kategoriAdi}</td>
-                          <td>{kdvKategorisi.kdvOrani}</td>
-                        </tr>
-                      ))}
+                    {kdvKategorisiList.map((kdvKategorisi, i) => (
+                      <tr key={`entity-${i}`}>
+                        <td>{kdvKategorisi.kategoriAdi}</td>
+                        <td>{kdvKategorisi.kdvOrani}</td>
+                      </tr>
+                    ))}
                     </tbody>
                   </Table>
                 ) : (
@@ -385,11 +397,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   <Label for="satis-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly on />
+                  <AvInput id="satis-id" type="text" className="form-control" name="id" required readOnly on/>
                 </AvGroup>
               ) : null}
               <Button tag={Link} id="cancel-save" to="/satis" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -397,7 +409,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
@@ -426,7 +438,8 @@ const mapDispatchToProps = {
   reset,
   getSatisUrunleri,
   createStokHareketi,
-  updateStokHareketi
+  updateStokHareketi,
+  getAllUrunForStokGirisi
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

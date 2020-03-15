@@ -3,8 +3,11 @@ package com.koop.app.repository;
 import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.dto.AylikSatislar;
 import java.util.List;
+
+import com.koop.app.dto.fatura.OrtakFaturaDbReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -33,4 +36,18 @@ public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokH
         "join fetch satisStokHareketleri.satis " +
         "join fetch satisStokHareketleri.urun")
     List<SatisStokHareketleri> findAllWithSatis();
+
+    @Query(
+        "select new com.koop.app.dto.fatura.OrtakFaturaDbReport( " +
+            "concat(u.urunAdi, ' %', kk.kdvOrani), sum(satisStokHareketleri.miktar), u, kk, " +
+            "sum(satisStokHareketleri.tutar) " +
+            ") " +
+            "from SatisStokHareketleri satisStokHareketleri " +
+            "join Urun u on u.id = satisStokHareketleri.urun.id " +
+            "join KdvKategorisi kk on kk.id = satisStokHareketleri.urun.kdvKategorisi.id " +
+            "where month(satisStokHareketleri.satis.tarih) = :month and year(satisStokHareketleri.satis.tarih) = :year " +
+            "and satisStokHareketleri.satis.kisi.id = :kisiId " +
+            "GROUP BY u.id, u.urunAdi, kk.id, u.birim  "
+    )
+    List<OrtakFaturaDbReport> ortakFaturaKisiAy(@Param("year") int year, @Param("month") int month, @Param("kisiId") Long kisiId);
 }

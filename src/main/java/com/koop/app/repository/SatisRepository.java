@@ -1,22 +1,22 @@
 package com.koop.app.repository;
 
+import com.koop.app.domain.Kisiler;
 import com.koop.app.domain.Satis;
-import com.koop.app.domain.Urun;
 import com.koop.app.dto.Ciro;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.javers.spring.annotation.JaversSpringDataAuditable;
+import com.koop.app.dto.fatura.ReportDatesDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Spring Data  repository for the Satis entity.
@@ -56,10 +56,35 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
 
     @Query(
         "select new com.koop.app.dto.Ciro(sum(satis.toplamTutar), cast(satis.tarih as date)) " +
-        "from Satis satis " +
-        "where satis.tarih between :from and :to " +
-        "group by cast(satis.tarih as date) " +
-        "order by cast(satis.tarih as date) desc"
+            "from Satis satis " +
+            "where satis.tarih between :from and :to " +
+            "group by cast(satis.tarih as date) " +
+            "order by cast(satis.tarih as date) desc"
     )
     List<Ciro> getCiroReports(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
+
+    @Query(
+        "select new com.koop.app.dto.fatura.ReportDatesDto(" +
+            "concat(year(satis.tarih), '-', month(satis.tarih))" +
+            ") " +
+            "from Satis satis " +
+            "group by month(satis.tarih), year(satis.tarih) " +
+            "order by year(satis.tarih) desc, month(satis.tarih) desc"
+    )
+    List<ReportDatesDto> getOrtaklarFaturaDatesTop10(Pageable pageable);
+
+    @Query(
+        "select distinct satis.kisi " +
+            "from Satis satis " +
+            "where month(satis.tarih) = :month and year(satis.tarih) = :year "
+    )
+    List<Kisiler> ortakFaturaKisiList(@Param("year") int year, @Param("month") int month);
+
+//    @Query(
+//        "select satis.stokHareketleriLists. " +
+//            "from Satis satis " +
+//            "join fetch satis.stokHareketleriLists st" +
+//            "where month(satis.tarih) = :month and year(satis.tarih) = :year and satis.kisi.id = :kisiId"
+//    )
+//    List<Satis> ortakFaturaKisiAy(@Param("year") int year, @Param("month") int month,  @Param("kisiId") Long kisiId);
 }

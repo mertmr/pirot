@@ -57,7 +57,9 @@ public class SatisService {
         satis.setUser(currentUser);
         if (satis.getTarih() == null) satis.setTarih(ZonedDateTime.now());
 
-        satis.setKisi(kisilerService.getRandomKisi());
+        if (satis.isOrtagaSatis()) {
+            satis.setKisi(kisilerService.getRandomKisi());
+        }
         Satis result = satisRepository.save(satis);
 
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
@@ -82,6 +84,12 @@ public class SatisService {
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
         Satis satisOncekiHali = satisRepository.findById(satis.getId()).get();
+
+        if (!satisOncekiHali.isOrtagaSatis() && satis.isOrtagaSatis()) {
+            satis.setKisi(kisilerService.getRandomKisi());
+        } else if (satisOncekiHali.isOrtagaSatis() && !satis.isOrtagaSatis()) {
+            satis.setKisi(null);
+        }
 
         Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
