@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IOrtakFatura } from 'app/shared/model/ortakfatura/ortak-fatura.model';
+import { defaultValue, IOrtakFatura } from 'app/shared/model/ortakfatura/ortak-fatura.model';
 import { IOrtakFaturaDetay } from 'app/shared/model/ortakfatura/ortak-fatura-detay.model';
 import { IKisiler } from 'app/shared/model/kisiler.model';
 import { IReportDates } from 'app/shared/model/ortakfatura/report-dates.model';
@@ -9,7 +9,9 @@ import { IReportDates } from 'app/shared/model/ortakfatura/report-dates.model';
 export const ACTION_TYPES = {
   FETCH_ORTAK_FATURALAR: 'Report/FETCH_ORTAK_FATURALAR',
   FETCH_REPORT_DATES: 'Report/FETCH_REPORT_DATES',
-  FETCH_ORTAK_FATURALAR_DETAY: 'Report/FETCH_ORTAK_FATURALAR_DETAY'
+  FETCH_ORTAK_FATURALAR_DETAY: 'Report/FETCH_ORTAK_FATURALAR_DETAY',
+  REPORT_DATE: 'Report/REPORT_DATE',
+  RESET: 'urunFiyat/RESET'
 };
 
 const initialState = {
@@ -17,8 +19,9 @@ const initialState = {
   errorMessage: null,
   ortakFaturaKisiList: [] as ReadonlyArray<IKisiler>,
   reportDateList: [] as Array<IReportDates>,
-  ortakFaturaDetaylar: [] as ReadonlyArray<IOrtakFaturaDetay>,
-  totalItems: 0
+  ortakFaturaDetaylar: defaultValue,
+  totalItems: 0,
+  reportDate: ''
 };
 
 export type OrtakFaturaState = Readonly<typeof initialState>;
@@ -29,6 +32,7 @@ export default (state: OrtakFaturaState = initialState, action): OrtakFaturaStat
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_REPORT_DATES):
     case REQUEST(ACTION_TYPES.FETCH_ORTAK_FATURALAR_DETAY):
+    case REQUEST(ACTION_TYPES.REPORT_DATE):
     case REQUEST(ACTION_TYPES.FETCH_ORTAK_FATURALAR):
       return {
         ...state,
@@ -61,6 +65,16 @@ export default (state: OrtakFaturaState = initialState, action): OrtakFaturaStat
         loading: false,
         reportDateList: action.payload.data
       };
+    case ACTION_TYPES.REPORT_DATE:
+      return {
+        ...state,
+        loading: false,
+        reportDate: action.reportDate
+      };
+    case ACTION_TYPES.RESET:
+      return {
+        ...initialState
+      };
     default:
       return state;
   }
@@ -76,7 +90,9 @@ export const getOrtakFaturas = reportDate => {
   };
 };
 
-export const getOrtakFaturaDetaylar = (reportDate, kisiId) => {
+export const getOrtakFaturaDetaylar = reportDateKisiId => {
+  const kisiId = reportDateKisiId.split('_')[0];
+  const reportDate = reportDateKisiId.split('_')[1];
   const requestUrl = `api/reports/ortak-fatura-kisi-ay?&reportDate=${reportDate}&kisiId=${kisiId}`;
   return {
     type: ACTION_TYPES.FETCH_ORTAK_FATURALAR_DETAY,
@@ -91,3 +107,8 @@ export const getReportDateList = () => {
     payload: axios.get(requestUrl)
   };
 };
+
+export const setReportDate = reportDate => ({
+  type: ACTION_TYPES.REPORT_DATE,
+  reportDate
+});

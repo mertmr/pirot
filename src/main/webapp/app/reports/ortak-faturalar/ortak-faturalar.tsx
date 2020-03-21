@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {Button, Table} from 'reactstrap';
@@ -7,29 +7,35 @@ import {TextFormat, Translate} from 'react-jhipster';
 import {IRootState} from 'app/shared/reducers';
 import {APP_DATE_FORMAT} from 'app/config/constants';
 import {Dropdown} from 'primereact/dropdown';
-import {getOrtakFaturas, getReportDateList} from "app/reports/ortak-faturalar/ortak-faturalar.reducer";
+import {
+  getOrtakFaturas,
+  getReportDateList,
+  setReportDate
+} from "app/reports/ortak-faturalar/ortak-faturalar.reducer";
 
 export interface IOrtakFaturalarPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
 }
 
 export const OrtakFaturalarPage = (props: IOrtakFaturalarPageProps) => {
 
-  const [reportDate, setReportDate] = useState();
-
   useEffect(() => {
     props.getReportDateList();
   }, []);
 
+  useEffect(() => {
+    props.getReportDateList();
+  }, [props.reportDate]);
+
   const onChangeReportDate = evt => {
-    setReportDate(evt.value);
+    props.setReportDate(evt.value.reportDate);
     props.getOrtakFaturas(evt.value.reportDate)
   };
 
-  const {ortakFaturaKisiList, match, reportDateList} = props;
+  const {ortakFaturaKisiList, match, reportDateList, reportDate} = props;
 
   return (
     <div>
-      <h2 id="OrtakFaturalar-page-heading">OrtakFaturalar</h2>
+      <h2 id="OrtakFaturalar-page-heading">Ortak Faturalar</h2>
       <Dropdown
         value={reportDate}
         options={reportDateList}
@@ -63,7 +69,7 @@ export const OrtakFaturalarPage = (props: IOrtakFaturalarPageProps) => {
             {ortakFaturaKisiList.map((kisiler, i) => (
               <tr key={`entity-${i}`}>
                 <td>
-                  <Button tag={Link} to={`${match.url}/${kisiler.id}-${reportDate.reportDate}`} color="link" size="sm">
+                  <Button tag={Link} to={`${match.url}/${kisiler.id}_${reportDate}`} color="link" size="sm">
                     {kisiler.id}
                   </Button>
                 </td>
@@ -78,7 +84,6 @@ export const OrtakFaturalarPage = (props: IOrtakFaturalarPageProps) => {
           </Table>
         ) : (
           <div className="alert alert-warning">
-            <Translate contentKey="koopApp.kisiler.home.notFound">No Kisilers found</Translate>
           </div>
         )}
       </div>
@@ -88,10 +93,11 @@ export const OrtakFaturalarPage = (props: IOrtakFaturalarPageProps) => {
 
 const mapStateToProps = (storeState: IRootState) => ({
   ortakFaturaKisiList: storeState.ortakFaturalarState.ortakFaturaKisiList,
-  reportDateList: storeState.ortakFaturalarState.reportDateList
+  reportDateList: storeState.ortakFaturalarState.reportDateList,
+  reportDate: storeState.ortakFaturalarState.reportDate
 });
 
-const mapDispatchToProps = {getOrtakFaturas, getReportDateList};
+const mapDispatchToProps = {getOrtakFaturas, getReportDateList, setReportDate};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

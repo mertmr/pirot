@@ -2,6 +2,7 @@ package com.koop.app.service;
 
 import com.koop.app.domain.KdvKategorisi;
 import com.koop.app.domain.Kisiler;
+import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.dto.Ciro;
 import com.koop.app.dto.fatura.*;
 import com.koop.app.repository.KdvKategorisiRepository;
@@ -60,9 +61,16 @@ public class ReportService {
         for (OrtakFaturaDbReport ortakFaturaDbReport : ortakFaturaDbReports) {
             OrtakFaturasiDetayDto ortakFaturasi = new OrtakFaturasiDetayDto();
             ortakFaturasi.setUrunAdiKdv(ortakFaturaDbReport.getUrunIsmi());
-            ortakFaturasi.setMiktar(ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim());
+            if(ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM){
+                BigDecimal miktar = BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()).multiply(BigDecimal.valueOf(0.001)).setScale(3, RoundingMode.HALF_UP);
+                ortakFaturasi.setMiktar(miktar + " KG");
+            } else {
+                ortakFaturasi.setMiktar(ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim());
+            }
+
             ortakFaturasi.setBirimFiyat(ortakFaturaDbReport.getToplamTutar()
                 .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP));
+            ortakFaturasi.setToplamTutar(ortakFaturaDbReport.getToplamTutar());
             ortakFaturasiList.add(ortakFaturasi);
         }
 
@@ -80,7 +88,7 @@ public class ReportService {
                 .mapToDouble(ortakFaturaDbReport -> ortakFaturaDbReport.getToplamTutar().doubleValue() * kdvKategorisi.getKdvOrani() * 0.01D)
                 .sum();
             kdvToplam.setKdvKategorisi(kdvKategorisi.getKategoriAdi());
-            kdvToplam.setKdvTutari(BigDecimal.valueOf(kdvSum));
+            kdvToplam.setKdvTutari(BigDecimal.valueOf(kdvSum).setScale(2, RoundingMode.HALF_UP));
             kdvToplamList.add(kdvToplam);
         }
         ortakFaturasiDto.setKdvToplamList(kdvToplamList);

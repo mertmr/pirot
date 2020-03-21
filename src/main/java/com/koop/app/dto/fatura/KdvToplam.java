@@ -6,6 +6,8 @@ public class KdvToplam {
 
     private String kdvKategorisi;
 
+    private BigDecimal kdvTutari;
+
     public String getKdvKategorisi() {
         return kdvKategorisi;
     }
@@ -21,6 +23,4 @@ public class KdvToplam {
     public void setKdvTutari(BigDecimal kdvTutari) {
         this.kdvTutari = kdvTutari;
     }
-
-    private BigDecimal kdvTutari;
 }

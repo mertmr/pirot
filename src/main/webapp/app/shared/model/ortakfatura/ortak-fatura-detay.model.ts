@@ -1,8 +1,8 @@
-import { Moment } from 'moment';
-
 export interface IOrtakFaturaDetay {
-  tutar?: number;
-  tarih?: Moment;
+  urunAdiKdv?: string;
+  miktar?: string;
+  birimFiyat?: number;
+  toplamTutar?: number;
 }
 
 export const defaultValue: Readonly<IOrtakFaturaDetay> = {};
