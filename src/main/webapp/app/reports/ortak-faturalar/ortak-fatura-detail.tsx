@@ -18,7 +18,7 @@ export const OrtakFaturaDetail = (props: IOrtakFaturaDetailProps) => {
   const {ortakFaturaDetaylar} = props;
   return (
     <div>
-      <h2 id="OrtakFaturalar-page-heading">Ortak Fatura Detayıları</h2>
+      <h2 id="OrtakFaturalar-page-heading">Ortak Fatura Detayları</h2>
       <div className="table-responsive">
         {ortakFaturaDetaylar && ortakFaturaDetaylar.ortakFaturasiDetayDto && ortakFaturaDetaylar.ortakFaturasiDetayDto.length > 0 ? (
           <Table responsive>
