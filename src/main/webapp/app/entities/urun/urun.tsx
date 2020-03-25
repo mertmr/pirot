@@ -7,10 +7,11 @@ import {getSortState, JhiItemCount, JhiPagination, Translate} from 'react-jhipst
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import {IRootState} from 'app/shared/reducers';
-import {getEntities, getSearchEntities} from './urun.reducer';
+import {getAllUrunForStokGirisi, getEntities, getSearchEntities} from './urun.reducer';
 import {ITEMS_PER_PAGE} from 'app/shared/util/pagination.constants';
 import {hasAnyAuthority} from "app/shared/auth/private-route";
 import {AUTHORITIES} from "app/config/constants";
+import { CSVLink } from "react-csv";
 
 export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
 }
@@ -34,6 +35,7 @@ export const Urun = (props: IUrunProps) => {
 
   useEffect(() => {
     getAllEntities();
+    props.getAllUrunForStokGirisi();
   }, []);
 
   const startSearching = () => {
@@ -86,7 +88,13 @@ export const Urun = (props: IUrunProps) => {
       activePage: currentPage
     });
 
-  const {urunList, match, totalItems, isAdmin} = props;
+  const data = [
+    { firstname: "Ahmed", lastname: "Tomi", email: "ah@smthing.co.com" },
+    { firstname: "Raed", lastname: "Labes", email: "rl@smthing.co.com" },
+    { firstname: "Yezzi", lastname: "Min l3b", email: "ymin@cocococo.com" }
+  ];
+
+  const {urunList, match, totalItems, isAdmin, satisUrunleri} = props;
   return (
     <div>
       <h2 id="urun-heading">
@@ -96,6 +104,12 @@ export const Urun = (props: IUrunProps) => {
           &nbsp;
           <Translate contentKey="koopApp.urun.home.createLabel">Create new Urun</Translate>
         </Link>
+        <CSVLink className="btn btn-primary float-right jh-create-entity" style={{marginRight: '10px'}}
+          data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok }))}
+          filename={'stokDurumu.csv'}
+        >
+          Stok Raporu
+        </CSVLink>
       </h2>
       <Row>
         <Col sm="12">
@@ -248,12 +262,14 @@ export const Urun = (props: IUrunProps) => {
 const mapStateToProps = ({urun, authentication}: IRootState) => ({
   urunList: urun.entities,
   totalItems: urun.totalItems,
-  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN])
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  satisUrunleri: urun.satisUrunleri
 });
 
 const mapDispatchToProps = {
   getSearchEntities,
-  getEntities
+  getEntities,
+  getAllUrunForStokGirisi
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

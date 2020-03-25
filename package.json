@@ -23,6 +23,7 @@
     "primeicons": "^2.0.0",
     "primereact": "^3.3.3",
     "react": "16.12.0",
+    "react-csv": "^1.1.2",
     "react-dom": "16.12.0",
     "react-hot-loader": "4.12.18",
     "react-jhipster": "0.10.0",
