@@ -60,6 +60,13 @@
             "otherEntityRelationshipName": "urun",
             "relationshipName": "kdvKategorisi",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "urunFiyatHesap",
+            "otherEntityRelationshipName": "urun",
+            "relationshipName": "urunFiyatHesap",
+            "ownerSide": false
         }
     ],
     "changelogDate": "20200103090905",

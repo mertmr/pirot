@@ -1,0 +1,28 @@
+{
+  "koopApp": {
+    "urunFiyatHesap": {
+      "home": {
+        "title": "Urun Fiyat Hesaps",
+        "createLabel": "Create a new Urun Fiyat Hesap",
+        "createOrEditLabel": "Create or edit a Urun Fiyat Hesap",
+        "notFound": "No Urun Fiyat Hesaps found"
+      },
+      "created": "A new Urun Fiyat Hesap is created with identifier {{ param }}",
+      "updated": "A Urun Fiyat Hesap is updated with identifier {{ param }}",
+      "deleted": "A Urun Fiyat Hesap is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Urun Fiyat Hesap {{ id }}?"
+      },
+      "detail": {
+        "title": "Urun Fiyat Hesap"
+      },
+      "amortisman": "Amortisman",
+      "giderPusulaMustahsil": "Gider Pusula Mustahsil",
+      "dukkanGider": "Dukkan Gider",
+      "kooperatifCalisma": "Kooperatif Calisma",
+      "dayanisma": "Dayanisma",
+      "fire": "Fire",
+      "urun": "Urun"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { IUser } from 'app/shared/model/user.model';
 import { IKdvKategorisi } from 'app/shared/model/kdv-kategorisi.model';
+import { IUrunFiyatHesap } from 'app/shared/model/urun-fiyat-hesap.model';
 import { Birim } from 'app/shared/model/enumerations/birim.model';
 import { UrunKategorisi } from 'app/shared/model/enumerations/urun-kategorisi.model';
 
@@ -16,6 +17,7 @@ export interface IUrun {
   urunSorumlusu?: IUser;
   kdvKategorisi?: IKdvKategorisi;
   active?: boolean;
+  urunFiyatHesap?: IUrunFiyatHesap;
 }
 
 export const defaultValue: Readonly<IUrun> = {

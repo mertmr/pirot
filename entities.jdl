@@ -121,6 +121,15 @@ entity Kisiler {
     tarih ZonedDateTime
 }
 
+entity UrunFiyatHesap {
+    amortisman Integer
+    giderPusulaMustahsil Integer
+    dukkanGider Integer
+    kooperatifCalisma Integer
+    dayanisma Integer
+    fire Integer
+}
+
 relationship ManyToOne {
   Gider{user(login)} to User
   Satis{user(login)} to User
@@ -141,6 +150,10 @@ relationship ManyToOne {
 
 relationship OneToMany {
     Satis{stokHareketleriList(id)} to SatisStokHareketleri{satis}
+}
+
+relationship OneToOne {
+    UrunFiyatHesap{urun} to Urun{urunFiyatHesap(id)}
 }
 
 paginate * with pagination

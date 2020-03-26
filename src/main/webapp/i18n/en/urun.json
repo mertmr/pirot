@@ -24,8 +24,10 @@
       "dayanismaUrunu": "Dayanisma Urunu",
       "satista": "Satista",
       "urunKategorisi": "Urun Kategorisi",
+      "active": "Active",
       "urunSorumlusu": "Urun Sorumlusu",
-      "kdvKategorisi": "Kdv Kategorisi"
+      "kdvKategorisi": "Kdv Kategorisi",
+      "urunFiyatHesap": "Urun Fiyat Hesap"
     }
   }
 }
