@@ -101,6 +101,19 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
+                <Dropdown
+                  value={urunFiyatHesap.urun}
+                  options={satisUrunleri}
+                  optionLabel="urunAdi"
+                  name="urun"
+                  onChange={updateStokGirisi}
+                  filter={true}
+                  filterPlaceholder="Ürün seçiniz"
+                  filterBy="urunAdi"
+                  placeholder="Ürün seçiniz"
+                />
+              </AvGroup>
+              <AvGroup>
                 <Label id="amortismanLabel" for="urun-fiyat-hesap-amortisman">
                   <Translate contentKey="koopApp.urunFiyatHesap.amortisman">Amortisman</Translate>
                 </Label>
@@ -135,19 +148,6 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                   <Translate contentKey="koopApp.urunFiyatHesap.fire">Fire</Translate>
                 </Label>
                 <AvField id="urun-fiyat-hesap-fire" type="string" className="form-control" name="fire" />
-              </AvGroup>
-              <AvGroup>
-                <Dropdown
-                  value={urunFiyatHesap.urun}
-                  options={satisUrunleri}
-                  optionLabel="urunAdi"
-                  name="urun"
-                  onChange={updateStokGirisi}
-                  filter={true}
-                  filterPlaceholder="Ürün seçiniz"
-                  filterBy="urunAdi"
-                  placeholder="Ürün seçiniz"
-                />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/urun-fiyat-hesap" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />

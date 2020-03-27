@@ -71,7 +71,7 @@ public class Urun implements Serializable {
     private KdvKategorisi kdvKategorisi;
 
     @OneToOne(mappedBy = "urun")
-    @JsonIgnore
+    @JsonIgnoreProperties("urun")
     private UrunFiyatHesap urunFiyatHesap;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

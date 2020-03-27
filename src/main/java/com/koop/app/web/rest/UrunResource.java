@@ -71,6 +71,7 @@ public class UrunResource {
             throw new BadRequestAlertException("A new urun cannot already have an ID", ENTITY_NAME, "idexists");
         }
         urun.setActive(true);
+        urun.setUrunFiyatHesap(null);
         Urun result = urunRepository.save(urun);
         if (urun.getId() != null) {
             Optional<Urun> oncekiHaliUrunOptional = urunRepository.findById(urun.getId());
@@ -104,6 +105,7 @@ public class UrunResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         User currentUser = userService.getCurrentUser();
+        urun.setUrunFiyatHesap(null);
         Urun result = urunRepository.save(urun);
         Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
         if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0) createUrunFiyatEntry(urun, currentUser);
