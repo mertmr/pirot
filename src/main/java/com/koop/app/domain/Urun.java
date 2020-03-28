@@ -1,7 +1,9 @@
 package com.koop.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,6 +24,9 @@ import com.koop.app.domain.enumeration.UrunKategorisi;
 @Entity
 @Table(name = "urun")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id")
 public class Urun implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,7 +76,6 @@ public class Urun implements Serializable {
     private KdvKategorisi kdvKategorisi;
 
     @OneToOne(mappedBy = "urun")
-    @JsonIgnoreProperties("urun")
     private UrunFiyatHesap urunFiyatHesap;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

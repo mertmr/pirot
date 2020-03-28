@@ -1,9 +1,6 @@
 package com.koop.app.service;
 
-import com.koop.app.domain.Satis;
-import com.koop.app.domain.SatisStokHareketleri;
-import com.koop.app.domain.Urun;
-import com.koop.app.domain.User;
+import com.koop.app.domain.*;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
@@ -71,7 +68,8 @@ public class SatisService {
             }
         }
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
-        urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));
+        List<Urun> urunList = stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList());
+        urunRepository.saveAll(urunList);
 
         if (!satis.isKartliSatis()) {
             kasaHareketleriService.createKasaHareketi(satis.getToplamTutar(), "Satis Yapildi");

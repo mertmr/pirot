@@ -80,6 +80,9 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     )
     List<Kisiler> ortakFaturaKisiList(@Param("year") int year, @Param("month") int month);
 
+//    @Query("select satis from Satis satis left join fetch satis.user")
+//    Page<Satis> findAllSatis(Pageable pageable);
+
 //    @Query(
 //        "select satis.stokHareketleriLists. " +
 //            "from Satis satis " +

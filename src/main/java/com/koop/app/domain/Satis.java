@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.javers.core.metamodel.annotation.DiffIgnore;
 
 /**
@@ -43,11 +45,13 @@ public class Satis implements Serializable {
     @DiffIgnore
     private Set<SatisStokHareketleri> stokHareketleriLists = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JsonIgnoreProperties("satis")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JsonIgnoreProperties("satis")
     private Kisiler kisi;
 
