@@ -81,6 +81,15 @@ Navbar styles
   padding: 0 0 0 10px;
 }
 
+@media (max-width: 768px) {
+  .navbar {
+    overflow: auto;
+    max-height: 85vh;
+    align-items: flex-start;
+    -webkit-overflow-scrolling: touch; // mobile safari
+  }
+}
+
 .brand-logo {
   &:hover {
     text-decoration: none;

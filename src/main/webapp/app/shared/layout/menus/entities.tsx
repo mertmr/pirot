@@ -8,7 +8,7 @@ export const EntitiesMenu = ({ onClick }) => (
     icon="th-list"
     name={translate('global.menu.entities.main')}
     id="entity-menu"
-    style={{ maxHeight: '80vh', overflow: 'auto' }}
+    style={{ maxHeight: '90vh', overflow: 'auto' }}
   >
     <MenuItem icon="money-check" to="/satis" onClick={onClick}>
       <Translate contentKey="global.menu.entities.satis" />
