@@ -64,12 +64,14 @@ public class ReportService {
             if(ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM){
                 BigDecimal miktar = BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()).multiply(BigDecimal.valueOf(0.001)).setScale(3, RoundingMode.HALF_UP);
                 ortakFaturasi.setMiktar(miktar + " KG");
+                ortakFaturasi.setBirimFiyat(ortakFaturaDbReport.getToplamTutar()
+                    .divide(miktar, 2, RoundingMode.HALF_UP));
             } else {
                 ortakFaturasi.setMiktar(ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim());
+                ortakFaturasi.setBirimFiyat(ortakFaturaDbReport.getToplamTutar()
+                    .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP));
             }
 
-            ortakFaturasi.setBirimFiyat(ortakFaturaDbReport.getToplamTutar()
-                .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP));
             ortakFaturasi.setToplamTutar(ortakFaturaDbReport.getToplamTutar());
             ortakFaturasiList.add(ortakFaturasi);
         }
