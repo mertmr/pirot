@@ -1,24 +1,15 @@
 package com.koop.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.koop.app.config.DedupingObjectIdResolver;
-import com.voodoodyne.jackson.jsog.JSOGGenerator;
+import com.koop.app.domain.enumeration.Birim;
+import com.koop.app.domain.enumeration.UrunKategorisi;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 import java.math.BigDecimal;
-
-import com.koop.app.domain.enumeration.Birim;
-
-import com.koop.app.domain.enumeration.UrunKategorisi;
 
 /**
  * A Urun.
@@ -87,17 +78,21 @@ public class Urun implements Serializable {
         return urunAdi;
     }
 
+    public void setUrunAdi(String urunAdi) {
+        this.urunAdi = urunAdi;
+    }
+
     public Urun urunAdi(String urunAdi) {
         this.urunAdi = urunAdi;
         return this;
     }
 
-    public void setUrunAdi(String urunAdi) {
-        this.urunAdi = urunAdi;
-    }
-
     public BigDecimal getStok() {
         return stok;
+    }
+
+    public void setStok(BigDecimal stok) {
+        this.stok = stok;
     }
 
     public Urun stok(BigDecimal stok) {
@@ -105,12 +100,12 @@ public class Urun implements Serializable {
         return this;
     }
 
-    public void setStok(BigDecimal stok) {
-        this.stok = stok;
-    }
-
     public BigDecimal getStokSiniri() {
         return stokSiniri;
+    }
+
+    public void setStokSiniri(BigDecimal stokSiniri) {
+        this.stokSiniri = stokSiniri;
     }
 
     public Urun stokSiniri(BigDecimal stokSiniri) {
@@ -118,12 +113,12 @@ public class Urun implements Serializable {
         return this;
     }
 
-    public void setStokSiniri(BigDecimal stokSiniri) {
-        this.stokSiniri = stokSiniri;
-    }
-
     public BigDecimal getMusteriFiyati() {
         return musteriFiyati;
+    }
+
+    public void setMusteriFiyati(BigDecimal musteriFiyati) {
+        this.musteriFiyati = musteriFiyati;
     }
 
     public Urun musteriFiyati(BigDecimal musteriFiyati) {
@@ -131,21 +126,17 @@ public class Urun implements Serializable {
         return this;
     }
 
-    public void setMusteriFiyati(BigDecimal musteriFiyati) {
-        this.musteriFiyati = musteriFiyati;
-    }
-
     public Birim getBirim() {
         return birim;
+    }
+
+    public void setBirim(Birim birim) {
+        this.birim = birim;
     }
 
     public Urun birim(Birim birim) {
         this.birim = birim;
         return this;
-    }
-
-    public void setBirim(Birim birim) {
-        this.birim = birim;
     }
 
     public Boolean isDayanismaUrunu() {
@@ -178,13 +169,13 @@ public class Urun implements Serializable {
         return urunKategorisi;
     }
 
+    public void setUrunKategorisi(UrunKategorisi urunKategorisi) {
+        this.urunKategorisi = urunKategorisi;
+    }
+
     public Urun urunKategorisi(UrunKategorisi urunKategorisi) {
         this.urunKategorisi = urunKategorisi;
         return this;
-    }
-
-    public void setUrunKategorisi(UrunKategorisi urunKategorisi) {
-        this.urunKategorisi = urunKategorisi;
     }
 
     public Boolean isActive() {
@@ -204,26 +195,26 @@ public class Urun implements Serializable {
         return urunSorumlusu;
     }
 
+    public void setUrunSorumlusu(User user) {
+        this.urunSorumlusu = user;
+    }
+
     public Urun urunSorumlusu(User user) {
         this.urunSorumlusu = user;
         return this;
-    }
-
-    public void setUrunSorumlusu(User user) {
-        this.urunSorumlusu = user;
     }
 
     public KdvKategorisi getKdvKategorisi() {
         return kdvKategorisi;
     }
 
+    public void setKdvKategorisi(KdvKategorisi kdvKategorisi) {
+        this.kdvKategorisi = kdvKategorisi;
+    }
+
     public Urun kdvKategorisi(KdvKategorisi kdvKategorisi) {
         this.kdvKategorisi = kdvKategorisi;
         return this;
-    }
-
-    public void setKdvKategorisi(KdvKategorisi kdvKategorisi) {
-        this.kdvKategorisi = kdvKategorisi;
     }
 
     @Override
