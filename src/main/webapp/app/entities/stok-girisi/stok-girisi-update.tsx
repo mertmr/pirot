@@ -9,6 +9,7 @@ import {IRootState} from 'app/shared/reducers';
 import {getUsers} from 'app/modules/administration/user-management/user-management.reducer';
 import {getAllUrunForStokGirisi, updateEntity as updateUrun} from 'app/entities/urun/urun.reducer';
 import {createEntity, getEntity, reset, updateEntity} from './stok-girisi.reducer';
+import {getUrunFiyatHesapByUrunId} from 'app/entities/urun-fiyat-hesap/urun-fiyat-hesap.reducer.ts';
 import {defaultValue} from 'app/shared/model/stok-girisi.model';
 import {convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {Dropdown} from 'primereact/dropdown';
@@ -35,7 +36,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   const [yeniFiyat, setYeniFiyat] = useState(0);
   const [secilmisStokHareketi, setSecilmisStokHareketi] = useState('STOK_GIRISI');
 
-  const {stokGirisiEntity, users, loading, updating, satisUrunleri, isAdmin} = props;
+  const {stokGirisiEntity, users, loading, updating, satisUrunleri, isAdmin, urunFiyatHesapEntity} = props;
 
   const handleClose = () => {
     props.history.push('/stok-girisi' + props.location.search);
@@ -83,6 +84,15 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   };
 
   const updateStokGirisi = e => {
+    const urun = e.target.value;
+    props.getUrunFiyatHesapByUrunId(urun.id);
+    setStokGirisi({
+      ...stokGirisi,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const updateStokGirisiMiktar = e => {
     setStokGirisi({
       ...stokGirisi,
       [e.target.name]: e.target.value
@@ -102,7 +112,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
       kdvDahilBiriFiyat = birimFiyat + (birimFiyat * stokGirisi.urun.kdvKategorisi.kdvOrani * 0.01) +
         (kargo / stokGirisi.miktar);
     }
-    const urunFiyatHesap = stokGirisi.urun.urunFiyatHesap;
+    const urunFiyatHesap = urunFiyatHesapEntity;
     let koopFiyati = kdvDahilBiriFiyat + (0.01 * kdvDahilBiriFiyat * (urunFiyatHesap.amortisman + urunFiyatHesap.dayanisma +
       urunFiyatHesap.dukkanGider + urunFiyatHesap.fire + urunFiyatHesap.giderPusulaMustahsil + urunFiyatHesap.kooperatifCalisma));
     koopFiyati = Number((Math.round(koopFiyati * 4) / 4).toFixed(2));
@@ -166,7 +176,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   type="number"
                   className="form-control"
                   name="miktar"
-                  onChange={updateStokGirisi}
+                  onChange={updateStokGirisiMiktar}
                   validate={{
                     number: {value: true, errorMessage: translate('entity.validation.number')}
                   }}
@@ -276,7 +286,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.stokGirisi.loading,
   updating: storeState.stokGirisi.updating,
   updateSuccess: storeState.stokGirisi.updateSuccess,
-  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN])
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  urunFiyatHesapEntity: storeState.urunFiyatHesap.entity
 });
 
 const mapDispatchToProps = {
@@ -286,7 +297,8 @@ const mapDispatchToProps = {
   createEntity,
   reset,
   getAllUrunForStokGirisi,
-  updateUrun
+  updateUrun,
+  getUrunFiyatHesapByUrunId
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

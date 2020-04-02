@@ -17,9 +17,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 @JaversSpringDataAuditable
 public interface UrunRepository extends JpaRepository<Urun, Long> {
-    @Query("select urun from Urun urun " +
-        "left join fetch urun.urunFiyatHesap " +
-        "left join fetch urun.kdvKategorisi " +
+    @Query("select urun " +
+        " from Urun urun " +
+        "left join fetch urun.kdvKategorisi kdv" +
         " where urun.satista = true and urun.stok > 0 and urun.active=true")
     List<Urun> findSatistakiUrunler();
 
@@ -29,6 +29,6 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     @Query("select urun from Urun urun where urun.active=true")
     Page<Urun> findAll(@NonNull Pageable var1);
 
-    @Query("select urun from Urun urun left join fetch urun.urunFiyatHesap where urun.satista=true")
+    @Query("select urun from Urun urun where urun.satista=true")
     List<Urun> getAllUrunForStokGirisi();
 }

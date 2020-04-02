@@ -9,6 +9,7 @@ import { IUrunFiyatHesap, defaultValue } from 'app/shared/model/urun-fiyat-hesap
 export const ACTION_TYPES = {
   FETCH_URUNFIYATHESAP_LIST: 'urunFiyatHesap/FETCH_URUNFIYATHESAP_LIST',
   FETCH_URUNFIYATHESAP: 'urunFiyatHesap/FETCH_URUNFIYATHESAP',
+  FETCH_URUNFIYATHESAPBYURUN: 'urunFiyatHesap/FETCH_URUNFIYATHESAPBYURUN',
   CREATE_URUNFIYATHESAP: 'urunFiyatHesap/CREATE_URUNFIYATHESAP',
   UPDATE_URUNFIYATHESAP: 'urunFiyatHesap/UPDATE_URUNFIYATHESAP',
   DELETE_URUNFIYATHESAP: 'urunFiyatHesap/DELETE_URUNFIYATHESAP',
@@ -32,6 +33,7 @@ export type UrunFiyatHesapState = Readonly<typeof initialState>;
 export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHesapState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case REQUEST(ACTION_TYPES.FETCH_URUNFIYATHESAP):
       return {
         ...state,
@@ -49,6 +51,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
@@ -67,6 +70,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAP):
       return {
         ...state,
@@ -113,6 +117,14 @@ export const getEntity: ICrudGetAction<IUrunFiyatHesap> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_URUNFIYATHESAP,
+    payload: axios.get<IUrunFiyatHesap>(requestUrl)
+  };
+};
+
+export const getUrunFiyatHesapByUrunId: ICrudGetAction<IUrunFiyatHesap> = urunId => {
+  const requestUrl = `${apiUrl}/urun-fiyat-by-urun-id/${urunId}`;
+  return {
+    type: ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN,
     payload: axios.get<IUrunFiyatHesap>(requestUrl)
   };
 };

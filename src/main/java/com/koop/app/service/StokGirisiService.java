@@ -53,7 +53,6 @@ public class StokGirisiService {
             );
         }
 
-        urun.setUrunFiyatHesap(null);
         urunRepository.save(urun);
         return stokGirisiRepository.save(stokGirisi);
     }

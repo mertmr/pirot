@@ -39,7 +39,7 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     @Query("select satis.id from Satis satis")
     List<Long> findAllIds();
 
-    @Query("select satis from Satis satis join fetch satis.stokHareketleriLists where satis.id in :ids")
+    @Query("select satis from Satis satis join fetch satis.stokHareketleriLists sth where satis.id in :ids")
     List<Satis> findAllByIds(@Param("ids") List<Long> ids, Sort sort);
 
     @Query("select satis from Satis satis join fetch satis.stokHareketleriLists where satis.id in :ids")

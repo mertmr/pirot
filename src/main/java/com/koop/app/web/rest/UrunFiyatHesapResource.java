@@ -113,6 +113,19 @@ public class UrunFiyatHesapResource {
     }
 
     /**
+     * {@code GET  /urun-fiyat-hesaps/:urunId} : get the "urunId" urunFiyatHesap.
+     *
+     * @param urunId the urunId of the urunFiyatHesap to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the urunFiyatHesap, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/urun-fiyat-hesaps/urun-fiyat-by-urun-id/{urunId}")
+    public ResponseEntity<UrunFiyatHesap> getUrunFiyatHesapByUrunId(@PathVariable Long urunId) {
+        log.debug("REST request to get UrunFiyatHesap : {}", urunId);
+        Optional<UrunFiyatHesap> urunFiyatHesap = urunFiyatHesapRepository.findByUrunId(urunId);
+        return ResponseUtil.wrapOrNotFound(urunFiyatHesap);
+    }
+
+    /**
      * {@code DELETE  /urun-fiyat-hesaps/:id} : delete the "id" urunFiyatHesap.
      *
      * @param id the id of the urunFiyatHesap to delete.

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.koop.app.config.DedupingObjectIdResolver;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -24,9 +26,6 @@ import com.koop.app.domain.enumeration.UrunKategorisi;
 @Entity
 @Table(name = "urun")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = "id")
 public class Urun implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,9 +73,6 @@ public class Urun implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("uruns")
     private KdvKategorisi kdvKategorisi;
-
-    @OneToOne(mappedBy = "urun")
-    private UrunFiyatHesap urunFiyatHesap;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -229,20 +225,6 @@ public class Urun implements Serializable {
     public void setKdvKategorisi(KdvKategorisi kdvKategorisi) {
         this.kdvKategorisi = kdvKategorisi;
     }
-
-    public UrunFiyatHesap getUrunFiyatHesap() {
-        return urunFiyatHesap;
-    }
-
-    public Urun urunFiyatHesap(UrunFiyatHesap urunFiyatHesap) {
-        this.urunFiyatHesap = urunFiyatHesap;
-        return this;
-    }
-
-    public void setUrunFiyatHesap(UrunFiyatHesap urunFiyatHesap) {
-        this.urunFiyatHesap = urunFiyatHesap;
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {

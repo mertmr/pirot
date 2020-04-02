@@ -17,7 +17,6 @@ export interface IUrun {
   urunSorumlusu?: IUser;
   kdvKategorisi?: IKdvKategorisi;
   active?: boolean;
-  urunFiyatHesap?: IUrunFiyatHesap;
 }
 
 export const defaultValue: Readonly<IUrun> = {
