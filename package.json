@@ -40,6 +40,7 @@
     "redux-devtools-log-monitor": "1.4.0",
     "redux-promise-middleware": "6.1.2",
     "redux-thunk": "2.3.0",
+    "rfs": "^9.0.2",
     "tslib": "1.10.0",
     "uuid": "3.3.3"
   },

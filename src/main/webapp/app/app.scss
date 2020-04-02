@@ -1,14 +1,26 @@
 // Override Boostrap variables
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/rfs/scss';
+
 body {
   background: #fafafa;
   margin: 0;
 }
 
+@media (max-width: 400px) {
+  body {
+    font-size: 0.9rem;
+  }
+}
+
 a {
   color: #533f03;
   font-weight: bold;
+}
+
+h2 {
+  @include font-size(2rem);
 }
 
 * {

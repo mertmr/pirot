@@ -242,7 +242,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
         </Col>
       </Row>
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="10" className="satis-font">
           {loading ? (
             <p>Loading...</p>
           ) : (
@@ -255,20 +255,21 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   {stokHareketleriListState.map((stokHareketi, i) => (
                     <div key={`entity-${i}`} className="urun-sinir">
                       <AvGroup>
-                        <Col>
-                          <Row style={{marginTop: '20px'}}>
-                            <Dropdown
-                              value={stokHareketi.urun}
-                              options={satisUrunleri}
-                              optionLabel="urunAdi"
-                              onChange={onChangeUrun}
-                              filter={true}
-                              name={`${i}`}
-                              className="col-12 col-md-4"
-                              filterPlaceholder="Ürün seçiniz"
-                              filterBy="urunAdi"
-                              placeholder="Ürün seçiniz"
+                        <Col style={{padding: '0'}}>
+                          <Col style={{padding: '0'}}>
+                            <Dropdown style={{width: '100%'}}
+                                      value={stokHareketi.urun}
+                                      options={satisUrunleri}
+                                      optionLabel="urunAdi"
+                                      onChange={onChangeUrun}
+                                      filter={true}
+                                      name={`${i}`}
+                                      filterPlaceholder="Ürün seçiniz"
+                                      filterBy="urunAdi"
+                                      placeholder="Ürün seçiniz"
                             />
+                          </Col>
+                          <Row style={{marginTop: '20px'}}>
                             <Col style={{marginTop: '10px'}}>
                               <Col>Kalan Stok</Col>
                               <Col>{stokHareketi.urun.stok}</Col>
@@ -306,7 +307,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       </AvGroup>
                     </div>
                   ))}
-                  <AvGroup>
+                  <AvGroup style={{marginTop: '20px'}}>
                     <Label for="satis-toplamTutar">
                       <Translate contentKey="koopApp.satis.toplamTutar"/>
                     </Label>
