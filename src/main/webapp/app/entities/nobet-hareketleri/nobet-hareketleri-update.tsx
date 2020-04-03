@@ -173,7 +173,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 <Label id="kasaLabel" for="nobet-hareketleri-kasa">
                   <Translate contentKey="koopApp.nobetHareketleri.kasa">Kasa</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-kasa" type="text" name="kasa" value={kasa}/>
+                <AvField id="nobet-hareketleri-kasa" type="text" name="kasa" on value={kasa} onChange={(e) => setKasa(e.target.value)}/>
               </AvGroup>
               <AvGroup>
                 <Label id="pirotLabel" for="nobet-hareketleri-pirot">
