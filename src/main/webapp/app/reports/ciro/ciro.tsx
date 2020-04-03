@@ -91,7 +91,13 @@ export const CirosPage = (props: ICirosPageProps) => {
               Tarih
             </th>
             <th>
-              Tutar
+              Toplam Tutar
+            </th>
+            <th>
+              Kartlı Satış
+            </th>
+            <th>
+              Nakit Satış
             </th>
           </tr>
           </thead>
@@ -101,6 +107,12 @@ export const CirosPage = (props: ICirosPageProps) => {
               <td>{<TextFormat value={ciro.tarih} type="date" format={APP_LOCAL_DATE_FORMAT}/>}</td>
               <td>
                 {ciro.tutar}
+              </td>
+              <td>
+                {ciro.kartli}
+              </td>
+              <td>
+                {ciro.nakit}
               </td>
             </tr>
           ))}

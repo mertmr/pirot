@@ -55,7 +55,12 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     Double findCiroKartli(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 
     @Query(
-        "select new com.koop.app.dto.Ciro(sum(satis.toplamTutar), cast(satis.tarih as date)) " +
+        "select new com.koop.app.dto.Ciro(" +
+            "sum(satis.toplamTutar) as toplam," +
+            "sum(case when satis.kartliSatis = true then satis.toplamTutar else 0 end) as kartli," +
+            "sum(case when satis.kartliSatis = false then satis.toplamTutar when satis.kartliSatis is null then satis.toplamTutar else 0 end)," +
+            " cast(satis.tarih as date)" +
+            ") " +
             "from Satis satis " +
             "where satis.tarih between :from and :to " +
             "group by cast(satis.tarih as date) " +
