@@ -251,14 +251,15 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 <FontAwesomeIcon icon="pencil-alt"/> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
               </Button>
               {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
-                <div style={{marginTop: '10px'}}>
+                <div>
                   {stokHareketleriListState.map((stokHareketi, i) => (
                     <div key={`entity-${i}`} className="urun-sinir">
                       <AvGroup>
                         <Col style={{padding: '0'}}>
-                          <Col style={{padding: '0'}}>
-                            <Dropdown style={{width: '100%'}}
-                                      value={stokHareketi.urun}
+                          <Row>
+                            <Col className="col-sm-5 col-12"  style={{marginTop: '10px'}}>
+                            <Dropdown value={stokHareketi.urun}
+                                      style={{width: '100%'}}
                                       options={satisUrunleri}
                                       optionLabel="urunAdi"
                                       onChange={onChangeUrun}
@@ -268,8 +269,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                       filterBy="urunAdi"
                                       placeholder="Ürün seçiniz"
                             />
-                          </Col>
-                          <Row style={{marginTop: '20px'}}>
+                            </Col>
                             <Col style={{marginTop: '10px'}}>
                               <Col>Kalan Stok</Col>
                               <Col>{stokHareketi.urun.stok}</Col>
