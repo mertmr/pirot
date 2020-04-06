@@ -84,8 +84,8 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
   };
 
   const updateStokGirisi = e => {
-    const urun = e.target.value;
-    props.getUrunFiyatHesapByUrunId(urun.id);
+    // const urun = e.target.value;
+    // props.getUrunFiyatHesapByUrunId(urun.id);
     setStokGirisi({
       ...stokGirisi,
       [e.target.name]: e.target.value
@@ -209,7 +209,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                 </AvInput>
               </AvGroup>
               {/* fiyat hesaplama */}
-              <div className="urun-sinir" style={secilmisStokHareketi === StokHareketiTipi.STOK_GIRISI ? {} : {display: 'none'}}>
+              {/* <div className="urun-sinir" style={secilmisStokHareketi === StokHareketiTipi.STOK_GIRISI ? {} : {display: 'none'}}>
                 <Label>
                   Ürün Fiyat Hesaplaması
                 </Label>
@@ -244,6 +244,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   </Col>
                 </Col>
               </div>
+              */}
               {/* fiyat hesaplama bitis */}
               <AvGroup>
                 <Label id="notlarLabel" for="stok-girisi-notlar">
