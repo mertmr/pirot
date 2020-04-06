@@ -63,16 +63,22 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
     values.tarih = convertDateTimeToServer(values.tarih);
 
     if (errors.length === 0) {
-      const urun = {
-        ...stokGirisi.urun,
-        musteriFiyati: yeniFiyat
-      };
+      // const urun = {
+      //   ...stokGirisi.urun,
+      //   musteriFiyati: yeniFiyat
+      // };
+
+      // const entity = {
+      //   ...stokGirisiEntity,
+      //   ...stokGirisi,
+      //   ...values,
+      //   urun
+      // };
 
       const entity = {
         ...stokGirisiEntity,
         ...stokGirisi,
-        ...values,
-        urun
+        ...values
       };
 
       if (isNew) {
