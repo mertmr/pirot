@@ -75,7 +75,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     for (const stokHareketi of stokHareketleriListesi) {
       if (stokHareketi.tutar != null) toplamTutar += stokHareketi.tutar;
     }
-    toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
     setSatis({
       ...satis,
       toplamTutar
@@ -85,27 +84,33 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
   };
 
-  const kdvListesiCikar = secilenUrun => {
-    const indexOfKdv = kdvKategorisiList.map(a => a.id).indexOf(secilenUrun.urun.kdvKategorisi.id);
-    const yeniKdvList = [...kdvKategorisiList];
-    yeniKdvList.splice(indexOfKdv, 1);
-    setKdvKategorisiList([...yeniKdvList]);
-  };
-
-  const kdvListesiEkle = secilenUrun => {
-    const exist = kdvKategorisiList.map(a => a.id).includes(secilenUrun.kdvKategorisi.id);
-    if (!exist) {
-      const yeniKdvList = [...kdvKategorisiList];
-      setKdvKategorisiList([...yeniKdvList, secilenUrun.kdvKategorisi]);
-    }
-  };
+  useEffect(() => {
+    const yeniKdvList = [];
+    stokHareketleriListState.forEach(satisStokHareketi => {
+      const urun = satisStokHareketi.urun;
+      if (urun.id !== 0) {
+        const exist = yeniKdvList.map(a => a.id).includes(urun.kdvKategorisi.id);
+        if (!exist) {
+          urun.kdvKategorisi.kdvOrani = Number((Math.round(satisStokHareketi.tutar * 4) / 4).toFixed(2));
+          yeniKdvList.push(urun.kdvKategorisi);
+        } else {
+          urun.kdvKategorisi.kdvOrani = Number((Math.round(satisStokHareketi.tutar * 4) / 4).toFixed(2));
+          yeniKdvList.filter(kdvKategori => {
+            if (kdvKategori.id === urun.kdvKategorisi.id)
+              kdvKategori.kdvOrani = urun.kdvKategorisi.kdvOrani + kdvKategori.kdvOrani;
+          });
+        }
+      }
+    });
+    setKdvKategorisiList(yeniKdvList);
+  }, [stokHareketleriListState]);
 
   const deleteRow = i => {
     const yeniUrunler = [...stokHareketleriListState];
     yeniUrunler.splice(i, 1);
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
-    kdvListesiCikar(stokHareketleriListState[i]);
+    // kdvListesiCikar(stokHareketleriListState[i]);
   };
 
   const onChangeMiktar = (value, i) => {
@@ -116,12 +121,15 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
 
     yeniUrunler[i].miktar = value;
-    if (yeniUrunler[i].urun.birim === Birim.GRAM)
-      yeniUrunler[i].tutar = Number((value * 0.001 * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
-    else yeniUrunler[i].tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
+    if (yeniUrunler[i].urun.birim === Birim.GRAM) {
+      const tutar = value * 0.001 * yeniUrunler[i].urun.musteriFiyati;
+      yeniUrunler[i].tutar = Number((Math.round(tutar * 4) / 4).toFixed(2));
+    } else {
+      const tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
+      yeniUrunler[i].tutar = Number((Math.round(tutar * 4) / 4).toFixed(2));
+    }
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
-
   };
 
   const {satisUrunleri} = props;
@@ -134,7 +142,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
-    kdvListesiEkle(secilenUrun);
     addRow();
   };
 
@@ -257,18 +264,18 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       <AvGroup>
                         <Col style={{padding: '0'}}>
                           <Row>
-                            <Col className="col-sm-5 col-12"  style={{marginTop: '10px'}}>
-                            <Dropdown value={stokHareketi.urun}
-                                      style={{width: '100%'}}
-                                      options={satisUrunleri}
-                                      optionLabel="urunAdi"
-                                      onChange={onChangeUrun}
-                                      filter={true}
-                                      name={`${i}`}
-                                      filterPlaceholder="Ürün seçiniz"
-                                      filterBy="urunAdi"
-                                      placeholder="Ürün seçiniz"
-                            />
+                            <Col className="col-sm-5 col-12" style={{marginTop: '10px'}}>
+                              <Dropdown value={stokHareketi.urun}
+                                        style={{width: '100%'}}
+                                        options={satisUrunleri}
+                                        optionLabel="urunAdi"
+                                        onChange={onChangeUrun}
+                                        filter={true}
+                                        name={`${i}`}
+                                        filterPlaceholder="Ürün seçiniz"
+                                        filterBy="urunAdi"
+                                        placeholder="Ürün seçiniz"
+                              />
                             </Col>
                             <Col style={{marginTop: '10px'}}>
                               <Col>Kalan Stok</Col>
