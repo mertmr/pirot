@@ -110,7 +110,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     yeniUrunler.splice(i, 1);
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
-    // kdvListesiCikar(stokHareketleriListState[i]);
   };
 
   const onChangeMiktar = (value, i) => {

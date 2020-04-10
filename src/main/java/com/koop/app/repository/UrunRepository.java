@@ -20,15 +20,16 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     @Query("select urun " +
         " from Urun urun " +
         "left join fetch urun.kdvKategorisi kdv" +
-        " where urun.satista = true and urun.stok > 0 and urun.active=true")
+        " where urun.satista = true and urun.stok > 0 and urun.active=true " +
+        "order by urun.urunAdi")
     List<Urun> findSatistakiUrunler();
 
     Page<Urun> findByUrunAdiContainingIgnoreCaseAndActive(String urunAdi, Boolean active, Pageable pageable);
 
     @Override
-    @Query("select urun from Urun urun where urun.active=true")
+    @Query("select urun from Urun urun where urun.active=true order by urun.urunAdi")
     Page<Urun> findAll(@NonNull Pageable var1);
 
-    @Query("select urun from Urun urun where urun.satista=true")
+    @Query("select urun from Urun urun where urun.satista=true order by urun.urunAdi")
     List<Urun> getAllUrunForStokGirisi();
 }
