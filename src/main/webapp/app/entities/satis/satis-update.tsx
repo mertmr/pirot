@@ -31,6 +31,7 @@ import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import {Birim} from "app/shared/model/enumerations/birim.model";
 import {toast} from 'react-toastify';
+import cloneDeep from 'lodash/cloneDeep'
 // import 'primeflex/primeflex.css';
 // import './sass/App.scss';
 
@@ -86,7 +87,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   useEffect(() => {
     const yeniKdvList = [];
-    stokHareketleriListState.forEach(satisStokHareketi => {
+    const copyStokHareketleriListState = cloneDeep(stokHareketleriListState);
+    copyStokHareketleriListState.forEach(satisStokHareketi => {
       const urun = satisStokHareketi.urun;
       if (urun.id !== 0) {
         const exist = yeniKdvList.map(a => a.id).includes(urun.kdvKategorisi.id);
@@ -177,12 +179,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
       ]);
       setSatis(defaultValueWithNew);
     } else {
-      setStokHareketleriLists([]);
-      setStokHareketleriLists([...satisEntity.stokHareketleriLists]);
+      setStokHareketleriLists(cloneDeep(satisEntity.stokHareketleriLists));
       const kdvKategorisis = satisEntity.stokHareketleriLists.map(value => value.urun.kdvKategorisi);
       setKdvKategorisiList([...kdvKategorisis]);
     }
-  }, [satisEntity.stokHareketleriLists]);
+  }, [satisEntity.stokHareketleriLists, satisUrunleri]);
 
   useEffect(() => {
     if (isNew)
@@ -271,6 +272,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                         onChange={onChangeUrun}
                                         filter={true}
                                         name={`${i}`}
+                                        key={stokHareketi.urun.id}
                                         filterPlaceholder="Ürün seçiniz"
                                         filterBy="urunAdi"
                                         placeholder="Ürün seçiniz"

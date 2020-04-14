@@ -45,6 +45,12 @@ public class ReportsResource {
         return ResponseEntity.ok().body(reportService.getCiroReport(fromDate, toDate));
     }
 
+    @GetMapping(params = {"fromDate"}, path = "/reports/ciro/by-nobetci")
+    public ResponseEntity<List<Ciro>> getCiroReportGroupByNobetci(@RequestParam(value = "fromDate") LocalDate fromDate) {
+        log.debug("REST request to get ciro report by nobetci");
+        return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetci(fromDate));
+    }
+
     @GetMapping("/reports/report-date-list")
     public ResponseEntity<List<ReportDatesDto>> getOrtaklarFaturaDates() {
         log.debug("REST request to get report date list");

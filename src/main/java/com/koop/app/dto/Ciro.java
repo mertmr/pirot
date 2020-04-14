@@ -14,11 +14,21 @@ public class Ciro {
 
     private Date tarih;
 
+    private String nobetci;
+
     public Ciro(BigDecimal tutar, BigDecimal kartli, BigDecimal nakit, Date tarih) {
         this.tutar = tutar;
         this.kartli = kartli;
         this.nakit = nakit;
         this.tarih = tarih;
+    }
+
+    public Ciro(BigDecimal tutar, BigDecimal kartli, BigDecimal nakit, Date tarih, String nobetci) {
+        this.tutar = tutar;
+        this.kartli = kartli;
+        this.nakit = nakit;
+        this.tarih = tarih;
+        this.nobetci = nobetci;
     }
 
     public Ciro(BigDecimal tutar, int tarih) {
@@ -57,5 +67,13 @@ public class Ciro {
 
     public void setNakit(BigDecimal nakit) {
         this.nakit = nakit;
+    }
+
+    public String getNobetci() {
+        return nobetci;
+    }
+
+    public void setNobetci(String nobetci) {
+        this.nobetci = nobetci;
     }
 }

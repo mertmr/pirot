@@ -105,6 +105,15 @@ public class SatisService {
             }
         }
 
+        List<SatisStokHareketleri> cikarilanUrunler = satisOncekiHali.getStokHareketleriLists().stream().
+            filter(satisStokHareketleri -> !stokHareketleriLists.contains(satisStokHareketleri)).collect(Collectors.toList());
+
+        for (SatisStokHareketleri cikarilanUrunHareketi : cikarilanUrunler) {
+            Urun urun = cikarilanUrunHareketi.getUrun();
+            urun.setStok(urun.getStok().add(BigDecimal.valueOf(cikarilanUrunHareketi.getMiktar())));
+        }
+
+
         Map<Long, SatisStokHareketleri> stokHareketMap = stokHareketleriLists
             .stream()
             .collect(Collectors.toMap(SatisStokHareketleri::getId, satisStokHareketleri -> satisStokHareketleri));

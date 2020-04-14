@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
-import {Input, Row, Table} from 'reactstrap';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Button, Input, Row, Table} from 'reactstrap';
 import {getSortState, JhiItemCount, JhiPagination, TextFormat, Translate} from 'react-jhipster';
 
 import {APP_LOCAL_DATE_FORMAT} from 'app/config/constants';
@@ -9,6 +9,7 @@ import {ITEMS_PER_PAGE} from 'app/shared/util/pagination.constants';
 
 import {IRootState} from 'app/shared/reducers';
 import {getCiros} from './ciro.reducer';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export interface ICirosPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
 }
@@ -35,6 +36,8 @@ export const CirosPage = (props: ICirosPageProps) => {
   const [fromDate, setFromDate] = useState(previousMonth());
   const [toDate, setToDate] = useState(today());
 
+  const {ciros, totalItems, match} = props;
+
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     getAllCiros();
@@ -45,9 +48,13 @@ export const CirosPage = (props: ICirosPageProps) => {
     transition();
   }, [pagination.activePage, pagination.order, pagination.sort]);
 
-  const onChangeFromDate = evt => setFromDate(evt.target.value);
+  const onChangeFromDate = evt => {
+    setFromDate(evt.target.value)
+  };
 
-  const onChangeToDate = evt => setToDate(evt.target.value);
+  const onChangeToDate = evt => {
+    setToDate(evt.target.value)
+  };
 
   const sort = p => () =>
     setPagination({
@@ -69,8 +76,6 @@ export const CirosPage = (props: ICirosPageProps) => {
   const getAllCiros = () => {
     props.getCiros(pagination.activePage - 1, pagination.itemsPerPage, `${pagination.sort},${pagination.order}`, fromDate, toDate);
   };
-
-  const {ciros, totalItems} = props;
 
   return (
     <div>
@@ -113,6 +118,16 @@ export const CirosPage = (props: ICirosPageProps) => {
               </td>
               <td>
                 {ciro.nakit}
+              </td>
+              <td className="text-right">
+                <div className="btn-group flex-btn-group-container">
+                  <Button tag={Link} to={`${match.url}/${ciro.tarih}`} color="info" size="sm">
+                    <FontAwesomeIcon icon="eye"/>{' '}
+                    <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.view">View</Translate>
+                        </span>
+                  </Button>
+                </div>
               </td>
             </tr>
           ))}

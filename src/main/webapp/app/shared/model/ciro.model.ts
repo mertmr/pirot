@@ -5,6 +5,7 @@ export interface ICiro {
   kartli?: number;
   nakit?: number;
   tarih?: Moment;
+  nobetci?: string;
 }
 
 export const defaultValue: Readonly<ICiro> = {};

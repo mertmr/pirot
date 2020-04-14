@@ -158,7 +158,7 @@ export const getUrunUsers: ICrudGetAllAction<IUrun> = () => {
 export const getAllUrunForStokGirisi: ICrudGetAllAction<IUrun> = () => {
   const requestUrl = `${apiUrl}/stok-girisi`;
   return {
-    type: ACTION_TYPES.FETCH_URUN_SATIS_LIST,
+    type: ACTION_TYPES.FETCH_URUN_STOK_GIRISI,
     payload: axios.get<IUrun>(`${requestUrl}`)
   };
 };

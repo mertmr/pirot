@@ -41,6 +41,13 @@ public class ReportService {
         );
     }
 
+    public List<Ciro> getCiroReportGroupByNobetci(LocalDate localDate) {
+        return satisRepository.getCiroReportGroupByNobetci(
+            localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault())
+        );
+    }
+
     public List<ReportDatesDto> getOrtaklarFaturaDates() {
         return satisRepository.getOrtaklarFaturaDatesTop10(PageRequest.of(0, 10));
     }
@@ -61,7 +68,7 @@ public class ReportService {
         for (OrtakFaturaDbReport ortakFaturaDbReport : ortakFaturaDbReports) {
             OrtakFaturasiDetayDto ortakFaturasi = new OrtakFaturasiDetayDto();
             ortakFaturasi.setUrunAdiKdv(ortakFaturaDbReport.getUrunIsmi());
-            if(ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM){
+            if (ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM) {
                 BigDecimal miktar = BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()).multiply(BigDecimal.valueOf(0.001)).setScale(3, RoundingMode.HALF_UP);
                 ortakFaturasi.setMiktar(miktar + " KG");
                 ortakFaturasi.setBirimFiyat(ortakFaturaDbReport.getToplamTutar()

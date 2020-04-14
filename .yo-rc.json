@@ -45,7 +45,18 @@
     "gaeScalingType": "automatic",
     "gaeMinInstances": "0",
     "gaeMaxInstances": "1",
-    "gaeCloudSQLInstanceNeeded": "N"
+    "gaeCloudSQLInstanceNeeded": "N",
+    "appsFolders": ["koop-muhasebe"],
+    "directoryPath": "../",
+    "dockerRepositoryName": "mertmr/koop",
+    "dockerPushCommand": "docker push",
+    "kubernetesNamespace": "default",
+    "kubernetesServiceType": "Ingress",
+    "kubernetesUseDynamicStorage": false,
+    "ingressDomain": "192.168.99.100.nip.io",
+    "monitoring": "no",
+    "istio": false,
+    "ingressType": "nginx"
   },
   "entities": []
 }
