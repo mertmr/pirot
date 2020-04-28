@@ -103,9 +103,10 @@ public class UrunResource {
         if (urun.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
+
         User currentUser = userService.getCurrentUser();
         Urun result = urunRepository.save(urun);
-        Urun oncekiHaliUrun = urunRepository.findById(urun.getId()).get();
         if (oncekiHaliUrun.getMusteriFiyati().compareTo(urun.getMusteriFiyati()) != 0) createUrunFiyatEntry(urun, currentUser);
         return ResponseEntity
             .ok()
