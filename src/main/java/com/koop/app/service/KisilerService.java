@@ -15,7 +15,7 @@ public class KisilerService {
     }
 
     public Kisiler getRandomKisi() {
-        long qty = kisilerRepository.count();
+        long qty = kisilerRepository.countActive();
         int idx = (int) (Math.random() * qty);
         if(idx == 0) {
             idx++;
@@ -23,7 +23,7 @@ public class KisilerService {
         if(idx > 25) {
             idx = 25;
         }
-        Page<Kisiler> kisiPage = kisilerRepository.findAll(PageRequest.of(idx, 1));
+        Page<Kisiler> kisiPage = kisilerRepository.findAllActive(PageRequest.of(idx, 1));
         Kisiler kisi = null;
         if (kisiPage.hasContent()) {
             kisi = kisiPage.getContent().get(0);

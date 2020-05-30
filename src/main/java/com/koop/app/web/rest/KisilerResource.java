@@ -3,13 +3,10 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.Kisiler;
 import com.koop.app.repository.KisilerRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +14,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Kisiler}.
@@ -29,6 +31,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class KisilerResource {
+
     private final Logger log = LoggerFactory.getLogger(KisilerResource.class);
 
     private static final String ENTITY_NAME = "kisiler";
@@ -55,9 +58,9 @@ public class KisilerResource {
         if (kisiler.getId() != null) {
             throw new BadRequestAlertException("A new kisiler cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        kisiler.setActive(true);
         Kisiler result = kisilerRepository.save(kisiler);
-        return ResponseEntity
-            .created(new URI("/api/kisilers/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/kisilers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -78,8 +81,7 @@ public class KisilerResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Kisiler result = kisilerRepository.save(kisiler);
-        return ResponseEntity
-            .ok()
+        return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kisiler.getId().toString()))
             .body(result);
     }
@@ -93,7 +95,7 @@ public class KisilerResource {
     @GetMapping("/kisilers")
     public ResponseEntity<List<Kisiler>> getAllKisilers(Pageable pageable) {
         log.debug("REST request to get a page of Kisilers");
-        Page<Kisiler> page = kisilerRepository.findAll(pageable);
+        Page<Kisiler> page = kisilerRepository.findAllActive(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -120,10 +122,11 @@ public class KisilerResource {
     @DeleteMapping("/kisilers/{id}")
     public ResponseEntity<Void> deleteKisiler(@PathVariable Long id) {
         log.debug("REST request to delete Kisiler : {}", id);
-        kisilerRepository.deleteById(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+        Optional<Kisiler> kisiler = kisilerRepository.findById(id);
+        kisiler.ifPresent(kisiler1 -> {
+            kisiler1.setActive(false);
+            kisilerRepository.save(kisiler1);
+        });
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

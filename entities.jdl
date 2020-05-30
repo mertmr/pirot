@@ -119,6 +119,7 @@ entity Kisiler {
     kisiAdi String
     notlar String
     tarih ZonedDateTime
+    active Boolean
 }
 
 entity UrunFiyatHesap {

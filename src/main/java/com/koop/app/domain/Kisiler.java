@@ -1,11 +1,13 @@
 package com.koop.app.domain;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
-import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+
+import java.io.Serializable;
+import java.util.Objects;
+import java.time.ZonedDateTime;
 
 /**
  * A Kisiler.
@@ -14,6 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "kisiler")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Kisiler implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -29,6 +32,9 @@ public class Kisiler implements Serializable {
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
+
+    @Column(name = "active")
+    private Boolean active;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -78,6 +84,18 @@ public class Kisiler implements Serializable {
         this.tarih = tarih;
     }
 
+    public Boolean isActive() {
+        return active;
+    }
+
+    public Kisiler active(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -98,20 +116,12 @@ public class Kisiler implements Serializable {
 
     @Override
     public String toString() {
-        return (
-            "Kisiler{" +
-            "id=" +
-            getId() +
-            ", kisiAdi='" +
-            getKisiAdi() +
-            "'" +
-            ", notlar='" +
-            getNotlar() +
-            "'" +
-            ", tarih='" +
-            getTarih() +
-            "'" +
-            "}"
-        );
+        return "Kisiler{" +
+            "id=" + getId() +
+            ", kisiAdi='" + getKisiAdi() + "'" +
+            ", notlar='" + getNotlar() + "'" +
+            ", tarih='" + getTarih() + "'" +
+            ", active='" + isActive() + "'" +
+            "}";
     }
 }

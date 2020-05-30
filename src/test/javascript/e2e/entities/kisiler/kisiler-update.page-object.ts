@@ -7,6 +7,7 @@ export default class KisilerUpdatePage {
   kisiAdiInput: ElementFinder = element(by.css('input#kisiler-kisiAdi'));
   notlarInput: ElementFinder = element(by.css('input#kisiler-notlar'));
   tarihInput: ElementFinder = element(by.css('input#kisiler-tarih'));
+  activeInput: ElementFinder = element(by.css('input#kisiler-active'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -36,6 +37,9 @@ export default class KisilerUpdatePage {
     return this.tarihInput.getAttribute('value');
   }
 
+  getActiveInput() {
+    return this.activeInput;
+  }
   async save() {
     await this.saveButton.click();
   }

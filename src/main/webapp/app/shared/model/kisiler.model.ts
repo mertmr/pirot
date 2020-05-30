@@ -5,6 +5,9 @@ export interface IKisiler {
   kisiAdi?: string;
   notlar?: string;
   tarih?: Moment;
+  active?: boolean;
 }
 
-export const defaultValue: Readonly<IKisiler> = {};
+export const defaultValue: Readonly<IKisiler> = {
+  active: false
+};

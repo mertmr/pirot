@@ -73,6 +73,9 @@ export const Kisiler = (props: IKisilerProps) => {
                 <th className="hand" onClick={sort('tarih')}>
                   <Translate contentKey="koopApp.kisiler.tarih">Tarih</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('active')}>
+                  <Translate contentKey="koopApp.kisiler.active">Active</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -89,6 +92,7 @@ export const Kisiler = (props: IKisilerProps) => {
                   <td>
                     <TextFormat type="date" value={kisiler.tarih} format={APP_DATE_FORMAT} />
                   </td>
+                  <td>{kisiler.active ? 'true' : 'false'}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${kisiler.id}`} color="info" size="sm">

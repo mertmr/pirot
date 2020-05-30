@@ -45,6 +45,12 @@ export const KisilerDetail = (props: IKisilerDetailProps) => {
           <dd>
             <TextFormat value={kisilerEntity.tarih} type="date" format={APP_DATE_FORMAT} />
           </dd>
+          <dt>
+            <span id="active">
+              <Translate contentKey="koopApp.kisiler.active">Active</Translate>
+            </span>
+          </dt>
+          <dd>{kisilerEntity.active ? 'true' : 'false'}</dd>
         </dl>
         <Button tag={Link} to="/kisiler" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

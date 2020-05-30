@@ -24,6 +24,9 @@
             <column name="tarih" type="datetime">
                 <constraints nullable="true" />
             </column>
+            <column name="active" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="kisiler" columnName="tarih" columnDataType="datetime"/>
@@ -51,6 +54,7 @@
             <column name="kisi_adi" type="string"/>
             <column name="notlar" type="string"/>
             <column name="tarih" type="datetime"/>
+            <column name="active" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

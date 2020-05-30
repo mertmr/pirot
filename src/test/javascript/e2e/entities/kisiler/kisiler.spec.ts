@@ -65,6 +65,14 @@ describe('Kisiler e2e test', () => {
     expect(await kisilerUpdatePage.getNotlarInput()).to.match(/notlar/);
     await kisilerUpdatePage.setTarihInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
     expect(await kisilerUpdatePage.getTarihInput()).to.contain('2001-01-01T02:30');
+    const selectedActive = await kisilerUpdatePage.getActiveInput().isSelected();
+    if (selectedActive) {
+      await kisilerUpdatePage.getActiveInput().click();
+      expect(await kisilerUpdatePage.getActiveInput().isSelected()).to.be.false;
+    } else {
+      await kisilerUpdatePage.getActiveInput().click();
+      expect(await kisilerUpdatePage.getActiveInput().isSelected()).to.be.true;
+    }
     await waitUntilDisplayed(kisilerUpdatePage.saveButton);
     await kisilerUpdatePage.save();
     await waitUntilHidden(kisilerUpdatePage.saveButton);

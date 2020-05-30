@@ -12,6 +12,10 @@
         {
             "fieldName": "tarih",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [],

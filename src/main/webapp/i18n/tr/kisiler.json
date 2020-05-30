@@ -18,7 +18,8 @@
       },
       "kisiAdi": "Kişi Adı",
       "notlar": "Notlar",
-      "tarih": "Tarih"
+      "tarih": "Tarih",
+      "active": "Active"
     }
   }
 }
