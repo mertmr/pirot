@@ -51,6 +51,11 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
     <div>
       <h2 id="kasa-hareketleri-heading">
         <Translate contentKey="koopApp.kasaHareketleri.home.title">Kasa Hareketleris</Translate>
+        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="koopApp.kasaHareketleri.home.createLabel">Create new Kasa Hareketleri</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {kasaHareketleriList && kasaHareketleriList.length > 0 ? (
