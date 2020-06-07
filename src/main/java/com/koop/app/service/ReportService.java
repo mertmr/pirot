@@ -74,15 +74,15 @@ public class ReportService {
                 ortakFaturasi.setMiktar(miktar + " KG");
                 BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar()
                     .divide(miktar, 2, RoundingMode.HALF_UP);
-                ortakFaturasi.setBirimFiyat(birimFiyat.multiply(BigDecimal.valueOf(1 - kdvOrani)).setScale(3, RoundingMode.HALF_UP));
+                ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
             } else {
                 ortakFaturasi.setMiktar(ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim());
                 BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar()
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP);
-                ortakFaturasi.setBirimFiyat(birimFiyat.multiply(BigDecimal.valueOf(1 - kdvOrani)).setScale(3, RoundingMode.HALF_UP));
+                ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
             }
 
-            ortakFaturasi.setToplamTutar(ortakFaturaDbReport.getToplamTutar().multiply(BigDecimal.valueOf(1 - kdvOrani)).setScale(3, RoundingMode.HALF_UP)); //set kdv without
+            ortakFaturasi.setToplamTutar(kdvsizFiyatHesapla(kdvOrani, ortakFaturaDbReport.getToplamTutar())); //set kdv without
             ortakFaturasiList.add(ortakFaturasi);
         }
 
@@ -111,5 +111,11 @@ public class ReportService {
         ortakFaturasiDto.setTumToplam(tumToplam);
 
         return ortakFaturasiDto;
+    }
+
+    private BigDecimal kdvsizFiyatHesapla(double kdvOrani, BigDecimal birimFiyat) {
+        return birimFiyat.divide(BigDecimal.valueOf(100 + kdvOrani), RoundingMode.HALF_UP)
+            .multiply(BigDecimal.valueOf(100))
+            .setScale(2, RoundingMode.HALF_UP);
     }
 }
