@@ -105,7 +105,7 @@ export const Urun = (props: IUrunProps) => {
           <Translate contentKey="koopApp.urun.home.createLabel">Create new Urun</Translate>
         </Link>
         <CSVLink className="btn btn-primary float-right jh-create-entity" style={{marginRight: '10px'}}
-          data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok }))}
+          data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok, fiyat: x.musteriFiyati }))}
           filename={'stokDurumu.csv'}
         >
           Stok Raporu
