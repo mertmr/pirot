@@ -79,7 +79,8 @@ public class ReportService {
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP));
             }
 
-            ortakFaturasi.setToplamTutar(ortakFaturaDbReport.getToplamTutar());
+            double kdvOrani = ortakFaturaDbReport.getUrun().getKdvKategorisi().getKdvOrani() * 0.01;
+            ortakFaturasi.setToplamTutar(ortakFaturaDbReport.getToplamTutar().multiply(BigDecimal.valueOf(1 - kdvOrani))); //set kdv without
             ortakFaturasiList.add(ortakFaturasi);
         }
 
