@@ -113,8 +113,8 @@ public class ReportService {
         return ortakFaturasiDto;
     }
 
-    private BigDecimal kdvsizFiyatHesapla(double kdvOrani, BigDecimal birimFiyat) {
-        return birimFiyat.divide(BigDecimal.valueOf(100 + kdvOrani), RoundingMode.HALF_UP)
+    private BigDecimal kdvsizFiyatHesapla(double kdvOrani, BigDecimal fiyat) {
+        return fiyat.divide(BigDecimal.valueOf(100 + kdvOrani), 2, RoundingMode.HALF_UP)
             .multiply(BigDecimal.valueOf(100))
             .setScale(2, RoundingMode.HALF_UP);
     }
