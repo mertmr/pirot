@@ -68,7 +68,7 @@ public class ReportService {
         for (OrtakFaturaDbReport ortakFaturaDbReport : ortakFaturaDbReports) {
             OrtakFaturasiDetayDto ortakFaturasi = new OrtakFaturasiDetayDto();
             ortakFaturasi.setUrunAdiKdv(ortakFaturaDbReport.getUrunIsmi());
-            double kdvOrani = ortakFaturaDbReport.getUrun().getKdvKategorisi().getKdvOrani() * 0.01;
+            double kdvOrani = ortakFaturaDbReport.getUrun().getKdvKategorisi().getKdvOrani();
             if (ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM) {
                 BigDecimal miktar = BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()).multiply(BigDecimal.valueOf(0.001)).setScale(3, RoundingMode.HALF_UP);
                 ortakFaturasi.setMiktar(miktar + " KG");
@@ -114,7 +114,7 @@ public class ReportService {
     }
 
     private BigDecimal kdvsizFiyatHesapla(double kdvOrani, BigDecimal fiyat) {
-        return fiyat.divide(BigDecimal.valueOf(100 + kdvOrani), 2, RoundingMode.HALF_UP)
+        return fiyat.divide(BigDecimal.valueOf(100 + kdvOrani), 5, RoundingMode.HALF_UP)
             .multiply(BigDecimal.valueOf(100))
             .setScale(2, RoundingMode.HALF_UP);
     }
