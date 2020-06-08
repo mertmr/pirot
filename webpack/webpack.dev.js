@@ -39,6 +39,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
   devServer: {
     stats: options.stats,
     hot: true,
+    host : '0.0.0.0',
+    disableHostCheck : true,
     contentBase: './target/classes/static/',
     proxy: [{
       context: [
@@ -50,7 +52,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         '/h2-console',
         '/auth'
       ],
-      target: `http${options.tls ? 's' : ''}://localhost:8080`,
+      target: `http${options.tls ? 's' : ''}://localhost:8083`,
       secure: false,
       changeOrigin: options.tls
     }],
