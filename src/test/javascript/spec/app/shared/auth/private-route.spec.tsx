@@ -23,8 +23,7 @@ describe('private-route component', () => {
       <PrivateRouteComponent component={TestComp} isAuthenticated sessionHasBeenFetched isAuthorized={false} path="/" />
     );
     const renderedRoute = route.find(Route);
-    const props = renderedRoute.props() as any;
-    const renderFn: Function = props.render;
+    const renderFn: Function = renderedRoute.props().render;
     const comp = shallow(
       renderFn({
         location: '/',
@@ -61,8 +60,7 @@ describe('private-route component', () => {
     );
     const renderedRoute = route.find(Route);
     expect(renderedRoute.length).toEqual(1);
-    const props = renderedRoute.props() as any;
-    const renderFn: Function = props.render;
+    const renderFn: Function = renderedRoute.props().render;
     // as rendering redirect outside router will throw error
     expect(() =>
       shallow(

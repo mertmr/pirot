@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, TextFormat, IPaginationBaseState, JhiPagination, JhiItemCount, getSortState } from 'react-jhipster';
+import { Translate, ICrudGetAllAction, TextFormat, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -11,8 +11,9 @@ import { INobetHareketleri } from 'app/shared/model/nobet-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
+import { getSortState } from 'app/shared/util/pagination-utils';
 
-export interface INobetHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface INobetHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
 
 export const NobetHareketleri = (props: INobetHareketleriProps) => {
   const [paginationState, setPaginationState] = useState(
@@ -150,12 +151,12 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
             </tbody>
           </Table>
         ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="koopApp.nobetHareketleri.home.notFound">No Nobet Hareketleris found</Translate>
-            </div>
-          )
-        )}
+            !loading && (
+              <div className="alert alert-warning">
+                <Translate contentKey="koopApp.nobetHareketleri.home.notFound">No Nobet Hareketleris found</Translate>
+              </div>
+            )
+          )}
       </div>
       {props.totalItems ? (
         <div className={nobetHareketleriList && nobetHareketleriList.length > 0 ? '' : 'd-none'}>
@@ -173,8 +174,8 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
           </Row>
         </div>
       ) : (
-        ''
-      )}
+          ''
+        )}
     </div>
   );
 };
