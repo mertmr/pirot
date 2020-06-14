@@ -36,20 +36,36 @@ export const Gider = (props: IGiderProps) => {
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
@@ -77,7 +93,7 @@ export const Gider = (props: IGiderProps) => {
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const {giderList, match, loading, totalItems} = props;
@@ -218,7 +234,7 @@ export const Gider = (props: IGiderProps) => {
 const mapStateToProps = ({gider}: IRootState) => ({
   giderList: gider.entities,
   loading: gider.loading,
-  totalItems: gider.totalItems
+  totalItems: gider.totalItems,
 });
 
 const mapDispatchToProps = {

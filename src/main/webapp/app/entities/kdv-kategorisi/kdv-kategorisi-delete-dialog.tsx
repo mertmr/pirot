@@ -59,7 +59,7 @@ export const KdvKategorisiDeleteDialog = (props: IKdvKategorisiDeleteDialogProps
 
 const mapStateToProps = ({ kdvKategorisi }: IRootState) => ({
   kdvKategorisiEntity: kdvKategorisi.entity,
-  updateSuccess: kdvKategorisi.updateSuccess
+  updateSuccess: kdvKategorisi.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

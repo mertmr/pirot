@@ -66,7 +66,7 @@ export const SatisStokHareketleriDetail = (props: ISatisStokHareketleriDetailPro
 };
 
 const mapStateToProps = ({ satisStokHareketleri }: IRootState) => ({
-  satisStokHareketleriEntity: satisStokHareketleri.entity
+  satisStokHareketleriEntity: satisStokHareketleri.entity,
 });
 
 const mapDispatchToProps = { getEntity };

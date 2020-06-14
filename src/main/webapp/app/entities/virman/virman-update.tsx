@@ -48,7 +48,7 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...virmanEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -92,7 +92,7 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                   name="tutar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') }
+                    number: { value: true, errorMessage: translate('entity.validation.number') },
                   }}
                 />
               </AvGroup>
@@ -105,7 +105,7 @@ export const VirmanUpdate = (props: IVirmanUpdateProps) => {
                   type="text"
                   name="notlar"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -165,7 +165,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   virmanEntity: storeState.virman.entity,
   loading: storeState.virman.loading,
   updating: storeState.virman.updating,
-  updateSuccess: storeState.virman.updateSuccess
+  updateSuccess: storeState.virman.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -173,7 +173,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

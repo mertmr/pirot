@@ -47,10 +47,7 @@ export default class UreticiUpdatePage {
   }
 
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {

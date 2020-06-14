@@ -81,7 +81,6 @@ public class SatisStokHareketleriResourceIT {
     @WithMockUser(value = "admin")
     public void createSatisStokHareketleri() throws Exception {
         int databaseSizeBeforeCreate = satisStokHareketleriRepository.findAll().size();
-
         // Create the SatisStokHareketleri
         restSatisStokHareketleriMockMvc
             .perform(
@@ -130,12 +129,10 @@ public class SatisStokHareketleriResourceIT {
 
         // Create the SatisStokHareketleri, which fails.
 
-        restSatisStokHareketleriMockMvc
-            .perform(
-                post("/api/satis-stok-hareketleris")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
-            )
+
+        restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isBadRequest());
 
         List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAll();
@@ -151,12 +148,10 @@ public class SatisStokHareketleriResourceIT {
 
         // Create the SatisStokHareketleri, which fails.
 
-        restSatisStokHareketleriMockMvc
-            .perform(
-                post("/api/satis-stok-hareketleris")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri))
-            )
+
+        restSatisStokHareketleriMockMvc.perform(post("/api/satis-stok-hareketleris")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(satisStokHareketleri)))
             .andExpect(status().isBadRequest());
 
         List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAll();
@@ -195,7 +190,6 @@ public class SatisStokHareketleriResourceIT {
             .andExpect(jsonPath("$.miktar").value(DEFAULT_MIKTAR))
             .andExpect(jsonPath("$.tutar").value(DEFAULT_TUTAR.intValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingSatisStokHareketleri() throws Exception {
@@ -238,8 +232,6 @@ public class SatisStokHareketleriResourceIT {
     @Transactional
     public void updateNonExistingSatisStokHareketleri() throws Exception {
         int databaseSizeBeforeUpdate = satisStokHareketleriRepository.findAll().size();
-
-        // Create the SatisStokHareketleri
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSatisStokHareketleriMockMvc

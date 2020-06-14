@@ -7,7 +7,7 @@ TranslatorContext.setRenderInnerTextForMissingKeys(false);
 
 export const languages: any = {
   en: { name: 'English' },
-  tr: { name: 'Türkçe' }
+  tr: { name: 'Türkçe' },
   // jhipster-needle-i18n-language-key-pipe - JHipster will add/remove languages in this object
 };
 

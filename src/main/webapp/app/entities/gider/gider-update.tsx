@@ -48,7 +48,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...giderEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -92,7 +92,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   name="tutar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') }
+                    number: { value: true, errorMessage: translate('entity.validation.number') },
                   }}
                 />
               </AvGroup>
@@ -105,7 +105,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                   type="text"
                   name="notlar"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -171,7 +171,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   giderEntity: storeState.gider.entity,
   loading: storeState.gider.loading,
   updating: storeState.gider.updating,
-  updateSuccess: storeState.gider.updateSuccess
+  updateSuccess: storeState.gider.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -179,7 +179,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

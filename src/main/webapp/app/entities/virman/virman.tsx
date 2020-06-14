@@ -11,12 +11,15 @@ import {getEntities, getSearchEntities} from './virman.reducer';
 import {APP_DATE_FORMAT} from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import {getSortState} from 'app/shared/util/pagination-utils';
+import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface IVirmanProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Virman = (props: IVirmanProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
   const [search, setSearch] = useState('');
+  const [paginationState, setPaginationState] = useState(
+    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
+  );
 
   const getAllEntities = () => {
     if (search && search !== '') {
@@ -33,20 +36,36 @@ export const Virman = (props: IVirmanProps) => {
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
@@ -74,7 +93,7 @@ export const Virman = (props: IVirmanProps) => {
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { virmanList, match, loading, totalItems } = props;
@@ -156,9 +175,7 @@ export const Virman = (props: IVirmanProps) => {
                   <td>
                     <Translate contentKey={`koopApp.Hesap.${virman.girisHesabi}`} />
                   </td>
-                  <td>
-                    <TextFormat type="date" value={virman.tarih} format={APP_DATE_FORMAT} />
-                  </td>
+                  <td>{virman.tarih ? <TextFormat type="date" value={virman.tarih} format={APP_DATE_FORMAT} /> : null}</td>
                   <td>{virman.user ? virman.user.login : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
@@ -193,20 +210,24 @@ export const Virman = (props: IVirmanProps) => {
           )
         )}
       </div>
-      <div className={virmanList && virmanList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={virmanList && virmanList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -214,7 +235,7 @@ export const Virman = (props: IVirmanProps) => {
 const mapStateToProps = ({ virman }: IRootState) => ({
   virmanList: virman.entities,
   loading: virman.loading,
-  totalItems: virman.totalItems
+  totalItems: virman.totalItems,
 });
 
 const mapDispatchToProps = {

@@ -52,7 +52,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...urunFiyatEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -109,11 +109,11 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 <Label for="urun-fiyat-user">
                   <Translate contentKey="koopApp.urunFiyat.user">User</Translate>
                 </Label>
-                <AvInput id="urun-fiyat-user" type="select" className="form-control" name="user">
+                <AvInput id="urun-fiyat-user" type="select" className="form-control" name="user.id">
                   <option value="" key="0" />
                   {users
-                    ? users.map((otherEntity, index) => (
-                        <option value={index} key={otherEntity.id}>
+                    ? users.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))
@@ -162,7 +162,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   urunFiyatEntity: storeState.urunFiyat.entity,
   loading: storeState.urunFiyat.loading,
   updating: storeState.urunFiyat.updating,
-  updateSuccess: storeState.urunFiyat.updateSuccess
+  updateSuccess: storeState.urunFiyat.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -171,7 +171,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -13,7 +13,7 @@ export const ACTION_TYPES = {
   CREATE_URUNFIYATHESAP: 'urunFiyatHesap/CREATE_URUNFIYATHESAP',
   UPDATE_URUNFIYATHESAP: 'urunFiyatHesap/UPDATE_URUNFIYATHESAP',
   DELETE_URUNFIYATHESAP: 'urunFiyatHesap/DELETE_URUNFIYATHESAP',
-  RESET: 'urunFiyatHesap/RESET'
+  RESET: 'urunFiyatHesap/RESET',
 };
 
 const initialState = {
@@ -23,7 +23,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type UrunFiyatHesapState = Readonly<typeof initialState>;
@@ -39,7 +39,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case REQUEST(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
@@ -48,7 +48,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
@@ -61,21 +61,21 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAP):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case SUCCESS(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
@@ -83,18 +83,18 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_URUNFIYATHESAP):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -109,7 +109,7 @@ export const getEntities: ICrudGetAllAction<IUrunFiyatHesap> = (page, size, sort
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST,
-    payload: axios.get<IUrunFiyatHesap>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<IUrunFiyatHesap>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -117,7 +117,7 @@ export const getEntity: ICrudGetAction<IUrunFiyatHesap> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_URUNFIYATHESAP,
-    payload: axios.get<IUrunFiyatHesap>(requestUrl)
+    payload: axios.get<IUrunFiyatHesap>(requestUrl),
   };
 };
 
@@ -132,7 +132,7 @@ export const getUrunFiyatHesapByUrunId: ICrudGetAction<IUrunFiyatHesap> = urunId
 export const createEntity: ICrudPutAction<IUrunFiyatHesap> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_URUNFIYATHESAP,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   dispatch(getEntities());
   return result;
@@ -141,7 +141,7 @@ export const createEntity: ICrudPutAction<IUrunFiyatHesap> = entity => async dis
 export const updateEntity: ICrudPutAction<IUrunFiyatHesap> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_URUNFIYATHESAP,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -150,11 +150,11 @@ export const deleteEntity: ICrudDeleteAction<IUrunFiyatHesap> = id => async disp
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_URUNFIYATHESAP,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   return result;
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

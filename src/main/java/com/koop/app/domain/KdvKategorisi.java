@@ -12,7 +12,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "kdv_kategorisi")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class KdvKategorisi implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class KdvKategorisi implements Serializable {
     @Column(name = "kdv_orani", nullable = false)
     private Integer kdvOrani;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -63,8 +63,7 @@ public class KdvKategorisi implements Serializable {
     public void setKdvOrani(Integer kdvOrani) {
         this.kdvOrani = kdvOrani;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -82,6 +81,7 @@ public class KdvKategorisi implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "KdvKategorisi{" + "id=" + getId() + ", kategoriAdi='" + getKategoriAdi() + "'" + ", kdvOrani=" + getKdvOrani() + "}";

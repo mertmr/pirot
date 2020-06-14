@@ -40,10 +40,7 @@ export default class VirmanUpdatePage {
   }
 
   async cikisHesabiSelectLastOption() {
-    await this.cikisHesabiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.cikisHesabiSelect.all(by.tagName('option')).last().click();
   }
   async setGirisHesabiSelect(girisHesabi) {
     await this.girisHesabiSelect.sendKeys(girisHesabi);
@@ -54,10 +51,7 @@ export default class VirmanUpdatePage {
   }
 
   async girisHesabiSelectLastOption() {
-    await this.girisHesabiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.girisHesabiSelect.all(by.tagName('option')).last().click();
   }
   async setTarihInput(tarih) {
     await this.tarihInput.sendKeys(tarih);
@@ -68,10 +62,7 @@ export default class VirmanUpdatePage {
   }
 
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {

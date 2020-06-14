@@ -54,9 +54,7 @@ export const VirmanDetail = (props: IVirmanDetailProps) => {
               <Translate contentKey="koopApp.virman.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={virmanEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{virmanEntity.tarih ? <TextFormat value={virmanEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <Translate contentKey="koopApp.virman.user">User</Translate>
           </dt>
@@ -81,7 +79,7 @@ export const VirmanDetail = (props: IVirmanDetailProps) => {
 };
 
 const mapStateToProps = ({ virman }: IRootState) => ({
-  virmanEntity: virman.entity
+  virmanEntity: virman.entity,
 });
 
 const mapDispatchToProps = { getEntity };

@@ -54,9 +54,7 @@ export const BorcAlacakDetail = (props: IBorcAlacakDetailProps) => {
               <Translate contentKey="koopApp.borcAlacak.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={borcAlacakEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{borcAlacakEntity.tarih ? <TextFormat value={borcAlacakEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <Translate contentKey="koopApp.borcAlacak.user">User</Translate>
           </dt>
@@ -85,7 +83,7 @@ export const BorcAlacakDetail = (props: IBorcAlacakDetailProps) => {
 };
 
 const mapStateToProps = ({ borcAlacak }: IRootState) => ({
-  borcAlacakEntity: borcAlacak.entity
+  borcAlacakEntity: borcAlacak.entity,
 });
 
 const mapDispatchToProps = { getEntity };

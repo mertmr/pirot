@@ -23,27 +23,43 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { kasaHareketleriList, match, loading, totalItems } = props;
@@ -88,7 +104,7 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
                   <td>{kasaHareketleri.kasaMiktar}</td>
                   <td>{kasaHareketleri.hareket}</td>
                   <td>
-                    <TextFormat type="date" value={kasaHareketleri.tarih} format={APP_DATE_FORMAT} />
+                    {kasaHareketleri.tarih ? <TextFormat type="date" value={kasaHareketleri.tarih} format={APP_DATE_FORMAT} /> : null}
                   </td>
                 </tr>
               ))}
@@ -102,20 +118,24 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
           )
         )}
       </div>
-      <div className={kasaHareketleriList && kasaHareketleriList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={kasaHareketleriList && kasaHareketleriList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -123,11 +143,11 @@ export const KasaHareketleri = (props: IKasaHareketleriProps) => {
 const mapStateToProps = ({ kasaHareketleri }: IRootState) => ({
   kasaHareketleriList: kasaHareketleri.entities,
   loading: kasaHareketleri.loading,
-  totalItems: kasaHareketleri.totalItems
+  totalItems: kasaHareketleri.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

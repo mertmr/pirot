@@ -41,7 +41,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...kdvKategorisiEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -84,7 +84,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
                   type="text"
                   name="kategoriAdi"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -99,7 +99,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
                   name="kdvOrani"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') }
+                    number: { value: true, errorMessage: translate('entity.validation.number') },
                   }}
                 />
               </AvGroup>
@@ -128,14 +128,14 @@ const mapStateToProps = (storeState: IRootState) => ({
   kdvKategorisiEntity: storeState.kdvKategorisi.entity,
   loading: storeState.kdvKategorisi.loading,
   updating: storeState.kdvKategorisi.updating,
-  updateSuccess: storeState.kdvKategorisi.updateSuccess
+  updateSuccess: storeState.kdvKategorisi.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

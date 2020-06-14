@@ -61,10 +61,7 @@ export default class UrunUpdatePage {
   }
 
   async birimSelectLastOption() {
-    await this.birimSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.birimSelect.all(by.tagName('option')).last().click();
   }
   getDayanismaUrunuInput() {
     return this.dayanismaUrunuInput;
@@ -81,19 +78,13 @@ export default class UrunUpdatePage {
   }
 
   async urunKategorisiSelectLastOption() {
-    await this.urunKategorisiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunKategorisiSelect.all(by.tagName('option')).last().click();
   }
   getActiveInput() {
     return this.activeInput;
   }
   async urunSorumlusuSelectLastOption() {
-    await this.urunSorumlusuSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunSorumlusuSelect.all(by.tagName('option')).last().click();
   }
 
   async urunSorumlusuSelectOption(option) {
@@ -109,10 +100,7 @@ export default class UrunUpdatePage {
   }
 
   async kdvKategorisiSelectLastOption() {
-    await this.kdvKategorisiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.kdvKategorisiSelect.all(by.tagName('option')).last().click();
   }
 
   async kdvKategorisiSelectOption(option) {

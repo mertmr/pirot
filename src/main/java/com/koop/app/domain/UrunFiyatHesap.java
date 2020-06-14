@@ -6,14 +6,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A UrunFiyatHesap.
  */
 @Entity
 @Table(name = "urun_fiyat_hesap")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UrunFiyatHesap implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,7 +44,7 @@ public class UrunFiyatHesap implements Serializable {
     @JoinColumn(unique = true)
     private Urun urun;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -144,7 +143,7 @@ public class UrunFiyatHesap implements Serializable {
     public void setUrun(Urun urun) {
         this.urun = urun;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -162,6 +161,7 @@ public class UrunFiyatHesap implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "UrunFiyatHesap{" +

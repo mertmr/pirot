@@ -43,7 +43,7 @@ export const KasaHareketleriUpdate = (props: IKasaHareketleriUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...kasaHareketleriEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -127,14 +127,14 @@ const mapStateToProps = (storeState: IRootState) => ({
   kasaHareketleriEntity: storeState.kasaHareketleri.entity,
   loading: storeState.kasaHareketleri.loading,
   updating: storeState.kasaHareketleri.updating,
-  updateSuccess: storeState.kasaHareketleri.updateSuccess
+  updateSuccess: storeState.kasaHareketleri.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

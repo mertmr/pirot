@@ -59,7 +59,7 @@ export const SatisDeleteDialog = (props: ISatisDeleteDialogProps) => {
 
 const mapStateToProps = ({ satis }: IRootState) => ({
   satisEntity: satis.entity,
-  updateSuccess: satis.updateSuccess
+  updateSuccess: satis.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

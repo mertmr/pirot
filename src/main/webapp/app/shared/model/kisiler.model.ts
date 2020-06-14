@@ -4,10 +4,10 @@ export interface IKisiler {
   id?: number;
   kisiAdi?: string;
   notlar?: string;
-  tarih?: Moment;
+  tarih?: string;
   active?: boolean;
 }
 
 export const defaultValue: Readonly<IKisiler> = {
-  active: false
+  active: false,
 };

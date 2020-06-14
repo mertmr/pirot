@@ -142,7 +142,6 @@ public class SatisResourceIT {
     @WithMockUser(value = "admin")
     public void createSatis() throws Exception {
         int databaseSizeBeforeCreate = satisRepository.findAll().size();
-
         // Create the Satis
         restSatisMockMvc
             .perform(post("/api/satis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(satis)))
@@ -214,7 +213,6 @@ public class SatisResourceIT {
             .andExpect(jsonPath("$.ortagaSatis").value(DEFAULT_ORTAGA_SATIS.booleanValue()))
             .andExpect(jsonPath("$.kartliSatis").value(DEFAULT_KARTLI_SATIS.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingSatis() throws Exception {
@@ -259,8 +257,6 @@ public class SatisResourceIT {
     @Transactional
     public void updateNonExistingSatis() throws Exception {
         int databaseSizeBeforeUpdate = satisRepository.findAll().size();
-
-        // Create the Satis
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restSatisMockMvc

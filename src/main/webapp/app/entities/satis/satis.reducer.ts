@@ -13,7 +13,7 @@ export const ACTION_TYPES = {
   CREATE_SATIS: 'satis/CREATE_SATIS',
   UPDATE_SATIS: 'satis/UPDATE_SATIS',
   DELETE_SATIS: 'satis/DELETE_SATIS',
-  RESET: 'satis/RESET'
+  RESET: 'satis/RESET',
 };
 
 const initialState = {
@@ -23,7 +23,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type SatisState = Readonly<typeof initialState>;
@@ -39,7 +39,7 @@ export default (state: SatisState = initialState, action): SatisState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_SATIS):
     case REQUEST(ACTION_TYPES.UPDATE_SATIS):
@@ -48,7 +48,7 @@ export default (state: SatisState = initialState, action): SatisState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.SEARCH_SATIS):
     case FAILURE(ACTION_TYPES.FETCH_SATIS_LIST):
@@ -61,7 +61,7 @@ export default (state: SatisState = initialState, action): SatisState => {
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.SEARCH_SATIS):
     case SUCCESS(ACTION_TYPES.FETCH_SATIS_LIST):
@@ -69,13 +69,13 @@ export default (state: SatisState = initialState, action): SatisState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_SATIS):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_SATIS):
     case SUCCESS(ACTION_TYPES.UPDATE_SATIS):
@@ -83,18 +83,18 @@ export default (state: SatisState = initialState, action): SatisState => {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_SATIS):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -115,7 +115,7 @@ export const getEntities: ICrudGetAllAction<ISatis> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_SATIS_LIST,
-    payload: axios.get<ISatis>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<ISatis>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -123,14 +123,14 @@ export const getEntity: ICrudGetAction<ISatis> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_SATIS,
-    payload: axios.get<ISatis>(requestUrl)
+    payload: axios.get<ISatis>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<ISatis> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_SATIS,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   dispatch(getEntities());
   return result;
@@ -139,7 +139,7 @@ export const createEntity: ICrudPutAction<ISatis> = entity => async dispatch => 
 export const updateEntity: ICrudPutAction<ISatis> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_SATIS,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -148,11 +148,11 @@ export const deleteEntity: ICrudDeleteAction<ISatis> = id => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_SATIS,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   return result;
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

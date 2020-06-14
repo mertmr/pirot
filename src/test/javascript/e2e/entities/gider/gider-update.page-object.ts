@@ -48,10 +48,7 @@ export default class GiderUpdatePage {
   }
 
   async giderTipiSelectLastOption() {
-    await this.giderTipiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.giderTipiSelect.all(by.tagName('option')).last().click();
   }
   async setOdemeAraciSelect(odemeAraci) {
     await this.odemeAraciSelect.sendKeys(odemeAraci);
@@ -62,16 +59,10 @@ export default class GiderUpdatePage {
   }
 
   async odemeAraciSelectLastOption() {
-    await this.odemeAraciSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.odemeAraciSelect.all(by.tagName('option')).last().click();
   }
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {

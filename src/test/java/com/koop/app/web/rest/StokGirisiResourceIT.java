@@ -143,8 +143,6 @@ public class StokGirisiResourceIT {
     @WithMockUser(value = "admin")
     public void createStokGirisi() throws Exception {
         int databaseSizeBeforeCreate = stokGirisiRepository.findAll().size();
-        stokGirisi.urun(UrunResourceIT.createEntity(em));
-
         // Create the StokGirisi
         restStokGirisiMockMvc
             .perform(
@@ -192,10 +190,10 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi, which fails.
 
-        restStokGirisiMockMvc
-            .perform(
-                post("/api/stok-girisis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(stokGirisi))
-            )
+
+        restStokGirisiMockMvc.perform(post("/api/stok-girisis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
         List<StokGirisi> stokGirisiList = stokGirisiRepository.findAll();
@@ -211,10 +209,10 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi, which fails.
 
-        restStokGirisiMockMvc
-            .perform(
-                post("/api/stok-girisis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(stokGirisi))
-            )
+
+        restStokGirisiMockMvc.perform(post("/api/stok-girisis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
         List<StokGirisi> stokGirisiList = stokGirisiRepository.findAll();
@@ -230,10 +228,10 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi, which fails.
 
-        restStokGirisiMockMvc
-            .perform(
-                post("/api/stok-girisis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(stokGirisi))
-            )
+
+        restStokGirisiMockMvc.perform(post("/api/stok-girisis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
             .andExpect(status().isBadRequest());
 
         List<StokGirisi> stokGirisiList = stokGirisiRepository.findAll();
@@ -277,7 +275,6 @@ public class StokGirisiResourceIT {
             .andExpect(jsonPath("$.stokHareketiTipi").value(DEFAULT_STOK_HAREKETI_TIPI.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingStokGirisi() throws Exception {
@@ -327,8 +324,6 @@ public class StokGirisiResourceIT {
     @Transactional
     public void updateNonExistingStokGirisi() throws Exception {
         int databaseSizeBeforeUpdate = stokGirisiRepository.findAll().size();
-
-        // Create the StokGirisi
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restStokGirisiMockMvc

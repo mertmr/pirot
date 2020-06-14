@@ -85,7 +85,7 @@ export const UrunFiyatHesapDetail = (props: IUrunFiyatHesapDetailProps) => {
 };
 
 const mapStateToProps = ({ urunFiyatHesap }: IRootState) => ({
-  urunFiyatHesapEntity: urunFiyatHesap.entity
+  urunFiyatHesapEntity: urunFiyatHesap.entity,
 });
 
 const mapDispatchToProps = { getEntity };

@@ -36,9 +36,7 @@ export const UrunFiyatDetail = (props: IUrunFiyatDetailProps) => {
               <Translate contentKey="koopApp.urunFiyat.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={urunFiyatEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{urunFiyatEntity.tarih ? <TextFormat value={urunFiyatEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <Translate contentKey="koopApp.urunFiyat.user">User</Translate>
           </dt>
@@ -67,7 +65,7 @@ export const UrunFiyatDetail = (props: IUrunFiyatDetailProps) => {
 };
 
 const mapStateToProps = ({ urunFiyat }: IRootState) => ({
-  urunFiyatEntity: urunFiyat.entity
+  urunFiyatEntity: urunFiyat.entity,
 });
 
 const mapDispatchToProps = { getEntity };

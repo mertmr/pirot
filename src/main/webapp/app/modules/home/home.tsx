@@ -79,7 +79,7 @@ export const Home = (props: IHomeProp) => {
 const mapStateToProps = storeState => ({
   dashboardReports: storeState.dashboardReportsState.entity,
   account: storeState.authentication.account,
-  isAuthenticated: storeState.authentication.isAuthenticated
+  isAuthenticated: storeState.authentication.isAuthenticated,
 });
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 package com.koop.app.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.domain.enumeration.UrunKategorisi;
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "urun")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Urun implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,14 +59,18 @@ public class Urun implements Serializable {
     private Boolean active;
 
     @ManyToOne
-    @JsonIgnoreProperties("uruns")
+    @JsonIgnoreProperties(value = "uruns", allowSetters = true)
     private User urunSorumlusu;
 
     @ManyToOne
-    @JsonIgnoreProperties("uruns")
+    @JsonIgnoreProperties(value = "uruns", allowSetters = true)
     private KdvKategorisi kdvKategorisi;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @OneToOne(mappedBy = "urun")
+    @JsonIgnore
+    private UrunFiyatHesap urunFiyatHesap;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -217,6 +222,11 @@ public class Urun implements Serializable {
         return this;
     }
 
+    public void setUrunFiyatHesap(UrunFiyatHesap urunFiyatHesap) {
+        this.urunFiyatHesap = urunFiyatHesap;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -233,6 +243,7 @@ public class Urun implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Urun{" +

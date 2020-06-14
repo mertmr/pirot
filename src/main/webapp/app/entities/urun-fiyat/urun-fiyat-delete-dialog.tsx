@@ -59,7 +59,7 @@ export const UrunFiyatDeleteDialog = (props: IUrunFiyatDeleteDialogProps) => {
 
 const mapStateToProps = ({ urunFiyat }: IRootState) => ({
   urunFiyatEntity: urunFiyat.entity,
-  updateSuccess: urunFiyat.updateSuccess
+  updateSuccess: urunFiyat.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

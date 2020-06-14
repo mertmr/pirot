@@ -90,7 +90,6 @@ public class KasaHareketleriResourceIT {
     @Transactional
     public void createKasaHareketleri() throws Exception {
         int databaseSizeBeforeCreate = kasaHareketleriRepository.findAll().size();
-
         // Create the KasaHareketleri
         restKasaHareketleriMockMvc
             .perform(
@@ -164,7 +163,6 @@ public class KasaHareketleriResourceIT {
             .andExpect(jsonPath("$.hareket").value(DEFAULT_HAREKET))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingKasaHareketleri() throws Exception {
@@ -207,8 +205,6 @@ public class KasaHareketleriResourceIT {
     @Transactional
     public void updateNonExistingKasaHareketleri() throws Exception {
         int databaseSizeBeforeUpdate = kasaHareketleriRepository.findAll().size();
-
-        // Create the KasaHareketleri
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKasaHareketleriMockMvc

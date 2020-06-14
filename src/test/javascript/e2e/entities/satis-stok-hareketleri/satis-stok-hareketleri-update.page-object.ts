@@ -30,10 +30,7 @@ export default class SatisStokHareketleriUpdatePage {
   }
 
   async urunSelectLastOption() {
-    await this.urunSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunSelect.all(by.tagName('option')).last().click();
   }
 
   async urunSelectOption(option) {
@@ -49,10 +46,7 @@ export default class SatisStokHareketleriUpdatePage {
   }
 
   async satisSelectLastOption() {
-    await this.satisSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.satisSelect.all(by.tagName('option')).last().click();
   }
 
   async satisSelectOption(option) {

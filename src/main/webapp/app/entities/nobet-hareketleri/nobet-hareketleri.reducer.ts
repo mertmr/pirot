@@ -12,7 +12,7 @@ export const ACTION_TYPES = {
   CREATE_NOBETHAREKETLERI: 'nobetHareketleri/CREATE_NOBETHAREKETLERI',
   UPDATE_NOBETHAREKETLERI: 'nobetHareketleri/UPDATE_NOBETHAREKETLERI',
   DELETE_NOBETHAREKETLERI: 'nobetHareketleri/DELETE_NOBETHAREKETLERI',
-  RESET: 'nobetHareketleri/RESET'
+  RESET: 'nobetHareketleri/RESET',
 };
 
 const initialState = {
@@ -22,7 +22,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type NobetHareketleriState = Readonly<typeof initialState>;
@@ -37,7 +37,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case REQUEST(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
@@ -46,7 +46,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
@@ -58,20 +58,20 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case SUCCESS(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
@@ -79,18 +79,18 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_NOBETHAREKETLERI):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -105,7 +105,7 @@ export const getEntities: ICrudGetAllAction<INobetHareketleri> = (page, size, so
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST,
-    payload: axios.get<INobetHareketleri>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<INobetHareketleri>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -113,14 +113,14 @@ export const getEntity: ICrudGetAction<INobetHareketleri> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_NOBETHAREKETLERI,
-    payload: axios.get<INobetHareketleri>(requestUrl)
+    payload: axios.get<INobetHareketleri>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<INobetHareketleri> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_NOBETHAREKETLERI,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   dispatch(getEntities());
   return result;
@@ -129,7 +129,7 @@ export const createEntity: ICrudPutAction<INobetHareketleri> = entity => async d
 export const updateEntity: ICrudPutAction<INobetHareketleri> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_NOBETHAREKETLERI,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -138,11 +138,11 @@ export const deleteEntity: ICrudDeleteAction<INobetHareketleri> = id => async di
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_NOBETHAREKETLERI,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   return result;
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

@@ -59,7 +59,7 @@ export const GiderDeleteDialog = (props: IGiderDeleteDialogProps) => {
 
 const mapStateToProps = ({ gider }: IRootState) => ({
   giderEntity: gider.entity,
-  updateSuccess: gider.updateSuccess
+  updateSuccess: gider.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

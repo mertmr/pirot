@@ -10,11 +10,14 @@ import { getEntities } from './kdv-kategorisi.reducer';
 import { IKdvKategorisi } from 'app/shared/model/kdv-kategorisi.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface IKdvKategorisiProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const KdvKategorisi = (props: IKdvKategorisiProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [paginationState, setPaginationState] = useState(
+    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
+  );
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -22,27 +25,43 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { kdvKategorisiList, match, loading, totalItems } = props;
@@ -127,20 +146,24 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
           )
         )}
       </div>
-      <div className={kdvKategorisiList && kdvKategorisiList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={kdvKategorisiList && kdvKategorisiList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -148,11 +171,11 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
 const mapStateToProps = ({ kdvKategorisi }: IRootState) => ({
   kdvKategorisiList: kdvKategorisi.entities,
   loading: kdvKategorisi.loading,
-  totalItems: kdvKategorisi.totalItems
+  totalItems: kdvKategorisi.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

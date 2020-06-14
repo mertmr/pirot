@@ -49,10 +49,7 @@ export default class StokGirisiUpdatePage {
   }
 
   async stokHareketiTipiSelectLastOption() {
-    await this.stokHareketiTipiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.stokHareketiTipiSelect.all(by.tagName('option')).last().click();
   }
   async setTarihInput(tarih) {
     await this.tarihInput.sendKeys(tarih);
@@ -63,10 +60,7 @@ export default class StokGirisiUpdatePage {
   }
 
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {
@@ -82,10 +76,7 @@ export default class StokGirisiUpdatePage {
   }
 
   async urunSelectLastOption() {
-    await this.urunSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunSelect.all(by.tagName('option')).last().click();
   }
 
   async urunSelectOption(option) {

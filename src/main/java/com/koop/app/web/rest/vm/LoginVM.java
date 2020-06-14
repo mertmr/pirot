@@ -41,6 +41,7 @@ public class LoginVM {
         this.rememberMe = rememberMe;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "LoginVM{" + "username='" + username + '\'' + ", rememberMe=" + rememberMe + '}';

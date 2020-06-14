@@ -30,10 +30,7 @@ export default class UrunFiyatUpdatePage {
   }
 
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {
@@ -49,10 +46,7 @@ export default class UrunFiyatUpdatePage {
   }
 
   async urunSelectLastOption() {
-    await this.urunSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunSelect.all(by.tagName('option')).last().click();
   }
 
   async urunSelectOption(option) {

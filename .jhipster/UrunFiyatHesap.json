@@ -1,50 +1,50 @@
 {
-    "name": "UrunFiyatHesap",
-    "fields": [
-        {
-            "fieldName": "amortisman",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "giderPusulaMustahsil",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "dukkanGider",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "kooperatifCalisma",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "dayanisma",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "fire",
-            "fieldType": "Integer"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "otherEntityName": "urun",
-            "otherEntityRelationshipName": "urunFiyatHesap",
-            "relationshipName": "urun",
-            "otherEntityField": "id",
-            "ownerSide": true
-        }
-    ],
-    "changelogDate": "20200326121300",
-    "entityTableName": "urun_fiyat_hesap",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": "*"
+  "name": "UrunFiyatHesap",
+  "fields": [
+    {
+      "fieldName": "amortisman",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "giderPusulaMustahsil",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "dukkanGider",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "kooperatifCalisma",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "dayanisma",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "fire",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "urun",
+      "otherEntityRelationshipName": "urunFiyatHesap",
+      "relationshipName": "urun",
+      "otherEntityField": "id",
+      "ownerSide": true
+    }
+  ],
+  "changelogDate": "20200326121300",
+  "entityTableName": "urun_fiyat_hesap",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
 }

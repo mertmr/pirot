@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link KisilerResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class KisilerResourceIT {
@@ -96,7 +95,6 @@ public class KisilerResourceIT {
     @Transactional
     public void createKisiler() throws Exception {
         int databaseSizeBeforeCreate = kisilerRepository.findAll().size();
-
         // Create the Kisiler
         restKisilerMockMvc.perform(post("/api/kisilers")
             .contentType(MediaType.APPLICATION_JSON)
@@ -166,7 +164,6 @@ public class KisilerResourceIT {
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingKisiler() throws Exception {
@@ -212,8 +209,6 @@ public class KisilerResourceIT {
     @Transactional
     public void updateNonExistingKisiler() throws Exception {
         int databaseSizeBeforeUpdate = kisilerRepository.findAll().size();
-
-        // Create the Kisiler
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKisilerMockMvc.perform(put("/api/kisilers")

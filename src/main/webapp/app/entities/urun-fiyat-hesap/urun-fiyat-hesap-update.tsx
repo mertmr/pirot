@@ -66,7 +66,6 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
       const entity = {
         ...urunFiyatHesapEntity,
         ...values,
-        ...urunFiyatHesap
       };
 
       if (isNew) {
@@ -176,7 +175,6 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.urunFiyatHesap.loading,
   updating: storeState.urunFiyatHesap.updating,
   updateSuccess: storeState.urunFiyatHesap.updateSuccess,
-  satisUrunleri: storeState.urun.satisUrunleri
 });
 
 const mapDispatchToProps = {
@@ -185,7 +183,6 @@ const mapDispatchToProps = {
   updateEntity,
   createEntity,
   reset,
-  getAllUrunForStokGirisi
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

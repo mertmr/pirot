@@ -144,7 +144,6 @@ public class NobetHareketleriResourceIT {
     @WithMockUser(value = "admin")
     public void createNobetHareketleri() throws Exception {
         int databaseSizeBeforeCreate = nobetHareketleriRepository.findAll().size();
-
         // Create the NobetHareketleri
         restNobetHareketleriMockMvc
             .perform(
@@ -227,7 +226,6 @@ public class NobetHareketleriResourceIT {
             .andExpect(jsonPath("$.notlar").value(DEFAULT_NOTLAR))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingNobetHareketleri() throws Exception {
@@ -280,8 +278,6 @@ public class NobetHareketleriResourceIT {
     @Transactional
     public void updateNonExistingNobetHareketleri() throws Exception {
         int databaseSizeBeforeUpdate = nobetHareketleriRepository.findAll().size();
-
-        // Create the NobetHareketleri
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNobetHareketleriMockMvc

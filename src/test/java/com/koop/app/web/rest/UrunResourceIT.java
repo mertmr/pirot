@@ -159,7 +159,6 @@ public class UrunResourceIT {
     @WithMockUser(value = "admin")
     public void createUrun() throws Exception {
         int databaseSizeBeforeCreate = urunRepository.findAll().size();
-
         // Create the Urun
         restUrunMockMvc
             .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
@@ -206,8 +205,10 @@ public class UrunResourceIT {
 
         // Create the Urun, which fails.
 
-        restUrunMockMvc
-            .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
+
+        restUrunMockMvc.perform(post("/api/uruns")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
         List<Urun> urunList = urunRepository.findAll();
@@ -223,8 +224,10 @@ public class UrunResourceIT {
 
         // Create the Urun, which fails.
 
-        restUrunMockMvc
-            .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
+
+        restUrunMockMvc.perform(post("/api/uruns")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
         List<Urun> urunList = urunRepository.findAll();
@@ -274,7 +277,6 @@ public class UrunResourceIT {
             .andExpect(jsonPath("$.satista").value(DEFAULT_SATISTA.booleanValue()))
             .andExpect(jsonPath("$.urunKategorisi").value(DEFAULT_URUN_KATEGORISI.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingUrun() throws Exception {
@@ -327,8 +329,6 @@ public class UrunResourceIT {
     @Transactional
     public void updateNonExistingUrun() throws Exception {
         int databaseSizeBeforeUpdate = urunRepository.findAll().size();
-
-        // Create the Urun
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunMockMvc

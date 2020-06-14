@@ -12,7 +12,7 @@ export const ACTION_TYPES = {
   CREATE_URETICI: 'uretici/CREATE_URETICI',
   UPDATE_URETICI: 'uretici/UPDATE_URETICI',
   DELETE_URETICI: 'uretici/DELETE_URETICI',
-  RESET: 'uretici/RESET'
+  RESET: 'uretici/RESET',
 };
 
 const initialState = {
@@ -22,7 +22,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type UreticiState = Readonly<typeof initialState>;
@@ -37,7 +37,7 @@ export default (state: UreticiState = initialState, action): UreticiState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_URETICI):
     case REQUEST(ACTION_TYPES.UPDATE_URETICI):
@@ -46,7 +46,7 @@ export default (state: UreticiState = initialState, action): UreticiState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_URETICI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URETICI):
@@ -58,20 +58,20 @@ export default (state: UreticiState = initialState, action): UreticiState => {
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URETICI_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_URETICI):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_URETICI):
     case SUCCESS(ACTION_TYPES.UPDATE_URETICI):
@@ -79,18 +79,18 @@ export default (state: UreticiState = initialState, action): UreticiState => {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_URETICI):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -105,7 +105,7 @@ export const getEntities: ICrudGetAllAction<IUretici> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_URETICI_LIST,
-    payload: axios.get<IUretici>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<IUretici>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -113,14 +113,14 @@ export const getEntity: ICrudGetAction<IUretici> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_URETICI,
-    payload: axios.get<IUretici>(requestUrl)
+    payload: axios.get<IUretici>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<IUretici> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_URETICI,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   dispatch(getEntities());
   return result;
@@ -129,7 +129,7 @@ export const createEntity: ICrudPutAction<IUretici> = entity => async dispatch =
 export const updateEntity: ICrudPutAction<IUretici> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_URETICI,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -138,11 +138,11 @@ export const deleteEntity: ICrudDeleteAction<IUretici> = id => async dispatch =>
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_URETICI,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   return result;
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

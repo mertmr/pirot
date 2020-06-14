@@ -48,9 +48,7 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
               <Translate contentKey="koopApp.stokGirisi.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={stokGirisiEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{stokGirisiEntity.tarih ? <TextFormat value={stokGirisiEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <Translate contentKey="koopApp.stokGirisi.user">User</Translate>
           </dt>
@@ -72,7 +70,7 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
 };
 
 const mapStateToProps = ({ stokGirisi }: IRootState) => ({
-  stokGirisiEntity: stokGirisi.entity
+  stokGirisiEntity: stokGirisi.entity,
 });
 
 const mapDispatchToProps = { getEntity };

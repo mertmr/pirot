@@ -5,23 +5,19 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.Instant;
+
 import com.koop.app.KoopApp;
-import com.koop.app.config.audit.AuditEventConverter;
 import com.koop.app.domain.PersistentAuditEvent;
 import com.koop.app.repository.PersistenceAuditEventRepository;
 import com.koop.app.security.AuthoritiesConstants;
-import com.koop.app.service.AuditEventService;
-import io.github.jhipster.config.JHipsterProperties;
-import java.time.Instant;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -126,7 +122,6 @@ public class AuditResourceIT {
     }
 
     @Test
-    @Transactional
     public void testPersistentAuditEventEquals() throws Exception {
         TestUtil.equalsVerifier(PersistentAuditEvent.class);
         PersistentAuditEvent auditEvent1 = new PersistentAuditEvent();

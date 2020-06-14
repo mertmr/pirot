@@ -1,46 +1,42 @@
 {
-    "name": "SatisStokHareketleri",
-    "fields": [
-        {
-            "fieldName": "miktar",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "tutar",
-            "fieldType": "BigDecimal",
-            "fieldValidateRules": [
-                "required"
-            ]
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "urun",
-            "otherEntityRelationshipName": "satisStokHareketleri",
-            "relationshipName": "urun",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "satis",
-            "otherEntityRelationshipName": "stokHareketleriList",
-            "relationshipName": "satis",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20200103090902",
-    "entityTableName": "satis_stok_hareketleri",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "SatisStokHareketleri",
+  "fields": [
+    {
+      "fieldName": "miktar",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tutar",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "urun",
+      "otherEntityRelationshipName": "satisStokHareketleri",
+      "relationshipName": "urun",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "satis",
+      "otherEntityRelationshipName": "stokHareketleriList",
+      "relationshipName": "satis",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200103090902",
+  "entityTableName": "satis_stok_hareketleri",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

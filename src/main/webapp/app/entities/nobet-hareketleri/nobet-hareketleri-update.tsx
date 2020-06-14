@@ -61,7 +61,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...nobetHareketleriEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -231,7 +231,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   nobetHareketleriEntity: storeState.nobetHareketleri.entity,
   loading: storeState.nobetHareketleri.loading,
   updating: storeState.nobetHareketleri.updating,
-  updateSuccess: storeState.nobetHareketleri.updateSuccess
+  updateSuccess: storeState.nobetHareketleri.updateSuccess,
 });
 
 const mapDispatchToProps = {

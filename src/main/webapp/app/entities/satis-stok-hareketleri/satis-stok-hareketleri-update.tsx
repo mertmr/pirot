@@ -50,7 +50,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
     if (errors.length === 0) {
       const entity = {
         ...satisStokHareketleriEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -95,7 +95,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                   name="miktar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') }
+                    number: { value: true, errorMessage: translate('entity.validation.number') },
                   }}
                 />
               </AvGroup>
@@ -109,7 +109,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                   name="tutar"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') }
+                    number: { value: true, errorMessage: translate('entity.validation.number') },
                   }}
                 />
               </AvGroup>
@@ -170,7 +170,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   satisStokHareketleriEntity: storeState.satisStokHareketleri.entity,
   loading: storeState.satisStokHareketleri.loading,
   updating: storeState.satisStokHareketleri.updating,
-  updateSuccess: storeState.satisStokHareketleri.updateSuccess
+  updateSuccess: storeState.satisStokHareketleri.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -179,7 +179,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

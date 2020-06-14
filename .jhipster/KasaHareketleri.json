@@ -1,29 +1,29 @@
 {
-    "name": "KasaHareketleri",
-    "fields": [
-        {
-            "fieldName": "kasaMiktar",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "hareket",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "tarih",
-            "fieldType": "ZonedDateTime"
-        }
-    ],
-    "relationships": [],
-    "changelogDate": "20200107161125",
-    "entityTableName": "kasa_hareketleri",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "KasaHareketleri",
+  "fields": [
+    {
+      "fieldName": "kasaMiktar",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "hareket",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tarih",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20200107161125",
+  "entityTableName": "kasa_hareketleri",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

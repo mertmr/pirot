@@ -8,7 +8,7 @@ export interface INobetHareketleri {
   fark?: number;
   nobetSuresi?: number;
   notlar?: string;
-  tarih?: Moment;
+  tarih?: string;
   user?: IUser;
 }
 

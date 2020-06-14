@@ -30,9 +30,7 @@ export const GiderDetail = (props: IGiderDetailProps) => {
               <Translate contentKey="koopApp.gider.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={giderEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{giderEntity.tarih ? <TextFormat value={giderEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <span id="tutar">
               <Translate contentKey="koopApp.gider.tutar">Tutar</Translate>
@@ -81,7 +79,7 @@ export const GiderDetail = (props: IGiderDetailProps) => {
 };
 
 const mapStateToProps = ({ gider }: IRootState) => ({
-  giderEntity: gider.entity
+  giderEntity: gider.entity,
 });
 
 const mapDispatchToProps = { getEntity };

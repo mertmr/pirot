@@ -59,7 +59,7 @@ export const BorcAlacakDeleteDialog = (props: IBorcAlacakDeleteDialogProps) => {
 
 const mapStateToProps = ({ borcAlacak }: IRootState) => ({
   borcAlacakEntity: borcAlacak.entity,
-  updateSuccess: borcAlacak.updateSuccess
+  updateSuccess: borcAlacak.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

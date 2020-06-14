@@ -59,7 +59,7 @@ export const KisilerDeleteDialog = (props: IKisilerDeleteDialogProps) => {
 
 const mapStateToProps = ({ kisiler }: IRootState) => ({
   kisilerEntity: kisiler.entity,
-  updateSuccess: kisiler.updateSuccess
+  updateSuccess: kisiler.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

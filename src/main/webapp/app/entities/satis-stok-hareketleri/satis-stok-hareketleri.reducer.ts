@@ -12,7 +12,7 @@ export const ACTION_TYPES = {
   CREATE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/CREATE_SATISSTOKHAREKETLERI',
   UPDATE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/UPDATE_SATISSTOKHAREKETLERI',
   DELETE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/DELETE_SATISSTOKHAREKETLERI',
-  RESET: 'satisStokHareketleri/RESET'
+  RESET: 'satisStokHareketleri/RESET',
 };
 
 const initialState = {
@@ -22,7 +22,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type SatisStokHareketleriState = Readonly<typeof initialState>;
@@ -37,7 +37,7 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI):
     case REQUEST(ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI):
@@ -46,7 +46,7 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI):
@@ -58,20 +58,20 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI):
     case SUCCESS(ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI):
@@ -79,18 +79,18 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -105,7 +105,7 @@ export const getEntities: ICrudGetAllAction<ISatisStokHareketleri> = (page, size
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI_LIST,
-    payload: axios.get<ISatisStokHareketleri>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<ISatisStokHareketleri>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -113,14 +113,14 @@ export const getEntity: ICrudGetAction<ISatisStokHareketleri> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI,
-    payload: axios.get<ISatisStokHareketleri>(requestUrl)
+    payload: axios.get<ISatisStokHareketleri>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<ISatisStokHareketleri> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   dispatch(getEntities());
   return result;
@@ -129,7 +129,7 @@ export const createEntity: ICrudPutAction<ISatisStokHareketleri> = entity => asy
 export const updateEntity: ICrudPutAction<ISatisStokHareketleri> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -138,11 +138,11 @@ export const deleteEntity: ICrudDeleteAction<ISatisStokHareketleri> = id => asyn
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   return result;
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

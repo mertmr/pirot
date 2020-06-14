@@ -15,7 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "stok_girisi")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class StokGirisi implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -44,14 +44,14 @@ public class StokGirisi implements Serializable {
     private ZonedDateTime tarih;
 
     @ManyToOne
-    @JsonIgnoreProperties("stokGirisis")
+    @JsonIgnoreProperties(value = "stokGirisis", allowSetters = true)
     private User user;
 
     @ManyToOne
-    @JsonIgnoreProperties("stokGirisis")
+    @JsonIgnoreProperties(value = "stokGirisis", allowSetters = true)
     private Urun urun;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -150,8 +150,7 @@ public class StokGirisi implements Serializable {
     public void setUrun(Urun urun) {
         this.urun = urun;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -169,6 +168,7 @@ public class StokGirisi implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return (

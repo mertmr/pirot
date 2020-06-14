@@ -2,15 +2,17 @@ package com.koop.app.config;
 
 import static java.net.URLDecoder.decode;
 
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.util.*;
-import javax.servlet.*;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
+import io.github.jhipster.config.JHipsterConstants;
+import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.config.h2.H2ConfigurationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.*;
@@ -45,10 +47,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     public void onStartup(ServletContext servletContext) throws ServletException {
         if (env.getActiveProfiles().length != 0) {
             log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
-        }
-        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        if (env.acceptsProfiles(Profiles.of(JHipsterConstants.SPRING_PROFILE_PRODUCTION))) {
-            initCachingHttpHeadersFilter(servletContext, disps);
         }
         log.info("Web application fully configured");
     }
@@ -107,21 +105,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         return extractedPath.substring(0, extractionEndIndex);
     }
 
-    /**
-     * Initializes the caching HTTP Headers Filter.
-     */
-    private void initCachingHttpHeadersFilter(ServletContext servletContext, EnumSet<DispatcherType> disps) {
-        log.debug("Registering Caching HTTP Headers Filter");
-        FilterRegistration.Dynamic cachingHttpHeadersFilter = servletContext.addFilter(
-            "cachingHttpHeadersFilter",
-            new CachingHttpHeadersFilter(jHipsterProperties)
-        );
-
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/i18n/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/content/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/app/*");
-        cachingHttpHeadersFilter.setAsyncSupported(true);
-    }
 
     @Bean
     public CorsFilter corsFilter() {

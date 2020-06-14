@@ -1,54 +1,54 @@
 {
-    "name": "BorcAlacak",
-    "fields": [
-        {
-            "fieldName": "tutar",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "notlar",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "odemeAraci",
-            "fieldType": "OdemeAraci",
-            "fieldValues": "NAKIT,BANKA"
-        },
-        {
-            "fieldName": "hareketTipi",
-            "fieldType": "HareketTipi",
-            "fieldValues": "URUN_GIRISI,ODEME"
-        },
-        {
-            "fieldName": "tarih",
-            "fieldType": "ZonedDateTime"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "user",
-            "otherEntityRelationshipName": "borcAlacak",
-            "relationshipName": "user",
-            "otherEntityField": "login"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "urun",
-            "otherEntityRelationshipName": "borcAlacak",
-            "relationshipName": "urun",
-            "otherEntityField": "urunAdi"
-        }
-    ],
-    "changelogDate": "20200107161124",
-    "entityTableName": "borc_alacak",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "BorcAlacak",
+  "fields": [
+    {
+      "fieldName": "tutar",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "notlar",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "odemeAraci",
+      "fieldType": "OdemeAraci",
+      "fieldValues": "NAKIT,BANKA"
+    },
+    {
+      "fieldName": "hareketTipi",
+      "fieldType": "HareketTipi",
+      "fieldValues": "URUN_GIRISI,ODEME"
+    },
+    {
+      "fieldName": "tarih",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "borcAlacak",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "urun",
+      "otherEntityRelationshipName": "borcAlacak",
+      "relationshipName": "urun",
+      "otherEntityField": "urunAdi"
+    }
+  ],
+  "changelogDate": "20200107161124",
+  "entityTableName": "borc_alacak",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

@@ -43,7 +43,7 @@ export const KasaHareketleriDetail = (props: IKasaHareketleriDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={kasaHareketleriEntity.tarih} type="date" format={APP_DATE_FORMAT} />
+            {kasaHareketleriEntity.tarih ? <TextFormat value={kasaHareketleriEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}
           </dd>
         </dl>
         <Button tag={Link} to="/kasa-hareketleri" replace color="info">
@@ -65,7 +65,7 @@ export const KasaHareketleriDetail = (props: IKasaHareketleriDetailProps) => {
 };
 
 const mapStateToProps = ({ kasaHareketleri }: IRootState) => ({
-  kasaHareketleriEntity: kasaHareketleri.entity
+  kasaHareketleriEntity: kasaHareketleri.entity,
 });
 
 const mapDispatchToProps = { getEntity };

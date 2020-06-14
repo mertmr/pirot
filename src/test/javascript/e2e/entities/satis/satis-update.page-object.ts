@@ -38,10 +38,7 @@ export default class SatisUpdatePage {
     return this.kartliSatisInput;
   }
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {
@@ -57,10 +54,7 @@ export default class SatisUpdatePage {
   }
 
   async kisiSelectLastOption() {
-    await this.kisiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.kisiSelect.all(by.tagName('option')).last().click();
   }
 
   async kisiSelectOption(option) {

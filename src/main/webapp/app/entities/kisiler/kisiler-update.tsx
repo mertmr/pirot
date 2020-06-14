@@ -43,7 +43,7 @@ export const KisilerUpdate = (props: IKisilerUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...kisilerEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -127,14 +127,14 @@ const mapStateToProps = (storeState: IRootState) => ({
   kisilerEntity: storeState.kisiler.entity,
   loading: storeState.kisiler.loading,
   updating: storeState.kisiler.updating,
-  updateSuccess: storeState.kisiler.updateSuccess
+  updateSuccess: storeState.kisiler.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

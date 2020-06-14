@@ -59,7 +59,7 @@ export const UrunFiyatHesapDeleteDialog = (props: IUrunFiyatHesapDeleteDialogPro
 
 const mapStateToProps = ({ urunFiyatHesap }: IRootState) => ({
   urunFiyatHesapEntity: urunFiyatHesap.entity,
-  updateSuccess: urunFiyatHesap.updateSuccess
+  updateSuccess: urunFiyatHesap.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

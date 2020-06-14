@@ -6,7 +6,7 @@ export interface IUretici {
   adi?: string;
   adres?: string;
   bankaBilgileri?: string;
-  tarih?: Moment;
+  tarih?: string;
   user?: IUser;
 }
 

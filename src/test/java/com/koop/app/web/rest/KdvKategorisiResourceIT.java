@@ -75,7 +75,6 @@ public class KdvKategorisiResourceIT {
     @Transactional
     public void createKdvKategorisi() throws Exception {
         int databaseSizeBeforeCreate = kdvKategorisiRepository.findAll().size();
-
         // Create the KdvKategorisi
         restKdvKategorisiMockMvc
             .perform(
@@ -124,12 +123,10 @@ public class KdvKategorisiResourceIT {
 
         // Create the KdvKategorisi, which fails.
 
-        restKdvKategorisiMockMvc
-            .perform(
-                post("/api/kdv-kategorisis")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi))
-            )
+
+        restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
         List<KdvKategorisi> kdvKategorisiList = kdvKategorisiRepository.findAll();
@@ -145,12 +142,10 @@ public class KdvKategorisiResourceIT {
 
         // Create the KdvKategorisi, which fails.
 
-        restKdvKategorisiMockMvc
-            .perform(
-                post("/api/kdv-kategorisis")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi))
-            )
+
+        restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
             .andExpect(status().isBadRequest());
 
         List<KdvKategorisi> kdvKategorisiList = kdvKategorisiRepository.findAll();
@@ -188,7 +183,6 @@ public class KdvKategorisiResourceIT {
             .andExpect(jsonPath("$.kategoriAdi").value(DEFAULT_KATEGORI_ADI))
             .andExpect(jsonPath("$.kdvOrani").value(DEFAULT_KDV_ORANI));
     }
-
     @Test
     @Transactional
     public void getNonExistingKdvKategorisi() throws Exception {
@@ -230,8 +224,6 @@ public class KdvKategorisiResourceIT {
     @Transactional
     public void updateNonExistingKdvKategorisi() throws Exception {
         int databaseSizeBeforeUpdate = kdvKategorisiRepository.findAll().size();
-
-        // Create the KdvKategorisi
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKdvKategorisiMockMvc

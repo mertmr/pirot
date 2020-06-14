@@ -14,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "satis_stok_hareketleri")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SatisStokHareketleri implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -32,14 +32,14 @@ public class SatisStokHareketleri implements Serializable {
     private BigDecimal tutar;
 
     @ManyToOne
-    @JsonIgnoreProperties("satisStokHareketleris")
+    @JsonIgnoreProperties(value = "satisStokHareketleris", allowSetters = true)
     private Urun urun;
 
     @ManyToOne
-    @JsonIgnoreProperties("stokHareketleriLists")
+    @JsonIgnoreProperties(value = "stokHareketleriLists", allowSetters = true)
     private Satis satis;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -99,8 +99,7 @@ public class SatisStokHareketleri implements Serializable {
     public void setSatis(Satis satis) {
         this.satis = satis;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -118,6 +117,7 @@ public class SatisStokHareketleri implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "SatisStokHareketleri{" + "id=" + getId() + ", miktar=" + getMiktar() + ", tutar=" + getTutar() + "}";

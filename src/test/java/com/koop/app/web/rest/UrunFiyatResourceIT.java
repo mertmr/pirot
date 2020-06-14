@@ -120,7 +120,6 @@ public class UrunFiyatResourceIT {
     @WithMockUser(value = "admin")
     public void createUrunFiyat() throws Exception {
         int databaseSizeBeforeCreate = urunFiyatRepository.findAll().size();
-
         // Create the UrunFiyat
         restUrunFiyatMockMvc
             .perform(post("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
@@ -183,7 +182,6 @@ public class UrunFiyatResourceIT {
             .andExpect(jsonPath("$.fiyat").value(DEFAULT_FIYAT.intValue()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingUrunFiyat() throws Exception {
@@ -224,8 +222,6 @@ public class UrunFiyatResourceIT {
     @Transactional
     public void updateNonExistingUrunFiyat() throws Exception {
         int databaseSizeBeforeUpdate = urunFiyatRepository.findAll().size();
-
-        // Create the UrunFiyat
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunFiyatMockMvc

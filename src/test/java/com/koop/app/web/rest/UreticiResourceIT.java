@@ -125,7 +125,6 @@ public class UreticiResourceIT {
     @WithMockUser(value = "admin")
     public void createUretici() throws Exception {
         int databaseSizeBeforeCreate = ureticiRepository.findAll().size();
-
         // Create the Uretici
         restUreticiMockMvc
             .perform(post("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(uretici)))
@@ -168,8 +167,10 @@ public class UreticiResourceIT {
 
         // Create the Uretici, which fails.
 
-        restUreticiMockMvc
-            .perform(post("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(uretici)))
+
+        restUreticiMockMvc.perform(post("/api/ureticis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
         List<Uretici> ureticiList = ureticiRepository.findAll();
@@ -185,8 +186,10 @@ public class UreticiResourceIT {
 
         // Create the Uretici, which fails.
 
-        restUreticiMockMvc
-            .perform(post("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(uretici)))
+
+        restUreticiMockMvc.perform(post("/api/ureticis")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(uretici)))
             .andExpect(status().isBadRequest());
 
         List<Uretici> ureticiList = ureticiRepository.findAll();
@@ -228,7 +231,6 @@ public class UreticiResourceIT {
             .andExpect(jsonPath("$.bankaBilgileri").value(DEFAULT_BANKA_BILGILERI))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingUretici() throws Exception {
@@ -271,8 +273,6 @@ public class UreticiResourceIT {
     @Transactional
     public void updateNonExistingUretici() throws Exception {
         int databaseSizeBeforeUpdate = ureticiRepository.findAll().size();
-
-        // Create the Uretici
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUreticiMockMvc

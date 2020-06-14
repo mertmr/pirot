@@ -59,7 +59,7 @@ export const VirmanDeleteDialog = (props: IVirmanDeleteDialogProps) => {
 
 const mapStateToProps = ({ virman }: IRootState) => ({
   virmanEntity: virman.entity,
-  updateSuccess: virman.updateSuccess
+  updateSuccess: virman.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

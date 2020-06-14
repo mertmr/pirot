@@ -59,7 +59,7 @@ export const StokGirisiDeleteDialog = (props: IStokGirisiDeleteDialogProps) => {
 
 const mapStateToProps = ({ stokGirisi }: IRootState) => ({
   stokGirisiEntity: stokGirisi.entity,
-  updateSuccess: stokGirisi.updateSuccess
+  updateSuccess: stokGirisi.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

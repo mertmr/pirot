@@ -14,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "urun_fiyat")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UrunFiyat implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -30,14 +30,14 @@ public class UrunFiyat implements Serializable {
     private ZonedDateTime tarih;
 
     @ManyToOne
-    @JsonIgnoreProperties("urunFiyats")
+    @JsonIgnoreProperties(value = "urunFiyats", allowSetters = true)
     private User user;
 
     @ManyToOne
-    @JsonIgnoreProperties("urunFiyats")
+    @JsonIgnoreProperties(value = "urunFiyats", allowSetters = true)
     private Urun urun;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -97,8 +97,7 @@ public class UrunFiyat implements Serializable {
     public void setUrun(Urun urun) {
         this.urun = urun;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -116,6 +115,7 @@ public class UrunFiyat implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "UrunFiyat{" + "id=" + getId() + ", fiyat=" + getFiyat() + ", tarih='" + getTarih() + "'" + "}";

@@ -13,7 +13,7 @@ import reducer, {
   getSearchEntities,
   getEntity,
   updateEntity,
-  reset
+  reset,
 } from 'app/entities/urun/urun.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IUrun, defaultValue } from 'app/shared/model/urun.model';
@@ -45,7 +45,7 @@ describe('Entities reducer tests', () => {
       loading: false,
       errorMessage: null,
       updating: false,
-      updateSuccess: false
+      updateSuccess: false,
     });
     expect(isEmpty(state.entities));
     expect(isEmpty(state.entity));
@@ -65,17 +65,13 @@ describe('Entities reducer tests', () => {
 
   describe('Requests', () => {
     it('should set state to loading', () => {
-      testMultipleTypes(
-        [REQUEST(ACTION_TYPES.FETCH_URUN_LIST), REQUEST(ACTION_TYPES.SEARCH_URUNS), REQUEST(ACTION_TYPES.FETCH_URUN)],
-        {},
-        state => {
-          expect(state).toMatchObject({
-            errorMessage: null,
-            updateSuccess: false,
-            loading: true
-          });
-        }
-      );
+      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_URUN_LIST), REQUEST(ACTION_TYPES.FETCH_URUN)], {}, state => {
+        expect(state).toMatchObject({
+          errorMessage: null,
+          updateSuccess: false,
+          loading: true,
+        });
+      });
     });
 
     it('should set state to updating', () => {
@@ -86,7 +82,7 @@ describe('Entities reducer tests', () => {
           expect(state).toMatchObject({
             errorMessage: null,
             updateSuccess: false,
-            updating: true
+            updating: true,
           });
         }
       );
@@ -97,11 +93,11 @@ describe('Entities reducer tests', () => {
         reducer(
           { ...initialState, loading: true },
           {
-            type: ACTION_TYPES.RESET
+            type: ACTION_TYPES.RESET,
           }
         )
       ).toEqual({
-        ...initialState
+        ...initialState,
       });
     });
   });
@@ -115,14 +111,14 @@ describe('Entities reducer tests', () => {
           FAILURE(ACTION_TYPES.FETCH_URUN),
           FAILURE(ACTION_TYPES.CREATE_URUN),
           FAILURE(ACTION_TYPES.UPDATE_URUN),
-          FAILURE(ACTION_TYPES.DELETE_URUN)
+          FAILURE(ACTION_TYPES.DELETE_URUN),
         ],
         'error message',
         state => {
           expect(state).toMatchObject({
             errorMessage: 'error message',
             updateSuccess: false,
-            updating: false
+            updating: false,
           });
         }
       );
@@ -135,13 +131,13 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.FETCH_URUN_LIST),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         loading: false,
         totalItems: payload.headers['x-total-count'],
-        entities: payload.data
+        entities: payload.data,
       });
     });
     it('should search all entities', () => {
@@ -164,12 +160,12 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.FETCH_URUN),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         loading: false,
-        entity: payload.data
+        entity: payload.data,
       });
     });
 
@@ -178,13 +174,13 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.CREATE_URUN),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         updating: false,
         updateSuccess: true,
-        entity: payload.data
+        entity: payload.data,
       });
     });
 
@@ -192,11 +188,11 @@ describe('Entities reducer tests', () => {
       const payload = 'fake payload';
       const toTest = reducer(undefined, {
         type: SUCCESS(ACTION_TYPES.DELETE_URUN),
-        payload
+        payload,
       });
       expect(toTest).toMatchObject({
         updating: false,
-        updateSuccess: true
+        updateSuccess: true,
       });
     });
   });
@@ -217,12 +213,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.FETCH_URUN_LIST actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_URUN_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_URUN_LIST),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_URUN_LIST),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(getEntities()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -242,12 +238,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.FETCH_URUN actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_URUN)
+          type: REQUEST(ACTION_TYPES.FETCH_URUN),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_URUN),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(getEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -255,19 +251,19 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.CREATE_URUN actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.CREATE_URUN)
+          type: REQUEST(ACTION_TYPES.CREATE_URUN),
         },
         {
           type: SUCCESS(ACTION_TYPES.CREATE_URUN),
-          payload: resolvedObject
+          payload: resolvedObject,
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_URUN_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_URUN_LIST),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_URUN_LIST),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -275,12 +271,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.UPDATE_URUN actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.UPDATE_URUN)
+          type: REQUEST(ACTION_TYPES.UPDATE_URUN),
         },
         {
           type: SUCCESS(ACTION_TYPES.UPDATE_URUN),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(updateEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -288,12 +284,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.DELETE_URUN actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.DELETE_URUN)
+          type: REQUEST(ACTION_TYPES.DELETE_URUN),
         },
         {
           type: SUCCESS(ACTION_TYPES.DELETE_URUN),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -301,8 +297,8 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.RESET actions', async () => {
       const expectedActions = [
         {
-          type: ACTION_TYPES.RESET
-        }
+          type: ACTION_TYPES.RESET,
+        },
       ];
       await store.dispatch(reset());
       expect(store.getActions()).toEqual(expectedActions);

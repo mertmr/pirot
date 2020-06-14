@@ -10,7 +10,7 @@ export interface IStokGirisi {
   agirlik?: number;
   notlar?: string;
   stokHareketiTipi?: StokHareketiTipi;
-  tarih?: Moment;
+  tarih?: string;
   user?: IUser;
   urun?: IUrun;
 }

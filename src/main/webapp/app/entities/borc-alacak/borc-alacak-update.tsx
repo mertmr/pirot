@@ -52,7 +52,7 @@ export const BorcAlacakUpdate = (props: IBorcAlacakUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...borcAlacakEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -145,11 +145,11 @@ export const BorcAlacakUpdate = (props: IBorcAlacakUpdateProps) => {
                 <Label for="borc-alacak-user">
                   <Translate contentKey="koopApp.borcAlacak.user">User</Translate>
                 </Label>
-                <AvInput id="borc-alacak-user" type="select" className="form-control" name="user">
+                <AvInput id="borc-alacak-user" type="select" className="form-control" name="user.id">
                   <option value="" key="0" />
                   {users
-                    ? users.map((otherEntity, index) => (
-                        <option value={index} key={otherEntity.id}>
+                    ? users.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.login}
                         </option>
                       ))
@@ -198,7 +198,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   borcAlacakEntity: storeState.borcAlacak.entity,
   loading: storeState.borcAlacak.loading,
   updating: storeState.borcAlacak.updating,
-  updateSuccess: storeState.borcAlacak.updateSuccess
+  updateSuccess: storeState.borcAlacak.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -207,7 +207,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

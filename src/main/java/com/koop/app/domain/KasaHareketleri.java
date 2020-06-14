@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "kasa_hareketleri")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class KasaHareketleri implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class KasaHareketleri implements Serializable {
     @Column(name = "tarih")
     private ZonedDateTime tarih;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -78,8 +78,7 @@ public class KasaHareketleri implements Serializable {
     public void setTarih(ZonedDateTime tarih) {
         this.tarih = tarih;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -97,6 +96,7 @@ public class KasaHareketleri implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return (

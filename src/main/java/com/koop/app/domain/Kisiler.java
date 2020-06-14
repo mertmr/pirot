@@ -6,7 +6,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.ZonedDateTime;
 
 /**
@@ -14,7 +13,7 @@ import java.time.ZonedDateTime;
  */
 @Entity
 @Table(name = "kisiler")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Kisiler implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,7 +35,7 @@ public class Kisiler implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -96,7 +95,7 @@ public class Kisiler implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -114,6 +113,7 @@ public class Kisiler implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Kisiler{" +

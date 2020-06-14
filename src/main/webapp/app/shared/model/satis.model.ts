@@ -5,7 +5,7 @@ import { IKisiler } from 'app/shared/model/kisiler.model';
 
 export interface ISatis {
   id?: number;
-  tarih?: Moment;
+  tarih?: string;
   toplamTutar?: number;
   ortagaSatis?: boolean;
   kartliSatis?: boolean;

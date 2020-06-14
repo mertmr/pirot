@@ -65,10 +65,7 @@ export default class UrunFiyatHesapUpdatePage {
   }
 
   async urunSelectLastOption() {
-    await this.urunSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunSelect.all(by.tagName('option')).last().click();
   }
 
   async urunSelectOption(option) {

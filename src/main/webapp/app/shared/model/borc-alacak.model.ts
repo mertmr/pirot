@@ -10,7 +10,7 @@ export interface IBorcAlacak {
   notlar?: string;
   odemeAraci?: OdemeAraci;
   hareketTipi?: HareketTipi;
-  tarih?: Moment;
+  tarih?: string;
   user?: IUser;
   urun?: IUrun;
 }

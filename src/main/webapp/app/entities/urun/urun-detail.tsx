@@ -101,7 +101,7 @@ export const UrunDetail = (props: IUrunDetailProps) => {
 };
 
 const mapStateToProps = ({ urun }: IRootState) => ({
-  urunEntity: urun.entity
+  urunEntity: urun.entity,
 });
 
 const mapDispatchToProps = { getEntity };

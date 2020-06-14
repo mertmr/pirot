@@ -59,7 +59,7 @@ export const UreticiDeleteDialog = (props: IUreticiDeleteDialogProps) => {
 
 const mapStateToProps = ({ uretici }: IRootState) => ({
   ureticiEntity: uretici.entity,
-  updateSuccess: uretici.updateSuccess
+  updateSuccess: uretici.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

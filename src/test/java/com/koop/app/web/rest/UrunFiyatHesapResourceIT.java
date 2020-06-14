@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link UrunFiyatHesapResource} REST controller.
  */
 @SpringBootTest(classes = KoopApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class UrunFiyatHesapResourceIT {
@@ -101,7 +100,6 @@ public class UrunFiyatHesapResourceIT {
     @Transactional
     public void createUrunFiyatHesap() throws Exception {
         int databaseSizeBeforeCreate = urunFiyatHesapRepository.findAll().size();
-
         // Create the UrunFiyatHesap
         restUrunFiyatHesapMockMvc.perform(post("/api/urun-fiyat-hesaps")
             .contentType(MediaType.APPLICATION_JSON)
@@ -177,7 +175,6 @@ public class UrunFiyatHesapResourceIT {
             .andExpect(jsonPath("$.dayanisma").value(DEFAULT_DAYANISMA))
             .andExpect(jsonPath("$.fire").value(DEFAULT_FIRE));
     }
-
     @Test
     @Transactional
     public void getNonExistingUrunFiyatHesap() throws Exception {
@@ -227,8 +224,6 @@ public class UrunFiyatHesapResourceIT {
     @Transactional
     public void updateNonExistingUrunFiyatHesap() throws Exception {
         int databaseSizeBeforeUpdate = urunFiyatHesapRepository.findAll().size();
-
-        // Create the UrunFiyatHesap
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunFiyatHesapMockMvc.perform(put("/api/urun-fiyat-hesaps")

@@ -57,7 +57,7 @@ export const KdvKategorisiDetail = (props: IKdvKategorisiDetailProps) => {
 };
 
 const mapStateToProps = ({ kdvKategorisi }: IRootState) => ({
-  kdvKategorisiEntity: kdvKategorisi.entity
+  kdvKategorisiEntity: kdvKategorisi.entity,
 });
 
 const mapDispatchToProps = { getEntity };

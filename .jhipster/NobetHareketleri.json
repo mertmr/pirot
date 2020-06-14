@@ -1,49 +1,49 @@
 {
-    "name": "NobetHareketleri",
-    "fields": [
-        {
-            "fieldName": "kasa",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "pirot",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "fark",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "nobetSuresi",
-            "fieldType": "BigDecimal"
-        },
-        {
-            "fieldName": "notlar",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "tarih",
-            "fieldType": "ZonedDateTime"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "user",
-            "otherEntityRelationshipName": "nobetHareketleri",
-            "relationshipName": "user",
-            "otherEntityField": "login"
-        }
-    ],
-    "changelogDate": "20200107161126",
-    "entityTableName": "nobet_hareketleri",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "clientRootFolder": "",
-    "applications": "*",
-    "embedded": false
+  "name": "NobetHareketleri",
+  "fields": [
+    {
+      "fieldName": "kasa",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "pirot",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "fark",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "nobetSuresi",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "notlar",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tarih",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "nobetHareketleri",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    }
+  ],
+  "changelogDate": "20200107161126",
+  "entityTableName": "nobet_hareketleri",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "embedded": false
 }

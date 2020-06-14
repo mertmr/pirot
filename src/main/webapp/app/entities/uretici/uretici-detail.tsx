@@ -48,9 +48,7 @@ export const UreticiDetail = (props: IUreticiDetailProps) => {
               <Translate contentKey="koopApp.uretici.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={ureticiEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{ureticiEntity.tarih ? <TextFormat value={ureticiEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <Translate contentKey="koopApp.uretici.user">User</Translate>
           </dt>
@@ -75,7 +73,7 @@ export const UreticiDetail = (props: IUreticiDetailProps) => {
 };
 
 const mapStateToProps = ({ uretici }: IRootState) => ({
-  ureticiEntity: uretici.entity
+  ureticiEntity: uretici.entity,
 });
 
 const mapDispatchToProps = { getEntity };

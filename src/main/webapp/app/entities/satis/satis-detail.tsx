@@ -30,9 +30,7 @@ export const SatisDetail = (props: ISatisDetailProps) => {
               <Translate contentKey="koopApp.satis.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={satisEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{satisEntity.tarih ? <TextFormat value={satisEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <span id="toplamTutar">
               <Translate contentKey="koopApp.satis.toplamTutar">Toplam Tutar</Translate>
@@ -108,7 +106,7 @@ export const SatisDetail = (props: ISatisDetailProps) => {
 };
 
 const mapStateToProps = ({ satis }: IRootState) => ({
-  satisEntity: satis.entity
+  satisEntity: satis.entity,
 });
 
 const mapDispatchToProps = { getEntity };

@@ -15,6 +15,8 @@ import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
 import java.io.File;
 import java.util.*;
 import javax.servlet.*;
+
+import org.h2.server.web.WebServlet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
@@ -53,7 +55,8 @@ public class WebConfigurerTest {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION);
         webConfigurer.onStartup(servletContext);
 
-        verify(servletContext).addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+
+        verify(servletContext, never()).addServlet(eq("H2Console"), any(WebServlet.class));
     }
 
     @Test
@@ -61,7 +64,8 @@ public class WebConfigurerTest {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT);
         webConfigurer.onStartup(servletContext);
 
-        verify(servletContext, never()).addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+
+        verify(servletContext).addServlet(eq("H2Console"), any(WebServlet.class));
     }
 
     @Test

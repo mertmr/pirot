@@ -48,7 +48,7 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...ureticiEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -91,7 +91,7 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
                   type="text"
                   name="adi"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -110,7 +110,7 @@ export const UreticiUpdate = (props: IUreticiUpdateProps) => {
                   type="text"
                   name="bankaBilgileri"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -140,7 +140,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   ureticiEntity: storeState.uretici.entity,
   loading: storeState.uretici.loading,
   updating: storeState.uretici.updating,
-  updateSuccess: storeState.uretici.updateSuccess
+  updateSuccess: storeState.uretici.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -148,7 +148,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

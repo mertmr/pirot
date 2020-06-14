@@ -42,9 +42,7 @@ export const KisilerDetail = (props: IKisilerDetailProps) => {
               <Translate contentKey="koopApp.kisiler.tarih">Tarih</Translate>
             </span>
           </dt>
-          <dd>
-            <TextFormat value={kisilerEntity.tarih} type="date" format={APP_DATE_FORMAT} />
-          </dd>
+          <dd>{kisilerEntity.tarih ? <TextFormat value={kisilerEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}</dd>
           <dt>
             <span id="active">
               <Translate contentKey="koopApp.kisiler.active">Active</Translate>
@@ -71,7 +69,7 @@ export const KisilerDetail = (props: IKisilerDetailProps) => {
 };
 
 const mapStateToProps = ({ kisiler }: IRootState) => ({
-  kisilerEntity: kisiler.entity
+  kisilerEntity: kisiler.entity,
 });
 
 const mapDispatchToProps = { getEntity };

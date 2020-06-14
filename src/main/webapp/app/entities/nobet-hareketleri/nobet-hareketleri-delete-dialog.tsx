@@ -59,7 +59,7 @@ export const NobetHareketleriDeleteDialog = (props: INobetHareketleriDeleteDialo
 
 const mapStateToProps = ({ nobetHareketleri }: IRootState) => ({
   nobetHareketleriEntity: nobetHareketleri.entity,
-  updateSuccess: nobetHareketleri.updateSuccess
+  updateSuccess: nobetHareketleri.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

@@ -144,7 +144,6 @@ public class VirmanResourceIT {
     @WithMockUser(value = "admin")
     public void createVirman() throws Exception {
         int databaseSizeBeforeCreate = virmanRepository.findAll().size();
-
         // Create the Virman
         restVirmanMockMvc
             .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
@@ -188,8 +187,10 @@ public class VirmanResourceIT {
 
         // Create the Virman, which fails.
 
-        restVirmanMockMvc
-            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
+
+        restVirmanMockMvc.perform(post("/api/virmen")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
         List<Virman> virmanList = virmanRepository.findAll();
@@ -205,8 +206,10 @@ public class VirmanResourceIT {
 
         // Create the Virman, which fails.
 
-        restVirmanMockMvc
-            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
+
+        restVirmanMockMvc.perform(post("/api/virmen")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(virman)))
             .andExpect(status().isBadRequest());
 
         List<Virman> virmanList = virmanRepository.findAll();
@@ -250,7 +253,6 @@ public class VirmanResourceIT {
             .andExpect(jsonPath("$.girisHesabi").value(DEFAULT_GIRIS_HESABI.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingVirman() throws Exception {
@@ -297,8 +299,6 @@ public class VirmanResourceIT {
     @Transactional
     public void updateNonExistingVirman() throws Exception {
         int databaseSizeBeforeUpdate = virmanRepository.findAll().size();
-
-        // Create the Virman
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVirmanMockMvc

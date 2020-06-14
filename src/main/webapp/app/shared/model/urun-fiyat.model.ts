@@ -5,7 +5,7 @@ import { IUrun } from 'app/shared/model/urun.model';
 export interface IUrunFiyat {
   id?: number;
   fiyat?: number;
-  tarih?: Moment;
+  tarih?: string;
   user?: IUser;
   urun?: IUrun;
 }

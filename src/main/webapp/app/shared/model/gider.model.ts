@@ -5,7 +5,7 @@ import { OdemeAraci } from 'app/shared/model/enumerations/odeme-araci.model';
 
 export interface IGider {
   id?: number;
-  tarih?: Moment;
+  tarih?: string;
   tutar?: number;
   notlar?: string;
   giderTipi?: GiderTipi;

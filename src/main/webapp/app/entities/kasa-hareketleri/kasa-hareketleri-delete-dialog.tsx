@@ -59,7 +59,7 @@ export const KasaHareketleriDeleteDialog = (props: IKasaHareketleriDeleteDialogP
 
 const mapStateToProps = ({ kasaHareketleri }: IRootState) => ({
   kasaHareketleriEntity: kasaHareketleri.entity,
-  updateSuccess: kasaHareketleri.updateSuccess
+  updateSuccess: kasaHareketleri.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

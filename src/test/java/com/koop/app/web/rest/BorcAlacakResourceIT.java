@@ -102,7 +102,6 @@ public class BorcAlacakResourceIT {
     @Transactional
     public void createBorcAlacak() throws Exception {
         int databaseSizeBeforeCreate = borcAlacakRepository.findAll().size();
-
         // Create the BorcAlacak
         restBorcAlacakMockMvc
             .perform(
@@ -178,7 +177,6 @@ public class BorcAlacakResourceIT {
             .andExpect(jsonPath("$.hareketTipi").value(DEFAULT_HAREKET_TIPI.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
-
     @Test
     @Transactional
     public void getNonExistingBorcAlacak() throws Exception {
@@ -228,8 +226,6 @@ public class BorcAlacakResourceIT {
     @Transactional
     public void updateNonExistingBorcAlacak() throws Exception {
         int databaseSizeBeforeUpdate = borcAlacakRepository.findAll().size();
-
-        // Create the BorcAlacak
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBorcAlacakMockMvc

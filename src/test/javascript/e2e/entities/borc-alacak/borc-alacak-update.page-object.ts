@@ -41,10 +41,7 @@ export default class BorcAlacakUpdatePage {
   }
 
   async odemeAraciSelectLastOption() {
-    await this.odemeAraciSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.odemeAraciSelect.all(by.tagName('option')).last().click();
   }
   async setHareketTipiSelect(hareketTipi) {
     await this.hareketTipiSelect.sendKeys(hareketTipi);
@@ -55,10 +52,7 @@ export default class BorcAlacakUpdatePage {
   }
 
   async hareketTipiSelectLastOption() {
-    await this.hareketTipiSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.hareketTipiSelect.all(by.tagName('option')).last().click();
   }
   async setTarihInput(tarih) {
     await this.tarihInput.sendKeys(tarih);
@@ -69,10 +63,7 @@ export default class BorcAlacakUpdatePage {
   }
 
   async userSelectLastOption() {
-    await this.userSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.userSelect.all(by.tagName('option')).last().click();
   }
 
   async userSelectOption(option) {
@@ -88,10 +79,7 @@ export default class BorcAlacakUpdatePage {
   }
 
   async urunSelectLastOption() {
-    await this.urunSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.urunSelect.all(by.tagName('option')).last().click();
   }
 
   async urunSelectOption(option) {

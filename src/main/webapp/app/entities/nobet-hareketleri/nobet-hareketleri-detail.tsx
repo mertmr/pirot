@@ -61,7 +61,7 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={nobetHareketleriEntity.tarih} type="date" format={APP_DATE_FORMAT} />
+            {nobetHareketleriEntity.tarih ? <TextFormat value={nobetHareketleriEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}
           </dd>
           <dt>
             <Translate contentKey="koopApp.nobetHareketleri.user">User</Translate>
@@ -87,7 +87,7 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
 };
 
 const mapStateToProps = ({ nobetHareketleri }: IRootState) => ({
-  nobetHareketleriEntity: nobetHareketleri.entity
+  nobetHareketleriEntity: nobetHareketleri.entity,
 });
 
 const mapDispatchToProps = { getEntity };
