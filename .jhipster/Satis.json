@@ -1,0 +1,54 @@
+{
+    "name": "Satis",
+    "fields": [
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "toplamTutar",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "ortagaSatis",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "kartliSatis",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "satisStokHareketleri",
+            "otherEntityRelationshipName": "satis",
+            "relationshipName": "stokHareketleriList"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "satis",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "kisiler",
+            "otherEntityRelationshipName": "satis",
+            "relationshipName": "kisi",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200103090901",
+    "entityTableName": "satis",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*",
+    "embedded": false
+}

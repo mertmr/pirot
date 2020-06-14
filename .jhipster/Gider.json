@@ -1,0 +1,59 @@
+{
+    "name": "Gider",
+    "fields": [
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "tutar",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "notlar",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "giderTipi",
+            "fieldType": "GiderTipi",
+            "fieldValues": "KARGO,SU,DIGER,VERGI,KIRA,AIDAT,TAKSI,ELEKTRIK",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "odemeAraci",
+            "fieldType": "OdemeAraci",
+            "fieldValues": "NAKIT,BANKA",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "gider",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        }
+    ],
+    "changelogDate": "20200103090859",
+    "entityTableName": "gider",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*",
+    "embedded": false
+}

@@ -1,0 +1,11 @@
+id;urun_adi;stok;stok_siniri;musteri_fiyati;birim;dayanisma_urunu;satista;urun_kategorisi;active
+1;Massachusetts lime California;94838;59151;40295;ADET;true;true;GIDA_DISI;true
+2;Incredible Rubber Mouse;70207;11994;73232;GRAM;false;false;GIDA_DISI;false
+3;6th generation monitor;27912;66375;77243;GRAM;false;true;GIDA;true
+4;programming;27858;90821;47273;ADET;false;true;GIDA_DISI;false
+5;override;93989;96444;29446;GRAM;false;true;GIDA_DISI;false
+6;deposit backing up pixel;16230;81314;81780;GRAM;false;false;GIDA;false
+7;viral bus;81625;4533;14397;ADET;true;true;GIDA_DISI;true
+8;Kids invoice Lodge;90519;96369;48883;ADET;true;true;GIDA_DISI;true
+9;Bedfordshire Handmade Rubber Chair haptic;43292;97297;48282;GRAM;true;true;GIDA;false
+10;Granite Dynamic brand;90631;71564;46126;GRAM;true;false;GIDA;false

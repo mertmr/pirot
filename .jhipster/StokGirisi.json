@@ -1,0 +1,62 @@
+{
+    "name": "StokGirisi",
+    "fields": [
+        {
+            "fieldName": "miktar",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "agirlik",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "notlar",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "stokHareketiTipi",
+            "fieldType": "StokHareketiTipi",
+            "fieldValues": "STOK_GIRISI,FIRE,STOK_DUZELTME,MASRAF,IADE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tarih",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "stokGirisi",
+            "relationshipName": "user",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "urun",
+            "otherEntityRelationshipName": "stokGirisi",
+            "relationshipName": "urun",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200103090903",
+    "entityTableName": "stok_girisi",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*",
+    "embedded": false
+}

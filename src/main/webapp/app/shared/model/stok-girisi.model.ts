@@ -1,0 +1,17 @@
+import { Moment } from 'moment';
+import { IUser } from 'app/shared/model/user.model';
+import { IUrun } from 'app/shared/model/urun.model';
+import { StokHareketiTipi } from 'app/shared/model/enumerations/stok-hareketi-tipi.model';
+
+export interface IStokGirisi {
+  id?: number;
+  miktar?: number;
+  agirlik?: number;
+  notlar?: string;
+  stokHareketiTipi?: StokHareketiTipi;
+  tarih?: Moment;
+  user?: IUser;
+  urun?: IUrun;
+}
+
+export const defaultValue: Readonly<IStokGirisi> = {};
