@@ -24,7 +24,7 @@ describe('error-boundary-route component', () => {
     const route = shallow(<ErrorBoundaryRoute component={ErrorComp} path="/" />);
     const renderedRoute = route.find(Route);
     expect(renderedRoute.length).toEqual(1);
-    const props = renderedRoute.props() as any;
+    const props = renderedRoute.props();
     expect(props.path).toEqual('/');
     expect(props.render).toBeDefined();
     const renderFn: Function = props.render;
