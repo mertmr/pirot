@@ -43,8 +43,8 @@ public class KisilerResourceIT {
     private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final Boolean DEFAULT_ACTIVE = false;
-    private static final Boolean UPDATED_ACTIVE = true;
+    private static final Boolean DEFAULT_ACTIVE = true;
+    private static final Boolean UPDATED_ACTIVE = false;
 
     @Autowired
     private KisilerRepository kisilerRepository;
@@ -108,7 +108,7 @@ public class KisilerResourceIT {
         assertThat(testKisiler.getKisiAdi()).isEqualTo(DEFAULT_KISI_ADI);
         assertThat(testKisiler.getNotlar()).isEqualTo(DEFAULT_NOTLAR);
         assertThat(testKisiler.getTarih()).isEqualTo(DEFAULT_TARIH);
-        assertThat(testKisiler.isActive()).isEqualTo(DEFAULT_ACTIVE);
+        assertThat(testKisiler.isActive()).isEqualTo(true);
     }
 
     @Test
@@ -236,6 +236,6 @@ public class KisilerResourceIT {
 
         // Validate the database contains one less item
         List<Kisiler> kisilerList = kisilerRepository.findAll();
-        assertThat(kisilerList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(kisilerList).hasSize(databaseSizeBeforeDelete); //kisi sadece deaktif ediliyor, silinmemeli
     }
 }

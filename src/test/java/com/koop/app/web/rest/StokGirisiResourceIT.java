@@ -142,7 +142,7 @@ public class StokGirisiResourceIT {
     @Transactional
     @WithMockUser(value = "admin")
     public void createStokGirisi() throws Exception {
-        int databaseSizeBeforeCreate = stokGirisiRepository.findAll().size();
+        int databaseSizeBeforeCreate = stokGirisiRepository.findAll().size();stokGirisi.urun(UrunResourceIT.createEntity(em));
         // Create the StokGirisi
         restStokGirisiMockMvc
             .perform(

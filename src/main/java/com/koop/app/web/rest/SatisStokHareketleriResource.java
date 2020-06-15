@@ -4,6 +4,7 @@ import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.dto.AylikSatislar;
 import com.koop.app.dto.AylikSatislarRaporu;
 import com.koop.app.repository.SatisStokHareketleriRepository;
+import com.koop.app.repository.UrunRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -40,11 +41,14 @@ public class SatisStokHareketleriResource {
     private final Logger log = LoggerFactory.getLogger(SatisStokHareketleriResource.class);
     private final SatisStokHareketleriRepository satisStokHareketleriRepository;
 
+    private final UrunRepository urunRepository;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public SatisStokHareketleriResource(SatisStokHareketleriRepository satisStokHareketleriRepository) {
+    public SatisStokHareketleriResource(SatisStokHareketleriRepository satisStokHareketleriRepository, UrunRepository urunRepository) {
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
+        this.urunRepository = urunRepository;
     }
 
     /**
@@ -62,6 +66,7 @@ public class SatisStokHareketleriResource {
             throw new BadRequestAlertException("A new satisStokHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
         }
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
+        urunRepository.save(result.getUrun());
         return ResponseEntity
             .created(new URI("/api/satis-stok-hareketleris/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

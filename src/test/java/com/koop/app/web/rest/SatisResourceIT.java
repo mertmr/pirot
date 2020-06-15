@@ -4,17 +4,14 @@ import static com.koop.app.web.rest.TestUtil.createFormattingConversionService;
 import static com.koop.app.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.koop.app.KoopApp;
-import com.koop.app.domain.Satis;
-import com.koop.app.domain.Urun;
-import com.koop.app.repository.SatisRepository;
-import com.koop.app.service.MailService;
-import com.koop.app.service.SatisService;
-import com.koop.app.service.UserService;
-import com.koop.app.web.rest.errors.ExceptionTranslator;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -22,7 +19,17 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
+
 import javax.persistence.EntityManager;
+
+import com.koop.app.KoopApp;
+import com.koop.app.domain.Satis;
+import com.koop.app.domain.Urun;
+import com.koop.app.repository.SatisRepository;
+import com.koop.app.service.MailService;
+import com.koop.app.service.SatisService;
+import com.koop.app.web.rest.errors.ExceptionTranslator;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -33,12 +40,10 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
-
 /**
  * Integration tests for the {@link SatisResource} REST controller.
  */

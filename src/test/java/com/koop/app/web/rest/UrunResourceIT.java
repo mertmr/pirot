@@ -355,6 +355,6 @@ public class UrunResourceIT {
 
         // Validate the database contains one less item
         List<Urun> urunList = urunRepository.findAll();
-        assertThat(urunList).hasSize(databaseSizeBeforeDelete - 1);
+        assertThat(urunList).hasSize(databaseSizeBeforeDelete); //urun deaktif edliliyor sayisi degismemeli
     }
 }

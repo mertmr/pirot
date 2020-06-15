@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
 import java.io.File;
 import java.util.*;
 import javax.servlet.*;
@@ -57,15 +56,6 @@ public class WebConfigurerTest {
 
 
         verify(servletContext, never()).addServlet(eq("H2Console"), any(WebServlet.class));
-    }
-
-    @Test
-    public void testStartUpDevServletContext() throws ServletException {
-        env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT);
-        webConfigurer.onStartup(servletContext);
-
-
-        verify(servletContext).addServlet(eq("H2Console"), any(WebServlet.class));
     }
 
     @Test

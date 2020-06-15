@@ -18,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -163,6 +162,7 @@ public class SatisStokHareketleriResourceIT {
     @WithMockUser(value = "admin")
     public void getAllSatisStokHareketleris() throws Exception {
         // Initialize the database
+        satisStokHareketleri.setUrun(null);
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
 
         // Get all the satisStokHareketleriList
@@ -179,6 +179,7 @@ public class SatisStokHareketleriResourceIT {
     @Transactional
     public void getSatisStokHareketleri() throws Exception {
         // Initialize the database
+        satisStokHareketleri.setUrun(null);
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
 
         // Get the satisStokHareketleri
@@ -202,6 +203,7 @@ public class SatisStokHareketleriResourceIT {
     @WithMockUser(value = "admin")
     public void updateSatisStokHareketleri() throws Exception {
         // Initialize the database
+        satisStokHareketleri.setUrun(null);
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
 
         int databaseSizeBeforeUpdate = satisStokHareketleriRepository.findAll().size();
@@ -252,6 +254,7 @@ public class SatisStokHareketleriResourceIT {
     @WithMockUser(value = "admin")
     public void deleteSatisStokHareketleri() throws Exception {
         // Initialize the database
+        satisStokHareketleri.setUrun(null);
         satisStokHareketleriRepository.saveAndFlush(satisStokHareketleri);
 
         int databaseSizeBeforeDelete = satisStokHareketleriRepository.findAll().size();

@@ -135,7 +135,7 @@ public class UrunResource {
     @GetMapping("/uruns")
     public ResponseEntity<List<Urun>> getAllUruns(Pageable pageable) {
         log.debug("REST request to get a page of Uruns");
-        Page<Urun> page = urunRepository.findAll(pageable);
+        Page<Urun> page = urunRepository.findEverything(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
