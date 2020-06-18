@@ -48,6 +48,14 @@ public class ReportService {
         );
     }
 
+    public Ciro getCiroReportGroupByNobetciAndDate(LocalDate fromDate, Long userId) {
+        return satisRepository.getCiroReportGroupByNobetciAndDate(
+            fromDate.atStartOfDay(ZoneId.systemDefault()),
+            fromDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()),
+            userId
+        );
+    }
+
     public List<ReportDatesDto> getOrtaklarFaturaDates() {
         return satisRepository.getOrtaklarFaturaDatesTop10(PageRequest.of(0, 10));
     }

@@ -5,7 +5,8 @@ import { defaultValue } from 'app/shared/model/ciro.model';
 
 export const ACTION_TYPES = {
   FETCH_CIROS: 'Report/FETCH_CIROS',
-  FETCH_CIROS_BY_NOBETCI: 'Report/FETCH_CIROS_BY_NOBETCI'
+  FETCH_CIROS_BY_NOBETCI: 'Report/FETCH_CIROS_BY_NOBETCI',
+  FETCH_CIROS_BY_NOBETCI_DATE: 'Report/FETCH_CIROS_BY_NOBETCI_DATE',
 };
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
   fromDateProp: null,
   toDateProp: null,
   totalItems: 0,
-  ciros: []
+  ciros: [],
+  ciro: defaultValue,
 };
 
 export type CiroState = Readonly<typeof initialState>;
@@ -24,25 +26,33 @@ export type CiroState = Readonly<typeof initialState>;
 export default (state: CiroState = initialState, action): CiroState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_CIROS_BY_NOBETCI):
+    case REQUEST(ACTION_TYPES.FETCH_CIROS_BY_NOBETCI_DATE):
     case REQUEST(ACTION_TYPES.FETCH_CIROS):
       return {
         ...state,
         errorMessage: null,
-        loading: true
+        loading: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_CIROS_BY_NOBETCI):
+    case FAILURE(ACTION_TYPES.FETCH_CIROS_BY_NOBETCI_DATE):
     case FAILURE(ACTION_TYPES.FETCH_CIROS):
       return {
         ...state,
         loading: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_CIROS_BY_NOBETCI):
     case SUCCESS(ACTION_TYPES.FETCH_CIROS):
       return {
         ...state,
         loading: false,
-        ciros: action.payload.data
+        ciros: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_CIROS_BY_NOBETCI_DATE):
+      return {
+        ...state,
+        loading: false,
+        ciro: action.payload.data,
       };
     default:
       return state;
@@ -61,9 +71,10 @@ export const getCiros = (page, size, sort, fromDate, toDate) => {
   }
   return {
     type: ACTION_TYPES.FETCH_CIROS,
-    payload: axios.get(requestUrl)
+    payload: axios.get(requestUrl),
   };
 };
+
 export const getCirosByNobetci = fromDate => {
   let requestUrl = `api/reports/ciro/by-nobetci`;
   if (fromDate) {
@@ -71,6 +82,16 @@ export const getCirosByNobetci = fromDate => {
   }
   return {
     type: ACTION_TYPES.FETCH_CIROS_BY_NOBETCI,
-    payload: axios.get(requestUrl)
+    payload: axios.get(requestUrl),
+  };
+};
+
+export const getCirosByNobetciDate = (fromDate, userId) => {
+  let requestUrl = `api/reports/ciro/nobetci-date`;
+  requestUrl += `?fromDate=${fromDate}`;
+  requestUrl += `&userId=${userId}`;
+  return {
+    type: ACTION_TYPES.FETCH_CIROS_BY_NOBETCI_DATE,
+    payload: axios.get(requestUrl),
   };
 };

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -49,6 +51,15 @@ public class ReportsResource {
     public ResponseEntity<List<Ciro>> getCiroReportGroupByNobetci(@RequestParam(value = "fromDate") LocalDate fromDate) {
         log.debug("REST request to get ciro report by nobetci");
         return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetci(fromDate));
+    }
+
+    @GetMapping(params = {"fromDate", "userId"}, path = "/reports/ciro/nobetci-date")
+    public ResponseEntity<Ciro> getCiroReportGroupByNobetciAndDate(@RequestParam(value = "fromDate") String fromDate,
+                                                                         @RequestParam(value = "userId") Long userId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate zonedDateTime = LocalDate.parse(fromDate, formatter);
+        log.debug("REST request to get ciro report by nobetci and date");
+        return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetciAndDate(zonedDateTime, userId));
     }
 
     @GetMapping("/reports/report-date-list")

@@ -100,6 +100,22 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     )
     List<Ciro> getCiroReportGroupByNobetci(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
 
+    @Query(
+        "select new com.koop.app.dto.Ciro(" +
+            "sum(satis.toplamTutar) as toplam," +
+            "sum(case when satis.kartliSatis = true then satis.toplamTutar else 0 end) as kartli," +
+            "sum(case when satis.kartliSatis = false then satis.toplamTutar when satis.kartliSatis is null then satis.toplamTutar else 0 end), " +
+            "cast(satis.tarih as date), " +
+            "satis.user.login" +
+            ") " +
+            "from Satis satis " +
+            "where satis.tarih between :from and :to " +
+            "and satis.user.id = :userId " +
+            "group by cast(satis.tarih as date), satis.user.login " +
+            "order by cast(satis.tarih as date) desc"
+    )
+    Ciro getCiroReportGroupByNobetciAndDate(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to, @Param("userId") Long userId);
+
 //    @Query("select satis from Satis satis left join fetch satis.user")
 //    Page<Satis> findAllSatis(Pageable pageable);
 
