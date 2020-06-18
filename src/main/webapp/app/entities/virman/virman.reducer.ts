@@ -10,6 +10,7 @@ export const ACTION_TYPES = {
   SEARCH_VIRMAN: 'satis/SEARCH_VIRMAN',
   FETCH_VIRMAN_LIST: 'virman/FETCH_VIRMAN_LIST',
   FETCH_VIRMAN: 'virman/FETCH_VIRMAN',
+  FETCH_VIRMAN_USER: 'virman/FETCH_VIRMAN_USER',
   CREATE_VIRMAN: 'virman/CREATE_VIRMAN',
   UPDATE_VIRMAN: 'virman/UPDATE_VIRMAN',
   DELETE_VIRMAN: 'virman/DELETE_VIRMAN',
@@ -34,6 +35,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.SEARCH_VIRMAN):
     case REQUEST(ACTION_TYPES.FETCH_VIRMAN_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_VIRMAN_USER):
     case REQUEST(ACTION_TYPES.FETCH_VIRMAN):
       return {
         ...state,
@@ -53,6 +55,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
     case FAILURE(ACTION_TYPES.SEARCH_VIRMAN):
     case FAILURE(ACTION_TYPES.FETCH_VIRMAN_LIST):
     case FAILURE(ACTION_TYPES.FETCH_VIRMAN):
+    case FAILURE(ACTION_TYPES.FETCH_VIRMAN_USER):
     case FAILURE(ACTION_TYPES.CREATE_VIRMAN):
     case FAILURE(ACTION_TYPES.UPDATE_VIRMAN):
     case FAILURE(ACTION_TYPES.DELETE_VIRMAN):
@@ -71,6 +74,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
+    case SUCCESS(ACTION_TYPES.FETCH_VIRMAN_USER):
     case SUCCESS(ACTION_TYPES.FETCH_VIRMAN):
       return {
         ...state,
@@ -108,7 +112,7 @@ const apiSearchUrl = 'api/_search/virman';
 
 export const getSearchEntities: ICrudSearchAction<IVirman> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_VIRMAN,
-  payload: axios.get<IVirman>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+  payload: axios.get<IVirman>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
 export const getEntities: ICrudGetAllAction<IVirman> = (page, size, sort) => {
@@ -121,6 +125,16 @@ export const getEntities: ICrudGetAllAction<IVirman> = (page, size, sort) => {
 
 export const getEntity: ICrudGetAction<IVirman> = id => {
   const requestUrl = `${apiUrl}/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_VIRMAN,
+    payload: axios.get<IVirman>(requestUrl),
+  };
+};
+
+export const getVirmanUser = (fromDate, userId) => {
+  let requestUrl = `${apiUrl}/user-virman`;
+  requestUrl += `?fromDate=${fromDate}`;
+  requestUrl += `&userId=${userId}`;
   return {
     type: ACTION_TYPES.FETCH_VIRMAN,
     payload: axios.get<IVirman>(requestUrl),

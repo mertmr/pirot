@@ -9,6 +9,7 @@ export default class NobetHareketleriUpdatePage {
   farkInput: ElementFinder = element(by.css('input#nobet-hareketleri-fark'));
   nobetSuresiInput: ElementFinder = element(by.css('input#nobet-hareketleri-nobetSuresi'));
   notlarInput: ElementFinder = element(by.css('input#nobet-hareketleri-notlar'));
+  acilisKapanisSelect: ElementFinder = element(by.css('select#nobet-hareketleri-acilisKapanis'));
   tarihInput: ElementFinder = element(by.css('input#nobet-hareketleri-tarih'));
   userSelect: ElementFinder = element(by.css('select#nobet-hareketleri-user'));
 
@@ -56,6 +57,17 @@ export default class NobetHareketleriUpdatePage {
     return this.notlarInput.getAttribute('value');
   }
 
+  async setAcilisKapanisSelect(acilisKapanis) {
+    await this.acilisKapanisSelect.sendKeys(acilisKapanis);
+  }
+
+  async getAcilisKapanisSelect() {
+    return this.acilisKapanisSelect.element(by.css('option:checked')).getText();
+  }
+
+  async acilisKapanisSelectLastOption() {
+    await this.acilisKapanisSelect.all(by.tagName('option')).last().click();
+  }
   async setTarihInput(tarih) {
     await this.tarihInput.sendKeys(tarih);
   }

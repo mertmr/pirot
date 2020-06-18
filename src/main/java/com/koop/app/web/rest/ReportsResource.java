@@ -57,9 +57,9 @@ public class ReportsResource {
     public ResponseEntity<Ciro> getCiroReportGroupByNobetciAndDate(@RequestParam(value = "fromDate") String fromDate,
                                                                          @RequestParam(value = "userId") Long userId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate zonedDateTime = LocalDate.parse(fromDate, formatter);
+        LocalDate localDate = LocalDate.parse(fromDate, formatter);
         log.debug("REST request to get ciro report by nobetci and date");
-        return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetciAndDate(zonedDateTime, userId));
+        return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetciAndDate(localDate, userId));
     }
 
     @GetMapping("/reports/report-date-list")

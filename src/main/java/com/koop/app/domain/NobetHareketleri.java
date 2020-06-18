@@ -1,13 +1,16 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Objects;
-import javax.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.koop.app.domain.enumeration.AcilisKapanis;
 
 /**
  * A NobetHareketleri.
@@ -16,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "nobet_hareketleri")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class NobetHareketleri implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -37,6 +41,10 @@ public class NobetHareketleri implements Serializable {
 
     @Column(name = "notlar")
     private String notlar;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "acilis_kapanis")
+    private AcilisKapanis acilisKapanis;
 
     @Column(name = "tarih")
     private ZonedDateTime tarih;
@@ -119,6 +127,19 @@ public class NobetHareketleri implements Serializable {
         this.notlar = notlar;
     }
 
+    public AcilisKapanis getAcilisKapanis() {
+        return acilisKapanis;
+    }
+
+    public NobetHareketleri acilisKapanis(AcilisKapanis acilisKapanis) {
+        this.acilisKapanis = acilisKapanis;
+        return this;
+    }
+
+    public void setAcilisKapanis(AcilisKapanis acilisKapanis) {
+        this.acilisKapanis = acilisKapanis;
+    }
+
     public ZonedDateTime getTarih() {
         return tarih;
     }
@@ -165,25 +186,15 @@ public class NobetHareketleri implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "NobetHareketleri{" +
-            "id=" +
-            getId() +
-            ", kasa=" +
-            getKasa() +
-            ", pirot=" +
-            getPirot() +
-            ", fark=" +
-            getFark() +
-            ", nobetSuresi=" +
-            getNobetSuresi() +
-            ", notlar='" +
-            getNotlar() +
-            "'" +
-            ", tarih='" +
-            getTarih() +
-            "'" +
-            "}"
-        );
+        return "NobetHareketleri{" +
+            "id=" + getId() +
+            ", kasa=" + getKasa() +
+            ", pirot=" + getPirot() +
+            ", fark=" + getFark() +
+            ", nobetSuresi=" + getNobetSuresi() +
+            ", notlar='" + getNotlar() + "'" +
+            ", acilisKapanis='" + getAcilisKapanis() + "'" +
+            ", tarih='" + getTarih() + "'" +
+            "}";
     }
 }

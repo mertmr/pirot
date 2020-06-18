@@ -1,9 +1,11 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.NobetHareketleri;
-import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Spring Data  repository for the NobetHareketleri entity.
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface NobetHareketleriRepository extends JpaRepository<NobetHareketleri, Long> {
+
     @Query("select nobetHareketleri from NobetHareketleri nobetHareketleri where nobetHareketleri.user.login = ?#{principal.username}")
     List<NobetHareketleri> findByUserIsCurrentUser();
 }

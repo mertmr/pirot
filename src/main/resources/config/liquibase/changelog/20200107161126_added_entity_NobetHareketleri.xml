@@ -30,6 +30,9 @@
             <column name="notlar" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="acilis_kapanis" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="tarih" type="datetime">
                 <constraints nullable="true" />
             </column>
@@ -65,6 +68,7 @@
             <column name="fark" type="numeric"/>
             <column name="nobet_suresi" type="numeric"/>
             <column name="notlar" type="string"/>
+            <column name="acilis_kapanis" type="string"/>
             <column name="tarih" type="datetime"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

@@ -1,14 +1,16 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Row, Col, Table} from 'reactstrap';
-import {Translate, ICrudGetAction, TextFormat} from 'react-jhipster';
+import {Button, Col, Row, Table} from 'reactstrap';
+import {TextFormat, Translate} from 'react-jhipster';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import {IRootState} from 'app/shared/reducers';
 import {getEntity} from './nobet-hareketleri.reducer';
-import {APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT} from 'app/config/constants';
+import {APP_LOCAL_DATE_FORMAT} from 'app/config/constants';
 import {getCirosByNobetciDate} from "app/reports/ciro/ciro.reducer";
+import {AcilisKapanis} from "app/shared/model/enumerations/acilis-kapanis.model";
+import {getVirmanUser} from "app/entities/virman/virman.reducer";
 
 export interface INobetHareketleriDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
@@ -18,11 +20,13 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
     props.getEntity(props.match.params.id);
   }, []);
 
-  const {nobetHareketleriEntity, ciro} = props;
+  const {nobetHareketleriEntity, ciro, virman} = props;
 
   useEffect(() => {
-    if (nobetHareketleriEntity.user)
+    if (nobetHareketleriEntity.user) {
       props.getCirosByNobetciDate(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
+      props.getVirmanUser(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
+    }
   }, [nobetHareketleriEntity]);
 
 
@@ -40,49 +44,87 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
             </span>
           </dt>
           <dd>{nobetHareketleriEntity.notlar}</dd>
+          <dt>
+            <span id="acilisKapanis">
+              <Translate contentKey="koopApp.nobetHareketleri.acilisKapanis">Açılış Kapanış</Translate>
+            </span>
+          </dt>
+          <dd>{nobetHareketleriEntity.acilisKapanis}</dd>
+          <dt>
+            <span id="user">
+              <Translate contentKey="koopApp.nobetHareketleri.user">Kullanıcı</Translate>
+            </span>
+          </dt>
+          <dd>{nobetHareketleriEntity.user ? nobetHareketleriEntity.user.login : ''}</dd>
         </dl>
-        <Row>
-          <Col md="8">
-            <Table striped responsive>
-              <thead>
-              <tr>
-                <th>
-                  Nöbetçi
-                </th>
-                <th>
-                  Tarih
-                </th>
-                <th>
-                  Toplam Tutar
-                </th>
-                <th>
-                  Kartlı Satış
-                </th>
-                <th>
-                  Nakit Satış
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr key={`ciro2`}>
-                <td>
-                  {ciro.nobetci}
-                </td>
-                <td>{<TextFormat value={ciro.tarih} type="date" format={APP_LOCAL_DATE_FORMAT}/>}</td>
-                <td>
-                  {ciro.tutar}
-                </td>
-                <td>
-                  {ciro.kartli}
-                </td>
-                <td>
-                  {ciro.nakit}
-                </td>
-              </tr>
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
+        {nobetHareketleriEntity.acilisKapanis === AcilisKapanis.ACILIS ? (
+          <p>Açılış Hareketlerinde Ciro Gösterimi Yok</p>
+        ) : (
+          <Row>
+            <Col md="8">
+              <Table striped responsive>
+                <thead>
+                <tr>
+                  <th>
+                    Tarih
+                  </th>
+                  <th>
+                    Toplam Tutar
+                  </th>
+                  <th>
+                    Kartlı Satış
+                  </th>
+                  <th>
+                    Nakit Satış
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr key={`ciro2`}>
+                  <td>{<TextFormat value={ciro.tarih} type="date" format={APP_LOCAL_DATE_FORMAT}/>}</td>
+                  <td>
+                    {ciro.tutar}
+                  </td>
+                  <td>
+                    {ciro.kartli}
+                  </td>
+                  <td>
+                    {ciro.nakit}
+                  </td>
+                </tr>
+                </tbody>
+              </Table>
+            </Col>
+            {!virman ? (
+              <p/>
+            ) : (
+              <Col md="8">
+                <Table striped responsive>
+                  <thead>
+                  <tr>
+                    <th>
+                      Virman Tutar
+                    </th>
+                    <th>
+                      Virman Notu
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr key={`virman`}>
+                    <td>
+                      {virman.tutar}
+                    </td>
+                    <td>
+                      {virman.notlar}
+                    </td>
+                  </tr>
+                  </tbody>
+                </Table>
+              </Col>
+            )}
+          </Row>
+        )}
         <Row>
           <Col md="8">
             <Table striped responsive>
@@ -139,12 +181,13 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
   );
 };
 
-const mapStateToProps = ({nobetHareketleri, ciroState}: IRootState) => ({
+const mapStateToProps = ({nobetHareketleri, ciroState, virman}: IRootState) => ({
   nobetHareketleriEntity: nobetHareketleri.entity,
   ciro: ciroState.ciro,
+  virman: virman.entity,
 });
 
-const mapDispatchToProps = {getEntity, getCirosByNobetciDate};
+const mapDispatchToProps = {getEntity, getCirosByNobetciDate, getVirmanUser};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

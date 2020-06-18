@@ -99,6 +99,9 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
                 <th className="hand" onClick={sort('notlar')}>
                   <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('acilisKapanis')}>
+                  <Translate contentKey="koopApp.nobetHareketleri.acilisKapanis">Acilis Kapanis</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th className="hand" onClick={sort('tarih')}>
                   <Translate contentKey="koopApp.nobetHareketleri.tarih">Tarih</Translate> <FontAwesomeIcon icon="sort" />
                 </th>

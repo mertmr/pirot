@@ -9,12 +9,17 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -160,5 +165,23 @@ public class VirmanResource {
         Page<Virman> page = virmanRepository.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /user-virman} : bir kullanciya ait virmani getir
+     *
+     * @param fromDate sadece bu tarihli virmanlari getir
+     * @param userId   sadece bu idli kullanici icin virmanlari getir
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of virman in body.
+     */
+    @GetMapping(params = {"fromDate", "userId"}, path = "/virmen/user-virman")
+    public ResponseEntity<Virman> getUserVirman(@RequestParam(value = "fromDate") String fromDate,
+                                                      @RequestParam(value = "userId") Long userId) {
+        log.debug("REST request to get a user virman");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(fromDate, formatter);
+        Virman userVirman = virmanRepository.getUserVirman(localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), userId);
+        return ResponseEntity.ok().body(userVirman);
     }
 }

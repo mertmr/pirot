@@ -137,7 +137,7 @@ const rootReducer = combineReducers<IRootState>({
   ciroState,
   aylikSatislarState,
   ortakFaturalarState,
-  loadingBar
+  loadingBar,
 });
 
 export default rootReducer;

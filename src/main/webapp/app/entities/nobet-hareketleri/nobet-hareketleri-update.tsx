@@ -199,6 +199,21 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                          }} />
               </AvGroup>
               <AvGroup>
+                <Label id="acilisKapanis" for="nobet-hareketleri-acilisKapanis">
+                  <Translate contentKey="koopApp.nobetHareketleri.acilisKapanis">Açılış/Kapanış</Translate>
+                </Label>
+              <AvInput
+                id="nobet-hareketleri-acilisKapanis"
+                type="select"
+                className="form-control"
+                name="acilisKapanis"
+                value={(!isNew && nobetHareketleriEntity.acilisKapanis) || 'Açılış'}
+              >
+                <option value="ACILIS">{translate('koopApp.AcilisKapanis.ACILIS')}</option>
+                <option value="KAPANIS">{translate('koopApp.AcilisKapanis.KAPANIS')}</option>
+              </AvInput>
+              </AvGroup>
+              <AvGroup>
                 <Label id="notlarLabel" for="nobet-hareketleri-notlar">
                   <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate>
                 </Label>

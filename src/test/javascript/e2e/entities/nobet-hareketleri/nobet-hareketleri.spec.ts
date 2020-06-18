@@ -71,6 +71,7 @@ describe('NobetHareketleri e2e test', () => {
     expect(await nobetHareketleriUpdatePage.getNobetSuresiInput()).to.eq('5');
     await nobetHareketleriUpdatePage.setNotlarInput('notlar');
     expect(await nobetHareketleriUpdatePage.getNotlarInput()).to.match(/notlar/);
+    await nobetHareketleriUpdatePage.acilisKapanisSelectLastOption();
     await nobetHareketleriUpdatePage.setTarihInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
     expect(await nobetHareketleriUpdatePage.getTarihInput()).to.contain('2001-01-01T02:30');
     await nobetHareketleriUpdatePage.userSelectLastOption();

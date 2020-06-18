@@ -26,6 +26,10 @@ enum HareketTipi {
     URUN_GIRISI, ODEME
 }
 
+enum AcilisKapanis {
+    ACILIS, KAPANIS
+}
+
 
 entity Gider {
     tarih ZonedDateTime
@@ -112,6 +116,7 @@ entity NobetHareketleri {
     fark BigDecimal
     nobetSuresi BigDecimal
     notlar String
+    acilisKapanis AcilisKapanis
     tarih ZonedDateTime
 }
 

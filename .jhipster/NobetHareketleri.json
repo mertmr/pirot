@@ -22,6 +22,11 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "acilisKapanis",
+      "fieldType": "AcilisKapanis",
+      "fieldValues": "ACILIS,KAPANIS"
+    },
+    {
       "fieldName": "tarih",
       "fieldType": "ZonedDateTime"
     }
