@@ -16,6 +16,7 @@ import reducer, {
 } from 'app/entities/nobet-hareketleri/nobet-hareketleri.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { INobetHareketleri, defaultValue } from 'app/shared/model/nobet-hareketleri.model';
+import { defaultValueGunSonuRaporu } from 'app/shared/model/gun-sonu-raporu-model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -34,6 +35,7 @@ describe('Entities reducer tests', () => {
     totalItems: 0,
     updating: false,
     updateSuccess: false,
+    gunSonuRaporu: defaultValueGunSonuRaporu,
   };
 
   function testInitialState(state) {
