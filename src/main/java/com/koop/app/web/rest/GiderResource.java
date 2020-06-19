@@ -12,7 +12,10 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -165,5 +168,16 @@ public class GiderResource {
         Page<Gider> page = giderRepository.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping(params = {"fromDate", "userId"}, path = "/giders/user-gider")
+    public ResponseEntity<List<Gider>> getUserGiders(@RequestParam(value = "fromDate") String fromDate,
+                                                     @RequestParam(value = "userId") String userId) {
+        log.debug("REST request to get a list of user giders");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(fromDate, formatter);
+        List<Gider> giderList = giderRepository.getUserGiders(localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), Long.valueOf(userId));
+        return ResponseEntity.ok().body(giderList);
     }
 }

@@ -10,6 +10,7 @@ import { ISatis } from 'app/shared/model/satis.model';
 export const ACTION_TYPES = {
   SEARCH_GIDER: 'satis/SEARCH_GIDER',
   FETCH_GIDER_LIST: 'gider/FETCH_GIDER_LIST',
+  FETCH_GIDER_USER_LIST: 'gider/FETCH_GIDER_USER_LIST',
   FETCH_GIDER: 'gider/FETCH_GIDER',
   CREATE_GIDER: 'gider/CREATE_GIDER',
   UPDATE_GIDER: 'gider/UPDATE_GIDER',
@@ -35,6 +36,7 @@ export default (state: GiderState = initialState, action): GiderState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.SEARCH_GIDER):
     case REQUEST(ACTION_TYPES.FETCH_GIDER_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_GIDER_USER_LIST):
     case REQUEST(ACTION_TYPES.FETCH_GIDER):
       return {
         ...state,
@@ -53,6 +55,7 @@ export default (state: GiderState = initialState, action): GiderState => {
       };
     case FAILURE(ACTION_TYPES.SEARCH_GIDER):
     case FAILURE(ACTION_TYPES.FETCH_GIDER_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_GIDER_USER_LIST):
     case FAILURE(ACTION_TYPES.FETCH_GIDER):
     case FAILURE(ACTION_TYPES.CREATE_GIDER):
     case FAILURE(ACTION_TYPES.UPDATE_GIDER):
@@ -65,6 +68,7 @@ export default (state: GiderState = initialState, action): GiderState => {
         errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.SEARCH_GIDER):
+    case SUCCESS(ACTION_TYPES.FETCH_GIDER_USER_LIST):
     case SUCCESS(ACTION_TYPES.FETCH_GIDER_LIST):
       return {
         ...state,
@@ -109,7 +113,7 @@ const apiSearchUrl = 'api/_search/gider';
 
 export const getSearchEntities: ICrudSearchAction<IGider> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_GIDER,
-  payload: axios.get<IGider>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+  payload: axios.get<IGider>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
 export const getEntities: ICrudGetAllAction<IGider> = (page, size, sort) => {
@@ -157,3 +161,13 @@ export const deleteEntity: ICrudDeleteAction<IGider> = id => async dispatch => {
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getUserGiders = (fromDate, userId) => {
+  let requestUrl = `${apiUrl}/user-gider`;
+  requestUrl += `?fromDate=${fromDate}`;
+  requestUrl += `&userId=${userId}`;
+  return {
+    type: ACTION_TYPES.FETCH_GIDER_USER_LIST,
+    payload: axios.get(`${requestUrl}`),
+  };
+};

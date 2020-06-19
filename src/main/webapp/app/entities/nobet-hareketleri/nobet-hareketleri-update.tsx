@@ -1,20 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
 import {Button, Col, Label, Row} from 'reactstrap';
 import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
 import {translate, Translate} from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
 
 import {createEntity, getEntity, reset, updateEntity} from './nobet-hareketleri.reducer';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import {convertDateTimeToServer} from 'app/shared/util/date-utils';
 import {InputNumber} from "antd";
 import 'antd/lib/input-number/style/index.css';
 import {getDashboardReports} from "app/shared/reducers/dashboard-reports.reducer";
 import {getUsers} from "app/modules/administration/user-management/user-management.reducer";
 
-export interface INobetHareketleriUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface INobetHareketleriUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+}
 
 export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   const [userId, setUserId] = useState('0');
@@ -33,7 +34,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   const [money01, setMoney01] = useState(0);
   const [money005, setMoney005] = useState(0);
 
-  const { nobetHareketleriEntity, users, loading, updating, dashboardReports } = props;
+  const {nobetHareketleriEntity, users, loading, updating, dashboardReports} = props;
 
   const handleClose = () => {
     props.history.push('/nobet-hareketleri' + props.location.search);
@@ -87,6 +88,10 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   }, [kasa]);
 
   useEffect(() => {
+    setKasa(props.nobetHareketleriEntity.kasa)
+  }, [props.nobetHareketleriEntity.kasa]);
+
+  useEffect(() => {
     props.getDashboardReports();
   }, []);
 
@@ -95,7 +100,8 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="koopApp.nobetHareketleri.home.createOrEditLabel">
-            <Translate contentKey="koopApp.nobetHareketleri.home.createOrEditLabel">Create or edit a NobetHareketleri</Translate>
+            <Translate contentKey="koopApp.nobetHareketleri.home.createOrEditLabel">Create or edit a
+              NobetHareketleri</Translate>
           </h2>
         </Col>
       </Row>
@@ -110,7 +116,8 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                   <Label for="nobet-hareketleri-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="nobet-hareketleri-id" type="number" className="form-control" name="id" required readOnly />
+                  <AvInput id="nobet-hareketleri-id" type="number" className="form-control" name="id" required
+                           readOnly/>
                 </AvGroup>
               ) : null}
               <AvGroup>
@@ -173,7 +180,8 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 <Label id="kasaLabel" for="nobet-hareketleri-kasa">
                   <Translate contentKey="koopApp.nobetHareketleri.kasa">Kasa</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-kasa" type="text" name="kasa" on value={kasa} onChange={(e) => setKasa(e.target.value)}/>
+                <AvField id="nobet-hareketleri-kasa" type="text" name="kasa" on value={kasa}
+                         onChange={(e) => setKasa(e.target.value)}/>
               </AvGroup>
               <AvGroup>
                 <Label id="pirotLabel" for="nobet-hareketleri-pirot">
@@ -194,33 +202,33 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 </Label>
                 <AvField id="nobet-hareketleri-nobetSuresi" type="number" name="nobetSuresi"
                          validate={{
-                           required: { value: true, errorMessage: translate('entity.validation.required') },
-                           number: { value: true, errorMessage: translate('entity.validation.number') }
-                         }} />
+                           required: {value: true, errorMessage: translate('entity.validation.required')},
+                           number: {value: true, errorMessage: translate('entity.validation.number')}
+                         }}/>
               </AvGroup>
               <AvGroup>
                 <Label id="acilisKapanis" for="nobet-hareketleri-acilisKapanis">
                   <Translate contentKey="koopApp.nobetHareketleri.acilisKapanis">Açılış/Kapanış</Translate>
                 </Label>
-              <AvInput
-                id="nobet-hareketleri-acilisKapanis"
-                type="select"
-                className="form-control"
-                name="acilisKapanis"
-                value={(!isNew && nobetHareketleriEntity.acilisKapanis) || 'Açılış'}
-              >
-                <option value="ACILIS">{translate('koopApp.AcilisKapanis.ACILIS')}</option>
-                <option value="KAPANIS">{translate('koopApp.AcilisKapanis.KAPANIS')}</option>
-              </AvInput>
+                <AvInput
+                  id="nobet-hareketleri-acilisKapanis"
+                  type="select"
+                  className="form-control"
+                  name="acilisKapanis"
+                  value={(!isNew && nobetHareketleriEntity.acilisKapanis) || 'Açılış'}
+                >
+                  <option value="ACILIS">{translate('koopApp.AcilisKapanis.ACILIS')}</option>
+                  <option value="KAPANIS">{translate('koopApp.AcilisKapanis.KAPANIS')}</option>
+                </AvInput>
               </AvGroup>
               <AvGroup>
                 <Label id="notlarLabel" for="nobet-hareketleri-notlar">
                   <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-notlar" type="text" name="notlar" />
+                <AvField id="nobet-hareketleri-notlar" type="text" name="notlar"/>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/nobet-hareketleri" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -228,7 +236,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>

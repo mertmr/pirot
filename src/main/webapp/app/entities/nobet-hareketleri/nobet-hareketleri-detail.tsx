@@ -11,6 +11,7 @@ import {APP_LOCAL_DATE_FORMAT} from 'app/config/constants';
 import {getCirosByNobetciDate} from "app/reports/ciro/ciro.reducer";
 import {AcilisKapanis} from "app/shared/model/enumerations/acilis-kapanis.model";
 import {getVirmanUser} from "app/entities/virman/virman.reducer";
+import {getUserGiders} from "app/entities/gider/gider.reducer";
 
 export interface INobetHareketleriDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
@@ -20,12 +21,13 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
     props.getEntity(props.match.params.id);
   }, []);
 
-  const {nobetHareketleriEntity, ciro, virman} = props;
+  const {nobetHareketleriEntity, ciro, virman, giderList} = props;
 
   useEffect(() => {
     if (nobetHareketleriEntity.user) {
       props.getCirosByNobetciDate(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
       props.getVirmanUser(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
+      props.getUserGiders(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
     }
   }, [nobetHareketleriEntity]);
 
@@ -45,12 +47,6 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
           </dt>
           <dd>{nobetHareketleriEntity.notlar}</dd>
           <dt>
-            <span id="acilisKapanis">
-              <Translate contentKey="koopApp.nobetHareketleri.acilisKapanis">Açılış Kapanış</Translate>
-            </span>
-          </dt>
-          <dd>{nobetHareketleriEntity.acilisKapanis}</dd>
-          <dt>
             <span id="user">
               <Translate contentKey="koopApp.nobetHareketleri.user">Kullanıcı</Translate>
             </span>
@@ -61,7 +57,43 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
           <p>Açılış Hareketlerinde Ciro Gösterimi Yok</p>
         ) : (
           <Row>
+            {giderList && giderList.length > 0 ? (
+              <Col md="8">
+                <h4>Gider</h4>
+                <Table striped responsive>
+                  <thead>
+                  <tr>
+                    <th>
+                      Gider Tutar
+                    </th>
+                    <th>
+                      Gider Tipi
+                    </th>
+                    <th>
+                      Gider Not
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {giderList.map((gider, i) => (
+                    <tr key={`ciro-${i}`}>
+                      <td>
+                        {gider.tutar}
+                      </td>
+                      <td>
+                        {gider.giderTipi}
+                      </td>
+                      <td>
+                        {gider.notlar}
+                      </td>
+                    </tr>
+                  ))}
+                  </tbody>
+                </Table>
+              </Col>
+            ) : (<p/>)}
             <Col md="8">
+              <h4>Ciro</h4>
               <Table striped responsive>
                 <thead>
                 <tr>
@@ -99,6 +131,7 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
               <p/>
             ) : (
               <Col md="8">
+                <h4>Virman</h4>
                 <Table striped responsive>
                   <thead>
                   <tr>
@@ -127,6 +160,7 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
         )}
         <Row>
           <Col md="8">
+            <h4>Nöbetçi Kasası</h4>
             <Table striped responsive>
               <thead>
               <tr>
@@ -181,13 +215,14 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
   );
 };
 
-const mapStateToProps = ({nobetHareketleri, ciroState, virman}: IRootState) => ({
+const mapStateToProps = ({nobetHareketleri, ciroState, virman, gider}: IRootState) => ({
   nobetHareketleriEntity: nobetHareketleri.entity,
   ciro: ciroState.ciro,
   virman: virman.entity,
+  giderList: gider.entities,
 });
 
-const mapDispatchToProps = {getEntity, getCirosByNobetciDate, getVirmanUser};
+const mapDispatchToProps = {getEntity, getCirosByNobetciDate, getVirmanUser, getUserGiders};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

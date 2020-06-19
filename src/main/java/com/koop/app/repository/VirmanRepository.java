@@ -30,9 +30,13 @@ public interface VirmanRepository extends JpaRepository<Virman, Long> {
     Page<Virman> search(@Param("login") String login, Pageable pageable);
 
     @Query(
-        "select virman from Virman virman where virman.user.id = :userId " +
-            "and virman.tarih between :from and :to " +
+        "select virman from Virman virman where virman.tarih between :from and :to " +
             "and virman.user.id = :userId"
     )
     Virman getUserVirman(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to, @Param("userId") Long userId);
+
+    @Query(
+        "select virman from Virman virman where virman.tarih between :from and :to"
+    )
+    Virman findVirmanByGun(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
 }

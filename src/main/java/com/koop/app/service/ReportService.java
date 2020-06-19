@@ -1,13 +1,10 @@
 package com.koop.app.service;
 
-import com.koop.app.domain.KdvKategorisi;
-import com.koop.app.domain.Kisiler;
+import com.koop.app.domain.*;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.dto.Ciro;
 import com.koop.app.dto.fatura.*;
-import com.koop.app.repository.KdvKategorisiRepository;
-import com.koop.app.repository.SatisRepository;
-import com.koop.app.repository.SatisStokHareketleriRepository;
+import com.koop.app.repository.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +26,22 @@ public class ReportService {
 
     private final KdvKategorisiRepository kdvKategorisiRepository;
 
-    public ReportService(SatisRepository satisRepository, SatisStokHareketleriRepository satisStokHareketleriRepository, KdvKategorisiRepository kdvKategorisiRepository) {
+    private final VirmanRepository virmanRepository;
+
+    private final GiderRepository giderRepository;
+
+    private final DashboardReportService dashboardReportService;
+
+    private final NobetHareketleriRepository nobetHareketleriRepository;
+
+    public ReportService(SatisRepository satisRepository, SatisStokHareketleriRepository satisStokHareketleriRepository, KdvKategorisiRepository kdvKategorisiRepository, VirmanRepository virmanRepository, GiderRepository giderRepository, DashboardReportService dashboardReportService, NobetHareketleriRepository nobetHareketleriRepository) {
         this.satisRepository = satisRepository;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.kdvKategorisiRepository = kdvKategorisiRepository;
+        this.virmanRepository = virmanRepository;
+        this.giderRepository = giderRepository;
+        this.dashboardReportService = dashboardReportService;
+        this.nobetHareketleriRepository = nobetHareketleriRepository;
     }
 
     public List<Ciro> getCiroReport(LocalDate from, LocalDate to) {
@@ -125,5 +135,22 @@ public class ReportService {
         return fiyat.divide(BigDecimal.valueOf(100 + kdvOrani), 5, RoundingMode.HALF_UP)
             .multiply(BigDecimal.valueOf(100))
             .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public GunSonuRaporuDto gunSonuRaporu(LocalDate localDate) {
+        List<Gider> giderList = giderRepository.findGiderByGun(localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
+        Virman virman = virmanRepository.findVirmanByGun(localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
+        DashboardReports dashboardReports = dashboardReportService.getDashboardReportsByDay(localDate);
+        ZonedDateTime endOfDay = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault());
+        NobetHareketleri lastNobetHareketiByTarih = nobetHareketleriRepository.findLastNobetHareketiByTarih(endOfDay);
+
+        GunSonuRaporuDto gunSonuRaporuDto = new GunSonuRaporuDto();
+        gunSonuRaporuDto.setGiderList(giderList);
+        gunSonuRaporuDto.setVirman(virman);
+        gunSonuRaporuDto.setDashboardReports(dashboardReports);
+        gunSonuRaporuDto.setNobetHareketleri(lastNobetHareketiByTarih);
+        return gunSonuRaporuDto;
     }
 }

@@ -40,4 +40,26 @@ public class DashboardReportService {
 
         return dashboardReports;
     }
+
+    public DashboardReports getDashboardReportsByDay(LocalDate localDate) {
+        DashboardReports dashboardReports = new DashboardReports();
+        ZonedDateTime endOfDay = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault());
+        ZonedDateTime startOfDay = localDate.atStartOfDay(ZoneId.systemDefault());
+
+        KasaHareketleri lastOrderByTarih = kasaHareketleriRepository.findFirstByOrderByTarihDesc(endOfDay);
+        dashboardReports.setKasadaNeVar(lastOrderByTarih.getKasaMiktar().doubleValue());
+
+        Double bugununSatisi = satisRepository.findCiro(endOfDay, startOfDay);
+        Double kartliSatis = satisRepository.findCiroKartli(endOfDay, startOfDay);
+        if (bugununSatisi != null) {
+            dashboardReports.setGunlukCiro(bugununSatisi);
+            if (kartliSatis == null) {
+                kartliSatis = 0d;
+            }
+            dashboardReports.setKartliSatis(kartliSatis);
+            dashboardReports.setNakitSatis(bugununSatisi - kartliSatis);
+        }
+
+        return dashboardReports;
+    }
 }

@@ -5,10 +5,12 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { INobetHareketleri, defaultValue } from 'app/shared/model/nobet-hareketleri.model';
+import { defaultValueGunSonuRaporu, IGunSonuRaporu } from 'app/shared/model/gun-sonu-raporu-model';
 
 export const ACTION_TYPES = {
   FETCH_NOBETHAREKETLERI_LIST: 'nobetHareketleri/FETCH_NOBETHAREKETLERI_LIST',
   FETCH_NOBETHAREKETLERI: 'nobetHareketleri/FETCH_NOBETHAREKETLERI',
+  FETCH_GUN_SONU: 'nobetHareketleri/FETCH_GUN_SONU',
   CREATE_NOBETHAREKETLERI: 'nobetHareketleri/CREATE_NOBETHAREKETLERI',
   UPDATE_NOBETHAREKETLERI: 'nobetHareketleri/UPDATE_NOBETHAREKETLERI',
   DELETE_NOBETHAREKETLERI: 'nobetHareketleri/DELETE_NOBETHAREKETLERI',
@@ -23,6 +25,7 @@ const initialState = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  gunSonuRaporu: defaultValueGunSonuRaporu,
 };
 
 export type NobetHareketleriState = Readonly<typeof initialState>;
@@ -32,6 +35,7 @@ export type NobetHareketleriState = Readonly<typeof initialState>;
 export default (state: NobetHareketleriState = initialState, action): NobetHareketleriState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_GUN_SONU):
     case REQUEST(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
       return {
         ...state,
@@ -49,6 +53,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_GUN_SONU):
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
@@ -72,6 +77,12 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         ...state,
         loading: false,
         entity: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_GUN_SONU):
+      return {
+        ...state,
+        loading: false,
+        gunSonuRaporu: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case SUCCESS(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
@@ -146,3 +157,12 @@ export const deleteEntity: ICrudDeleteAction<INobetHareketleri> = id => async di
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
+
+export const getGunSonuRaporu = fromDate => {
+  let requestUrl = `api/reports/gun-sonu-raporu`;
+  requestUrl += `?reportDate=${fromDate}`;
+  return {
+    type: ACTION_TYPES.FETCH_GUN_SONU,
+    payload: axios.get<IGunSonuRaporu>(requestUrl),
+  };
+};

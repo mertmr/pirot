@@ -26,4 +26,17 @@ public interface GiderRepository extends JpaRepository<Gider, Long> {
 
     @Query("select gider from Gider gider where gider.user.login like concat('%',:login,'%')")
     Page<Gider> search(@Param("login") String login, Pageable pageable);
+
+
+    @Query(
+        "select gider from Gider gider where gider.tarih between :from and :to " +
+            "and gider.user.id = :userId"
+    )
+    List<Gider> getUserGiders(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to, @Param("userId") Long userId);
+
+    @Query(
+        "select gider from Gider gider " +
+            "where gider.tarih between :from and :to "
+    )
+    List<Gider> findGiderByGun(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
 }

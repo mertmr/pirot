@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.Kisiler;
 import com.koop.app.domain.Uretici;
 import com.koop.app.dto.Ciro;
+import com.koop.app.dto.fatura.GunSonuRaporuDto;
 import com.koop.app.dto.fatura.OrtakFaturasiDto;
 import com.koop.app.dto.fatura.ReportDatesDto;
 import com.koop.app.service.ReportService;
@@ -30,9 +31,6 @@ import java.util.List;
 public class ReportsResource {
     private final Logger log = LoggerFactory.getLogger(ReportsResource.class);
     private final ReportService reportService;
-
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
 
     public ReportsResource(ReportService reportService) {
         this.reportService = reportService;
@@ -79,5 +77,13 @@ public class ReportsResource {
                                                               @RequestParam(value = "kisiId") Long kisiId) {
         log.debug("REST request to get report date list");
         return ResponseEntity.ok().body(reportService.ortakFaturaKisiAy(reportDate, kisiId));
+    }
+
+    @GetMapping("/reports/gun-sonu-raporu")
+    public ResponseEntity<GunSonuRaporuDto> gunSonuRaporu(@RequestParam(value = "reportDate") String fromDate) {
+        log.debug("REST request to get gun sonu raporu");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(fromDate, formatter);
+        return ResponseEntity.ok().body(reportService.gunSonuRaporu(localDate));
     }
 }
