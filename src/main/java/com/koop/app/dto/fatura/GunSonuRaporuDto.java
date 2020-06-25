@@ -18,6 +18,8 @@ public class GunSonuRaporuDto {
 
     private NobetHareketleri nobetHareketleri;
 
+    private NobetHareketleri acilisHareketi;
+
     public NobetHareketleri getNobetHareketleri() {
         return nobetHareketleri;
     }
@@ -48,5 +50,13 @@ public class GunSonuRaporuDto {
 
     public void setDashboardReports(DashboardReports dashboardReports) {
         this.dashboardReports = dashboardReports;
+    }
+
+    public NobetHareketleri getAcilisHareketi() {
+        return acilisHareketi;
+    }
+
+    public void setAcilisHareketi(NobetHareketleri acilisHareketi) {
+        this.acilisHareketi = acilisHareketi;
     }
 }

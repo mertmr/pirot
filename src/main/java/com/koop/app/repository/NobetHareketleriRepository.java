@@ -22,4 +22,8 @@ public interface NobetHareketleriRepository extends JpaRepository<NobetHareketle
     @Query("select kh from NobetHareketleri kh where kh.tarih = " +
         "(select max(khs.tarih) from NobetHareketleri khs where khs.tarih < :localDate)")
     NobetHareketleri findLastNobetHareketiByTarih(@Param("localDate") ZonedDateTime endOfDay);
+
+    @Query("select kh from NobetHareketleri kh where kh.user.id = :userId and " +
+        "kh.acilisKapanis = 'ACILIS' and kh.tarih between :from and :to")
+    NobetHareketleri findLastNobetHareketiAcilisByTarih(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to, @Param("userId") Long userId);
 }

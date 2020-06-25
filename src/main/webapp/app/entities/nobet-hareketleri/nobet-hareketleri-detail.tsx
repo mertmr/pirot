@@ -6,7 +6,7 @@ import {TextFormat, Translate} from 'react-jhipster';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import {IRootState} from 'app/shared/reducers';
-import {getEntity} from './nobet-hareketleri.reducer';
+import {getEntity, getNobetciHareketiAcilis} from './nobet-hareketleri.reducer';
 import {APP_LOCAL_DATE_FORMAT} from 'app/config/constants';
 import {getCirosByNobetciDate} from "app/reports/ciro/ciro.reducer";
 import {AcilisKapanis} from "app/shared/model/enumerations/acilis-kapanis.model";
@@ -21,13 +21,14 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
     props.getEntity(props.match.params.id);
   }, []);
 
-  const {nobetHareketleriEntity, ciro, virman, giderList} = props;
+  const {nobetHareketleriEntity, ciro, virman, giderList, acilisHareketi} = props;
 
   useEffect(() => {
     if (nobetHareketleriEntity.user) {
       props.getCirosByNobetciDate(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
       props.getVirmanUser(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
       props.getUserGiders(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
+      props.getNobetciHareketiAcilis(nobetHareketleriEntity.tarih.substring(0, 10), nobetHareketleriEntity.user.id);
     }
   }, [nobetHareketleriEntity]);
 
@@ -160,7 +161,46 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
         )}
         <Row>
           <Col md="8">
-            <h4>Nöbetçi Kasası</h4>
+            <h4>Açılış Nöbetçi Kasası</h4>
+            <Table striped responsive>
+              <thead>
+              <tr>
+                <th>
+                  <Translate contentKey="koopApp.nobetHareketleri.kasa">Kasa</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="koopApp.nobetHareketleri.pirot">Pirot</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="koopApp.nobetHareketleri.fark">Fark</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="koopApp.nobetHareketleri.nobetSuresi">Nobet Suresi</Translate>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr key={`ciro1`}>
+                <td>
+                  {acilisHareketi.kasa}
+                </td>
+                <td>
+                  {acilisHareketi.pirot}
+                </td>
+                <td>
+                  {acilisHareketi.fark}
+                </td>
+                <td>
+                  {acilisHareketi.nobetSuresi} Saat
+                </td>
+              </tr>
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="8">
+            <h4>Kapanış Nöbetçi Kasası</h4>
             <Table striped responsive>
               <thead>
               <tr>
@@ -190,7 +230,7 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
                   {nobetHareketleriEntity.fark}
                 </td>
                 <td>
-                  {nobetHareketleriEntity.nobetSuresi}
+                  {nobetHareketleriEntity.nobetSuresi} Saat
                 </td>
               </tr>
               </tbody>
@@ -217,12 +257,13 @@ export const NobetHareketleriDetail = (props: INobetHareketleriDetailProps) => {
 
 const mapStateToProps = ({nobetHareketleri, ciroState, virman, gider}: IRootState) => ({
   nobetHareketleriEntity: nobetHareketleri.entity,
+  acilisHareketi: nobetHareketleri.acilisHareketi,
   ciro: ciroState.ciro,
   virman: virman.entity,
   giderList: gider.entities,
 });
 
-const mapDispatchToProps = {getEntity, getCirosByNobetciDate, getVirmanUser, getUserGiders};
+const mapDispatchToProps = {getEntity, getCirosByNobetciDate, getVirmanUser, getUserGiders, getNobetciHareketiAcilis};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

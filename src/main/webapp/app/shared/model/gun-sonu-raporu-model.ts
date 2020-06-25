@@ -8,6 +8,7 @@ export interface IGunSonuRaporu {
   virman?: IVirman;
   giderList?: IGider[];
   nobetHareketleri?: INobetHareketleri;
+  acilisHareketi?: INobetHareketleri;
 }
 
 export const defaultValueGunSonuRaporu: Readonly<IGunSonuRaporu> = {};

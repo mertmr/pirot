@@ -157,7 +157,53 @@ export const GunRaporu = (props: IGunRaporuProps) => {
             Ciro Raporu Yok
           </div>
         )}
-        <h5>Son Nöbet Hareketi</h5>
+        <h5>Son Nöbet Hareketi Açılış</h5>
+        {gunSonuRaporu.acilisHareketi ? (
+          <Table striped responsive>
+            <thead>
+            <tr>
+              <th>
+                Kasa
+              </th>
+              <th>
+                Pirot
+              </th>
+              <th>
+                Fark
+              </th>
+              <th>
+                Notlar
+              </th>
+              <th>
+                Tarih Saat
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr key={`virman`}>
+              <td>
+                {gunSonuRaporu.acilisHareketi.kasa}
+              </td>
+              <td>
+                {gunSonuRaporu.acilisHareketi.pirot}
+              </td>
+              <td>
+                {gunSonuRaporu.acilisHareketi.fark}
+              </td>
+              <td>
+                {gunSonuRaporu.acilisHareketi.notlar}
+              </td> <td>
+              {gunSonuRaporu.acilisHareketi.tarih ?
+                <TextFormat type="date" value={gunSonuRaporu.acilisHareketi.tarih} format={APP_DATE_FORMAT}/> : null}
+            </td>
+            </tr>
+            </tbody>
+          </Table>
+        ) : (
+          <div className="alert alert-warning">
+          </div>
+        )}
+        <h5>Son Nöbet Hareketi Kapanış</h5>
         {gunSonuRaporu.nobetHareketleri ? (
           <Table striped responsive>
             <thead>
@@ -201,7 +247,6 @@ export const GunRaporu = (props: IGunRaporuProps) => {
           </Table>
         ) : (
           <div className="alert alert-warning">
-            Ciro Raporu Yok
           </div>
         )}
       </Col>

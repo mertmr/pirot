@@ -144,13 +144,17 @@ public class ReportService {
             localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
         DashboardReports dashboardReports = dashboardReportService.getDashboardReportsByDay(localDate);
         ZonedDateTime endOfDay = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault());
+
         NobetHareketleri lastNobetHareketiByTarih = nobetHareketleriRepository.findLastNobetHareketiByTarih(endOfDay);
+        NobetHareketleri acilisHareketi = nobetHareketleriRepository.findLastNobetHareketiAcilisByTarih(localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), lastNobetHareketiByTarih.getUser().getId());
 
         GunSonuRaporuDto gunSonuRaporuDto = new GunSonuRaporuDto();
         gunSonuRaporuDto.setGiderList(giderList);
         gunSonuRaporuDto.setVirman(virman);
         gunSonuRaporuDto.setDashboardReports(dashboardReports);
         gunSonuRaporuDto.setNobetHareketleri(lastNobetHareketiByTarih);
+        gunSonuRaporuDto.setAcilisHareketi(acilisHareketi);
         return gunSonuRaporuDto;
     }
 }

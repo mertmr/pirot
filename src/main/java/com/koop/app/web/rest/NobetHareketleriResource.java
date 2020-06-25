@@ -10,7 +10,10 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -144,5 +147,15 @@ public class NobetHareketleriResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+    @GetMapping(params = {"fromDate", "userId"}, path = "/nobet-hareketleris/acilis")
+    public ResponseEntity<NobetHareketleri> getAcilisHareketiByNobetci(@RequestParam(value = "fromDate") String fromDate,
+                                                                       @RequestParam(value = "userId") Long userId) {
+        log.debug("REST request to getAcilisHareketiByNobetci");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(fromDate, formatter);
+        NobetHareketleri nobetHareketleri = nobetHareketleriRepository.findLastNobetHareketiAcilisByTarih(localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), userId);
+        return ResponseEntity.ok().body(nobetHareketleri);
     }
 }

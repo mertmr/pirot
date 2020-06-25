@@ -10,6 +10,7 @@ import { defaultValueGunSonuRaporu, IGunSonuRaporu } from 'app/shared/model/gun-
 export const ACTION_TYPES = {
   FETCH_NOBETHAREKETLERI_LIST: 'nobetHareketleri/FETCH_NOBETHAREKETLERI_LIST',
   FETCH_NOBETHAREKETLERI: 'nobetHareketleri/FETCH_NOBETHAREKETLERI',
+  FETCH_NOBETHAREKETLERI_ACILIS: 'nobetHareketleri/FETCH_NOBETHAREKETLERI_ACILIS',
   FETCH_GUN_SONU: 'nobetHareketleri/FETCH_GUN_SONU',
   CREATE_NOBETHAREKETLERI: 'nobetHareketleri/CREATE_NOBETHAREKETLERI',
   UPDATE_NOBETHAREKETLERI: 'nobetHareketleri/UPDATE_NOBETHAREKETLERI',
@@ -22,6 +23,7 @@ const initialState = {
   errorMessage: null,
   entities: [] as ReadonlyArray<INobetHareketleri>,
   entity: defaultValue,
+  acilisHareketi: defaultValue,
   updating: false,
   totalItems: 0,
   updateSuccess: false,
@@ -36,6 +38,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST):
     case REQUEST(ACTION_TYPES.FETCH_GUN_SONU):
+    case REQUEST(ACTION_TYPES.FETCH_NOBETHAREKETLERI_ACILIS):
     case REQUEST(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
       return {
         ...state,
@@ -54,6 +57,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
       };
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_GUN_SONU):
+    case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI_ACILIS):
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
@@ -71,6 +75,12 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
         loading: false,
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_NOBETHAREKETLERI_ACILIS):
+      return {
+        ...state,
+        loading: false,
+        acilisHareketi: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
       return {
@@ -125,6 +135,16 @@ export const getEntity: ICrudGetAction<INobetHareketleri> = id => {
   return {
     type: ACTION_TYPES.FETCH_NOBETHAREKETLERI,
     payload: axios.get<INobetHareketleri>(requestUrl),
+  };
+};
+
+export const getNobetciHareketiAcilis = (fromDate, userId) => {
+  let requestUrl = `${apiUrl}/acilis`;
+  requestUrl += `?fromDate=${fromDate}`;
+  requestUrl += `&userId=${userId}`;
+  return {
+    type: ACTION_TYPES.FETCH_NOBETHAREKETLERI_ACILIS,
+    payload: axios.get(requestUrl),
   };
 };
 

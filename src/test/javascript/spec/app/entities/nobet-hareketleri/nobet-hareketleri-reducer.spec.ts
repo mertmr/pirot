@@ -32,6 +32,7 @@ describe('Entities reducer tests', () => {
     errorMessage: null,
     entities: [] as ReadonlyArray<INobetHareketleri>,
     entity: defaultValue,
+    acilisHareketi: defaultValue,
     totalItems: 0,
     updating: false,
     updateSuccess: false,
