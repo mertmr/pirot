@@ -11,7 +11,7 @@ import { IUrunFiyat } from 'app/shared/model/urun-fiyat.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
-import {getSortState} from 'app/shared/util/pagination-utils';
+import { getSortState } from 'app/shared/util/pagination-utils';
 
 export interface IUrunFiyatProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 

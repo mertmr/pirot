@@ -108,7 +108,7 @@ const apiSearchUrl = 'api/_search/satis';
 
 export const getSearchEntities: ICrudSearchAction<ISatis> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_SATIS,
-  payload: axios.get<ISatis>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+  payload: axios.get<ISatis>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
 export const getEntities: ICrudGetAllAction<ISatis> = (page, size, sort) => {

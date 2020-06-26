@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import {Button, Col, InputGroup, Row, Table} from 'reactstrap';
-import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
-import {JhiItemCount, JhiPagination, TextFormat, Translate} from 'react-jhipster';
+import { Button, Col, InputGroup, Row, Table } from 'reactstrap';
+import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { JhiItemCount, JhiPagination, TextFormat, Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import {getEntities, getSearchEntities} from './virman.reducer';
-import {APP_DATE_FORMAT} from 'app/config/constants';
+import { getEntities, getSearchEntities } from './virman.reducer';
+import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import {getSortState} from 'app/shared/util/pagination-utils';
+import { getSortState } from 'app/shared/util/pagination-utils';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface IVirmanProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
@@ -30,7 +30,7 @@ export const Virman = (props: IVirmanProps) => {
         `${paginationState.sort},${paginationState.order}`
       );
     } else {
-    props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+      props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
     }
   };
 
@@ -72,12 +72,11 @@ export const Virman = (props: IVirmanProps) => {
   const handleSearch = event => setSearch(event.target.value);
 
   const startSearching = () => {
-    if (paginationState.activePage === 1 && (search || search === ''))
-      getAllEntities();
+    if (paginationState.activePage === 1 && (search || search === '')) getAllEntities();
     else if (search) {
       setPaginationState({
         ...paginationState,
-        activePage: 1
+        activePage: 1,
       });
     }
   };
@@ -86,7 +85,7 @@ export const Virman = (props: IVirmanProps) => {
     setSearch('');
     setPaginationState({
       ...paginationState,
-      activePage: 1
+      activePage: 1,
     });
   };
 
@@ -112,18 +111,12 @@ export const Virman = (props: IVirmanProps) => {
           <AvForm onSubmit={startSearching}>
             <AvGroup>
               <InputGroup>
-                <AvInput
-                  type="text"
-                  name="search"
-                  value={search}
-                  onChange={handleSearch}
-                  placeholder="Kullanıcıya Göre Virman Ara"
-                />
+                <AvInput type="text" name="search" value={search} onChange={handleSearch} placeholder="Kullanıcıya Göre Virman Ara" />
                 <Button className="input-group-addon">
-                  <FontAwesomeIcon icon="search"/>
+                  <FontAwesomeIcon icon="search" />
                 </Button>
                 <Button type="reset" className="input-group-addon" onClick={clear}>
-                  <FontAwesomeIcon icon="trash"/>
+                  <FontAwesomeIcon icon="trash" />
                 </Button>
               </InputGroup>
             </AvGroup>
@@ -240,7 +233,7 @@ const mapStateToProps = ({ virman }: IRootState) => ({
 
 const mapDispatchToProps = {
   getEntities,
-  getSearchEntities
+  getSearchEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

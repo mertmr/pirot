@@ -10,7 +10,7 @@ import { getEntities } from './kasa-hareketleri.reducer';
 import { IKasaHareketleri } from 'app/shared/model/kasa-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import {getSortStateByIdDesc} from "app/shared/util/pagination-utils";
+import { getSortStateByIdDesc } from 'app/shared/util/pagination-utils';
 
 export interface IKasaHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 

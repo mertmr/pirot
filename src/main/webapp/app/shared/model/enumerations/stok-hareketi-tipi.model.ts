@@ -4,5 +4,5 @@ export const enum StokHareketiTipi {
   FIRE = 'FIRE',
 
   STOK_DUZELTME = 'STOK_DUZELTME',
-  MASRAF = 'MASRAF'
+  MASRAF = 'MASRAF',
 }

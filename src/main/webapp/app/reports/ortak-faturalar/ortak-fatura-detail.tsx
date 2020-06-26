@@ -1,21 +1,20 @@
-import React, {useEffect} from 'react';
-import {connect} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
-import {Table} from 'reactstrap';
-import {Translate} from 'react-jhipster';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+import { Table } from 'reactstrap';
+import { Translate } from 'react-jhipster';
 
-import {IRootState} from 'app/shared/reducers';
-import {getOrtakFaturaDetaylar} from "app/reports/ortak-faturalar/ortak-faturalar.reducer";
+import { IRootState } from 'app/shared/reducers';
+import { getOrtakFaturaDetaylar } from 'app/reports/ortak-faturalar/ortak-faturalar.reducer';
 
-export interface IOrtakFaturaDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
-}
+export interface IOrtakFaturaDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const OrtakFaturaDetail = (props: IOrtakFaturaDetailProps) => {
   useEffect(() => {
     props.getOrtakFaturaDetaylar(props.match.params.id);
   }, []);
 
-  const {ortakFaturaDetaylar} = props;
+  const { ortakFaturaDetaylar } = props;
   return (
     <div>
       <h2 id="OrtakFaturalar-page-heading">Ortak Fatura Detayları</h2>
@@ -23,51 +22,43 @@ export const OrtakFaturaDetail = (props: IOrtakFaturaDetailProps) => {
         {ortakFaturaDetaylar && ortakFaturaDetaylar.ortakFaturasiDetayDto && ortakFaturaDetaylar.ortakFaturasiDetayDto.length > 0 ? (
           <Table responsive>
             <thead>
-            <tr>
-              <th className="hand">
-                Ürün Adı
-              </th>
-              <th className="hand">
-                Miktar
-              </th>
-              <th className="hand">
-                Birim Fiyat
-              </th>
-              <th className="hand">
-                Toplam Tutar
-              </th>
-            </tr>
+              <tr>
+                <th className="hand">Ürün Adı</th>
+                <th className="hand">Miktar</th>
+                <th className="hand">Birim Fiyat</th>
+                <th className="hand">Toplam Tutar</th>
+              </tr>
             </thead>
             <tbody>
-            <tr/>
-            {ortakFaturaDetaylar.ortakFaturasiDetayDto.map((ortakFaturaDetay, i) => (
-              <tr key={`entity-${i}`}>
-                <td>{ortakFaturaDetay.urunAdiKdv}</td>
-                <td>{ortakFaturaDetay.miktar}</td>
-                <td>{ortakFaturaDetay.birimFiyat}</td>
-                <td>{ortakFaturaDetay.toplamTutar}</td>
+              <tr />
+              {ortakFaturaDetaylar.ortakFaturasiDetayDto.map((ortakFaturaDetay, i) => (
+                <tr key={`entity-${i}`}>
+                  <td>{ortakFaturaDetay.urunAdiKdv}</td>
+                  <td>{ortakFaturaDetay.miktar}</td>
+                  <td>{ortakFaturaDetay.birimFiyat}</td>
+                  <td>{ortakFaturaDetay.toplamTutar}</td>
+                </tr>
+              ))}
+              <tr>
+                <td />
+                <td />
+                <td>KDV Hariç Toplam</td>
+                <td>{ortakFaturaDetaylar.tumToplamKdvHaric}</td>
               </tr>
-            ))}
-            <tr>
-              <td/>
-              <td/>
-              <td>KDV Hariç Toplam</td>
-              <td>{ortakFaturaDetaylar.tumToplamKdvHaric}</td>
-            </tr>
-            {ortakFaturaDetaylar.kdvToplamList.map((kdv, i) => (
-              <tr key={`entity-${i}`}>
-                <td/>
-                <td/>
-                <td>{kdv.kdvKategorisi}</td>
-                <td>{kdv.kdvTutari}</td>
+              {ortakFaturaDetaylar.kdvToplamList.map((kdv, i) => (
+                <tr key={`entity-${i}`}>
+                  <td />
+                  <td />
+                  <td>{kdv.kdvKategorisi}</td>
+                  <td>{kdv.kdvTutari}</td>
+                </tr>
+              ))}
+              <tr>
+                <td />
+                <td />
+                <td>Toplam</td>
+                <td>{ortakFaturaDetaylar.tumToplam}</td>
               </tr>
-            ))}
-            <tr>
-              <td/>
-              <td/>
-              <td>Toplam</td>
-              <td>{ortakFaturaDetaylar.tumToplam}</td>
-            </tr>
             </tbody>
           </Table>
         ) : (
@@ -81,10 +72,10 @@ export const OrtakFaturaDetail = (props: IOrtakFaturaDetailProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  ortakFaturaDetaylar: storeState.ortakFaturalarState.ortakFaturaDetaylar
+  ortakFaturaDetaylar: storeState.ortakFaturalarState.ortakFaturaDetaylar,
 });
 
-const mapDispatchToProps = {getOrtakFaturaDetaylar};
+const mapDispatchToProps = { getOrtakFaturaDetaylar };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

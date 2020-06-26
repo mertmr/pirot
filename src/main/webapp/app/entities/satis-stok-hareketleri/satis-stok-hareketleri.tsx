@@ -10,7 +10,7 @@ import { getEntities } from './satis-stok-hareketleri.reducer';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import {getSortStateByIdDesc} from 'app/shared/util/pagination-utils';
+import { getSortStateByIdDesc } from 'app/shared/util/pagination-utils';
 
 export interface ISatisStokHareketleriProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 

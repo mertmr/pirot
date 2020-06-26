@@ -125,7 +125,7 @@ export const getUrunFiyatHesapByUrunId: ICrudGetAction<IUrunFiyatHesap> = urunId
   const requestUrl = `${apiUrl}/urun-fiyat-by-urun-id/${urunId}`;
   return {
     type: ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN,
-    payload: axios.get<IUrunFiyatHesap>(requestUrl)
+    payload: axios.get<IUrunFiyatHesap>(requestUrl),
   };
 };
 

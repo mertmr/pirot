@@ -29,7 +29,7 @@ const initialState = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
-  satisUrunleri: [] as Array<IUrun>
+  satisUrunleri: [] as Array<IUrun>,
 };
 
 export type UrunState = Readonly<typeof initialState>;
@@ -87,17 +87,17 @@ export default (state: UrunState = initialState, action): UrunState => {
       return {
         ...state,
         loading: false,
-        users: action.payload.data
+        users: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
       return {
         ...state,
-        satisUrunleri: action.payload.data
+        satisUrunleri: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN_STOK_GIRISI):
       return {
         ...state,
-        satisUrunleri: action.payload.data
+        satisUrunleri: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN):
       return {
@@ -136,7 +136,7 @@ const apiSearchUrl = 'api/_search/uruns';
 
 export const getSearchEntities: ICrudSearchAction<IUrun> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_URUNS,
-  payload: axios.get<IUrun>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`)
+  payload: axios.get<IUrun>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
 export const getEntities: ICrudGetAllAction<IUrun> = (page, size, sort) => {
@@ -151,7 +151,7 @@ export const getUrunUsers: ICrudGetAllAction<IUrun> = () => {
   const requestUrl = `api/users/findAll`;
   return {
     type: ACTION_TYPES.FETCH_URUN_USER_LIST,
-    payload: axios.get<IUser>(`${requestUrl}`)
+    payload: axios.get<IUser>(`${requestUrl}`),
   };
 };
 
@@ -159,7 +159,7 @@ export const getAllUrunForStokGirisi: ICrudGetAllAction<IUrun> = () => {
   const requestUrl = `${apiUrl}/stok-girisi`;
   return {
     type: ACTION_TYPES.FETCH_URUN_STOK_GIRISI,
-    payload: axios.get<IUrun>(`${requestUrl}`)
+    payload: axios.get<IUrun>(`${requestUrl}`),
   };
 };
 
@@ -167,7 +167,7 @@ export const getSatisUrunleri: ICrudGetAllAction<IUrun> = () => {
   const requestUrl = `${apiUrl}/satis`;
   return {
     type: ACTION_TYPES.FETCH_URUN_SATIS_LIST,
-    payload: axios.get<IUrun>(`${requestUrl}`)
+    payload: axios.get<IUrun>(`${requestUrl}`),
   };
 };
 

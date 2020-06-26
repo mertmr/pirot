@@ -12,7 +12,7 @@ import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-u
 import { IRootState } from 'app/shared/reducers';
 import { getAudits } from '../administration.reducer';
 
-export interface  IAuditsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IAuditsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 const previousMonth = (): string => {
   const now: Date = new Date();

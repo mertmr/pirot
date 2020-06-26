@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
-import {RouteComponentProps} from 'react-router-dom';
-import {Table} from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+import { Table } from 'reactstrap';
 
-import {IRootState} from 'app/shared/reducers';
-import {getAylikSatislars} from './aylik-satislar.reducer';
+import { IRootState } from 'app/shared/reducers';
+import { getAylikSatislars } from './aylik-satislar.reducer';
 
-export interface IAylikSatislarsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
-}
+export interface IAylikSatislarsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 const previousMonth = (): string => {
   const now: Date = new Date();
@@ -43,42 +42,38 @@ export const AylikSatislarsPage = (props: IAylikSatislarsPageProps) => {
     props.getAylikSatislars();
   };
 
-  const {aylikSatislar} = props;
+  const { aylikSatislar } = props;
 
   return (
     <div>
       <h2 id="aylikSatislars-page-heading">Aylık Satışlar</h2>
-      {aylikSatislar && aylikSatislar.aylikSatisMap && aylikSatislar.tarihListesi && aylikSatislar.tarihListesi.length > 0 ?  (
+      {aylikSatislar && aylikSatislar.aylikSatisMap && aylikSatislar.tarihListesi && aylikSatislar.tarihListesi.length > 0 ? (
         <Table striped responsive>
           <thead>
-          <tr>
-            <th>
-             Ürünler
-            </th>
-            {aylikSatislar.tarihListesi.map((tarih, i) => (
-              <th key={`tarihListesi-${i}`}>
-                {tarih.slice(0, 7)}
-              </th>
-            ))}
-          </tr>
-          </thead>
-          <tbody>
-          {aylikSatislar.urunAdiListesi.map((urun, i) => (
-            <tr key={`urunAdiListesi-${i}`}>
-              <td>{urun}</td>
-              {aylikSatislar.tarihListesi.map((tarihim, k) => (
-                <td key={`map-${k}`}>
-                  {aylikSatislar.aylikSatisMap[tarihim.slice(0, 4) + "." + tarihim.slice(5, 7) + urun] ?
-                    aylikSatislar.aylikSatisMap[tarihim.slice(0, 4) + "." + tarihim.slice(5, 7) + urun] : '-'}
-                </td>
+            <tr>
+              <th>Ürünler</th>
+              {aylikSatislar.tarihListesi.map((tarih, i) => (
+                <th key={`tarihListesi-${i}`}>{tarih.slice(0, 7)}</th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {aylikSatislar.urunAdiListesi.map((urun, i) => (
+              <tr key={`urunAdiListesi-${i}`}>
+                <td>{urun}</td>
+                {aylikSatislar.tarihListesi.map((tarihim, k) => (
+                  <td key={`map-${k}`}>
+                    {aylikSatislar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
+                      ? aylikSatislar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
+                      : '-'}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </Table>
       ) : (
-        <div className="alert alert-warning">
-        </div>
+        <div className="alert alert-warning"></div>
       )}
     </div>
   );
@@ -86,10 +81,10 @@ export const AylikSatislarsPage = (props: IAylikSatislarsPageProps) => {
 
 const mapStateToProps = (storeState: IRootState) => ({
   aylikSatislar: storeState.aylikSatislarState.aylikSatislar,
-  totalItems: storeState.ciroState.totalItems
+  totalItems: storeState.ciroState.totalItems,
 });
 
-const mapDispatchToProps = {getAylikSatislars};
+const mapDispatchToProps = { getAylikSatislars };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

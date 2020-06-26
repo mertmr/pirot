@@ -8,12 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { IUrun } from 'app/shared/model/urun.model';
-import {getAllUrunForStokGirisi, getEntities as getUruns} from 'app/entities/urun/urun.reducer';
+import { getAllUrunForStokGirisi, getEntities as getUruns } from 'app/entities/urun/urun.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './urun-fiyat-hesap.reducer';
-import {defaultValue, IUrunFiyatHesap} from 'app/shared/model/urun-fiyat-hesap.model';
+import { defaultValue, IUrunFiyatHesap } from 'app/shared/model/urun-fiyat-hesap.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
-import {Dropdown} from "primereact/dropdown";
+import { Dropdown } from 'primereact/dropdown';
 
 export interface IUrunFiyatHesapUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -49,7 +49,7 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
     if (urunFiyatHesapEntity) {
       setUrunFiyatHesap({
         ...urunFiyatHesap,
-        ...urunFiyatHesapEntity
+        ...urunFiyatHesapEntity,
       });
     }
   }, [props.satisUrunleri, props.urunFiyatHesapEntity]);
@@ -57,7 +57,7 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
   const updateStokGirisi = e => {
     setUrunFiyatHesap({
       ...urunFiyatHesap,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -66,7 +66,7 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
       const entity = {
         ...urunFiyatHesapEntity,
         ...values,
-        ...urunFiyatHesap
+        ...urunFiyatHesap,
       };
 
       if (isNew) {
@@ -176,7 +176,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.urunFiyatHesap.loading,
   updating: storeState.urunFiyatHesap.updating,
   updateSuccess: storeState.urunFiyatHesap.updateSuccess,
-  satisUrunleri: storeState.urun.satisUrunleri
+  satisUrunleri: storeState.urun.satisUrunleri,
 });
 
 const mapDispatchToProps = {
@@ -185,7 +185,7 @@ const mapDispatchToProps = {
   updateEntity,
   createEntity,
   reset,
-  getAllUrunForStokGirisi
+  getAllUrunForStokGirisi,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
