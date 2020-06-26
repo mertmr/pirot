@@ -1,4 +1,4 @@
-![Application CI](https://github.com/mertmr/pirot/workflows/Application%20CI/badge.svg)
+![Application CI](https://github.com/mertmr/pirot/workflows/Application%20CI/badge.svg) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mertmr_pirot&metric=alert_status)](https://sonarcloud.io/dashboard?id=mertmr_pirot)
 
 # pirot
 
