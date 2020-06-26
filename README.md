@@ -8,7 +8,7 @@ Bir tüketim kooperatifi organizasyonunuz varsa ve satış, stok, muhasebe gibi 
 ## Dokümantasyon
 
 Projemize katkıda bulunmak ve ortamları kurmak için dokümantasyon:
-https://github.com/mertmr/pirot/wiki/Contribute-Pirot
+https://github.com/mertmr/pirot/wiki/Contributing-to-Pirot
 
 
 Tüm dokümantasyon listesini şu adreste bulabilirsiniz:
