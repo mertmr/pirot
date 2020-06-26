@@ -48,7 +48,7 @@
     "gaeCloudSQLInstanceNeeded": "N",
     "appsFolders": ["koop-muhasebe"],
     "directoryPath": "../",
-    "dockerRepositoryName": "mertmr/koop",
+    "dockerRepositoryName": "mertmr/pirot",
     "dockerPushCommand": "docker push",
     "kubernetesNamespace": "default",
     "kubernetesServiceType": "Ingress",

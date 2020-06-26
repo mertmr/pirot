@@ -15,7 +15,7 @@ export const BrandIcon = props => (
 
 export const Brand = props => (
   <NavbarBrand tag={Link} to="/" className="brand-logo">
-    <BrandIcon/>
+    <BrandIcon style={{marginRight: '20px'}}/>
     <span className="d-none d-md-inline">
       <span className="brand-title">
         <Translate contentKey="global.title">Koop</Translate>

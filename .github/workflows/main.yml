@@ -34,4 +34,4 @@ jobs:
         run: |
           GIT_TAG=:${GITHUB_REF#refs/tags/}
           DOCKER_TAG=${GIT_TAG#:refs/heads/master}
-          ./mvnw -ntp -Djib.to.auth.username=${{ secrets.REGISTRY_USER }} -Djib.to.auth.password=${{ secrets.REGISTRY_PASSWORD }} jib:build -Djib.to.image=mertmr/koop${DOCKER_TAG}
+          ./mvnw -ntp -Djib.to.auth.username=${{ secrets.REGISTRY_USER }} -Djib.to.auth.password=${{ secrets.REGISTRY_PASSWORD }} jib:build -Djib.to.image=mertmr/pirot${DOCKER_TAG}
