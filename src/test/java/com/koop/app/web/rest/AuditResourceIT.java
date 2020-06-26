@@ -5,13 +5,11 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.Instant;
-
 import com.koop.app.KoopApp;
 import com.koop.app.domain.PersistentAuditEvent;
 import com.koop.app.repository.PersistenceAuditEventRepository;
 import com.koop.app.security.AuthoritiesConstants;
-
+import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

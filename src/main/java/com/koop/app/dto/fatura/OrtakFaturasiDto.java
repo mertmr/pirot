@@ -3,7 +3,6 @@ package com.koop.app.dto.fatura;
 import java.util.List;
 
 public class OrtakFaturasiDto {
-
     private List<OrtakFaturasiDetayDto> ortakFaturasiDetayDto;
 
     private List<KdvToplam> kdvToplamList;

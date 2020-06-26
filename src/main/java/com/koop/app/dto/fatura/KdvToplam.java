@@ -3,7 +3,6 @@ package com.koop.app.dto.fatura;
 import java.math.BigDecimal;
 
 public class KdvToplam {
-
     private String kdvKategorisi;
 
     private BigDecimal kdvTutari;

@@ -2,9 +2,8 @@ package com.koop.app.repository;
 
 import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.dto.AylikSatislar;
-import java.util.List;
-
 import com.koop.app.dto.fatura.OrtakFaturaDbReport;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,22 +31,28 @@ public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokH
     )
     List<AylikSatislar> getSatisRaporlari();
 
-    @Query("select satisStokHareketleri from SatisStokHareketleri satisStokHareketleri " +
+    @Query(
+        "select satisStokHareketleri from SatisStokHareketleri satisStokHareketleri " +
         "join fetch satisStokHareketleri.satis " +
-        "join fetch satisStokHareketleri.urun")
+        "join fetch satisStokHareketleri.urun"
+    )
     List<SatisStokHareketleri> findAllWithSatis();
 
     @Query(
         "select new com.koop.app.dto.fatura.OrtakFaturaDbReport( " +
-            "concat(u.urunAdi, ' %', kk.kdvOrani), sum(satisStokHareketleri.miktar), u, kk, " +
-            "sum(satisStokHareketleri.tutar) " +
-            ") " +
-            "from SatisStokHareketleri satisStokHareketleri " +
-            "join Urun u on u.id = satisStokHareketleri.urun.id " +
-            "join KdvKategorisi kk on kk.id = satisStokHareketleri.urun.kdvKategorisi.id " +
-            "where month(satisStokHareketleri.satis.tarih) = :month and year(satisStokHareketleri.satis.tarih) = :year " +
-            "and satisStokHareketleri.satis.kisi.id = :kisiId " +
-            "GROUP BY u.id, u.urunAdi, kk.id, u.birim  "
+        "concat(u.urunAdi, ' %', kk.kdvOrani), sum(satisStokHareketleri.miktar), u, kk, " +
+        "sum(satisStokHareketleri.tutar) " +
+        ") " +
+        "from SatisStokHareketleri satisStokHareketleri " +
+        "join Urun u on u.id = satisStokHareketleri.urun.id " +
+        "join KdvKategorisi kk on kk.id = satisStokHareketleri.urun.kdvKategorisi.id " +
+        "where month(satisStokHareketleri.satis.tarih) = :month and year(satisStokHareketleri.satis.tarih) = :year " +
+        "and satisStokHareketleri.satis.kisi.id = :kisiId " +
+        "GROUP BY u.id, u.urunAdi, kk.id, u.birim  "
     )
-    List<OrtakFaturaDbReport> ortakFaturaKisiAy(@Param("year") int year, @Param("month") int month, @Param("kisiId") Long kisiId);
+    List<OrtakFaturaDbReport> ortakFaturaKisiAy(
+        @Param("year") int year,
+        @Param("month") int month,
+        @Param("kisiId") Long kisiId
+    );
 }

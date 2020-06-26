@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.domain.enumeration.UrunKategorisi;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Urun.
@@ -19,7 +18,6 @@ import java.math.BigDecimal;
 @Table(name = "urun")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Urun implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -225,6 +223,7 @@ public class Urun implements Serializable {
     public void setUrunFiyatHesap(UrunFiyatHesap urunFiyatHesap) {
         this.urunFiyatHesap = urunFiyatHesap;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

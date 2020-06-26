@@ -38,7 +38,9 @@ public class AuditEventServiceIT {
     @BeforeEach
     public void init() {
         auditEventOld = new PersistentAuditEvent();
-        auditEventOld.setAuditEventDate(Instant.now().minus(jHipsterProperties.getAuditEvents().getRetentionPeriod() + 1, ChronoUnit.DAYS));
+        auditEventOld.setAuditEventDate(
+            Instant.now().minus(jHipsterProperties.getAuditEvents().getRetentionPeriod() + 1, ChronoUnit.DAYS)
+        );
         auditEventOld.setPrincipal("test-user-old");
         auditEventOld.setAuditEventType("test-type");
 

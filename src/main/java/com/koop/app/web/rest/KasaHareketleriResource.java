@@ -50,15 +50,22 @@ public class KasaHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/kasa-hareketleris")
-    public ResponseEntity<KasaHareketleri> createKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri) throws URISyntaxException {
+    public ResponseEntity<KasaHareketleri> createKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri)
+        throws URISyntaxException {
         log.debug("REST request to save KasaHareketleri : {}", kasaHareketleri);
         if (kasaHareketleri.getId() != null) {
-            throw new BadRequestAlertException("A new kasaHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException(
+                "A new kasaHareketleri cannot already have an ID",
+                ENTITY_NAME,
+                "idexists"
+            );
         }
         KasaHareketleri result = kasaHareketleriRepository.save(kasaHareketleri);
         return ResponseEntity
             .created(new URI("/api/kasa-hareketleris/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -72,7 +79,8 @@ public class KasaHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/kasa-hareketleris")
-    public ResponseEntity<KasaHareketleri> updateKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri) throws URISyntaxException {
+    public ResponseEntity<KasaHareketleri> updateKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri)
+        throws URISyntaxException {
         log.debug("REST request to update KasaHareketleri : {}", kasaHareketleri);
         if (kasaHareketleri.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -80,7 +88,14 @@ public class KasaHareketleriResource {
         KasaHareketleri result = kasaHareketleriRepository.save(kasaHareketleri);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kasaHareketleri.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    kasaHareketleri.getId().toString()
+                )
+            )
             .body(result);
     }
 
@@ -94,7 +109,10 @@ public class KasaHareketleriResource {
     public ResponseEntity<List<KasaHareketleri>> getAllKasaHareketleris(Pageable pageable) {
         log.debug("REST request to get a page of KasaHareketleris");
         Page<KasaHareketleri> page = kasaHareketleriRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

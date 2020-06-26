@@ -99,6 +99,7 @@ public class SatisStokHareketleri implements Serializable {
     public void setSatis(Satis satis) {
         this.satis = satis;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

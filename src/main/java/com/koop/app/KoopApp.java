@@ -43,7 +43,8 @@ public class KoopApp {
             activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)
         ) {
             log.error(
-                "You have misconfigured your application! It should not run " + "with both the 'dev' and 'prod' profiles at the same time."
+                "You have misconfigured your application! It should not run " +
+                "with both the 'dev' and 'prod' profiles at the same time."
             );
         }
         if (
@@ -51,7 +52,8 @@ public class KoopApp {
             activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_CLOUD)
         ) {
             log.error(
-                "You have misconfigured your application! It should not " + "run with both the 'dev' and 'cloud' profiles at the same time."
+                "You have misconfigured your application! It should not " +
+                "run with both the 'dev' and 'cloud' profiles at the same time."
             );
         }
     }

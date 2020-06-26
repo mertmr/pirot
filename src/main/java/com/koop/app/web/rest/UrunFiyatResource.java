@@ -63,7 +63,9 @@ public class UrunFiyatResource {
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity
             .created(new URI("/api/urun-fiyats/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -88,7 +90,9 @@ public class UrunFiyatResource {
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString())
+            )
             .body(result);
     }
 
@@ -102,7 +106,10 @@ public class UrunFiyatResource {
     public ResponseEntity<List<UrunFiyat>> getAllUrunFiyats(Pageable pageable) {
         log.debug("REST request to get a page of UrunFiyats");
         Page<UrunFiyat> page = urunFiyatRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

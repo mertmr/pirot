@@ -62,7 +62,11 @@ public class NobetHareketleriResource {
         throws URISyntaxException {
         log.debug("REST request to save NobetHareketleri : {}", nobetHareketleri);
         if (nobetHareketleri.getId() != null) {
-            throw new BadRequestAlertException("A new nobetHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException(
+                "A new nobetHareketleri cannot already have an ID",
+                ENTITY_NAME,
+                "idexists"
+            );
         }
         if (nobetHareketleri.getTarih() == null) {
             nobetHareketleri.setTarih(ZonedDateTime.now());
@@ -72,7 +76,9 @@ public class NobetHareketleriResource {
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity
             .created(new URI("/api/nobet-hareketleris/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -100,7 +106,14 @@ public class NobetHareketleriResource {
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, nobetHareketleri.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    nobetHareketleri.getId().toString()
+                )
+            )
             .body(result);
     }
 
@@ -116,7 +129,10 @@ public class NobetHareketleriResource {
     public ResponseEntity<List<NobetHareketleri>> getAllNobetHareketleris(Pageable pageable) {
         log.debug("REST request to get a page of NobetHareketleris");
         Page<NobetHareketleri> page = nobetHareketleriRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -148,14 +164,20 @@ public class NobetHareketleriResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-    @GetMapping(params = {"fromDate", "userId"}, path = "/nobet-hareketleris/acilis")
-    public ResponseEntity<NobetHareketleri> getAcilisHareketiByNobetci(@RequestParam(value = "fromDate") String fromDate,
-                                                                       @RequestParam(value = "userId") Long userId) {
+
+    @GetMapping(params = { "fromDate", "userId" }, path = "/nobet-hareketleris/acilis")
+    public ResponseEntity<NobetHareketleri> getAcilisHareketiByNobetci(
+        @RequestParam(value = "fromDate") String fromDate,
+        @RequestParam(value = "userId") Long userId
+    ) {
         log.debug("REST request to getAcilisHareketiByNobetci");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(fromDate, formatter);
-        NobetHareketleri nobetHareketleri = nobetHareketleriRepository.findLastNobetHareketiAcilisByTarih(localDate.atStartOfDay(ZoneId.systemDefault()),
-            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), userId);
+        NobetHareketleri nobetHareketleri = nobetHareketleriRepository.findLastNobetHareketiAcilisByTarih(
+            localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()),
+            userId
+        );
         return ResponseEntity.ok().body(nobetHareketleri);
     }
 }

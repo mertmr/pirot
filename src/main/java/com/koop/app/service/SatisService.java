@@ -1,19 +1,18 @@
 package com.koop.app.service;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.koop.app.domain.*;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SatisService {
@@ -68,7 +67,10 @@ public class SatisService {
             }
         }
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
-        List<Urun> urunList = stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList());
+        List<Urun> urunList = stokHareketleriLists
+            .stream()
+            .map(SatisStokHareketleri::getUrun)
+            .collect(Collectors.toList());
         urunRepository.saveAll(urunList);
 
         if (!satis.isKartliSatis()) {
@@ -96,7 +98,9 @@ public class SatisService {
             Urun urun = satisStokHareketi.getUrun();
             if (satisStokHareketi.getUrun().getStok() != null) {
                 if (satisStokHareketi.getId() != null) {
-                    SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository.findById(satisStokHareketi.getId()).get();
+                    SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository
+                        .findById(satisStokHareketi.getId())
+                        .get();
                     int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
                     urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
                 } else {
@@ -105,14 +109,16 @@ public class SatisService {
             }
         }
 
-        List<SatisStokHareketleri> cikarilanUrunler = satisOncekiHali.getStokHareketleriLists().stream().
-            filter(satisStokHareketleri -> !stokHareketleriLists.contains(satisStokHareketleri)).collect(Collectors.toList());
+        List<SatisStokHareketleri> cikarilanUrunler = satisOncekiHali
+            .getStokHareketleriLists()
+            .stream()
+            .filter(satisStokHareketleri -> !stokHareketleriLists.contains(satisStokHareketleri))
+            .collect(Collectors.toList());
 
         for (SatisStokHareketleri cikarilanUrunHareketi : cikarilanUrunler) {
             Urun urun = cikarilanUrunHareketi.getUrun();
             urun.setStok(urun.getStok().add(BigDecimal.valueOf(cikarilanUrunHareketi.getMiktar())));
         }
-
 
         Map<Long, SatisStokHareketleri> stokHareketMap = stokHareketleriLists
             .stream()
@@ -124,7 +130,9 @@ public class SatisService {
         }
 
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
-        urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));
+        urunRepository.saveAll(
+            stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList())
+        );
 
         if (!satisOncekiHali.isKartliSatis() && !satis.isKartliSatis()) {
             BigDecimal kasaHareketiFarki = satis.getToplamTutar().subtract(satisOncekiHali.getToplamTutar());
@@ -148,20 +156,25 @@ public class SatisService {
      */
     public void migrateToplamTutar() {
         List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAllWithSatis();
-        Map<Long, List<SatisStokHareketleri>> satisStokMap = satisStokHareketleriList.stream()
+        Map<Long, List<SatisStokHareketleri>> satisStokMap = satisStokHareketleriList
+            .stream()
             .collect(groupingBy(satisStokHareketleri -> satisStokHareketleri.getSatis().getId()));
 
         List<Satis> satisListToSave = new ArrayList<>();
         for (Long satisId : satisStokMap.keySet()) {
             List<SatisStokHareketleri> satisStokHareketleris = satisStokMap.get(satisId);
-            double sum = satisStokHareketleris.stream().
-                mapToDouble(satisStokHareketleri -> satisStokHareketleri.getTutar().doubleValue()).sum();
+            double sum = satisStokHareketleris
+                .stream()
+                .mapToDouble(satisStokHareketleri -> satisStokHareketleri.getTutar().doubleValue())
+                .sum();
             Optional<SatisStokHareketleri> satisStokHareketi = satisStokHareketleris.stream().findFirst();
-            satisStokHareketi.ifPresent(satisStok -> {
-                Satis satis = satisStok.getSatis();
-                satis.setToplamTutar(BigDecimal.valueOf(sum));
-                satisListToSave.add(satis);
-            });
+            satisStokHareketi.ifPresent(
+                satisStok -> {
+                    Satis satis = satisStok.getSatis();
+                    satis.setToplamTutar(BigDecimal.valueOf(sum));
+                    satisListToSave.add(satis);
+                }
+            );
         }
 
         satisRepository.saveAll(satisListToSave);

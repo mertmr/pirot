@@ -15,7 +15,10 @@ public class DashboardReportService {
 
     private final KasaHareketleriRepository kasaHareketleriRepository;
 
-    public DashboardReportService(SatisRepository satisRepository, KasaHareketleriRepository kasaHareketleriRepository) {
+    public DashboardReportService(
+        SatisRepository satisRepository,
+        KasaHareketleriRepository kasaHareketleriRepository
+    ) {
         this.satisRepository = satisRepository;
         this.kasaHareketleriRepository = kasaHareketleriRepository;
     }
