@@ -123,10 +123,12 @@ public class KdvKategorisiResourceIT {
 
         // Create the KdvKategorisi, which fails.
 
-
-        restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
+        restKdvKategorisiMockMvc
+            .perform(
+                post("/api/kdv-kategorisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi))
+            )
             .andExpect(status().isBadRequest());
 
         List<KdvKategorisi> kdvKategorisiList = kdvKategorisiRepository.findAll();
@@ -142,10 +144,12 @@ public class KdvKategorisiResourceIT {
 
         // Create the KdvKategorisi, which fails.
 
-
-        restKdvKategorisiMockMvc.perform(post("/api/kdv-kategorisis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi)))
+        restKdvKategorisiMockMvc
+            .perform(
+                post("/api/kdv-kategorisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(kdvKategorisi))
+            )
             .andExpect(status().isBadRequest());
 
         List<KdvKategorisi> kdvKategorisiList = kdvKategorisiRepository.findAll();
@@ -183,11 +187,14 @@ public class KdvKategorisiResourceIT {
             .andExpect(jsonPath("$.kategoriAdi").value(DEFAULT_KATEGORI_ADI))
             .andExpect(jsonPath("$.kdvOrani").value(DEFAULT_KDV_ORANI));
     }
+
     @Test
     @Transactional
     public void getNonExistingKdvKategorisi() throws Exception {
         // Get the kdvKategorisi
-        restKdvKategorisiMockMvc.perform(get("/api/kdv-kategorisis/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restKdvKategorisiMockMvc
+            .perform(get("/api/kdv-kategorisis/{id}", Long.MAX_VALUE))
+            .andExpect(status().isNotFound());
     }
 
     @Test

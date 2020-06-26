@@ -55,7 +55,10 @@ public class StokGirisiResourceIT {
     private static final StokHareketiTipi DEFAULT_STOK_HAREKETI_TIPI = StokHareketiTipi.FIRE;
     private static final StokHareketiTipi UPDATED_STOK_HAREKETI_TIPI = StokHareketiTipi.STOK_GIRISI;
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(0L),
+        ZoneOffset.UTC
+    );
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -89,7 +92,11 @@ public class StokGirisiResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final StokGirisiResource stokGirisiResource = new StokGirisiResource(stokGirisiRepository, userService, stokGirisiService);
+        final StokGirisiResource stokGirisiResource = new StokGirisiResource(
+            stokGirisiRepository,
+            userService,
+            stokGirisiService
+        );
         this.restStokGirisiMockMvc =
             MockMvcBuilders
                 .standaloneSetup(stokGirisiResource)
@@ -142,11 +149,14 @@ public class StokGirisiResourceIT {
     @Transactional
     @WithMockUser(value = "admin")
     public void createStokGirisi() throws Exception {
-        int databaseSizeBeforeCreate = stokGirisiRepository.findAll().size();stokGirisi.urun(UrunResourceIT.createEntity(em));
+        int databaseSizeBeforeCreate = stokGirisiRepository.findAll().size();
+        stokGirisi.urun(UrunResourceIT.createEntity(em));
         // Create the StokGirisi
         restStokGirisiMockMvc
             .perform(
-                post("/api/stok-girisis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(stokGirisi))
+                post("/api/stok-girisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(stokGirisi))
             )
             .andExpect(status().isCreated());
 
@@ -172,7 +182,9 @@ public class StokGirisiResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restStokGirisiMockMvc
             .perform(
-                post("/api/stok-girisis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(stokGirisi))
+                post("/api/stok-girisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(stokGirisi))
             )
             .andExpect(status().isBadRequest());
 
@@ -190,10 +202,12 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi, which fails.
 
-
-        restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
+        restStokGirisiMockMvc
+            .perform(
+                post("/api/stok-girisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(stokGirisi))
+            )
             .andExpect(status().isBadRequest());
 
         List<StokGirisi> stokGirisiList = stokGirisiRepository.findAll();
@@ -209,10 +223,12 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi, which fails.
 
-
-        restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
+        restStokGirisiMockMvc
+            .perform(
+                post("/api/stok-girisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(stokGirisi))
+            )
             .andExpect(status().isBadRequest());
 
         List<StokGirisi> stokGirisiList = stokGirisiRepository.findAll();
@@ -228,10 +244,12 @@ public class StokGirisiResourceIT {
 
         // Create the StokGirisi, which fails.
 
-
-        restStokGirisiMockMvc.perform(post("/api/stok-girisis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(stokGirisi)))
+        restStokGirisiMockMvc
+            .perform(
+                post("/api/stok-girisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(stokGirisi))
+            )
             .andExpect(status().isBadRequest());
 
         List<StokGirisi> stokGirisiList = stokGirisiRepository.findAll();
@@ -275,6 +293,7 @@ public class StokGirisiResourceIT {
             .andExpect(jsonPath("$.stokHareketiTipi").value(DEFAULT_STOK_HAREKETI_TIPI.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
+
     @Test
     @Transactional
     public void getNonExistingStokGirisi() throws Exception {
@@ -328,7 +347,9 @@ public class StokGirisiResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restStokGirisiMockMvc
             .perform(
-                put("/api/stok-girisis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(stokGirisi))
+                put("/api/stok-girisis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(stokGirisi))
             )
             .andExpect(status().isBadRequest());
 

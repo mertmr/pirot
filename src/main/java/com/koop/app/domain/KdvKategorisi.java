@@ -63,6 +63,7 @@ public class KdvKategorisi implements Serializable {
     public void setKdvOrani(Integer kdvOrani) {
         this.kdvOrani = kdvOrani;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

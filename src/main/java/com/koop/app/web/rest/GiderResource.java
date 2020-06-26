@@ -46,7 +46,11 @@ public class GiderResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public GiderResource(GiderRepository giderRepository, UserService userService, KasaHareketleriService kasaHareketleriService) {
+    public GiderResource(
+        GiderRepository giderRepository,
+        UserService userService,
+        KasaHareketleriService kasaHareketleriService
+    ) {
         this.giderRepository = giderRepository;
         this.userService = userService;
         this.kasaHareketleriService = kasaHareketleriService;
@@ -75,7 +79,9 @@ public class GiderResource {
         }
         return ResponseEntity
             .created(new URI("/api/giders/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -121,7 +127,10 @@ public class GiderResource {
     public ResponseEntity<List<Gider>> getAllGiders(Pageable pageable) {
         log.debug("REST request to get a page of Giders");
         Page<Gider> page = giderRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -166,18 +175,26 @@ public class GiderResource {
     public ResponseEntity<List<Gider>> searchGider(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Gider for query {}", query);
         Page<Gider> page = giderRepository.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping(params = {"fromDate", "userId"}, path = "/giders/user-gider")
-    public ResponseEntity<List<Gider>> getUserGiders(@RequestParam(value = "fromDate") String fromDate,
-                                                     @RequestParam(value = "userId") String userId) {
+    @GetMapping(params = { "fromDate", "userId" }, path = "/giders/user-gider")
+    public ResponseEntity<List<Gider>> getUserGiders(
+        @RequestParam(value = "fromDate") String fromDate,
+        @RequestParam(value = "userId") String userId
+    ) {
         log.debug("REST request to get a list of user giders");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(fromDate, formatter);
-        List<Gider> giderList = giderRepository.getUserGiders(localDate.atStartOfDay(ZoneId.systemDefault()),
-            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), Long.valueOf(userId));
+        List<Gider> giderList = giderRepository.getUserGiders(
+            localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()),
+            Long.valueOf(userId)
+        );
         return ResponseEntity.ok().body(giderList);
     }
 }

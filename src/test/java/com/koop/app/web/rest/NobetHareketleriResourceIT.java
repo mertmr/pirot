@@ -1,9 +1,22 @@
 package com.koop.app.web.rest;
 
+import static com.koop.app.web.rest.TestUtil.sameInstant;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.koop.app.KoopApp;
 import com.koop.app.domain.NobetHareketleri;
+import com.koop.app.domain.enumeration.AcilisKapanis;
 import com.koop.app.repository.NobetHareketleriRepository;
-
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.List;
 
-import static com.koop.app.web.rest.TestUtil.sameInstant;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.koop.app.domain.enumeration.AcilisKapanis;
 /**
  * Integration tests for the {@link NobetHareketleriResource} REST controller.
  */
@@ -35,7 +34,6 @@ import com.koop.app.domain.enumeration.AcilisKapanis;
 @AutoConfigureMockMvc
 @WithMockUser
 public class NobetHareketleriResourceIT {
-
     private static final BigDecimal DEFAULT_KASA = new BigDecimal(1);
     private static final BigDecimal UPDATED_KASA = new BigDecimal(2);
 
@@ -54,7 +52,10 @@ public class NobetHareketleriResourceIT {
     private static final AcilisKapanis DEFAULT_ACILIS_KAPANIS = AcilisKapanis.ACILIS;
     private static final AcilisKapanis UPDATED_ACILIS_KAPANIS = AcilisKapanis.KAPANIS;
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(0L),
+        ZoneOffset.UTC
+    );
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -85,6 +86,7 @@ public class NobetHareketleriResourceIT {
             .tarih(DEFAULT_TARIH);
         return nobetHareketleri;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -113,9 +115,12 @@ public class NobetHareketleriResourceIT {
     public void createNobetHareketleri() throws Exception {
         int databaseSizeBeforeCreate = nobetHareketleriRepository.findAll().size();
         // Create the NobetHareketleri
-        restNobetHareketleriMockMvc.perform(post("/api/nobet-hareketleris")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
+        restNobetHareketleriMockMvc
+            .perform(
+                post("/api/nobet-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri))
+            )
             .andExpect(status().isCreated());
 
         // Validate the NobetHareketleri in the database
@@ -140,16 +145,18 @@ public class NobetHareketleriResourceIT {
         nobetHareketleri.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restNobetHareketleriMockMvc.perform(post("/api/nobet-hareketleris")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
+        restNobetHareketleriMockMvc
+            .perform(
+                post("/api/nobet-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the NobetHareketleri in the database
         List<NobetHareketleri> nobetHareketleriList = nobetHareketleriRepository.findAll();
         assertThat(nobetHareketleriList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -158,7 +165,8 @@ public class NobetHareketleriResourceIT {
         nobetHareketleriRepository.saveAndFlush(nobetHareketleri);
 
         // Get all the nobetHareketleriList
-        restNobetHareketleriMockMvc.perform(get("/api/nobet-hareketleris?sort=id,desc"))
+        restNobetHareketleriMockMvc
+            .perform(get("/api/nobet-hareketleris?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(nobetHareketleri.getId().intValue())))
@@ -170,7 +178,7 @@ public class NobetHareketleriResourceIT {
             .andExpect(jsonPath("$.[*].acilisKapanis").value(hasItem(DEFAULT_ACILIS_KAPANIS.toString())))
             .andExpect(jsonPath("$.[*].tarih").value(hasItem(sameInstant(DEFAULT_TARIH))));
     }
-    
+
     @Test
     @Transactional
     public void getNobetHareketleri() throws Exception {
@@ -178,7 +186,8 @@ public class NobetHareketleriResourceIT {
         nobetHareketleriRepository.saveAndFlush(nobetHareketleri);
 
         // Get the nobetHareketleri
-        restNobetHareketleriMockMvc.perform(get("/api/nobet-hareketleris/{id}", nobetHareketleri.getId()))
+        restNobetHareketleriMockMvc
+            .perform(get("/api/nobet-hareketleris/{id}", nobetHareketleri.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(nobetHareketleri.getId().intValue()))
@@ -190,11 +199,13 @@ public class NobetHareketleriResourceIT {
             .andExpect(jsonPath("$.acilisKapanis").value(DEFAULT_ACILIS_KAPANIS.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
+
     @Test
     @Transactional
     public void getNonExistingNobetHareketleri() throws Exception {
         // Get the nobetHareketleri
-        restNobetHareketleriMockMvc.perform(get("/api/nobet-hareketleris/{id}", Long.MAX_VALUE))
+        restNobetHareketleriMockMvc
+            .perform(get("/api/nobet-hareketleris/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -219,9 +230,12 @@ public class NobetHareketleriResourceIT {
             .acilisKapanis(UPDATED_ACILIS_KAPANIS)
             .tarih(UPDATED_TARIH);
 
-        restNobetHareketleriMockMvc.perform(put("/api/nobet-hareketleris")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedNobetHareketleri)))
+        restNobetHareketleriMockMvc
+            .perform(
+                put("/api/nobet-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedNobetHareketleri))
+            )
             .andExpect(status().isOk());
 
         // Validate the NobetHareketleri in the database
@@ -243,9 +257,12 @@ public class NobetHareketleriResourceIT {
         int databaseSizeBeforeUpdate = nobetHareketleriRepository.findAll().size();
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restNobetHareketleriMockMvc.perform(put("/api/nobet-hareketleris")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri)))
+        restNobetHareketleriMockMvc
+            .perform(
+                put("/api/nobet-hareketleris")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(nobetHareketleri))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the NobetHareketleri in the database
@@ -262,8 +279,10 @@ public class NobetHareketleriResourceIT {
         int databaseSizeBeforeDelete = nobetHareketleriRepository.findAll().size();
 
         // Delete the nobetHareketleri
-        restNobetHareketleriMockMvc.perform(delete("/api/nobet-hareketleris/{id}", nobetHareketleri.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restNobetHareketleriMockMvc
+            .perform(
+                delete("/api/nobet-hareketleris/{id}", nobetHareketleri.getId()).accept(MediaType.APPLICATION_JSON)
+            )
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

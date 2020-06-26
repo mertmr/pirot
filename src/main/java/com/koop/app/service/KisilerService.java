@@ -17,10 +17,10 @@ public class KisilerService {
     public Kisiler getRandomKisi() {
         long qty = kisilerRepository.countActive();
         int idx = (int) (Math.random() * qty);
-        if(idx == 0) {
+        if (idx == 0) {
             idx++;
         }
-        if(idx > 25) {
+        if (idx > 25) {
             idx = 25;
         }
         Page<Kisiler> kisiPage = kisilerRepository.findAllActive(PageRequest.of(idx, 1));
