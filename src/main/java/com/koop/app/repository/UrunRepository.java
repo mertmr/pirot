@@ -17,11 +17,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 @JaversSpringDataAuditable
 public interface UrunRepository extends JpaRepository<Urun, Long> {
-    @Query("select urun " +
+    @Query(
+        "select urun " +
         " from Urun urun " +
         "left join fetch urun.kdvKategorisi kdv" +
         " where urun.satista = true and urun.stok > 0 and urun.active=true" +
-        " order by urun.urunAdi")
+        " order by urun.urunAdi"
+    )
     List<Urun> findSatistakiUrunler();
 
     Page<Urun> findByUrunAdiContainingIgnoreCaseAndActive(String urunAdi, Boolean active, Pageable pageable);
@@ -34,5 +36,5 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     List<Urun> getAllUrunForStokGirisi();
 
     @Query("select urun from Urun urun")
-	Page<Urun> findEverything(Pageable pageable);
+    Page<Urun> findEverything(Pageable pageable);
 }

@@ -60,7 +60,10 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                 .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
                 .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
         } else {
-            builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
+            builder
+                .withCause(((DefaultProblem) problem).getCause())
+                .withDetail(problem.getDetail())
+                .withInstance(problem.getInstance());
             problem.getParameters().forEach(builder::with);
             if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
                 builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
@@ -70,7 +73,10 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @Override
-    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
+    public ResponseEntity<Problem> handleMethodArgumentNotValid(
+        MethodArgumentNotValidException ex,
+        @Nonnull NativeWebRequest request
+    ) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result
             .getFieldErrors()
@@ -98,7 +104,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(
             problem,
             request,
-            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+            HeaderUtil.createFailureAlert(
+                applicationName,
+                true,
+                problem.getEntityName(),
+                problem.getErrorKey(),
+                problem.getMessage()
+            )
         );
     }
 
@@ -111,7 +123,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(
             problem,
             request,
-            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+            HeaderUtil.createFailureAlert(
+                applicationName,
+                true,
+                problem.getEntityName(),
+                problem.getErrorKey(),
+                problem.getMessage()
+            )
         );
     }
 
@@ -124,7 +142,10 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleBadRequestAlertException(
+        BadRequestAlertException ex,
+        NativeWebRequest request
+    ) {
         return create(
             ex,
             request,
@@ -134,7 +155,11 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
-        Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
+        Problem problem = Problem
+            .builder()
+            .withStatus(Status.CONFLICT)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
+            .build();
         return create(ex, problem, request);
     }
 }

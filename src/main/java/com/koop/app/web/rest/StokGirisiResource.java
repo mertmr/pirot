@@ -42,7 +42,11 @@ public class StokGirisiResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public StokGirisiResource(StokGirisiRepository stokGirisiRepository, UserService userService, StokGirisiService stokGirisiService) {
+    public StokGirisiResource(
+        StokGirisiRepository stokGirisiRepository,
+        UserService userService,
+        StokGirisiService stokGirisiService
+    ) {
         this.stokGirisiRepository = stokGirisiRepository;
         this.userService = userService;
         this.stokGirisiService = stokGirisiService;
@@ -56,7 +60,8 @@ public class StokGirisiResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/stok-girisis")
-    public ResponseEntity<StokGirisi> createStokGirisi(@Valid @RequestBody StokGirisi stokGirisi) throws URISyntaxException {
+    public ResponseEntity<StokGirisi> createStokGirisi(@Valid @RequestBody StokGirisi stokGirisi)
+        throws URISyntaxException {
         log.debug("REST request to save StokGirisi : {}", stokGirisi);
         if (stokGirisi.getId() != null) {
             throw new BadRequestAlertException("A new stokGirisi cannot already have an ID", ENTITY_NAME, "idexists");
@@ -67,7 +72,9 @@ public class StokGirisiResource {
         StokGirisi result = stokGirisiService.save(stokGirisi);
         return ResponseEntity
             .created(new URI("/api/stok-girisis/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -81,7 +88,8 @@ public class StokGirisiResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/stok-girisis")
-    public ResponseEntity<StokGirisi> updateStokGirisi(@Valid @RequestBody StokGirisi stokGirisi) throws URISyntaxException {
+    public ResponseEntity<StokGirisi> updateStokGirisi(@Valid @RequestBody StokGirisi stokGirisi)
+        throws URISyntaxException {
         log.debug("REST request to update StokGirisi : {}", stokGirisi);
         if (stokGirisi.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -89,7 +97,9 @@ public class StokGirisiResource {
         StokGirisi result = stokGirisiService.update(stokGirisi);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, stokGirisi.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, stokGirisi.getId().toString())
+            )
             .body(result);
     }
 
@@ -103,7 +113,10 @@ public class StokGirisiResource {
     public ResponseEntity<List<StokGirisi>> getAllStokGirisis(Pageable pageable) {
         log.debug("REST request to get a page of StokGirisis");
         Page<StokGirisi> page = stokGirisiRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

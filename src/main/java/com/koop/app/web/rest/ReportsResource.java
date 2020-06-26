@@ -7,6 +7,10 @@ import com.koop.app.dto.fatura.GunSonuRaporuDto;
 import com.koop.app.dto.fatura.OrtakFaturasiDto;
 import com.koop.app.dto.fatura.ReportDatesDto;
 import com.koop.app.service.ReportService;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 /**
  * REST controller for managing {@link Uretici}.
@@ -36,7 +35,7 @@ public class ReportsResource {
         this.reportService = reportService;
     }
 
-    @GetMapping(params = {"fromDate", "toDate"}, path = "/reports/ciro")
+    @GetMapping(params = { "fromDate", "toDate" }, path = "/reports/ciro")
     public ResponseEntity<List<Ciro>> getCiroReport(
         @RequestParam(value = "fromDate") LocalDate fromDate,
         @RequestParam(value = "toDate") LocalDate toDate
@@ -45,15 +44,19 @@ public class ReportsResource {
         return ResponseEntity.ok().body(reportService.getCiroReport(fromDate, toDate));
     }
 
-    @GetMapping(params = {"fromDate"}, path = "/reports/ciro/by-nobetci")
-    public ResponseEntity<List<Ciro>> getCiroReportGroupByNobetci(@RequestParam(value = "fromDate") LocalDate fromDate) {
+    @GetMapping(params = { "fromDate" }, path = "/reports/ciro/by-nobetci")
+    public ResponseEntity<List<Ciro>> getCiroReportGroupByNobetci(
+        @RequestParam(value = "fromDate") LocalDate fromDate
+    ) {
         log.debug("REST request to get ciro report by nobetci");
         return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetci(fromDate));
     }
 
-    @GetMapping(params = {"fromDate", "userId"}, path = "/reports/ciro/nobetci-date")
-    public ResponseEntity<Ciro> getCiroReportGroupByNobetciAndDate(@RequestParam(value = "fromDate") String fromDate,
-                                                                         @RequestParam(value = "userId") Long userId) {
+    @GetMapping(params = { "fromDate", "userId" }, path = "/reports/ciro/nobetci-date")
+    public ResponseEntity<Ciro> getCiroReportGroupByNobetciAndDate(
+        @RequestParam(value = "fromDate") String fromDate,
+        @RequestParam(value = "userId") Long userId
+    ) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(fromDate, formatter);
         log.debug("REST request to get ciro report by nobetci and date");
@@ -73,8 +76,10 @@ public class ReportsResource {
     }
 
     @GetMapping("/reports/ortak-fatura-kisi-ay")
-    public ResponseEntity<OrtakFaturasiDto> ortakFaturaKisiAy(@RequestParam(value = "reportDate") String reportDate,
-                                                              @RequestParam(value = "kisiId") Long kisiId) {
+    public ResponseEntity<OrtakFaturasiDto> ortakFaturaKisiAy(
+        @RequestParam(value = "reportDate") String reportDate,
+        @RequestParam(value = "kisiId") Long kisiId
+    ) {
         log.debug("REST request to get report date list");
         return ResponseEntity.ok().body(reportService.ortakFaturaKisiAy(reportDate, kisiId));
     }

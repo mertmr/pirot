@@ -78,6 +78,7 @@ public class KasaHareketleri implements Serializable {
     public void setTarih(ZonedDateTime tarih) {
         this.tarih = tarih;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

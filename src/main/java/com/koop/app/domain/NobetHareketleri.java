@@ -1,16 +1,13 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-
+import com.koop.app.domain.enumeration.AcilisKapanis;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-
-import com.koop.app.domain.enumeration.AcilisKapanis;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A NobetHareketleri.
@@ -19,7 +16,6 @@ import com.koop.app.domain.enumeration.AcilisKapanis;
 @Table(name = "nobet_hareketleri")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class NobetHareketleri implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -165,6 +161,7 @@ public class NobetHareketleri implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

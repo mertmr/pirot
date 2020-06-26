@@ -58,7 +58,9 @@ public class BorcAlacakResource {
         BorcAlacak result = borcAlacakRepository.save(borcAlacak);
         return ResponseEntity
             .created(new URI("/api/borc-alacaks/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -80,7 +82,9 @@ public class BorcAlacakResource {
         BorcAlacak result = borcAlacakRepository.save(borcAlacak);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, borcAlacak.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, borcAlacak.getId().toString())
+            )
             .body(result);
     }
 
@@ -94,7 +98,10 @@ public class BorcAlacakResource {
     public ResponseEntity<List<BorcAlacak>> getAllBorcAlacaks(Pageable pageable) {
         log.debug("REST request to get a page of BorcAlacaks");
         Page<BorcAlacak> page = borcAlacakRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

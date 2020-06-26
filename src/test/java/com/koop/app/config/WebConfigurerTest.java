@@ -14,7 +14,6 @@ import io.github.jhipster.config.JHipsterProperties;
 import java.io.File;
 import java.util.*;
 import javax.servlet.*;
-
 import org.h2.server.web.WebServlet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,9 @@ public class WebConfigurerTest {
     public void setup() {
         servletContext = spy(new MockServletContext());
         doReturn(mock(FilterRegistration.Dynamic.class)).when(servletContext).addFilter(anyString(), any(Filter.class));
-        doReturn(mock(ServletRegistration.Dynamic.class)).when(servletContext).addServlet(anyString(), any(Servlet.class));
+        doReturn(mock(ServletRegistration.Dynamic.class))
+            .when(servletContext)
+            .addServlet(anyString(), any(Servlet.class));
 
         env = new MockEnvironment();
         props = new JHipsterProperties();
@@ -53,7 +54,6 @@ public class WebConfigurerTest {
     public void testStartUpProdServletContext() throws ServletException {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION);
         webConfigurer.onStartup(servletContext);
-
 
         verify(servletContext, never()).addServlet(eq("H2Console"), any(WebServlet.class));
     }
@@ -79,7 +79,10 @@ public class WebConfigurerTest {
         props.getCors().setMaxAge(1800L);
         props.getCors().setAllowCredentials(true);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController()).addFilters(webConfigurer.corsFilter()).build();
+        MockMvc mockMvc = MockMvcBuilders
+            .standaloneSetup(new WebConfigurerTestController())
+            .addFilters(webConfigurer.corsFilter())
+            .build();
 
         mockMvc
             .perform(
@@ -108,7 +111,10 @@ public class WebConfigurerTest {
         props.getCors().setMaxAge(1800L);
         props.getCors().setAllowCredentials(true);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController()).addFilters(webConfigurer.corsFilter()).build();
+        MockMvc mockMvc = MockMvcBuilders
+            .standaloneSetup(new WebConfigurerTestController())
+            .addFilters(webConfigurer.corsFilter())
+            .build();
 
         mockMvc
             .perform(get("/test/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))
@@ -120,7 +126,10 @@ public class WebConfigurerTest {
     public void testCorsFilterDeactivated() throws Exception {
         props.getCors().setAllowedOrigins(null);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController()).addFilters(webConfigurer.corsFilter()).build();
+        MockMvc mockMvc = MockMvcBuilders
+            .standaloneSetup(new WebConfigurerTestController())
+            .addFilters(webConfigurer.corsFilter())
+            .build();
 
         mockMvc
             .perform(get("/api/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))
@@ -132,7 +141,10 @@ public class WebConfigurerTest {
     public void testCorsFilterDeactivated2() throws Exception {
         props.getCors().setAllowedOrigins(new ArrayList<>());
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController()).addFilters(webConfigurer.corsFilter()).build();
+        MockMvc mockMvc = MockMvcBuilders
+            .standaloneSetup(new WebConfigurerTestController())
+            .addFilters(webConfigurer.corsFilter())
+            .build();
 
         mockMvc
             .perform(get("/api/test-cors").header(HttpHeaders.ORIGIN, "other.domain.com"))

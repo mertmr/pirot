@@ -39,7 +39,8 @@ public class CustomAuditEventRepositoryIT {
 
     @BeforeEach
     public void setup() {
-        customAuditEventRepository = new CustomAuditEventRepository(persistenceAuditEventRepository, auditEventConverter);
+        customAuditEventRepository =
+            new CustomAuditEventRepository(persistenceAuditEventRepository, auditEventConverter);
         persistenceAuditEventRepository.deleteAll();
         Instant oneHourAgo = Instant.now().minusSeconds(3600);
 

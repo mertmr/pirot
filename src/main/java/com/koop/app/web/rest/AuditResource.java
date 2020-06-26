@@ -37,7 +37,10 @@ public class AuditResource {
     @GetMapping
     public ResponseEntity<List<AuditEvent>> getAll(Pageable pageable) {
         Page<AuditEvent> page = auditEventService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -59,7 +62,10 @@ public class AuditResource {
         Instant to = toDate.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant();
 
         Page<AuditEvent> page = auditEventService.findByDates(from, to, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

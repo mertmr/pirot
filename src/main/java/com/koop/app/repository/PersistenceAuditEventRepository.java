@@ -13,7 +13,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PersistenceAuditEventRepository extends JpaRepository<PersistentAuditEvent, Long> {
     List<PersistentAuditEvent> findByPrincipal(String principal);
 
-    List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfterAndAuditEventType(String principal, Instant after, String type);
+    List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfterAndAuditEventType(
+        String principal,
+        Instant after,
+        String type
+    );
 
     Page<PersistentAuditEvent> findAllByAuditEventDateBetween(Instant fromDate, Instant toDate, Pageable pageable);
 

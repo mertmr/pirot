@@ -50,7 +50,10 @@ public class UreticiResourceIT {
     private static final String DEFAULT_BANKA_BILGILERI = "AAAAAAAAAA";
     private static final String UPDATED_BANKA_BILGILERI = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(0L),
+        ZoneOffset.UTC
+    );
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -100,7 +103,11 @@ public class UreticiResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Uretici createEntity(EntityManager em) {
-        Uretici uretici = new Uretici().adi(DEFAULT_ADI).adres(DEFAULT_ADRES).bankaBilgileri(DEFAULT_BANKA_BILGILERI).tarih(DEFAULT_TARIH);
+        Uretici uretici = new Uretici()
+            .adi(DEFAULT_ADI)
+            .adres(DEFAULT_ADRES)
+            .bankaBilgileri(DEFAULT_BANKA_BILGILERI)
+            .tarih(DEFAULT_TARIH);
         return uretici;
     }
 
@@ -111,7 +118,11 @@ public class UreticiResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Uretici createUpdatedEntity(EntityManager em) {
-        Uretici uretici = new Uretici().adi(UPDATED_ADI).adres(UPDATED_ADRES).bankaBilgileri(UPDATED_BANKA_BILGILERI).tarih(UPDATED_TARIH);
+        Uretici uretici = new Uretici()
+            .adi(UPDATED_ADI)
+            .adres(UPDATED_ADRES)
+            .bankaBilgileri(UPDATED_BANKA_BILGILERI)
+            .tarih(UPDATED_TARIH);
         return uretici;
     }
 
@@ -127,7 +138,11 @@ public class UreticiResourceIT {
         int databaseSizeBeforeCreate = ureticiRepository.findAll().size();
         // Create the Uretici
         restUreticiMockMvc
-            .perform(post("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(uretici)))
+            .perform(
+                post("/api/ureticis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(uretici))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Uretici in the database
@@ -150,7 +165,11 @@ public class UreticiResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUreticiMockMvc
-            .perform(post("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(uretici)))
+            .perform(
+                post("/api/ureticis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(uretici))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Uretici in the database
@@ -167,10 +186,12 @@ public class UreticiResourceIT {
 
         // Create the Uretici, which fails.
 
-
-        restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(uretici)))
+        restUreticiMockMvc
+            .perform(
+                post("/api/ureticis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(uretici))
+            )
             .andExpect(status().isBadRequest());
 
         List<Uretici> ureticiList = ureticiRepository.findAll();
@@ -186,10 +207,12 @@ public class UreticiResourceIT {
 
         // Create the Uretici, which fails.
 
-
-        restUreticiMockMvc.perform(post("/api/ureticis")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(uretici)))
+        restUreticiMockMvc
+            .perform(
+                post("/api/ureticis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(uretici))
+            )
             .andExpect(status().isBadRequest());
 
         List<Uretici> ureticiList = ureticiRepository.findAll();
@@ -231,6 +254,7 @@ public class UreticiResourceIT {
             .andExpect(jsonPath("$.bankaBilgileri").value(DEFAULT_BANKA_BILGILERI))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
+
     @Test
     @Transactional
     public void getNonExistingUretici() throws Exception {
@@ -251,11 +275,17 @@ public class UreticiResourceIT {
         Uretici updatedUretici = ureticiRepository.findById(uretici.getId()).get();
         // Disconnect from session so that the updates on updatedUretici are not directly saved in db
         em.detach(updatedUretici);
-        updatedUretici.adi(UPDATED_ADI).adres(UPDATED_ADRES).bankaBilgileri(UPDATED_BANKA_BILGILERI).tarih(UPDATED_TARIH);
+        updatedUretici
+            .adi(UPDATED_ADI)
+            .adres(UPDATED_ADRES)
+            .bankaBilgileri(UPDATED_BANKA_BILGILERI)
+            .tarih(UPDATED_TARIH);
 
         restUreticiMockMvc
             .perform(
-                put("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedUretici))
+                put("/api/ureticis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedUretici))
             )
             .andExpect(status().isOk());
 
@@ -276,7 +306,11 @@ public class UreticiResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUreticiMockMvc
-            .perform(put("/api/ureticis").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(uretici)))
+            .perform(
+                put("/api/ureticis")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(uretici))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Uretici in the database
