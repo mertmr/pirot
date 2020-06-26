@@ -89,6 +89,10 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
+        <sonar.projectKey>mertmr_pirot</sonar.projectKey>
+        <sonar.organization>mertmr</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>057d0e48eb852519d70a928a13818137518b743a</sonar.login>
     </properties>
 
     <dependencyManagement>
