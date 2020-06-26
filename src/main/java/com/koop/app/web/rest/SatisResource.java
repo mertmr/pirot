@@ -188,14 +188,4 @@ public class SatisResource {
         );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
-
-    /**
-     * Migrationdan sonra kaldirilacak
-     */
-    @GetMapping("/satis/migrate-toplam-tutar")
-    public ResponseEntity<Void> migrateToplamTutar() {
-        log.debug("REST request to migrate toplam tutar");
-        satisService.migrateToplamTutar();
-        return ResponseEntity.noContent().build();
-    }
 }

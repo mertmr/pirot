@@ -105,7 +105,9 @@ public class UrunResource {
         if (urun.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        double oncekiFiyat = urunRepository.findById(urun.getId()).get().getMusteriFiyati().doubleValue();
+        Optional<Urun> urunOptional = urunRepository.findById(urun.getId());
+        Urun oncekiUrun = urunOptional.orElseThrow(RuntimeException::new);
+        double oncekiFiyat = oncekiUrun.getMusteriFiyati().doubleValue();
 
         User currentUser = userService.getCurrentUser();
         Urun result = urunRepository.save(urun);

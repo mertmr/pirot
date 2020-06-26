@@ -15,10 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.koop.app.KoopApp;
 import com.koop.app.domain.Satis;
 import com.koop.app.domain.Urun;
+import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
+import com.koop.app.repository.UserRepository;
 import com.koop.app.service.MailService;
 import com.koop.app.service.SatisService;
 import com.koop.app.web.rest.errors.ExceptionTranslator;
+import com.koop.app.web.rest.errors.UserNotFoundException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -26,6 +29,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,6 +70,9 @@ public class SatisResourceIT {
 
     @Autowired
     private SatisRepository satisRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -307,5 +314,30 @@ public class SatisResourceIT {
         // Validate the database contains one less item
         List<Satis> satisList = satisRepository.findAll();
         assertThat(satisList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchSatis() throws Exception {
+        // Initialize the database
+        Optional<User> systemUser = userRepository.findById(1L); //system fake user from fake datas
+        satis.setUser(
+            systemUser.orElseThrow(
+                () -> {
+                    throw new UserNotFoundException();
+                }
+            )
+        );
+        satisRepository.saveAndFlush(satis);
+
+        // Search the satis
+        restSatisMockMvc
+            .perform(get("/api/_search/satis?sort=id,desc").param("query", satis.getUser().getLogin()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(satis.getId().intValue()))
+            .andExpect(jsonPath("$.[*].toplamTutar").value(DEFAULT_TOPLAM_TUTAR.intValue()))
+            .andExpect(jsonPath("$.[*].ortagaSatis").value(DEFAULT_ORTAGA_SATIS.booleanValue()))
+            .andExpect(jsonPath("$.[*].kartliSatis").value(DEFAULT_KARTLI_SATIS.booleanValue()));
     }
 }
