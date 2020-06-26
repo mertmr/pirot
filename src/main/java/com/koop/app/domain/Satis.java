@@ -164,6 +164,7 @@ public class Satis implements Serializable {
     public void setKisi(Kisiler kisiler) {
         this.kisi = kisiler;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

@@ -29,7 +29,9 @@ public class TokenProviderTest {
         tokenProvider = new TokenProvider(new JHipsterProperties());
         key =
             Keys.hmacShaKeyFor(
-                Decoders.BASE64.decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8")
+                Decoders.BASE64.decode(
+                    "fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"
+                )
             );
 
         ReflectionTestUtils.setField(tokenProvider, "key", key);
@@ -93,7 +95,9 @@ public class TokenProviderTest {
 
     private String createTokenWithDifferentSignature() {
         Key otherKey = Keys.hmacShaKeyFor(
-            Decoders.BASE64.decode("Xfd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8")
+            Decoders.BASE64.decode(
+                "Xfd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"
+            )
         );
 
         return Jwts

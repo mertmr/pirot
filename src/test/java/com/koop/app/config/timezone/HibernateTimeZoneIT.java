@@ -69,7 +69,10 @@ public class HibernateTimeZoneIT {
 
         String request = generateSqlRequest("local_date_time", dateTimeWrapper.getId());
         SqlRowSet resultSet = jdbcTemplate.queryForRowSet(request);
-        String expectedValue = dateTimeWrapper.getLocalDateTime().atZone(ZoneId.systemDefault()).format(dateTimeFormatter);
+        String expectedValue = dateTimeWrapper
+            .getLocalDateTime()
+            .atZone(ZoneId.systemDefault())
+            .format(dateTimeFormatter);
 
         assertThatDateStoredValueIsEqualToInsertDateValueOnGMTTimeZone(resultSet, expectedValue);
     }
@@ -147,7 +150,10 @@ public class HibernateTimeZoneIT {
         return format("SELECT %s FROM koop_date_time_wrapper where id=%d", fieldName, id);
     }
 
-    private void assertThatDateStoredValueIsEqualToInsertDateValueOnGMTTimeZone(SqlRowSet sqlRowSet, String expectedValue) {
+    private void assertThatDateStoredValueIsEqualToInsertDateValueOnGMTTimeZone(
+        SqlRowSet sqlRowSet,
+        String expectedValue
+    ) {
         while (sqlRowSet.next()) {
             String dbValue = sqlRowSet.getString(1);
 

@@ -11,6 +11,12 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,13 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Urun}.
@@ -85,7 +84,9 @@ public class UrunResource {
         }
         return ResponseEntity
             .created(new URI("/api/uruns/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -136,7 +137,10 @@ public class UrunResource {
     public ResponseEntity<List<Urun>> getAllUruns(Pageable pageable) {
         log.debug("REST request to get a page of Uruns");
         Page<Urun> page = urunRepository.findEverything(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -193,7 +197,10 @@ public class UrunResource {
     public ResponseEntity<List<Urun>> searchUruns(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Uruns for query {}", query);
         Page<Urun> page = urunService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

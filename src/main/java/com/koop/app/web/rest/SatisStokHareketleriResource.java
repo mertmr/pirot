@@ -46,7 +46,10 @@ public class SatisStokHareketleriResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public SatisStokHareketleriResource(SatisStokHareketleriRepository satisStokHareketleriRepository, UrunRepository urunRepository) {
+    public SatisStokHareketleriResource(
+        SatisStokHareketleriRepository satisStokHareketleriRepository,
+        UrunRepository urunRepository
+    ) {
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.urunRepository = urunRepository;
     }
@@ -59,17 +62,25 @@ public class SatisStokHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/satis-stok-hareketleris")
-    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri)
+    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(
+        @Valid @RequestBody SatisStokHareketleri satisStokHareketleri
+    )
         throws URISyntaxException {
         log.debug("REST request to save SatisStokHareketleri : {}", satisStokHareketleri);
         if (satisStokHareketleri.getId() != null) {
-            throw new BadRequestAlertException("A new satisStokHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException(
+                "A new satisStokHareketleri cannot already have an ID",
+                ENTITY_NAME,
+                "idexists"
+            );
         }
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
         urunRepository.save(result.getUrun());
         return ResponseEntity
             .created(new URI("/api/satis-stok-hareketleris/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -83,7 +94,9 @@ public class SatisStokHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/satis-stok-hareketleris")
-    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri)
+    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(
+        @Valid @RequestBody SatisStokHareketleri satisStokHareketleri
+    )
         throws URISyntaxException {
         log.debug("REST request to update SatisStokHareketleri : {}", satisStokHareketleri);
         if (satisStokHareketleri.getId() == null) {
@@ -92,7 +105,14 @@ public class SatisStokHareketleriResource {
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satisStokHareketleri.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    satisStokHareketleri.getId().toString()
+                )
+            )
             .body(result);
     }
 
@@ -106,7 +126,10 @@ public class SatisStokHareketleriResource {
     public ResponseEntity<List<SatisStokHareketleri>> getAllSatisStokHareketleris(Pageable pageable) {
         log.debug("REST request to get a page of SatisStokHareketleris");
         Page<SatisStokHareketleri> page = satisStokHareketleriRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -151,9 +174,16 @@ public class SatisStokHareketleriResource {
                     Collectors.toMap(
                         aylikSatislar -> {
                             if (String.valueOf(aylikSatislar.getMonth()).length() == 1) {
-                                return aylikSatislar.getYear() + ".0" + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+                                return (
+                                    aylikSatislar.getYear() +
+                                    ".0" +
+                                    aylikSatislar.getMonth() +
+                                    aylikSatislar.getUrunAdi()
+                                );
                             }
-                            return aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+                            return (
+                                aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi()
+                            );
                         },
                         AylikSatislar::getMiktar,
                         (aylikSatislar1, aylikSatislar2) -> aylikSatislar1

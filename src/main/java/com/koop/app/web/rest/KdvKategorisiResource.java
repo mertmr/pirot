@@ -51,15 +51,22 @@ public class KdvKategorisiResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/kdv-kategorisis")
-    public ResponseEntity<KdvKategorisi> createKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi) throws URISyntaxException {
+    public ResponseEntity<KdvKategorisi> createKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi)
+        throws URISyntaxException {
         log.debug("REST request to save KdvKategorisi : {}", kdvKategorisi);
         if (kdvKategorisi.getId() != null) {
-            throw new BadRequestAlertException("A new kdvKategorisi cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException(
+                "A new kdvKategorisi cannot already have an ID",
+                ENTITY_NAME,
+                "idexists"
+            );
         }
         KdvKategorisi result = kdvKategorisiRepository.save(kdvKategorisi);
         return ResponseEntity
             .created(new URI("/api/kdv-kategorisis/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -73,7 +80,8 @@ public class KdvKategorisiResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/kdv-kategorisis")
-    public ResponseEntity<KdvKategorisi> updateKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi) throws URISyntaxException {
+    public ResponseEntity<KdvKategorisi> updateKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi)
+        throws URISyntaxException {
         log.debug("REST request to update KdvKategorisi : {}", kdvKategorisi);
         if (kdvKategorisi.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -81,7 +89,9 @@ public class KdvKategorisiResource {
         KdvKategorisi result = kdvKategorisiRepository.save(kdvKategorisi);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kdvKategorisi.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kdvKategorisi.getId().toString())
+            )
             .body(result);
     }
 
@@ -95,7 +105,10 @@ public class KdvKategorisiResource {
     public ResponseEntity<List<KdvKategorisi>> getAllKdvKategorisis(Pageable pageable) {
         log.debug("REST request to get a page of KdvKategorisis");
         Page<KdvKategorisi> page = kdvKategorisiRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

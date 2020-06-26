@@ -1,9 +1,15 @@
 package com.koop.app.web.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.koop.app.KoopApp;
 import com.koop.app.domain.UrunFiyatHesap;
 import com.koop.app.repository.UrunFiyatHesapRepository;
-
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link UrunFiyatHesapResource} REST controller.
@@ -28,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 public class UrunFiyatHesapResourceIT {
-
     private static final Integer DEFAULT_AMORTISMAN = 1;
     private static final Integer UPDATED_AMORTISMAN = 2;
 
@@ -74,6 +72,7 @@ public class UrunFiyatHesapResourceIT {
             .fire(DEFAULT_FIRE);
         return urunFiyatHesap;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -101,9 +100,12 @@ public class UrunFiyatHesapResourceIT {
     public void createUrunFiyatHesap() throws Exception {
         int databaseSizeBeforeCreate = urunFiyatHesapRepository.findAll().size();
         // Create the UrunFiyatHesap
-        restUrunFiyatHesapMockMvc.perform(post("/api/urun-fiyat-hesaps")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(urunFiyatHesap)))
+        restUrunFiyatHesapMockMvc
+            .perform(
+                post("/api/urun-fiyat-hesaps")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(urunFiyatHesap))
+            )
             .andExpect(status().isCreated());
 
         // Validate the UrunFiyatHesap in the database
@@ -127,16 +129,18 @@ public class UrunFiyatHesapResourceIT {
         urunFiyatHesap.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restUrunFiyatHesapMockMvc.perform(post("/api/urun-fiyat-hesaps")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(urunFiyatHesap)))
+        restUrunFiyatHesapMockMvc
+            .perform(
+                post("/api/urun-fiyat-hesaps")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(urunFiyatHesap))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the UrunFiyatHesap in the database
         List<UrunFiyatHesap> urunFiyatHesapList = urunFiyatHesapRepository.findAll();
         assertThat(urunFiyatHesapList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -145,7 +149,8 @@ public class UrunFiyatHesapResourceIT {
         urunFiyatHesapRepository.saveAndFlush(urunFiyatHesap);
 
         // Get all the urunFiyatHesapList
-        restUrunFiyatHesapMockMvc.perform(get("/api/urun-fiyat-hesaps?sort=id,desc"))
+        restUrunFiyatHesapMockMvc
+            .perform(get("/api/urun-fiyat-hesaps?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(urunFiyatHesap.getId().intValue())))
@@ -156,7 +161,7 @@ public class UrunFiyatHesapResourceIT {
             .andExpect(jsonPath("$.[*].dayanisma").value(hasItem(DEFAULT_DAYANISMA)))
             .andExpect(jsonPath("$.[*].fire").value(hasItem(DEFAULT_FIRE)));
     }
-    
+
     @Test
     @Transactional
     public void getUrunFiyatHesap() throws Exception {
@@ -164,7 +169,8 @@ public class UrunFiyatHesapResourceIT {
         urunFiyatHesapRepository.saveAndFlush(urunFiyatHesap);
 
         // Get the urunFiyatHesap
-        restUrunFiyatHesapMockMvc.perform(get("/api/urun-fiyat-hesaps/{id}", urunFiyatHesap.getId()))
+        restUrunFiyatHesapMockMvc
+            .perform(get("/api/urun-fiyat-hesaps/{id}", urunFiyatHesap.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(urunFiyatHesap.getId().intValue()))
@@ -175,11 +181,13 @@ public class UrunFiyatHesapResourceIT {
             .andExpect(jsonPath("$.dayanisma").value(DEFAULT_DAYANISMA))
             .andExpect(jsonPath("$.fire").value(DEFAULT_FIRE));
     }
+
     @Test
     @Transactional
     public void getNonExistingUrunFiyatHesap() throws Exception {
         // Get the urunFiyatHesap
-        restUrunFiyatHesapMockMvc.perform(get("/api/urun-fiyat-hesaps/{id}", Long.MAX_VALUE))
+        restUrunFiyatHesapMockMvc
+            .perform(get("/api/urun-fiyat-hesaps/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -203,9 +211,12 @@ public class UrunFiyatHesapResourceIT {
             .dayanisma(UPDATED_DAYANISMA)
             .fire(UPDATED_FIRE);
 
-        restUrunFiyatHesapMockMvc.perform(put("/api/urun-fiyat-hesaps")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyatHesap)))
+        restUrunFiyatHesapMockMvc
+            .perform(
+                put("/api/urun-fiyat-hesaps")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyatHesap))
+            )
             .andExpect(status().isOk());
 
         // Validate the UrunFiyatHesap in the database
@@ -226,9 +237,12 @@ public class UrunFiyatHesapResourceIT {
         int databaseSizeBeforeUpdate = urunFiyatHesapRepository.findAll().size();
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restUrunFiyatHesapMockMvc.perform(put("/api/urun-fiyat-hesaps")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(urunFiyatHesap)))
+        restUrunFiyatHesapMockMvc
+            .perform(
+                put("/api/urun-fiyat-hesaps")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(urunFiyatHesap))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the UrunFiyatHesap in the database
@@ -245,8 +259,8 @@ public class UrunFiyatHesapResourceIT {
         int databaseSizeBeforeDelete = urunFiyatHesapRepository.findAll().size();
 
         // Delete the urunFiyatHesap
-        restUrunFiyatHesapMockMvc.perform(delete("/api/urun-fiyat-hesaps/{id}", urunFiyatHesap.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restUrunFiyatHesapMockMvc
+            .perform(delete("/api/urun-fiyat-hesaps/{id}", urunFiyatHesap.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

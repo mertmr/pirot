@@ -150,6 +150,7 @@ public class StokGirisi implements Serializable {
     public void setUrun(Urun urun) {
         this.urun = urun;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

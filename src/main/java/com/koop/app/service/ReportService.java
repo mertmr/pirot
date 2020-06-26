@@ -5,9 +5,6 @@ import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.dto.Ciro;
 import com.koop.app.dto.fatura.*;
 import com.koop.app.repository.*;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -16,10 +13,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {
-
     private final SatisRepository satisRepository;
 
     private final SatisStokHareketleriRepository satisStokHareketleriRepository;
@@ -34,7 +32,15 @@ public class ReportService {
 
     private final NobetHareketleriRepository nobetHareketleriRepository;
 
-    public ReportService(SatisRepository satisRepository, SatisStokHareketleriRepository satisStokHareketleriRepository, KdvKategorisiRepository kdvKategorisiRepository, VirmanRepository virmanRepository, GiderRepository giderRepository, DashboardReportService dashboardReportService, NobetHareketleriRepository nobetHareketleriRepository) {
+    public ReportService(
+        SatisRepository satisRepository,
+        SatisStokHareketleriRepository satisStokHareketleriRepository,
+        KdvKategorisiRepository kdvKategorisiRepository,
+        VirmanRepository virmanRepository,
+        GiderRepository giderRepository,
+        DashboardReportService dashboardReportService,
+        NobetHareketleriRepository nobetHareketleriRepository
+    ) {
         this.satisRepository = satisRepository;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.kdvKategorisiRepository = kdvKategorisiRepository;
@@ -80,7 +86,11 @@ public class ReportService {
         int year = Integer.parseInt(reportDate.split("-")[0]);
         int month = Integer.parseInt(reportDate.split("-")[1]);
 
-        List<OrtakFaturaDbReport> ortakFaturaDbReports = satisStokHareketleriRepository.ortakFaturaKisiAy(year, month, kisiId);
+        List<OrtakFaturaDbReport> ortakFaturaDbReports = satisStokHareketleriRepository.ortakFaturaKisiAy(
+            year,
+            month,
+            kisiId
+        );
 
         List<OrtakFaturasiDetayDto> ortakFaturasiList = new ArrayList<>();
         for (OrtakFaturaDbReport ortakFaturaDbReport : ortakFaturaDbReports) {
@@ -88,14 +98,19 @@ public class ReportService {
             ortakFaturasi.setUrunAdiKdv(ortakFaturaDbReport.getUrunIsmi());
             double kdvOrani = ortakFaturaDbReport.getUrun().getKdvKategorisi().getKdvOrani();
             if (ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM) {
-                BigDecimal miktar = BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()).multiply(BigDecimal.valueOf(0.001)).setScale(3, RoundingMode.HALF_UP);
+                BigDecimal miktar = BigDecimal
+                    .valueOf(ortakFaturaDbReport.getMiktar())
+                    .multiply(BigDecimal.valueOf(0.001))
+                    .setScale(3, RoundingMode.HALF_UP);
                 ortakFaturasi.setMiktar(miktar + " KG");
-                BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar()
-                    .divide(miktar, 2, RoundingMode.HALF_UP);
+                BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar().divide(miktar, 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
             } else {
-                ortakFaturasi.setMiktar(ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim());
-                BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar()
+                ortakFaturasi.setMiktar(
+                    ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim()
+                );
+                BigDecimal birimFiyat = ortakFaturaDbReport
+                    .getToplamTutar()
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
             }
@@ -110,44 +125,67 @@ public class ReportService {
         List<KdvKategorisi> kdvKategorisiList = kdvKategorisiRepository.findAll();
         List<KdvToplam> kdvToplamList = new ArrayList<>();
         for (KdvKategorisi kdvKategorisi : kdvKategorisiList) {
-            List<OrtakFaturaDbReport> ortakFaturaDbReportListKdv = ortakFaturaDbReports.stream()
-                .filter(ortakFaturaDbReport -> ortakFaturaDbReport.getKdvKategorisi().getId().equals(kdvKategorisi.getId()))
+            List<OrtakFaturaDbReport> ortakFaturaDbReportListKdv = ortakFaturaDbReports
+                .stream()
+                .filter(
+                    ortakFaturaDbReport -> ortakFaturaDbReport.getKdvKategorisi().getId().equals(kdvKategorisi.getId())
+                )
                 .collect(Collectors.toList());
             KdvToplam kdvToplam = new KdvToplam();
-            double kdvSum = ortakFaturaDbReportListKdv.stream()
-                .mapToDouble(ortakFaturaDbReport -> ortakFaturaDbReport.getToplamTutar().doubleValue() * kdvKategorisi.getKdvOrani() * 0.01D)
+            double kdvSum = ortakFaturaDbReportListKdv
+                .stream()
+                .mapToDouble(
+                    ortakFaturaDbReport ->
+                        ortakFaturaDbReport.getToplamTutar().doubleValue() * kdvKategorisi.getKdvOrani() * 0.01D
+                )
                 .sum();
             kdvToplam.setKdvKategorisi(kdvKategorisi.getKategoriAdi());
             kdvToplam.setKdvTutari(BigDecimal.valueOf(kdvSum).setScale(2, RoundingMode.HALF_UP));
             kdvToplamList.add(kdvToplam);
         }
         ortakFaturasiDto.setKdvToplamList(kdvToplamList);
-        double tumKdvToplami = kdvToplamList.stream().mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().setScale(2, RoundingMode.HALF_UP).doubleValue()).sum();
+        double tumKdvToplami = kdvToplamList
+            .stream()
+            .mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().setScale(2, RoundingMode.HALF_UP).doubleValue())
+            .sum();
         ortakFaturasiDto.setTumKdvToplami(tumKdvToplami);
-        double tumToplam = ortakFaturaDbReports.stream().mapToDouble(ortakFaturaDbReport -> ortakFaturaDbReport.getToplamTutar().doubleValue()).sum();
-        ortakFaturasiDto.setTumToplamKdvHaric(BigDecimal.valueOf(tumToplam - tumKdvToplami).setScale(2, RoundingMode.HALF_UP).doubleValue());
+        double tumToplam = ortakFaturaDbReports
+            .stream()
+            .mapToDouble(ortakFaturaDbReport -> ortakFaturaDbReport.getToplamTutar().doubleValue())
+            .sum();
+        ortakFaturasiDto.setTumToplamKdvHaric(
+            BigDecimal.valueOf(tumToplam - tumKdvToplami).setScale(2, RoundingMode.HALF_UP).doubleValue()
+        );
         ortakFaturasiDto.setTumToplam(tumToplam);
 
         return ortakFaturasiDto;
     }
 
     private BigDecimal kdvsizFiyatHesapla(double kdvOrani, BigDecimal fiyat) {
-        return fiyat.divide(BigDecimal.valueOf(100 + kdvOrani), 5, RoundingMode.HALF_UP)
+        return fiyat
+            .divide(BigDecimal.valueOf(100 + kdvOrani), 5, RoundingMode.HALF_UP)
             .multiply(BigDecimal.valueOf(100))
             .setScale(2, RoundingMode.HALF_UP);
     }
 
     public GunSonuRaporuDto gunSonuRaporu(LocalDate localDate) {
-        List<Gider> giderList = giderRepository.findGiderByGun(localDate.atStartOfDay(ZoneId.systemDefault()),
-            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
-        Virman virman = virmanRepository.findVirmanByGun(localDate.atStartOfDay(ZoneId.systemDefault()),
-            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()));
+        List<Gider> giderList = giderRepository.findGiderByGun(
+            localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault())
+        );
+        Virman virman = virmanRepository.findVirmanByGun(
+            localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault())
+        );
         DashboardReports dashboardReports = dashboardReportService.getDashboardReportsByDay(localDate);
         ZonedDateTime endOfDay = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault());
 
         NobetHareketleri lastNobetHareketiByTarih = nobetHareketleriRepository.findLastNobetHareketiByTarih(endOfDay);
-        NobetHareketleri acilisHareketi = nobetHareketleriRepository.findLastNobetHareketiAcilisByTarih(localDate.atStartOfDay(ZoneId.systemDefault()),
-            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()), lastNobetHareketiByTarih.getUser().getId());
+        NobetHareketleri acilisHareketi = nobetHareketleriRepository.findLastNobetHareketiAcilisByTarih(
+            localDate.atStartOfDay(ZoneId.systemDefault()),
+            localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()),
+            lastNobetHareketiByTarih.getUser().getId()
+        );
 
         GunSonuRaporuDto gunSonuRaporuDto = new GunSonuRaporuDto();
         gunSonuRaporuDto.setGiderList(giderList);

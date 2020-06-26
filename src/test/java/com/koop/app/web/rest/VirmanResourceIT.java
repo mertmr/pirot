@@ -56,7 +56,10 @@ public class VirmanResourceIT {
     private static final Hesap DEFAULT_GIRIS_HESABI = Hesap.BANKA;
     private static final Hesap UPDATED_GIRIS_HESABI = Hesap.KASA;
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
+        Instant.ofEpochMilli(0L),
+        ZoneOffset.UTC
+    );
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -146,7 +149,11 @@ public class VirmanResourceIT {
         int databaseSizeBeforeCreate = virmanRepository.findAll().size();
         // Create the Virman
         restVirmanMockMvc
-            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
+            .perform(
+                post("/api/virmen")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(virman))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Virman in the database
@@ -170,7 +177,11 @@ public class VirmanResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restVirmanMockMvc
-            .perform(post("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
+            .perform(
+                post("/api/virmen")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(virman))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Virman in the database
@@ -187,10 +198,12 @@ public class VirmanResourceIT {
 
         // Create the Virman, which fails.
 
-
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(
+                post("/api/virmen")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(virman))
+            )
             .andExpect(status().isBadRequest());
 
         List<Virman> virmanList = virmanRepository.findAll();
@@ -206,10 +219,12 @@ public class VirmanResourceIT {
 
         // Create the Virman, which fails.
 
-
-        restVirmanMockMvc.perform(post("/api/virmen")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(virman)))
+        restVirmanMockMvc
+            .perform(
+                post("/api/virmen")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(virman))
+            )
             .andExpect(status().isBadRequest());
 
         List<Virman> virmanList = virmanRepository.findAll();
@@ -253,6 +268,7 @@ public class VirmanResourceIT {
             .andExpect(jsonPath("$.girisHesabi").value(DEFAULT_GIRIS_HESABI.toString()))
             .andExpect(jsonPath("$.tarih").value(sameInstant(DEFAULT_TARIH)));
     }
+
     @Test
     @Transactional
     public void getNonExistingVirman() throws Exception {
@@ -281,7 +297,11 @@ public class VirmanResourceIT {
             .tarih(UPDATED_TARIH);
 
         restVirmanMockMvc
-            .perform(put("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedVirman)))
+            .perform(
+                put("/api/virmen")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedVirman))
+            )
             .andExpect(status().isOk());
 
         // Validate the Virman in the database
@@ -302,7 +322,11 @@ public class VirmanResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVirmanMockMvc
-            .perform(put("/api/virmen").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(virman)))
+            .perform(
+                put("/api/virmen")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(virman))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Virman in the database

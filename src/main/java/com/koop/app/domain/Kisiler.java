@@ -1,12 +1,10 @@
 package com.koop.app.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Kisiler.
@@ -15,7 +13,6 @@ import java.time.ZonedDateTime;
 @Table(name = "kisiler")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Kisiler implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -95,6 +92,7 @@ public class Kisiler implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

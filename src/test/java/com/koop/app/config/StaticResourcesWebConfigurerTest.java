@@ -1,7 +1,12 @@
 package com.koop.app.config;
 
+import static com.koop.app.config.StaticResourcesWebConfiguration.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 import io.github.jhipster.config.JHipsterDefaults;
 import io.github.jhipster.config.JHipsterProperties;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.CacheControl;
@@ -9,12 +14,6 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-
-import java.util.concurrent.TimeUnit;
-
-import static com.koop.app.config.StaticResourcesWebConfiguration.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 public class StaticResourcesWebConfigurerTest {
     public static final int MAX_AGE_TEST = 5;
@@ -35,11 +34,9 @@ public class StaticResourcesWebConfigurerTest {
 
     @Test
     public void shouldAppendResourceHandlerAndInitiliazeIt() {
-
         staticResourcesWebConfiguration.addResourceHandlers(resourceHandlerRegistry);
 
-        verify(resourceHandlerRegistry, times(1))
-            .addResourceHandler(RESOURCE_PATHS);
+        verify(resourceHandlerRegistry, times(1)).addResourceHandler(RESOURCE_PATHS);
         verify(staticResourcesWebConfiguration, times(1))
             .initializeResourceHandler(any(ResourceHandlerRegistration.class));
         for (String testingPath : RESOURCE_PATHS) {
@@ -60,10 +57,11 @@ public class StaticResourcesWebConfigurerTest {
         verify(resourceHandlerRegistration, times(1)).addResourceLocations(RESOURCE_LOCATIONS);
     }
 
-
     @Test
     public void shoudCreateCacheControlBasedOnJhipsterDefaultProperties() {
-        CacheControl cacheExpected = CacheControl.maxAge(JHipsterDefaults.Http.Cache.timeToLiveInDays, TimeUnit.DAYS).cachePublic();
+        CacheControl cacheExpected = CacheControl
+            .maxAge(JHipsterDefaults.Http.Cache.timeToLiveInDays, TimeUnit.DAYS)
+            .cachePublic();
         assertThat(staticResourcesWebConfiguration.getCacheControl())
             .extracting(CacheControl::getHeaderValue)
             .isEqualTo(cacheExpected.getHeaderValue());

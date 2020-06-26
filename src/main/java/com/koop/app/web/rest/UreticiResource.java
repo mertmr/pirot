@@ -64,7 +64,9 @@ public class UreticiResource {
         Uretici result = ureticiRepository.save(uretici);
         return ResponseEntity
             .created(new URI("/api/ureticis/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
+            )
             .body(result);
     }
 
@@ -103,7 +105,10 @@ public class UreticiResource {
     public ResponseEntity<List<Uretici>> getAllUreticis(Pageable pageable) {
         log.debug("REST request to get a page of Ureticis");
         Page<Uretici> page = ureticiRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

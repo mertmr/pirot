@@ -5,7 +5,6 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class Ciro {
-
     private BigDecimal tutar;
 
     private BigDecimal kartli;
