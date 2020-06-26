@@ -166,7 +166,7 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
                 <Label for="langKey">
                   <Translate contentKey="userManagement.langKey">Language Key</Translate>
                 </Label>
-                <AvField type="select" className="form-control" name="langKey" value={user.langKey || locales[0]}>
+                <AvField type="select" className="form-control" name="langKey" value={user.langKey || locales[1]}>
                   {locales.map(locale => (
                     <option value={locale} key={locale}>
                       {languages[locale].name}
