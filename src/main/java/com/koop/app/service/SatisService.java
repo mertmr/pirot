@@ -7,10 +7,6 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -18,6 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SatisService {
@@ -94,7 +93,9 @@ public class SatisService {
         Satis satisOncekiHali = satisOncekiHaliOptional.orElseThrow(SatisNotFoundUsedException::new);
         if (Boolean.FALSE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.TRUE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(kisilerService.getRandomKisi());
-        } else if (Boolean.TRUE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.FALSE.equals(satis.isOrtagaSatis())) {
+        } else if (
+            Boolean.TRUE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.FALSE.equals(satis.isOrtagaSatis())
+        ) {
             satis.setKisi(null);
         }
 
@@ -150,9 +151,12 @@ public class SatisService {
             Urun urun = satisStokHareketi.getUrun();
             if (satisStokHareketi.getUrun().getStok() != null) {
                 if (satisStokHareketi.getId() != null) {
-                    Optional<SatisStokHareketleri> oncekiSatisStokHareketiOptional = satisStokHareketleriRepository
-                        .findById(satisStokHareketi.getId());
-                    SatisStokHareketleri oncekiSatisStokHareketi = oncekiSatisStokHareketiOptional.orElseThrow(SatisNotFoundUsedException::new);
+                    Optional<SatisStokHareketleri> oncekiSatisStokHareketiOptional = satisStokHareketleriRepository.findById(
+                        satisStokHareketi.getId()
+                    );
+                    SatisStokHareketleri oncekiSatisStokHareketi = oncekiSatisStokHareketiOptional.orElseThrow(
+                        SatisNotFoundUsedException::new
+                    );
                     int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
                     urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
                 } else {
