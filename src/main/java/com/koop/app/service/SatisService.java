@@ -1,21 +1,28 @@
 package com.koop.app.service;
 
-import static java.util.stream.Collectors.groupingBy;
-
-import com.koop.app.domain.*;
+import com.koop.app.domain.Satis;
+import com.koop.app.domain.SatisStokHareketleri;
+import com.koop.app.domain.Urun;
+import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class SatisService {
+    private static final String SATIS_GUNCELLEMESI = "Satis Guncellemesi";
+
     private final SatisRepository satisRepository;
 
     private final UserService userService;
@@ -53,7 +60,7 @@ public class SatisService {
         satis.setUser(currentUser);
         if (satis.getTarih() == null) satis.setTarih(ZonedDateTime.now());
 
-        if (satis.isOrtagaSatis()) {
+        if (Boolean.TRUE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(kisilerService.getRandomKisi());
         }
         Satis result = satisRepository.save(satis);
@@ -73,7 +80,7 @@ public class SatisService {
             .collect(Collectors.toList());
         urunRepository.saveAll(urunList);
 
-        if (!satis.isKartliSatis()) {
+        if (Boolean.FALSE.equals(satis.isKartliSatis())) {
             kasaHareketleriService.createKasaHareketi(satis.getToplamTutar(), "Satis Yapildi");
         }
 
@@ -83,31 +90,18 @@ public class SatisService {
     public Satis updateSatis(Satis satis) {
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
-        Satis satisOncekiHali = satisRepository.findById(satis.getId()).get();
-
-        if (!satisOncekiHali.isOrtagaSatis() && satis.isOrtagaSatis()) {
+        Optional<Satis> satisOncekiHaliOptional = satisRepository.findById(satis.getId());
+        Satis satisOncekiHali = satisOncekiHaliOptional.orElseThrow(SatisNotFoundUsedException::new);
+        if (Boolean.FALSE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.TRUE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(kisilerService.getRandomKisi());
-        } else if (satisOncekiHali.isOrtagaSatis() && !satis.isOrtagaSatis()) {
+        } else if (Boolean.TRUE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.FALSE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(null);
         }
 
         Set<SatisStokHareketleri> stokHareketleriLists = satis.getStokHareketleriLists();
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
 
-        for (SatisStokHareketleri satisStokHareketi : stokHareketleriLists) {
-            Urun urun = satisStokHareketi.getUrun();
-            if (satisStokHareketi.getUrun().getStok() != null) {
-                if (satisStokHareketi.getId() != null) {
-                    SatisStokHareketleri oncekiSatisStokHareketi = satisStokHareketleriRepository
-                        .findById(satisStokHareketi.getId())
-                        .get();
-                    int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
-                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
-                } else {
-                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
-                }
-            }
-        }
+        makeStokUpdates(stokHareketleriLists);
 
         List<SatisStokHareketleri> cikarilanUrunler = satisOncekiHali
             .getStokHareketleriLists()
@@ -134,50 +128,41 @@ public class SatisService {
             stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList())
         );
 
-        if (!satisOncekiHali.isKartliSatis() && !satis.isKartliSatis()) {
-            BigDecimal kasaHareketiFarki = satis.getToplamTutar().subtract(satisOncekiHali.getToplamTutar());
-            kasaHareketleriService.createKasaHareketi(kasaHareketiFarki, "Satis Guncellemesi");
-        }
-        if (satisOncekiHali.isKartliSatis() && !satis.isKartliSatis()) {
-            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar(), "Satis Guncellemesi");
-        }
-        if (!satisOncekiHali.isKartliSatis() && satis.isKartliSatis()) {
-            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar().negate(), "Satis Guncellemesi");
-        }
+        createSatisUpdateHareketi(satis, satisOncekiHali);
         return satisRepository.save(satis);
+    }
+
+    private void createSatisUpdateHareketi(Satis satis, Satis satisOncekiHali) {
+        if (Boolean.FALSE.equals(satisOncekiHali.isKartliSatis()) && Boolean.FALSE.equals(satis.isKartliSatis())) {
+            BigDecimal kasaHareketiFarki = satis.getToplamTutar().subtract(satisOncekiHali.getToplamTutar());
+            kasaHareketleriService.createKasaHareketi(kasaHareketiFarki, SATIS_GUNCELLEMESI);
+        }
+        if (Boolean.TRUE.equals(satisOncekiHali.isKartliSatis()) && Boolean.FALSE.equals(satis.isKartliSatis())) {
+            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar(), SATIS_GUNCELLEMESI);
+        }
+        if (Boolean.FALSE.equals(satisOncekiHali.isKartliSatis()) && Boolean.TRUE.equals(satis.isKartliSatis())) {
+            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar().negate(), SATIS_GUNCELLEMESI);
+        }
+    }
+
+    private void makeStokUpdates(Set<SatisStokHareketleri> stokHareketleriLists) {
+        for (SatisStokHareketleri satisStokHareketi : stokHareketleriLists) {
+            Urun urun = satisStokHareketi.getUrun();
+            if (satisStokHareketi.getUrun().getStok() != null) {
+                if (satisStokHareketi.getId() != null) {
+                    Optional<SatisStokHareketleri> oncekiSatisStokHareketiOptional = satisStokHareketleriRepository
+                        .findById(satisStokHareketi.getId());
+                    SatisStokHareketleri oncekiSatisStokHareketi = oncekiSatisStokHareketiOptional.orElseThrow(SatisNotFoundUsedException::new);
+                    int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
+                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
+                } else {
+                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
+                }
+            }
+        }
     }
 
     public Page<Satis> search(String query, Pageable pageable) {
         return satisRepository.findSatisByLogin(query, pageable);
-    }
-
-    /**
-     * Eski pirottan gecis yapilabilmesi icin bir migration kodu, sonrasinda kaldirilmali
-     */
-    public void migrateToplamTutar() {
-        List<SatisStokHareketleri> satisStokHareketleriList = satisStokHareketleriRepository.findAllWithSatis();
-        Map<Long, List<SatisStokHareketleri>> satisStokMap = satisStokHareketleriList
-            .stream()
-            .collect(groupingBy(satisStokHareketleri -> satisStokHareketleri.getSatis().getId()));
-
-        List<Satis> satisListToSave = new ArrayList<>();
-        for (Long satisId : satisStokMap.keySet()) {
-            List<SatisStokHareketleri> satisStokHareketleris = satisStokMap.get(satisId);
-            double sum = satisStokHareketleris
-                .stream()
-                .mapToDouble(satisStokHareketleri -> satisStokHareketleri.getTutar().doubleValue())
-                .sum();
-            Optional<SatisStokHareketleri> satisStokHareketi = satisStokHareketleris.stream().findFirst();
-            satisStokHareketi.ifPresent(
-                satisStok -> {
-                    Satis satis = satisStok.getSatis();
-                    satis.setToplamTutar(BigDecimal.valueOf(sum));
-                    satisListToSave.add(satis);
-                }
-            );
-        }
-
-        satisRepository.saveAll(satisListToSave);
-        //todo duzgun calistiktan sonra diff i tekrar ac
     }
 }

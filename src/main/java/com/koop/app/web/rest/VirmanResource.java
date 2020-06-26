@@ -103,7 +103,9 @@ public class VirmanResource {
         if (virman.getTarih() == null) {
             virman.setTarih(ZonedDateTime.now());
         }
-        Virman oncekiVirman = virmanRepository.findById(virman.getId()).get();
+
+        Optional<Virman> optionalVirman = virmanRepository.findById(virman.getId());
+        Virman oncekiVirman = optionalVirman.orElseThrow(RuntimeException::new);
         kasaHareketleriService.createKasaHareketi(
             virman.getTutar().subtract(oncekiVirman.getTutar()).negate(),
             "Virmanda Düzenleme"

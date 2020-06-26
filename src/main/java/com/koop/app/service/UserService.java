@@ -2,14 +2,12 @@ package com.koop.app.service;
 
 import com.koop.app.config.Constants;
 import com.koop.app.domain.Authority;
-import com.koop.app.domain.Gider;
 import com.koop.app.domain.User;
 import com.koop.app.repository.AuthorityRepository;
 import com.koop.app.repository.UserRepository;
 import com.koop.app.security.AuthoritiesConstants;
 import com.koop.app.security.SecurityUtils;
 import com.koop.app.service.dto.UserDTO;
-import com.koop.app.web.rest.errors.UserNotFoundException;
 import io.github.jhipster.security.RandomUtil;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
