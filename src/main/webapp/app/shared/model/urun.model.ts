@@ -21,5 +21,5 @@ export interface IUrun {
 
 export const defaultValue: Readonly<IUrun> = {
   dayanismaUrunu: false,
-  satista: false
+  satista: false,
 };

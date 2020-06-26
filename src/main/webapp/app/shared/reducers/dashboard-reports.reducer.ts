@@ -5,14 +5,14 @@ import { FAILURE, REQUEST, SUCCESS } from 'app/shared/reducers/action-type.util'
 import { defaultValue, IDashboardReports } from 'app/shared/model/dashboard-reports.model';
 
 export const ACTION_TYPES = {
-  FETCH_REPORTS: 'dashboardReports/FETCH_REPORTS'
+  FETCH_REPORTS: 'dashboardReports/FETCH_REPORTS',
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
   entity: defaultValue,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type DashboardReportsState = Readonly<typeof initialState>;
@@ -26,14 +26,14 @@ export default (state: DashboardReportsState = initialState, action): DashboardR
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_REPORTS):
     case SUCCESS(ACTION_TYPES.FETCH_REPORTS):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     default:
       return state;
@@ -48,6 +48,6 @@ export const getDashboardReports = () => {
   const requestUrl = `${apiUrl}`;
   return {
     type: ACTION_TYPES.FETCH_REPORTS,
-    payload: axios.get<IDashboardReports>(requestUrl)
+    payload: axios.get<IDashboardReports>(requestUrl),
   };
 };

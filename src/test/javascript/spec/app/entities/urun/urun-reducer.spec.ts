@@ -37,7 +37,7 @@ describe('Entities reducer tests', () => {
     totalItems: 0,
     updating: false,
     updateSuccess: false,
-    satisUrunleri: [] as Array<IUrun>
+    satisUrunleri: [] as Array<IUrun>,
   };
 
   function testInitialState(state) {
@@ -145,13 +145,13 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.SEARCH_URUNS),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         loading: false,
         totalItems: payload.headers['x-total-count'],
-        entities: payload.data
+        entities: payload.data,
       });
     });
 
@@ -225,12 +225,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.SEARCH_URUNS actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.SEARCH_URUNS)
+          type: REQUEST(ACTION_TYPES.SEARCH_URUNS),
         },
         {
           type: SUCCESS(ACTION_TYPES.SEARCH_URUNS),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(getSearchEntities()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });

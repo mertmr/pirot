@@ -16,5 +16,5 @@ export interface IStokGirisi {
 }
 
 export const defaultValue: Readonly<IStokGirisi> = {
-  urun: defaultUrun
+  urun: defaultUrun,
 };

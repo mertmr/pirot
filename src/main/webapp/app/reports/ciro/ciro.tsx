@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Input, Row, Table} from 'reactstrap';
-import {getSortState, JhiItemCount, JhiPagination, TextFormat, Translate} from 'react-jhipster';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Input, Row, Table } from 'reactstrap';
+import { getSortState, JhiItemCount, JhiPagination, TextFormat, Translate } from 'react-jhipster';
 
-import {APP_LOCAL_DATE_FORMAT} from 'app/config/constants';
-import {ITEMS_PER_PAGE} from 'app/shared/util/pagination.constants';
+import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
-import {IRootState} from 'app/shared/reducers';
-import {getCiros} from './ciro.reducer';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { IRootState } from 'app/shared/reducers';
+import { getCiros } from './ciro.reducer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export interface ICirosPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
-}
+export interface ICirosPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 const previousMonth = (): string => {
   const now: Date = new Date();
@@ -36,7 +35,7 @@ export const CirosPage = (props: ICirosPageProps) => {
   const [fromDate, setFromDate] = useState(previousMonth());
   const [toDate, setToDate] = useState(today());
 
-  const {ciros, totalItems, match} = props;
+  const { ciros, totalItems, match } = props;
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -49,18 +48,18 @@ export const CirosPage = (props: ICirosPageProps) => {
   }, [pagination.activePage, pagination.order, pagination.sort]);
 
   const onChangeFromDate = evt => {
-    setFromDate(evt.target.value)
+    setFromDate(evt.target.value);
   };
 
   const onChangeToDate = evt => {
-    setToDate(evt.target.value)
+    setToDate(evt.target.value);
   };
 
   const sort = p => () =>
     setPagination({
       ...pagination,
       order: pagination.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
 
   const transition = () => {
@@ -70,7 +69,7 @@ export const CirosPage = (props: ICirosPageProps) => {
   const handlePagination = currentPage =>
     setPagination({
       ...pagination,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const getAllCiros = () => {
@@ -80,67 +79,47 @@ export const CirosPage = (props: ICirosPageProps) => {
   return (
     <div>
       <h2 id="ciros-page-heading">Ciros</h2>
-      <span>
-        Başlangıç Tarihi
-      </span>
-      <Input type="date" value={fromDate} onChange={onChangeFromDate} name="fromDate" id="fromDate"/>
-      <span>
-       Bitiş Tarihi
-      </span>
-      <Input type="date" value={toDate} onChange={onChangeToDate} name="toDate" id="toDate"/>
+      <span>Başlangıç Tarihi</span>
+      <Input type="date" value={fromDate} onChange={onChangeFromDate} name="fromDate" id="fromDate" />
+      <span>Bitiş Tarihi</span>
+      <Input type="date" value={toDate} onChange={onChangeToDate} name="toDate" id="toDate" />
       {ciros && ciros.length > 0 ? (
         <Table striped responsive>
           <thead>
-          <tr>
-            <th>
-              Tarih
-            </th>
-            <th>
-              Toplam Tutar
-            </th>
-            <th>
-              Kartlı Satış
-            </th>
-            <th>
-              Nakit Satış
-            </th>
-          </tr>
+            <tr>
+              <th>Tarih</th>
+              <th>Toplam Tutar</th>
+              <th>Kartlı Satış</th>
+              <th>Nakit Satış</th>
+            </tr>
           </thead>
           <tbody>
-          {ciros.map((ciro, i) => (
-            <tr key={`ciro-${i}`}>
-              <td>{<TextFormat value={ciro.tarih} type="date" format={APP_LOCAL_DATE_FORMAT}/>}</td>
-              <td>
-                {ciro.tutar}
-              </td>
-              <td>
-                {ciro.kartli}
-              </td>
-              <td>
-                {ciro.nakit}
-              </td>
-              <td className="text-right">
-                <div className="btn-group flex-btn-group-container">
-                  <Button tag={Link} to={`${match.url}/${ciro.tarih}`} color="info" size="sm">
-                    <FontAwesomeIcon icon="eye"/>{' '}
-                    <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.view">View</Translate>
-                        </span>
-                  </Button>
-                </div>
-              </td>
-            </tr>
-          ))}
+            {ciros.map((ciro, i) => (
+              <tr key={`ciro-${i}`}>
+                <td>{<TextFormat value={ciro.tarih} type="date" format={APP_LOCAL_DATE_FORMAT} />}</td>
+                <td>{ciro.tutar}</td>
+                <td>{ciro.kartli}</td>
+                <td>{ciro.nakit}</td>
+                <td className="text-right">
+                  <div className="btn-group flex-btn-group-container">
+                    <Button tag={Link} to={`${match.url}/${ciro.tarih}`} color="info" size="sm">
+                      <FontAwesomeIcon icon="eye" />{' '}
+                      <span className="d-none d-md-inline">
+                        <Translate contentKey="entity.action.view">View</Translate>
+                      </span>
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       ) : (
-        <div className="alert alert-warning">
-        </div>
+        <div className="alert alert-warning"></div>
       )}
       <div className={ciros && ciros.length > 0 ? '' : 'd-none'}>
         <Row className="justify-content-center">
-          <JhiItemCount page={pagination.activePage} total={totalItems} itemsPerPage={pagination.itemsPerPage}
-                        i18nEnabled/>
+          <JhiItemCount page={pagination.activePage} total={totalItems} itemsPerPage={pagination.itemsPerPage} i18nEnabled />
         </Row>
         <Row className="justify-content-center">
           <JhiPagination
@@ -158,10 +137,10 @@ export const CirosPage = (props: ICirosPageProps) => {
 
 const mapStateToProps = (storeState: IRootState) => ({
   ciros: storeState.ciroState.ciros,
-  totalItems: storeState.ciroState.totalItems
+  totalItems: storeState.ciroState.totalItems,
 });
 
-const mapDispatchToProps = {getCiros};
+const mapDispatchToProps = { getCiros };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -1,20 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {Button, Col, InputGroup, Row, Table} from 'reactstrap';
-import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
-import {getSortState, JhiItemCount, JhiPagination, Translate} from 'react-jhipster';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Col, InputGroup, Row, Table } from 'reactstrap';
+import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { getSortState, JhiItemCount, JhiPagination, Translate } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {IRootState} from 'app/shared/reducers';
-import {getAllUrunForStokGirisi, getEntities, getSearchEntities} from './urun.reducer';
-import {ITEMS_PER_PAGE} from 'app/shared/util/pagination.constants';
-import {hasAnyAuthority} from "app/shared/auth/private-route";
-import {AUTHORITIES} from "app/config/constants";
-import { CSVLink } from "react-csv";
+import { IRootState } from 'app/shared/reducers';
+import { getAllUrunForStokGirisi, getEntities, getSearchEntities } from './urun.reducer';
+import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
+import { CSVLink } from 'react-csv';
 
-export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
-}
+export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Urun = (props: IUrunProps) => {
   const [search, setSearch] = useState('');
@@ -39,12 +38,11 @@ export const Urun = (props: IUrunProps) => {
   }, []);
 
   const startSearching = () => {
-    if (paginationState.activePage === 1 && (search || search === ''))
-      getAllEntities();
+    if (paginationState.activePage === 1 && (search || search === '')) getAllEntities();
     else if (search) {
       setPaginationState({
         ...paginationState,
-        activePage: 1
+        activePage: 1,
       });
     }
   };
@@ -53,7 +51,7 @@ export const Urun = (props: IUrunProps) => {
     setSearch('');
     setPaginationState({
       ...paginationState,
-      activePage: 1
+      activePage: 1,
     });
   };
 
@@ -90,22 +88,24 @@ export const Urun = (props: IUrunProps) => {
     });
 
   const data = [
-    { firstname: "Ahmed", lastname: "Tomi", email: "ah@smthing.co.com" },
-    { firstname: "Raed", lastname: "Labes", email: "rl@smthing.co.com" },
-    { firstname: "Yezzi", lastname: "Min l3b", email: "ymin@cocococo.com" }
+    { firstname: 'Ahmed', lastname: 'Tomi', email: 'ah@smthing.co.com' },
+    { firstname: 'Raed', lastname: 'Labes', email: 'rl@smthing.co.com' },
+    { firstname: 'Yezzi', lastname: 'Min l3b', email: 'ymin@cocococo.com' },
   ];
 
-  const {urunList, match, totalItems, isAdmin, satisUrunleri} = props;
+  const { urunList, match, totalItems, isAdmin, satisUrunleri } = props;
   return (
     <div>
       <h2 id="urun-heading">
         <Translate contentKey="koopApp.urun.home.title">Uruns</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus"/>
+          <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="koopApp.urun.home.createLabel">Create new Urun</Translate>
         </Link>
-        <CSVLink className="btn btn-primary float-right jh-create-entity" style={{marginRight: '10px'}}
+        <CSVLink
+          className="btn btn-primary float-right jh-create-entity"
+          style={{ marginRight: '10px' }}
           data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok, fiyat: x.musteriFiyati }))}
           filename={'stokDurumu.csv'}
         >
@@ -117,18 +117,12 @@ export const Urun = (props: IUrunProps) => {
           <AvForm onSubmit={startSearching}>
             <AvGroup>
               <InputGroup>
-                <AvInput
-                  type="text"
-                  name="search"
-                  value={search}
-                  onChange={handleSearch}
-                  placeholder="Ürün Ara"
-                />
+                <AvInput type="text" name="search" value={search} onChange={handleSearch} placeholder="Ürün Ara" />
                 <Button className="input-group-addon">
-                  <FontAwesomeIcon icon="search"/>
+                  <FontAwesomeIcon icon="search" />
                 </Button>
                 <Button type="reset" className="input-group-addon" onClick={clear}>
-                  <FontAwesomeIcon icon="trash"/>
+                  <FontAwesomeIcon icon="trash" />
                 </Button>
               </InputGroup>
             </AvGroup>
@@ -139,100 +133,94 @@ export const Urun = (props: IUrunProps) => {
         {urunList && urunList.length > 0 ? (
           <Table responsive>
             <thead>
-            <tr>
-              <th className="hand" onClick={sort('id')}>
-                <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('urunAdi')}>
-                <Translate contentKey="koopApp.urun.urunAdi">Urun Adi</Translate> <FontAwesomeIcon icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('stok')}>
-                <Translate contentKey="koopApp.urun.stok">Stok</Translate> <FontAwesomeIcon icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('stokSiniri')}>
-                <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate> <FontAwesomeIcon icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('musteriFiyati')}>
-                <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate> <FontAwesomeIcon
-                icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('birim')}>
-                <Translate contentKey="koopApp.urun.birim">Birim</Translate> <FontAwesomeIcon icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('dayanismaUrunu')}>
-                <Translate contentKey="koopApp.urun.dayanismaUrunu">Dayanisma Urunu</Translate> <FontAwesomeIcon
-                icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('satista')}>
-                <Translate contentKey="koopApp.urun.satista">Satista</Translate> <FontAwesomeIcon icon="sort"/>
-              </th>
-              <th className="hand" onClick={sort('urunKategorisi')}>
-                <Translate contentKey="koopApp.urun.urunKategorisi">Urun Kategorisi</Translate> <FontAwesomeIcon
-                icon="sort"/>
-              </th>
-              <th>
-                <Translate contentKey="koopApp.urun.urunSorumlusu">Urun Sorumlusu</Translate> <FontAwesomeIcon
-                icon="sort"/>
-              </th>
-              <th>
-                <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate> <FontAwesomeIcon
-                icon="sort"/>
-              </th>
-              <th/>
-            </tr>
+              <tr>
+                <th className="hand" onClick={sort('id')}>
+                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('urunAdi')}>
+                  <Translate contentKey="koopApp.urun.urunAdi">Urun Adi</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('stok')}>
+                  <Translate contentKey="koopApp.urun.stok">Stok</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('stokSiniri')}>
+                  <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('musteriFiyati')}>
+                  <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('birim')}>
+                  <Translate contentKey="koopApp.urun.birim">Birim</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dayanismaUrunu')}>
+                  <Translate contentKey="koopApp.urun.dayanismaUrunu">Dayanisma Urunu</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('satista')}>
+                  <Translate contentKey="koopApp.urun.satista">Satista</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('urunKategorisi')}>
+                  <Translate contentKey="koopApp.urun.urunKategorisi">Urun Kategorisi</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="koopApp.urun.urunSorumlusu">Urun Sorumlusu</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th />
+              </tr>
             </thead>
             <tbody>
-            {urunList.map((urun, i) => (
-              <tr key={`entity-${i}`}>
-                <td>
-                  <Button tag={Link} to={`${match.url}/${urun.id}`} color="link" size="sm">
-                    {urun.id}
-                  </Button>
-                </td>
-                <td>{urun.urunAdi}</td>
-                <td>{urun.stok}</td>
-                <td>{urun.stokSiniri}</td>
-                <td>{urun.musteriFiyati}</td>
-                <td>
-                  <Translate contentKey={`koopApp.Birim.${urun.birim}`}/>
-                </td>
-                <td>{urun.dayanismaUrunu ? 'true' : 'false'}</td>
-                <td>{urun.satista ? 'true' : 'false'}</td>
-                <td>
-                  <Translate contentKey={`koopApp.UrunKategorisi.${urun.urunKategorisi}`}/>
-                </td>
-                <td>{urun.urunSorumlusu ? urun.urunSorumlusu.login : ''}</td>
-                <td>{urun.kdvKategorisi ?
-                  <Link to={`kdv-kategorisi/${urun.kdvKategorisi.id}`}>{urun.kdvKategorisi.id}</Link> : ''}</td>
-                <td className="text-right">
-                  <div className="btn-group flex-btn-group-container">
-                    <Button
-                      tag={Link}
-                      to={`${match.url}/${urun.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                      color="primary"
-                      disabled={!isAdmin}
-                      size="sm"
-                    >
-                      <FontAwesomeIcon icon="pencil-alt"/>{' '}
-                      <span className="d-none d-md-inline">
+              {urunList.map((urun, i) => (
+                <tr key={`entity-${i}`}>
+                  <td>
+                    <Button tag={Link} to={`${match.url}/${urun.id}`} color="link" size="sm">
+                      {urun.id}
+                    </Button>
+                  </td>
+                  <td>{urun.urunAdi}</td>
+                  <td>{urun.stok}</td>
+                  <td>{urun.stokSiniri}</td>
+                  <td>{urun.musteriFiyati}</td>
+                  <td>
+                    <Translate contentKey={`koopApp.Birim.${urun.birim}`} />
+                  </td>
+                  <td>{urun.dayanismaUrunu ? 'true' : 'false'}</td>
+                  <td>{urun.satista ? 'true' : 'false'}</td>
+                  <td>
+                    <Translate contentKey={`koopApp.UrunKategorisi.${urun.urunKategorisi}`} />
+                  </td>
+                  <td>{urun.urunSorumlusu ? urun.urunSorumlusu.login : ''}</td>
+                  <td>{urun.kdvKategorisi ? <Link to={`kdv-kategorisi/${urun.kdvKategorisi.id}`}>{urun.kdvKategorisi.id}</Link> : ''}</td>
+                  <td className="text-right">
+                    <div className="btn-group flex-btn-group-container">
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${urun.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        disabled={!isAdmin}
+                        size="sm"
+                      >
+                        <FontAwesomeIcon icon="pencil-alt" />{' '}
+                        <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
-                    </Button>
-                    <Button
-                      tag={Link}
-                      to={`${match.url}/${urun.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                      color="danger"
-                      size="sm"
-                    >
-                      <FontAwesomeIcon icon="trash"/>{' '}
-                      <span className="d-none d-md-inline">
+                      </Button>
+                      <Button
+                        tag={Link}
+                        to={`${match.url}/${urun.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                      >
+                        <FontAwesomeIcon icon="trash" />{' '}
+                        <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         ) : (
@@ -243,8 +231,7 @@ export const Urun = (props: IUrunProps) => {
       </div>
       <div className={urunList && urunList.length > 0 ? '' : 'd-none'}>
         <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage}
-                        i18nEnabled/>
+          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
         </Row>
         <Row className="justify-content-center">
           <JhiPagination
@@ -260,17 +247,17 @@ export const Urun = (props: IUrunProps) => {
   );
 };
 
-const mapStateToProps = ({urun, authentication}: IRootState) => ({
+const mapStateToProps = ({ urun, authentication }: IRootState) => ({
   urunList: urun.entities,
   totalItems: urun.totalItems,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
-  satisUrunleri: urun.satisUrunleri
+  satisUrunleri: urun.satisUrunleri,
 });
 
 const mapDispatchToProps = {
   getSearchEntities,
   getEntities,
-  getAllUrunForStokGirisi
+  getAllUrunForStokGirisi,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

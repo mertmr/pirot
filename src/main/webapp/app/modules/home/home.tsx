@@ -1,22 +1,21 @@
 import './home.scss';
 
-import React, {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
-import {Translate} from 'react-jhipster';
-import {connect} from 'react-redux';
-import {Row, Col, Alert} from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Translate } from 'react-jhipster';
+import { connect } from 'react-redux';
+import { Row, Col, Alert } from 'reactstrap';
 import 'antd/lib/statistic/style/index.css';
 import 'antd/lib/card/style/index.css';
-import {Card, Statistic} from 'antd';
-import {getDashboardReports} from 'app/shared/reducers/dashboard-reports.reducer';
+import { Card, Statistic } from 'antd';
+import { getDashboardReports } from 'app/shared/reducers/dashboard-reports.reducer';
 
-import {IRootState} from 'app/shared/reducers';
+import { IRootState } from 'app/shared/reducers';
 
-export interface IHomeProp extends StateProps, DispatchProps {
-}
+export interface IHomeProp extends StateProps, DispatchProps {}
 
 export const Home = (props: IHomeProp) => {
-  const {account, dashboardReports} = props;
+  const { account, dashboardReports } = props;
 
   useEffect(() => {
     props.getDashboardReports();
@@ -34,29 +33,29 @@ export const Home = (props: IHomeProp) => {
         {account && account.login && dashboardReports ? (
           <div>
             <Alert color="success">
-              <Translate contentKey="home.logged.message" interpolate={{username: account.login}}>
+              <Translate contentKey="home.logged.message" interpolate={{ username: account.login }}>
                 You are logged in as user {account.login}.
               </Translate>
             </Alert>
             <Row gutter={18}>
               <Col span={6}>
                 <Card>
-                  <Statistic title="Kasa" value={dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} suffix="TL"/>
+                  <Statistic title="Kasa" value={dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} suffix="TL" />
                 </Card>
               </Col>
               <Col span={6}>
                 <Card>
-                  <Statistic title="Günlük Ciro" value={dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} suffix="TL"/>
+                  <Statistic title="Günlük Ciro" value={dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} suffix="TL" />
                 </Card>
               </Col>
               <Col span={6}>
                 <Card>
-                  <Statistic title="Kartlı Satış" value={dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} suffix="TL"/>
+                  <Statistic title="Kartlı Satış" value={dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} suffix="TL" />
                 </Card>
               </Col>
               <Col span={6}>
                 <Card>
-                  <Statistic title="Nakit Satış" value={dashboardReports.nakitSatis ? dashboardReports.nakitSatis : 0} suffix="TL"/>
+                  <Statistic title="Nakit Satış" value={dashboardReports.nakitSatis ? dashboardReports.nakitSatis : 0} suffix="TL" />
                 </Card>
               </Col>
             </Row>
@@ -70,7 +69,6 @@ export const Home = (props: IHomeProp) => {
             </Alert>
           </div>
         )}
-
       </Col>
     </Row>
   );
@@ -83,10 +81,10 @@ const mapStateToProps = storeState => ({
 });
 
 const mapDispatchToProps = {
-  getDashboardReports
+  getDashboardReports,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps,mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
