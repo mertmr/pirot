@@ -118,7 +118,8 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
         </Col>
       </Row>
       <Row className="justify-content-center">
-        <Col md="8">
+        <Col md="8"  style={{ marginTop: '10px' }}>
+          <h5>Banknot Sayıları</h5>
           {loading ? (
             <p>Loading...</p>
           ) : (
@@ -248,7 +249,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                   type="select"
                   className="form-control"
                   name="acilisKapanis"
-                  value={(!isNew && nobetHareketleriEntity.acilisKapanis) || 'Açılış'}
+                  value={(!isNew && nobetHareketleriEntity.acilisKapanis) || 'ACILIS'}
                 >
                   <option value="ACILIS">{translate('koopApp.AcilisKapanis.ACILIS')}</option>
                   <option value="KAPANIS">{translate('koopApp.AcilisKapanis.KAPANIS')}</option>
