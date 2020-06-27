@@ -24,7 +24,7 @@ Normalde olması gerekeni kısa ve anlaşılır şekilde yazın.
 Eğer mümkünse hatanın oluştuğunun ekran görüntüleri: hata oluşurken girilen veriler ve hata oluştuktan sonraki ekran görüntüleri
 
 **Masaüstünden kullanıyorsanız (Lütfen aşağıdaki bilgileri doldurunuz):**
- - OS: [e.g. iOS]
+ - OS: [e.g. MACOS, Windows]
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
