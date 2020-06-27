@@ -121,5 +121,5 @@ export const click = async (selector: ElementFinder) => {
  * Returns a promise that evaluates to the number of rows inside table body.
  */
 export const getRecordsCount = async (table: ElementFinder): Promise<number> => {
-  return await table.all(by.css('tbody tr')).count();
+  return table.all(by.css('tbody tr')).count();
 };
