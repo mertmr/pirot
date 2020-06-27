@@ -117,6 +117,7 @@ public class SatisService {
 
         Map<Long, SatisStokHareketleri> stokHareketMap = stokHareketleriLists
             .stream()
+            .filter(satisStokHareketleri -> satisStokHareketleri.getId() != null)
             .collect(Collectors.toMap(SatisStokHareketleri::getId, satisStokHareketleri -> satisStokHareketleri));
         for (SatisStokHareketleri stokHareketleri : satisOncekiHali.getStokHareketleriLists()) {
             if (!stokHareketMap.containsKey(stokHareketleri.getId())) {
