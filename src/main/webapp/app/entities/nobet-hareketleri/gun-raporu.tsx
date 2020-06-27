@@ -22,10 +22,6 @@ const today = (): string => {
 export const GunRaporu = (props: IGunRaporuProps) => {
   const [toDate, setToDate] = useState(today());
 
-  useEffect(() => {
-    props.getCirosByNobetci(props.match.params.id);
-  }, []);
-
   const onChangeToDate = evt => {
     setToDate(evt.target.value);
   };
@@ -175,7 +171,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   gunSonuRaporu: storeState.nobetHareketleri.gunSonuRaporu,
 });
 
-const mapDispatchToProps = { getCirosByNobetci, getGunSonuRaporu };
+const mapDispatchToProps = { getGunSonuRaporu };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
