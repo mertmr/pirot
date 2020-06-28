@@ -277,7 +277,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                             </Col>
                             <Col style={{ marginTop: '10px' }}>
                               <Col>Kalan Stok</Col>
-                              <Col>{stokHareketi.urun.stok}</Col>
+                              <Col>{stokHareketi.urun.stok} {stokHareketi.urun.birim}</Col>
                             </Col>
                             <Col style={{ marginTop: '10px' }}>
                               <Col>
