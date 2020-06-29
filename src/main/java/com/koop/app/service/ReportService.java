@@ -96,6 +96,7 @@ public class ReportService {
         for (OrtakFaturaDbReport ortakFaturaDbReport : ortakFaturaDbReports) {
             OrtakFaturasiDetayDto ortakFaturasi = new OrtakFaturasiDetayDto();
             ortakFaturasi.setUrunAdiKdv(ortakFaturaDbReport.getUrunIsmi());
+            ortakFaturasi.setKdvKategorisi(ortakFaturaDbReport.getKdvKategorisi());
             double kdvOrani = ortakFaturaDbReport.getUrun().getKdvKategorisi().getKdvOrani();
             if (ortakFaturaDbReport.getUrun().getBirim() == Birim.GRAM) {
                 BigDecimal miktar = BigDecimal
@@ -105,6 +106,8 @@ public class ReportService {
                 ortakFaturasi.setMiktar(miktar + " KG");
                 BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar().divide(miktar, 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
+                ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat()
+                    .multiply(miktar)); //set kdv without
             } else {
                 ortakFaturasi.setMiktar(
                     ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim()
@@ -113,9 +116,10 @@ public class ReportService {
                     .getToplamTutar()
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
+                ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat()
+                    .multiply(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()))); //set kdv without
             }
 
-            ortakFaturasi.setToplamTutar(kdvsizFiyatHesapla(kdvOrani, ortakFaturaDbReport.getToplamTutar())); //set kdv without
             ortakFaturasiList.add(ortakFaturasi);
         }
 
@@ -125,7 +129,7 @@ public class ReportService {
         List<KdvKategorisi> kdvKategorisiList = kdvKategorisiRepository.findAll();
         List<KdvToplam> kdvToplamList = new ArrayList<>();
         for (KdvKategorisi kdvKategorisi : kdvKategorisiList) {
-            List<OrtakFaturaDbReport> ortakFaturaDbReportListKdv = ortakFaturaDbReports
+            List<OrtakFaturasiDetayDto> ortakFaturaDbReportListKdv = ortakFaturasiList
                 .stream()
                 .filter(
                     ortakFaturaDbReport -> ortakFaturaDbReport.getKdvKategorisi().getId().equals(kdvKategorisi.getId())
@@ -149,13 +153,13 @@ public class ReportService {
             .mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().setScale(2, RoundingMode.HALF_UP).doubleValue())
             .sum();
         ortakFaturasiDto.setTumKdvToplami(tumKdvToplami);
-        double tumToplam = ortakFaturaDbReports
+        double tumToplamKdvHaric = ortakFaturasiList
             .stream()
-            .mapToDouble(ortakFaturaDbReport -> ortakFaturaDbReport.getToplamTutar().doubleValue())
+            .mapToDouble(ortakFaturasi -> ortakFaturasi.getToplamTutar().doubleValue())
             .sum();
-        ortakFaturasiDto.setTumToplamKdvHaric(
-            BigDecimal.valueOf(tumToplam - tumKdvToplami).setScale(2, RoundingMode.HALF_UP).doubleValue()
-        );
+        ortakFaturasiDto.setTumToplamKdvHaric(tumToplamKdvHaric);
+        double tumToplam = BigDecimal.valueOf(tumKdvToplami + tumToplamKdvHaric)
+            .setScale(2, RoundingMode.HALF_UP).doubleValue();
         ortakFaturasiDto.setTumToplam(tumToplam);
 
         return ortakFaturasiDto;

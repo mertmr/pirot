@@ -1,5 +1,7 @@
 package com.koop.app.dto.fatura;
 
+import com.koop.app.domain.KdvKategorisi;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -11,6 +13,16 @@ public class OrtakFaturasiDetayDto {
     private BigDecimal birimFiyat;
 
     private BigDecimal toplamTutar;
+
+    private KdvKategorisi kdvKategorisi;
+
+    public KdvKategorisi getKdvKategorisi() {
+        return kdvKategorisi;
+    }
+
+    public void setKdvKategorisi(KdvKategorisi kdvKategorisi) {
+        this.kdvKategorisi = kdvKategorisi;
+    }
 
     public String getUrunAdiKdv() {
         return urunAdiKdv;
