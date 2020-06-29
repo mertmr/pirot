@@ -427,14 +427,6 @@
                     <ignoreConfigFile>false</ignoreConfigFile>
                     <ignoreEditorConfig>false</ignoreEditorConfig>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <pluginManagement>
