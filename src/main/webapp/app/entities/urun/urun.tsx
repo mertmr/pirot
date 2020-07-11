@@ -87,12 +87,6 @@ export const Urun = (props: IUrunProps) => {
       activePage: currentPage,
     });
 
-  const data = [
-    { firstname: 'Ahmed', lastname: 'Tomi', email: 'ah@smthing.co.com' },
-    { firstname: 'Raed', lastname: 'Labes', email: 'rl@smthing.co.com' },
-    { firstname: 'Yezzi', lastname: 'Min l3b', email: 'ymin@cocococo.com' },
-  ];
-
   const { urunList, match, totalItems, isAdmin, satisUrunleri } = props;
   return (
     <div>
@@ -103,17 +97,9 @@ export const Urun = (props: IUrunProps) => {
           &nbsp;
           <Translate contentKey="koopApp.urun.home.createLabel">Create new Urun</Translate>
         </Link>
-        <CSVLink
-          className="btn btn-primary float-right jh-create-entity"
-          style={{ marginRight: '10px' }}
-          data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok, fiyat: x.musteriFiyati }))}
-          filename={'stokDurumu.csv'}
-        >
-          Stok Raporu
-        </CSVLink>
       </h2>
-      <Row>
-        <Col sm="12">
+      <Row className="col-12" style={{ marginTop: '20px', marginRight: '0', paddingRight: '0', marginLeft: '0', paddingLeft: '0'}}>
+        <Col className="col-12">
           <AvForm onSubmit={startSearching}>
             <AvGroup>
               <InputGroup>
@@ -243,6 +229,14 @@ export const Urun = (props: IUrunProps) => {
           />
         </Row>
       </div>
+      <CSVLink
+        className="btn btn-primary float-left jh-create-entity"
+        style={{ marginRight: '10px' }}
+        data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok, fiyat: x.musteriFiyati }))}
+        filename={'stokDurumu.csv'}
+      >
+        Stok Raporu
+      </CSVLink>
     </div>
   );
 };
