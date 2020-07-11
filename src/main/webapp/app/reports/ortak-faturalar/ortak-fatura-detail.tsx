@@ -56,6 +56,12 @@ export const OrtakFaturaDetail = (props: IOrtakFaturaDetailProps) => {
               <tr>
                 <td />
                 <td />
+                <td>KDV Toplam</td>
+                <td>{ortakFaturaDetaylar.tumKdvToplami}</td>
+              </tr>
+              <tr>
+                <td />
+                <td />
                 <td>Toplam</td>
                 <td>{ortakFaturaDetaylar.tumToplam}</td>
               </tr>
