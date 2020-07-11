@@ -107,7 +107,7 @@ public class ReportService {
                 BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar().divide(miktar, 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
                 ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat()
-                    .multiply(miktar)); //set kdv without
+                    .multiply(miktar).setScale(2, RoundingMode.HALF_UP)); //set kdv without
             } else {
                 ortakFaturasi.setMiktar(
                     ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim()
@@ -117,7 +117,7 @@ public class ReportService {
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
                 ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat()
-                    .multiply(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()))); //set kdv without
+                    .multiply(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar())).setScale(2, RoundingMode.HALF_UP)); //set kdv without
             }
 
             ortakFaturasiList.add(ortakFaturasi);
