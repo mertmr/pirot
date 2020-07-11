@@ -150,8 +150,9 @@ public class ReportService {
         ortakFaturasiDto.setKdvToplamList(kdvToplamList);
         double tumKdvToplami = kdvToplamList
             .stream()
-            .mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().setScale(2, RoundingMode.HALF_UP).doubleValue())
+            .mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().doubleValue())
             .sum();
+        tumKdvToplami = BigDecimal.valueOf(tumKdvToplami).setScale(2, RoundingMode.HALF_UP).doubleValue();
         ortakFaturasiDto.setTumKdvToplami(tumKdvToplami);
         double tumToplamKdvHaric = ortakFaturasiList
             .stream()
