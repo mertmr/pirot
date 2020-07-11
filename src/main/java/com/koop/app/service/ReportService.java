@@ -157,6 +157,7 @@ public class ReportService {
             .stream()
             .mapToDouble(ortakFaturasi -> ortakFaturasi.getToplamTutar().doubleValue())
             .sum();
+        tumToplamKdvHaric = BigDecimal.valueOf(tumToplamKdvHaric).setScale(2, RoundingMode.HALF_UP).doubleValue();
         ortakFaturasiDto.setTumToplamKdvHaric(tumToplamKdvHaric);
         double tumToplam = BigDecimal.valueOf(tumKdvToplami + tumToplamKdvHaric)
             .setScale(2, RoundingMode.HALF_UP).doubleValue();
