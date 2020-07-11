@@ -5,7 +5,7 @@
 
     <groupId>com.koop.app</groupId>
     <artifactId>pirot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>Pirot</name>
 
@@ -635,7 +635,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>koop:latest</image>
+                            <image>pirot:latest</image>
                         </to>
                         <container>
                             <entrypoint>
