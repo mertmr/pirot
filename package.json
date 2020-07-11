@@ -1,7 +1,7 @@
 {
-  "name": "koop",
-  "version": "0.0.1-SNAPSHOT",
-  "description": "Description for koop",
+  "name": "pirot",
+  "version": "1.0.3",
+  "description": "Pirot uygulaması",
   "private": true,
   "license": "UNLICENSED",
   "cacheDirectories": [
