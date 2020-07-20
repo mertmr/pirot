@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class UrunFiyatHesapUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.urunFiyatHesap.home.createOrEditLabel'));
@@ -90,5 +93,30 @@ export default class UrunFiyatHesapUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setAmortismanInput('5');
+    expect(await this.getAmortismanInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setGiderPusulaMustahsilInput('5');
+    expect(await this.getGiderPusulaMustahsilInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDukkanGiderInput('5');
+    expect(await this.getDukkanGiderInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setKooperatifCalismaInput('5');
+    expect(await this.getKooperatifCalismaInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDayanismaInput('5');
+    expect(await this.getDayanismaInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setFireInput('5');
+    expect(await this.getFireInput()).to.eq('5');
+    await this.urunSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

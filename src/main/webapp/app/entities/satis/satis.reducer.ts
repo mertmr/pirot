@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<ISatis> = id => async dispatch => {
     type: ACTION_TYPES.DELETE_SATIS,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

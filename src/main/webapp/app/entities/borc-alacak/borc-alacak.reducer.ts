@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IBorcAlacak> = id => async dispatch
     type: ACTION_TYPES.DELETE_BORCALACAK,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

@@ -11,12 +11,12 @@ import StokGirisiDeleteDialog from './stok-girisi-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={StokGirisiDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={StokGirisiUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={StokGirisiUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={StokGirisiDetail} />
       <ErrorBoundaryRoute path={match.url} component={StokGirisi} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={StokGirisiDeleteDialog} />
   </>
 );
 

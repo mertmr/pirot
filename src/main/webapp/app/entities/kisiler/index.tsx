@@ -11,12 +11,12 @@ import KisilerDeleteDialog from './kisiler-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={KisilerDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={KisilerUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={KisilerUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={KisilerDetail} />
       <ErrorBoundaryRoute path={match.url} component={Kisiler} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={KisilerDeleteDialog} />
   </>
 );
 

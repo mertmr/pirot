@@ -11,12 +11,12 @@ import SatisDeleteDialog from './satis-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={SatisDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={SatisUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={SatisUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={SatisDetail} />
       <ErrorBoundaryRoute path={match.url} component={Satis} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={SatisDeleteDialog} />
   </>
 );
 
