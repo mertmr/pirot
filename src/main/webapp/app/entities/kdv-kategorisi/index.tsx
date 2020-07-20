@@ -11,12 +11,12 @@ import KdvKategorisiDeleteDialog from './kdv-kategorisi-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={KdvKategorisiDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={KdvKategorisiUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={KdvKategorisiUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={KdvKategorisiDetail} />
       <ErrorBoundaryRoute path={match.url} component={KdvKategorisi} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={KdvKategorisiDeleteDialog} />
   </>
 );
 

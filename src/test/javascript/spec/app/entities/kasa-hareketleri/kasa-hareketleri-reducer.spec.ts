@@ -263,6 +263,13 @@ describe('Entities reducer tests', () => {
           type: SUCCESS(ACTION_TYPES.DELETE_KASAHAREKETLERI),
           payload: resolvedObject,
         },
+        {
+          type: REQUEST(ACTION_TYPES.FETCH_KASAHAREKETLERI_LIST),
+        },
+        {
+          type: SUCCESS(ACTION_TYPES.FETCH_KASAHAREKETLERI_LIST),
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });

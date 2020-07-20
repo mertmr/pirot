@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<ISatisStokHareketleri> = id => asyn
     type: ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

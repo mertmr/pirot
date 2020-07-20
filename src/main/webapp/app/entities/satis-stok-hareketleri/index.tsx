@@ -11,12 +11,12 @@ import SatisStokHareketleriDeleteDialog from './satis-stok-hareketleri-delete-di
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={SatisStokHareketleriDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={SatisStokHareketleriUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={SatisStokHareketleriUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={SatisStokHareketleriDetail} />
       <ErrorBoundaryRoute path={match.url} component={SatisStokHareketleri} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={SatisStokHareketleriDeleteDialog} />
   </>
 );
 

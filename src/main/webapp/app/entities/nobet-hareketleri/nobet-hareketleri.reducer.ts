@@ -171,6 +171,7 @@ export const deleteEntity: ICrudDeleteAction<INobetHareketleri> = id => async di
     type: ACTION_TYPES.DELETE_NOBETHAREKETLERI,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

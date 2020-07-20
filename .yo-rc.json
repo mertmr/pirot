@@ -23,7 +23,7 @@
     "useSass": true,
     "clientFramework": "react",
     "cacheProvider": "caffeine",
-    "jhipsterVersion": "6.9.1",
+    "jhipsterVersion": "6.10.1",
     "buildTool": "maven",
     "skipUserManagement": false,
     "clientPackageManager": "npm",

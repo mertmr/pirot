@@ -1,4 +1,7 @@
-import { element, by, ElementFinder } from 'protractor';
+import { element, by, ElementFinder, protractor } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class UreticiUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.uretici.home.createOrEditLabel'));
@@ -72,5 +75,24 @@ export default class UreticiUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setAdiInput('adi');
+    expect(await this.getAdiInput()).to.match(/adi/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setAdresInput('adres');
+    expect(await this.getAdresInput()).to.match(/adres/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setBankaBilgileriInput('bankaBilgileri');
+    expect(await this.getBankaBilgileriInput()).to.match(/bankaBilgileri/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTarihInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+    expect(await this.getTarihInput()).to.contain('2001-01-01T02:30');
+    await this.userSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

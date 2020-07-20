@@ -259,6 +259,13 @@ describe('Entities reducer tests', () => {
           type: SUCCESS(ACTION_TYPES.DELETE_GIDER),
           payload: resolvedObject,
         },
+        {
+          type: REQUEST(ACTION_TYPES.FETCH_GIDER_LIST),
+        },
+        {
+          type: SUCCESS(ACTION_TYPES.FETCH_GIDER_LIST),
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });

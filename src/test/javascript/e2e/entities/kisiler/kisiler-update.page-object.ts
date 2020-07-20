@@ -1,4 +1,7 @@
-import { element, by, ElementFinder } from 'protractor';
+import { element, by, ElementFinder, protractor } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class KisilerUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.kisiler.home.createOrEditLabel'));
@@ -50,5 +53,29 @@ export default class KisilerUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setKisiAdiInput('kisiAdi');
+    expect(await this.getKisiAdiInput()).to.match(/kisiAdi/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setNotlarInput('notlar');
+    expect(await this.getNotlarInput()).to.match(/notlar/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTarihInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+    expect(await this.getTarihInput()).to.contain('2001-01-01T02:30');
+    await waitUntilDisplayed(this.saveButton);
+    const selectedActive = await this.getActiveInput().isSelected();
+    if (selectedActive) {
+      await this.getActiveInput().click();
+      expect(await this.getActiveInput().isSelected()).to.be.false;
+    } else {
+      await this.getActiveInput().click();
+      expect(await this.getActiveInput().isSelected()).to.be.true;
+    }
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }
