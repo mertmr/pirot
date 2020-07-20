@@ -1,0 +1,23 @@
+{
+  "koopApp": {
+    "kdvKategorisi": {
+      "home": {
+        "title": "Kdv Kategorisis",
+        "createLabel": "Create a new Kdv Kategorisi",
+        "createOrEditLabel": "Create or edit a Kdv Kategorisi",
+        "notFound": "No Kdv Kategorisis found"
+      },
+      "created": "A new Kdv Kategorisi is created with identifier {{ param }}",
+      "updated": "A Kdv Kategorisi is updated with identifier {{ param }}",
+      "deleted": "A Kdv Kategorisi is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Kdv Kategorisi {{ id }}?"
+      },
+      "detail": {
+        "title": "Kdv Kategorisi"
+      },
+      "kategoriAdi": "Kategori Adi",
+      "kdvOrani": "Kdv Orani"
+    }
+  }
+}

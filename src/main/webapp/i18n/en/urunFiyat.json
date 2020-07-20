@@ -1,0 +1,25 @@
+{
+  "koopApp": {
+    "urunFiyat": {
+      "home": {
+        "title": "Urun Fiyats",
+        "createLabel": "Create a new Urun Fiyat",
+        "createOrEditLabel": "Create or edit a Urun Fiyat",
+        "notFound": "No Urun Fiyats found"
+      },
+      "created": "A new Urun Fiyat is created with identifier {{ param }}",
+      "updated": "A Urun Fiyat is updated with identifier {{ param }}",
+      "deleted": "A Urun Fiyat is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Urun Fiyat {{ id }}?"
+      },
+      "detail": {
+        "title": "Urun Fiyat"
+      },
+      "fiyat": "Fiyat",
+      "tarih": "Tarih",
+      "user": "User",
+      "urun": "Urun"
+    }
+  }
+}
