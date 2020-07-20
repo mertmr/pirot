@@ -1,0 +1,9 @@
+{
+  "koopApp": {
+    "HareketTipi": {
+      "null": "",
+      "URUN_GIRISI": "URUN_GIRISI",
+      "ODEME": "ODEME"
+    }
+  }
+}

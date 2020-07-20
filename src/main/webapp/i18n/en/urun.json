@@ -1,0 +1,33 @@
+{
+  "koopApp": {
+    "urun": {
+      "home": {
+        "title": "Uruns",
+        "createLabel": "Create a new Urun",
+        "createOrEditLabel": "Create or edit a Urun",
+        "notFound": "No Uruns found"
+      },
+      "created": "A new Urun is created with identifier {{ param }}",
+      "updated": "A Urun is updated with identifier {{ param }}",
+      "deleted": "A Urun is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Urun {{ id }}?"
+      },
+      "detail": {
+        "title": "Urun"
+      },
+      "urunAdi": "Urun Adi",
+      "stok": "Stok",
+      "stokSiniri": "Stok Siniri",
+      "musteriFiyati": "Musteri Fiyati",
+      "birim": "Birim",
+      "dayanismaUrunu": "Dayanisma Urunu",
+      "satista": "Satista",
+      "urunKategorisi": "Urun Kategorisi",
+      "active": "Active",
+      "urunSorumlusu": "Urun Sorumlusu",
+      "kdvKategorisi": "Kdv Kategorisi",
+      "urunFiyatHesap": "Urun Fiyat Hesap"
+    }
+  }
+}

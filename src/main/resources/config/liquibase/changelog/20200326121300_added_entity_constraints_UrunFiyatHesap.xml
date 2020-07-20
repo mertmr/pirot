@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity UrunFiyatHesap.
+    -->
+    <changeSet id="20200326121300-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="urun_id"
+                                 baseTableName="urun_fiyat_hesap"
+                                 constraintName="fk_urun_fiyat_hesap_urun_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="urun"/>
+
+    </changeSet>
+</databaseChangeLog>

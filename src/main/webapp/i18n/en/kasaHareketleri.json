@@ -1,0 +1,24 @@
+{
+  "koopApp": {
+    "kasaHareketleri": {
+      "home": {
+        "title": "Kasa Hareketleris",
+        "createLabel": "Create a new Kasa Hareketleri",
+        "createOrEditLabel": "Create or edit a Kasa Hareketleri",
+        "notFound": "No Kasa Hareketleris found"
+      },
+      "created": "A new Kasa Hareketleri is created with identifier {{ param }}",
+      "updated": "A Kasa Hareketleri is updated with identifier {{ param }}",
+      "deleted": "A Kasa Hareketleri is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Kasa Hareketleri {{ id }}?"
+      },
+      "detail": {
+        "title": "Kasa Hareketleri"
+      },
+      "kasaMiktar": "Kasa Miktar",
+      "hareket": "Hareket",
+      "tarih": "Tarih"
+    }
+  }
+}
