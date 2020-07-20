@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IKisiler> = id => async dispatch =>
     type: ACTION_TYPES.DELETE_KISILER,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

@@ -11,12 +11,12 @@ import GiderDeleteDialog from './gider-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={GiderDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={GiderUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={GiderUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={GiderDetail} />
       <ErrorBoundaryRoute path={match.url} component={Gider} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={GiderDeleteDialog} />
   </>
 );
 

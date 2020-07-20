@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IUrunFiyatHesap> = id => async disp
     type: ACTION_TYPES.DELETE_URUNFIYATHESAP,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

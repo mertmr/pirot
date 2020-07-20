@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IKdvKategorisi> = id => async dispa
     type: ACTION_TYPES.DELETE_KDVKATEGORISI,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

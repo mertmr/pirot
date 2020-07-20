@@ -1,4 +1,7 @@
-import { element, by, ElementFinder } from 'protractor';
+import { element, by, ElementFinder, protractor } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class BorcAlacakUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.borcAlacak.home.createOrEditLabel'));
@@ -104,5 +107,26 @@ export default class BorcAlacakUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTutarInput('5');
+    expect(await this.getTutarInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setNotlarInput('notlar');
+    expect(await this.getNotlarInput()).to.match(/notlar/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.odemeAraciSelectLastOption();
+    await waitUntilDisplayed(this.saveButton);
+    await this.hareketTipiSelectLastOption();
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTarihInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+    expect(await this.getTarihInput()).to.contain('2001-01-01T02:30');
+    await this.userSelectLastOption();
+    await this.urunSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

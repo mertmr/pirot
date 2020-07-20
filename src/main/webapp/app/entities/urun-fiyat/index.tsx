@@ -11,12 +11,12 @@ import UrunFiyatDeleteDialog from './urun-fiyat-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UrunFiyatDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={UrunFiyatUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={UrunFiyatUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={UrunFiyatDetail} />
       <ErrorBoundaryRoute path={match.url} component={UrunFiyat} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UrunFiyatDeleteDialog} />
   </>
 );
 

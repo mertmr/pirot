@@ -11,12 +11,12 @@ import UrunDeleteDialog from './urun-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UrunDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={UrunUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={UrunUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={UrunDetail} />
       <ErrorBoundaryRoute path={match.url} component={Urun} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UrunDeleteDialog} />
   </>
 );
 

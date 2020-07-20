@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class UrunUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.urun.home.createOrEditLabel'));
@@ -125,5 +128,56 @@ export default class UrunUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUrunAdiInput('urunAdi');
+    expect(await this.getUrunAdiInput()).to.match(/urunAdi/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setStokInput('5');
+    expect(await this.getStokInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setStokSiniriInput('5');
+    expect(await this.getStokSiniriInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setMusteriFiyatiInput('5');
+    expect(await this.getMusteriFiyatiInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.birimSelectLastOption();
+    await waitUntilDisplayed(this.saveButton);
+    const selectedDayanismaUrunu = await this.getDayanismaUrunuInput().isSelected();
+    if (selectedDayanismaUrunu) {
+      await this.getDayanismaUrunuInput().click();
+      expect(await this.getDayanismaUrunuInput().isSelected()).to.be.false;
+    } else {
+      await this.getDayanismaUrunuInput().click();
+      expect(await this.getDayanismaUrunuInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    const selectedSatista = await this.getSatistaInput().isSelected();
+    if (selectedSatista) {
+      await this.getSatistaInput().click();
+      expect(await this.getSatistaInput().isSelected()).to.be.false;
+    } else {
+      await this.getSatistaInput().click();
+      expect(await this.getSatistaInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    await this.urunKategorisiSelectLastOption();
+    await waitUntilDisplayed(this.saveButton);
+    const selectedActive = await this.getActiveInput().isSelected();
+    if (selectedActive) {
+      await this.getActiveInput().click();
+      expect(await this.getActiveInput().isSelected()).to.be.false;
+    } else {
+      await this.getActiveInput().click();
+      expect(await this.getActiveInput().isSelected()).to.be.true;
+    }
+    await this.urunSorumlusuSelectLastOption();
+    await this.kdvKategorisiSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

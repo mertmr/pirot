@@ -11,12 +11,12 @@ import VirmanDeleteDialog from './virman-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={VirmanDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={VirmanUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={VirmanUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={VirmanDetail} />
       <ErrorBoundaryRoute path={match.url} component={Virman} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={VirmanDeleteDialog} />
   </>
 );
 

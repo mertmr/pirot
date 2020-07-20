@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IKasaHareketleri> = id => async dis
     type: ACTION_TYPES.DELETE_KASAHAREKETLERI,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 
