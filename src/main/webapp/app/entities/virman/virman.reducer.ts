@@ -164,6 +164,7 @@ export const deleteEntity: ICrudDeleteAction<IVirman> = id => async dispatch => 
     type: ACTION_TYPES.DELETE_VIRMAN,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

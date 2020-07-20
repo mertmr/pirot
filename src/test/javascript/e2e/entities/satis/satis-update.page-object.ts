@@ -1,4 +1,7 @@
-import { element, by, ElementFinder } from 'protractor';
+import { element, by, ElementFinder, protractor } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class SatisUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.satis.home.createOrEditLabel'));
@@ -79,5 +82,37 @@ export default class SatisUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTarihInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+    expect(await this.getTarihInput()).to.contain('2001-01-01T02:30');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setToplamTutarInput('5');
+    expect(await this.getToplamTutarInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    const selectedOrtagaSatis = await this.getOrtagaSatisInput().isSelected();
+    if (selectedOrtagaSatis) {
+      await this.getOrtagaSatisInput().click();
+      expect(await this.getOrtagaSatisInput().isSelected()).to.be.false;
+    } else {
+      await this.getOrtagaSatisInput().click();
+      expect(await this.getOrtagaSatisInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    const selectedKartliSatis = await this.getKartliSatisInput().isSelected();
+    if (selectedKartliSatis) {
+      await this.getKartliSatisInput().click();
+      expect(await this.getKartliSatisInput().isSelected()).to.be.false;
+    } else {
+      await this.getKartliSatisInput().click();
+      expect(await this.getKartliSatisInput().isSelected()).to.be.true;
+    }
+    await this.userSelectLastOption();
+    await this.kisiSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

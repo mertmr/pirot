@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class KdvKategorisiUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.kdvKategorisi.home.createOrEditLabel'));
@@ -37,5 +40,17 @@ export default class KdvKategorisiUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setKategoriAdiInput('kategoriAdi');
+    expect(await this.getKategoriAdiInput()).to.match(/kategoriAdi/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setKdvOraniInput('5');
+    expect(await this.getKdvOraniInput()).to.eq('5');
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

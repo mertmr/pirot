@@ -1,5 +1,26 @@
 import { element, by, ElementFinder, ElementArrayFinder } from 'protractor';
 
+import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVisible } from '../../util/utils';
+
+import NavBarPage from './../../page-objects/navbar-page';
+
+import StokGirisiUpdatePage from './stok-girisi-update.page-object';
+
+const expect = chai.expect;
+export class StokGirisiDeleteDialog {
+  deleteModal = element(by.className('modal'));
+  private dialogTitle: ElementFinder = element(by.id('koopApp.stokGirisi.delete.question'));
+  private confirmButton = element(by.id('koop-confirm-delete-stokGirisi'));
+
+  getDialogTitle() {
+    return this.dialogTitle;
+  }
+
+  async clickOnConfirmButton() {
+    await this.confirmButton.click();
+  }
+}
+
 export default class StokGirisiComponentsPage {
   createButton: ElementFinder = element(by.id('jh-create-entity'));
   deleteButtons = element.all(by.css('div table .btn-danger'));
@@ -20,18 +41,29 @@ export default class StokGirisiComponentsPage {
   getDeleteButton(record: ElementFinder) {
     return record.element(by.css('a.btn.btn-danger.btn-sm'));
   }
-}
 
-export class StokGirisiDeleteDialog {
-  deleteModal = element(by.className('modal'));
-  private dialogTitle: ElementFinder = element(by.id('koopApp.stokGirisi.delete.question'));
-  private confirmButton = element(by.id('koop-confirm-delete-stokGirisi'));
-
-  getDialogTitle() {
-    return this.dialogTitle;
+  async goToPage(navBarPage: NavBarPage) {
+    await navBarPage.getEntityPage('stok-girisi');
+    await waitUntilAnyDisplayed([this.noRecords, this.table]);
+    return this;
   }
 
-  async clickOnConfirmButton() {
-    await this.confirmButton.click();
+  async goToCreateStokGirisi() {
+    await this.createButton.click();
+    return new StokGirisiUpdatePage();
+  }
+
+  async deleteStokGirisi() {
+    const deleteButton = this.getDeleteButton(this.records.last());
+    await click(deleteButton);
+
+    const stokGirisiDeleteDialog = new StokGirisiDeleteDialog();
+    await waitUntilDisplayed(stokGirisiDeleteDialog.deleteModal);
+    expect(await stokGirisiDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/koopApp.stokGirisi.delete.question/);
+    await stokGirisiDeleteDialog.clickOnConfirmButton();
+
+    await waitUntilHidden(stokGirisiDeleteDialog.deleteModal);
+
+    expect(await isVisible(stokGirisiDeleteDialog.deleteModal)).to.be.false;
   }
 }

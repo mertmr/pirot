@@ -140,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IUretici> = id => async dispatch =>
     type: ACTION_TYPES.DELETE_URETICI,
     payload: axios.delete(requestUrl),
   });
+  dispatch(getEntities());
   return result;
 };
 

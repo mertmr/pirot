@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class SatisStokHareketleriUpdatePage {
   pageTitle: ElementFinder = element(by.id('koopApp.satisStokHareketleri.home.createOrEditLabel'));
@@ -71,5 +74,19 @@ export default class SatisStokHareketleriUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setMiktarInput('5');
+    expect(await this.getMiktarInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setTutarInput('5');
+    expect(await this.getTutarInput()).to.eq('5');
+    await this.urunSelectLastOption();
+    await this.satisSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

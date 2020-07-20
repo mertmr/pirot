@@ -11,12 +11,12 @@ import UreticiDeleteDialog from './uretici-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UreticiDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={UreticiUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={UreticiUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={UreticiDetail} />
       <ErrorBoundaryRoute path={match.url} component={Uretici} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={UreticiDeleteDialog} />
   </>
 );
 

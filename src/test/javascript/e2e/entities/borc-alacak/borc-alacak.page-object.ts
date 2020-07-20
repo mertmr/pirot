@@ -1,5 +1,26 @@
 import { element, by, ElementFinder, ElementArrayFinder } from 'protractor';
 
+import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVisible } from '../../util/utils';
+
+import NavBarPage from './../../page-objects/navbar-page';
+
+import BorcAlacakUpdatePage from './borc-alacak-update.page-object';
+
+const expect = chai.expect;
+export class BorcAlacakDeleteDialog {
+  deleteModal = element(by.className('modal'));
+  private dialogTitle: ElementFinder = element(by.id('koopApp.borcAlacak.delete.question'));
+  private confirmButton = element(by.id('koop-confirm-delete-borcAlacak'));
+
+  getDialogTitle() {
+    return this.dialogTitle;
+  }
+
+  async clickOnConfirmButton() {
+    await this.confirmButton.click();
+  }
+}
+
 export default class BorcAlacakComponentsPage {
   createButton: ElementFinder = element(by.id('jh-create-entity'));
   deleteButtons = element.all(by.css('div table .btn-danger'));
@@ -20,18 +41,29 @@ export default class BorcAlacakComponentsPage {
   getDeleteButton(record: ElementFinder) {
     return record.element(by.css('a.btn.btn-danger.btn-sm'));
   }
-}
 
-export class BorcAlacakDeleteDialog {
-  deleteModal = element(by.className('modal'));
-  private dialogTitle: ElementFinder = element(by.id('koopApp.borcAlacak.delete.question'));
-  private confirmButton = element(by.id('koop-confirm-delete-borcAlacak'));
-
-  getDialogTitle() {
-    return this.dialogTitle;
+  async goToPage(navBarPage: NavBarPage) {
+    await navBarPage.getEntityPage('borc-alacak');
+    await waitUntilAnyDisplayed([this.noRecords, this.table]);
+    return this;
   }
 
-  async clickOnConfirmButton() {
-    await this.confirmButton.click();
+  async goToCreateBorcAlacak() {
+    await this.createButton.click();
+    return new BorcAlacakUpdatePage();
+  }
+
+  async deleteBorcAlacak() {
+    const deleteButton = this.getDeleteButton(this.records.last());
+    await click(deleteButton);
+
+    const borcAlacakDeleteDialog = new BorcAlacakDeleteDialog();
+    await waitUntilDisplayed(borcAlacakDeleteDialog.deleteModal);
+    expect(await borcAlacakDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/koopApp.borcAlacak.delete.question/);
+    await borcAlacakDeleteDialog.clickOnConfirmButton();
+
+    await waitUntilHidden(borcAlacakDeleteDialog.deleteModal);
+
+    expect(await isVisible(borcAlacakDeleteDialog.deleteModal)).to.be.false;
   }
 }
