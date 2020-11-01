@@ -9,7 +9,7 @@ import appConfig from 'app/config/constants';
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/koop.jpg" alt="Logo" />
+    <img src="content/images/koop.svg" alt="Logo" />
   </div>
 );
 

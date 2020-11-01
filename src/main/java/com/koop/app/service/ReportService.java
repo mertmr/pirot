@@ -5,6 +5,9 @@ import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.dto.Ciro;
 import com.koop.app.dto.fatura.*;
 import com.koop.app.repository.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -13,8 +16,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {
@@ -112,6 +113,8 @@ public class ReportService {
                 ortakFaturasi.setMiktar(
                     ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim()
                 );
+                if (ortakFaturaDbReport.getMiktar() == 0L)
+                    continue;
                 BigDecimal birimFiyat = ortakFaturaDbReport
                     .getToplamTutar()
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP);
