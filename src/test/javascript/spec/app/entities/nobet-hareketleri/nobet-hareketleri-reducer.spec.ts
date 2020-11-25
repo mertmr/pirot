@@ -233,13 +233,6 @@ describe('Entities reducer tests', () => {
           type: SUCCESS(ACTION_TYPES.CREATE_NOBETHAREKETLERI),
           payload: resolvedObject,
         },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_NOBETHAREKETLERI_LIST),
-          payload: resolvedObject,
-        },
       ];
       await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
