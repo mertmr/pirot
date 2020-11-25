@@ -24,6 +24,9 @@
             <column name="fark" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
+            <column name="fark_denge" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
             <column name="nobet_suresi" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
@@ -66,6 +69,7 @@
             <column name="kasa" type="numeric"/>
             <column name="pirot" type="numeric"/>
             <column name="fark" type="numeric"/>
+            <column name="fark_denge" type="numeric"/>
             <column name="nobet_suresi" type="numeric"/>
             <column name="notlar" type="string"/>
             <column name="acilis_kapanis" type="string"/>

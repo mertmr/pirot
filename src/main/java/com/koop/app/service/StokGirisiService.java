@@ -7,6 +7,9 @@ import com.koop.app.domain.enumeration.StokHareketiTipi;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.repository.UrunRepository;
 import java.math.BigDecimal;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -59,5 +62,9 @@ public class StokGirisiService {
 
     public StokGirisi update(StokGirisi stokGirisi) {
         return stokGirisiRepository.save(stokGirisi);
+    }
+
+    public Page<StokGirisi> search(String query, Pageable pageable) {
+        return stokGirisiRepository.findByUrunAdi(query, pageable);
     }
 }

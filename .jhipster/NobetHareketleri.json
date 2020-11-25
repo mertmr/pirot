@@ -14,6 +14,10 @@
       "fieldType": "BigDecimal"
     },
     {
+      "fieldName": "farkDenge",
+      "fieldType": "BigDecimal"
+    },
+    {
       "fieldName": "nobetSuresi",
       "fieldType": "BigDecimal"
     },

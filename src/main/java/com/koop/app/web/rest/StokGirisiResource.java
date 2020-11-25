@@ -1,6 +1,7 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.StokGirisi;
+import com.koop.app.domain.Urun;
 import com.koop.app.domain.User;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.service.StokGirisiService;
@@ -147,5 +148,24 @@ public class StokGirisiResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code SEARCH  /searchStokGirisiByUrun?query=:query} : search for the urun corresponding
+     * to the query.
+     *
+     * @param query    the query of the stok girisi search.
+     * @param pageable the pagination information.
+     * @return the result of the search.
+     */
+    @GetMapping("/searchStokGirisiByUrun")
+    public ResponseEntity<List<StokGirisi>> searchUruns(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Uruns for query {}", query);
+        Page<StokGirisi> page = stokGirisiService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+            ServletUriComponentsBuilder.fromCurrentRequest(),
+            page
+        );
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

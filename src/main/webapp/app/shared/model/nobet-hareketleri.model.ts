@@ -7,6 +7,7 @@ export interface INobetHareketleri {
   kasa?: number;
   pirot?: number;
   fark?: number;
+  farkDenge?: number;
   nobetSuresi?: number;
   notlar?: string;
   acilisKapanis?: AcilisKapanis;

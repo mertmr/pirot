@@ -111,6 +111,7 @@ export const GunRaporu = (props: IGunRaporuProps) => {
               <tr>
                 <th>Kasa</th>
                 <th>Pirot</th>
+                <th>Fark Dengeleme</th>
                 <th>Fark</th>
                 <th>Notlar</th>
                 <th>Tarih Saat</th>
@@ -120,6 +121,7 @@ export const GunRaporu = (props: IGunRaporuProps) => {
               <tr key={`virman`}>
                 <td>{gunSonuRaporu.acilisHareketi.kasa}</td>
                 <td>{gunSonuRaporu.acilisHareketi.pirot}</td>
+                <td>{gunSonuRaporu.acilisHareketi.farkDenge}</td>
                 <td>{gunSonuRaporu.acilisHareketi.fark}</td>
                 <td>{gunSonuRaporu.acilisHareketi.notlar}</td>{' '}
                 <td>
@@ -140,6 +142,7 @@ export const GunRaporu = (props: IGunRaporuProps) => {
               <tr>
                 <th>Kasa</th>
                 <th>Pirot</th>
+                <th>Fark Dengeleme</th>
                 <th>Fark</th>
                 <th>Notlar</th>
                 <th>Tarih Saat</th>
@@ -149,6 +152,7 @@ export const GunRaporu = (props: IGunRaporuProps) => {
               <tr key={`virman`}>
                 <td>{gunSonuRaporu.nobetHareketleri.kasa}</td>
                 <td>{gunSonuRaporu.nobetHareketleri.pirot}</td>
+                <td>{gunSonuRaporu.nobetHareketleri.farkDenge}</td>
                 <td>{gunSonuRaporu.nobetHareketleri.fark}</td>
                 <td>{gunSonuRaporu.nobetHareketleri.notlar}</td>{' '}
                 <td>

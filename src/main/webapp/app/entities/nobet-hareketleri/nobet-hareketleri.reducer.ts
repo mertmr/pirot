@@ -153,7 +153,6 @@ export const createEntity: ICrudPutAction<INobetHareketleri> = entity => async d
     type: ACTION_TYPES.CREATE_NOBETHAREKETLERI,
     payload: axios.post(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
   return result;
 };
 
