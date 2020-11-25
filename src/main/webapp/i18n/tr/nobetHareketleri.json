@@ -2,26 +2,27 @@
   "koopApp": {
     "nobetHareketleri": {
       "home": {
-        "title": "Nöbetçi Hareketleri",
-        "createLabel": "Yeni Nöbet Hareketi",
-        "createOrEditLabel": "Nöbetçi Hareketi Yarat/Düzenle",
-        "notFound": "Nöbetçi Hareketi bulunamadı"
+        "title": "Nobet Hareketleris",
+        "createLabel": "Yeni Nöbetçi Hareketi",
+        "createOrEditLabel": "Create or edit a Nobet Hareketleri",
+        "notFound": "No Nobet Hareketleris found"
       },
-      "created": "{{ param }} id li nöbetçi hareketi yaratıldı",
-      "updated": "{{ param }} id li nöbet hareketi düzenlendi",
-      "deleted": "{{ param }} id li nöbetçi hareketi silindi",
+      "created": "A new Nobet Hareketleri is created with identifier {{ param }}",
+      "updated": "A Nobet Hareketleri is updated with identifier {{ param }}",
+      "deleted": "A Nobet Hareketleri is deleted with identifier {{ param }}",
       "delete": {
-        "question": "{{ id }} id li nöbet hareketini silmek istediğinizden emin misiniz?"
+        "question": "Are you sure you want to delete Nobet Hareketleri {{ id }}?"
       },
       "detail": {
-        "title": "Nöbet Hareketleri"
+        "title": "Nobet Hareketleri"
       },
       "kasa": "Kasa",
       "pirot": "Pirot",
       "fark": "Fark",
-      "nobetSuresi": "Nöbet Süresi(Saat)",
-      "acilisKapanis": "Açılış/Kapanış",
+      "farkDenge": "Fark Denge",
+      "nobetSuresi": "Nobet Suresi",
       "notlar": "Notlar",
+      "acilisKapanis": "Acilis Kapanis",
       "tarih": "Tarih",
       "user": "User"
     }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, ICrudSearchAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -7,6 +7,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { IStokGirisi, defaultValue } from 'app/shared/model/stok-girisi.model';
 
 export const ACTION_TYPES = {
+  SEARCH_STOKGIRISI_BY_URUN: 'urun/SEARCH_STOKGIRISI_BY_URUN',
   FETCH_STOKGIRISI_LIST: 'stokGirisi/FETCH_STOKGIRISI_LIST',
   FETCH_STOKGIRISI: 'stokGirisi/FETCH_STOKGIRISI',
   CREATE_STOKGIRISI: 'stokGirisi/CREATE_STOKGIRISI',
@@ -31,6 +32,7 @@ export type StokGirisiState = Readonly<typeof initialState>;
 
 export default (state: StokGirisiState = initialState, action): StokGirisiState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN):
     case REQUEST(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
     case REQUEST(ACTION_TYPES.FETCH_STOKGIRISI):
       return {
@@ -48,6 +50,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
         updateSuccess: false,
         updating: true,
       };
+    case FAILURE(ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN):
     case FAILURE(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_STOKGIRISI):
     case FAILURE(ACTION_TYPES.CREATE_STOKGIRISI):
@@ -60,6 +63,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
         updateSuccess: false,
         errorMessage: action.payload,
       };
+    case SUCCESS(ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN):
     case SUCCESS(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
       return {
         ...state,
@@ -98,8 +102,14 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
 };
 
 const apiUrl = 'api/stok-girisis';
+const apiSearchUrl = 'api/searchStokGirisiByUrun';
 
 // Actions
+
+export const searchStokGirisiByUrun: ICrudSearchAction<IStokGirisi> = (query, page, size, sort) => ({
+  type: ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN,
+  payload: axios.get<IStokGirisi>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
+});
 
 export const getEntities: ICrudGetAllAction<IStokGirisi> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
@@ -122,7 +132,6 @@ export const createEntity: ICrudPutAction<IStokGirisi> = entity => async dispatc
     type: ACTION_TYPES.CREATE_STOKGIRISI,
     payload: axios.post(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
   return result;
 };
 

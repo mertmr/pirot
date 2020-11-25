@@ -1,13 +1,16 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.koop.app.domain.enumeration.AcilisKapanis;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import javax.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.koop.app.domain.enumeration.AcilisKapanis;
 
 /**
  * A NobetHareketleri.
@@ -16,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "nobet_hareketleri")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class NobetHareketleri implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -31,6 +35,9 @@ public class NobetHareketleri implements Serializable {
 
     @Column(name = "fark", precision = 21, scale = 2)
     private BigDecimal fark;
+
+    @Column(name = "fark_denge", precision = 21, scale = 2)
+    private BigDecimal farkDenge;
 
     @Column(name = "nobet_suresi", precision = 21, scale = 2)
     private BigDecimal nobetSuresi;
@@ -97,6 +104,19 @@ public class NobetHareketleri implements Serializable {
         this.fark = fark;
     }
 
+    public BigDecimal getFarkDenge() {
+        return farkDenge;
+    }
+
+    public NobetHareketleri farkDenge(BigDecimal farkDenge) {
+        this.farkDenge = farkDenge;
+        return this;
+    }
+
+    public void setFarkDenge(BigDecimal farkDenge) {
+        this.farkDenge = farkDenge;
+    }
+
     public BigDecimal getNobetSuresi() {
         return nobetSuresi;
     }
@@ -161,7 +181,6 @@ public class NobetHareketleri implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -188,6 +207,7 @@ public class NobetHareketleri implements Serializable {
             ", kasa=" + getKasa() +
             ", pirot=" + getPirot() +
             ", fark=" + getFark() +
+            ", farkDenge=" + getFarkDenge() +
             ", nobetSuresi=" + getNobetSuresi() +
             ", notlar='" + getNotlar() + "'" +
             ", acilisKapanis='" + getAcilisKapanis() + "'" +

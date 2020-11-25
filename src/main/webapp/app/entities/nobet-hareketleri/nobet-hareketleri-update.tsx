@@ -21,6 +21,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
   const [kasa, setKasa] = useState(0);
   const [fark, setFark] = useState(0);
+  const [farkDenge, setFarkDenge] = useState(0);
   const [money200, setMoney200] = useState(0);
   const [money100, setMoney100] = useState(0);
   const [money50, setMoney50] = useState(0);
@@ -103,6 +104,14 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   useEffect(() => {
     setKasa(props.nobetHareketleriEntity.kasa);
   }, [props.nobetHareketleriEntity.kasa]);
+
+  useEffect(() => {
+    setFarkDenge(props.nobetHareketleriEntity.farkDenge);
+  }, [props.nobetHareketleriEntity.farkDenge]);
+
+  useEffect(() => {
+    setFark(fixRounding(kasa - dashboardReports.kasadaNeVar, 2) + Number(farkDenge));
+  }, [farkDenge]);
 
   useEffect(() => {
     props.getDashboardReports();
@@ -212,33 +221,37 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 <Label id="kasaLabel" for="nobet-hareketleri-kasa">
                   <Translate contentKey="koopApp.nobetHareketleri.kasa">Kasa</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-kasa" type="text" name="kasa" on value={kasa} onChange={e => setKasa(e.target.value)} />
+                <AvField id="nobet-hareketleri-kasa" type="number" name="kasa" on value={kasa} onChange={e => setKasa(e.target.value)} />
               </AvGroup>
               <AvGroup>
                 <Label id="pirotLabel" for="nobet-hareketleri-pirot">
                   <Translate contentKey="koopApp.nobetHareketleri.pirot">Pirot</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-pirot" type="text" name="pirot" value={dashboardReports.kasadaNeVar} />
+                <AvField id="nobet-hareketleri-pirot" type="number" name="pirot" value={dashboardReports.kasadaNeVar} />
               </AvGroup>
               <AvGroup>
                 <Label id="farkLabel" for="nobet-hareketleri-fark">
                   <Translate contentKey="koopApp.nobetHareketleri.fark">Fark</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-fark" type="text" name="fark" disabled value={fark} />
+                <AvField id="nobet-hareketleri-fark" type="number" name="fark" disabled value={fark} />
+              </AvGroup>
+              <AvGroup>
+                <Label id="farkDengeLabel" for="nobet-hareketleri-farkDenge">
+                  <Translate contentKey="koopApp.nobetHareketleri.farkDenge">Fark Denge</Translate>
+                </Label>
+                <AvField id="nobet-hareketleri-farkDenge" type="number" name="farkDenge" on value={farkDenge}  onChange={e => setFarkDenge(e.target.value)} />
               </AvGroup>
               <AvGroup>
                 <Label id="nobetSuresiLabel" for="nobet-hareketleri-nobetSuresi">
                   <Translate contentKey="koopApp.nobetHareketleri.nobetSuresi">Nobet Suresi</Translate>
                 </Label>
-                <AvField
-                  id="nobet-hareketleri-nobetSuresi"
-                  type="number"
-                  name="nobetSuresi"
-                  validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') },
-                    number: { value: true, errorMessage: translate('entity.validation.number') },
-                  }}
-                />
+                <AvField id="nobet-hareketleri-nobetSuresi" type="text" name="nobetSuresi" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="notlarLabel" for="nobet-hareketleri-notlar">
+                  <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate>
+                </Label>
+                <AvField id="nobet-hareketleri-notlar" type="text" name="notlar" />
               </AvGroup>
               <AvGroup>
                 <Label id="acilisKapanis" for="nobet-hareketleri-acilisKapanis">

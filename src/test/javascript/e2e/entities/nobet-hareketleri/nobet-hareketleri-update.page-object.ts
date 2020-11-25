@@ -10,6 +10,7 @@ export default class NobetHareketleriUpdatePage {
   kasaInput: ElementFinder = element(by.css('input#nobet-hareketleri-kasa'));
   pirotInput: ElementFinder = element(by.css('input#nobet-hareketleri-pirot'));
   farkInput: ElementFinder = element(by.css('input#nobet-hareketleri-fark'));
+  farkDengeInput: ElementFinder = element(by.css('input#nobet-hareketleri-farkDenge'));
   nobetSuresiInput: ElementFinder = element(by.css('input#nobet-hareketleri-nobetSuresi'));
   notlarInput: ElementFinder = element(by.css('input#nobet-hareketleri-notlar'));
   acilisKapanisSelect: ElementFinder = element(by.css('select#nobet-hareketleri-acilisKapanis'));
@@ -42,6 +43,14 @@ export default class NobetHareketleriUpdatePage {
 
   async getFarkInput() {
     return this.farkInput.getAttribute('value');
+  }
+
+  async setFarkDengeInput(farkDenge) {
+    await this.farkDengeInput.sendKeys(farkDenge);
+  }
+
+  async getFarkDengeInput() {
+    return this.farkDengeInput.getAttribute('value');
   }
 
   async setNobetSuresiInput(nobetSuresi) {
@@ -117,6 +126,9 @@ export default class NobetHareketleriUpdatePage {
     await waitUntilDisplayed(this.saveButton);
     await this.setFarkInput('5');
     expect(await this.getFarkInput()).to.eq('5');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setFarkDengeInput('5');
+    expect(await this.getFarkDengeInput()).to.eq('5');
     await waitUntilDisplayed(this.saveButton);
     await this.setNobetSuresiInput('5');
     expect(await this.getNobetSuresiInput()).to.eq('5');

@@ -226,13 +226,6 @@ describe('Entities reducer tests', () => {
           type: SUCCESS(ACTION_TYPES.CREATE_STOKGIRISI),
           payload: resolvedObject,
         },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_STOKGIRISI_LIST),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_STOKGIRISI_LIST),
-          payload: resolvedObject,
-        },
       ];
       await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });

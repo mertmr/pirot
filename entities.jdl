@@ -114,6 +114,7 @@ entity NobetHareketleri {
     kasa BigDecimal
     pirot BigDecimal
     fark BigDecimal
+    farkDenge BigDecimal
     nobetSuresi BigDecimal
     notlar String
     acilisKapanis AcilisKapanis

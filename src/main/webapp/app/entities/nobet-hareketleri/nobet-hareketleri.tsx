@@ -19,9 +19,6 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
   const [paginationState, setPaginationState] = useState(
     overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
   );
-  const [displayBasic2, setDisplayBasic2] = useState(false);
-  const [displayPosition, setDisplayPosition] = useState(false);
-  const [position, setPosition] = useState('center');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -39,21 +36,6 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
-  useEffect(() => {
-    const params = new URLSearchParams(props.location.search);
-    const page = params.get('page');
-    const sort = params.get('sort');
-    if (page && sort) {
-      const sortSplit = sort.split(',');
-      setPaginationState({
-        ...paginationState,
-        activePage: +page,
-        sort: sortSplit[0],
-        order: sortSplit[1],
-      });
-    }
-  }, [props.location.search]);
-
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
@@ -67,14 +49,6 @@ export const NobetHareketleri = (props: INobetHareketleriProps) => {
       ...paginationState,
       activePage: currentPage,
     });
-
-  const onClick = (stateMethod: any) => {
-    stateMethod(true);
-
-    if (position) {
-      setPosition(position);
-    }
-  };
 
   const { nobetHareketleriList, match, loading, totalItems } = props;
   return (
