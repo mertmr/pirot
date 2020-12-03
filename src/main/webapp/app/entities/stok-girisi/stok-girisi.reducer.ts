@@ -5,8 +5,10 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IStokGirisi, defaultValue } from 'app/shared/model/stok-girisi.model';
+import { IStokGirisiUrun } from 'app/shared/model/stok-girisi-urun.model';
 
 export const ACTION_TYPES = {
+  SEARCH_ONLY_STOKGIRISI_BY_URUN: 'urun/SEARCH_ONLY_STOKGIRISI_BY_URUN',
   SEARCH_STOKGIRISI_BY_URUN: 'urun/SEARCH_STOKGIRISI_BY_URUN',
   FETCH_STOKGIRISI_LIST: 'stokGirisi/FETCH_STOKGIRISI_LIST',
   FETCH_STOKGIRISI: 'stokGirisi/FETCH_STOKGIRISI',
@@ -19,7 +21,8 @@ export const ACTION_TYPES = {
 const initialState = {
   loading: false,
   errorMessage: null,
-  entities: [] as ReadonlyArray<IStokGirisi>,
+  entities: [] as Array<IStokGirisi>,
+  stokGirisiByurunList: [] as Array<IStokGirisiUrun>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -32,6 +35,7 @@ export type StokGirisiState = Readonly<typeof initialState>;
 
 export default (state: StokGirisiState = initialState, action): StokGirisiState => {
   switch (action.type) {
+    case REQUEST(ACTION_TYPES.SEARCH_ONLY_STOKGIRISI_BY_URUN):
     case REQUEST(ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN):
     case REQUEST(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
     case REQUEST(ACTION_TYPES.FETCH_STOKGIRISI):
@@ -50,6 +54,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
         updateSuccess: false,
         updating: true,
       };
+    case FAILURE(ACTION_TYPES.SEARCH_ONLY_STOKGIRISI_BY_URUN):
     case FAILURE(ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN):
     case FAILURE(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_STOKGIRISI):
@@ -69,6 +74,13 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
         ...state,
         loading: false,
         entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
+      };
+    case SUCCESS(ACTION_TYPES.SEARCH_ONLY_STOKGIRISI_BY_URUN):
+      return {
+        ...state,
+        loading: false,
+        stokGirisiByurunList: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_STOKGIRISI):
@@ -103,8 +115,14 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
 
 const apiUrl = 'api/stok-girisis';
 const apiSearchUrl = 'api/searchStokGirisiByUrun';
+const apiFindOnlyStokGirisiByUrunUrl = 'api/findOnlyStokGirisiByUrun';
 
 // Actions
+
+export const findOnlyStokGirisiByUrun: ICrudSearchAction<IStokGirisiUrun> = id => ({
+  type: ACTION_TYPES.SEARCH_ONLY_STOKGIRISI_BY_URUN,
+  payload: axios.get<IStokGirisiUrun>(`${apiFindOnlyStokGirisiByUrunUrl}?id=${id}`),
+});
 
 export const searchStokGirisiByUrun: ICrudSearchAction<IStokGirisi> = (query, page, size, sort) => ({
   type: ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN,

@@ -3,16 +3,22 @@ package com.koop.app.service;
 import com.koop.app.domain.*;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.dto.Ciro;
+import com.koop.app.dto.SatisStokRaporu;
+import com.koop.app.dto.UrunTukenmeDTO;
 import com.koop.app.dto.fatura.*;
 import com.koop.app.repository.*;
+import com.koop.app.service.error.InsufficientDataException;
+import org.javers.core.Javers;
+import org.javers.core.diff.Change;
+import org.javers.core.diff.changetype.ValueChange;
+import org.javers.repository.jql.QueryBuilder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +39,8 @@ public class ReportService {
 
     private final NobetHareketleriRepository nobetHareketleriRepository;
 
+    private final Javers javers;
+
     public ReportService(
         SatisRepository satisRepository,
         SatisStokHareketleriRepository satisStokHareketleriRepository,
@@ -40,8 +48,8 @@ public class ReportService {
         VirmanRepository virmanRepository,
         GiderRepository giderRepository,
         DashboardReportService dashboardReportService,
-        NobetHareketleriRepository nobetHareketleriRepository
-    ) {
+        NobetHareketleriRepository nobetHareketleriRepository,
+        Javers javers) {
         this.satisRepository = satisRepository;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.kdvKategorisiRepository = kdvKategorisiRepository;
@@ -49,6 +57,7 @@ public class ReportService {
         this.giderRepository = giderRepository;
         this.dashboardReportService = dashboardReportService;
         this.nobetHareketleriRepository = nobetHareketleriRepository;
+        this.javers = javers;
     }
 
     public List<Ciro> getCiroReport(LocalDate from, LocalDate to) {
@@ -203,5 +212,63 @@ public class ReportService {
         gunSonuRaporuDto.setNobetHareketleri(lastNobetHareketiByTarih);
         gunSonuRaporuDto.setAcilisHareketi(acilisHareketi);
         return gunSonuRaporuDto;
+    }
+
+    public UrunTukenmeDTO urunTukenmeHizi(Long urunId, String stokDate) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime localDate = LocalDateTime.parse(stokDate, formatter);
+            LocalDateTime from = localDate.minusSeconds(5);
+            LocalDateTime to = localDate.plusMonths(1);
+
+            QueryBuilder jqlQuery = QueryBuilder.byInstanceId(urunId, Urun.class).withChangedProperty("stok").limit(1000).from(from).to(to);
+            List<Change> changes = javers.findChanges(jqlQuery.build());
+            ValueChange firstChange = (ValueChange) changes.get(changes.size() - 1);
+            BigDecimal ilkStok = (BigDecimal) firstChange.getRight();
+            BigDecimal limitStok = ilkStok.multiply(BigDecimal.valueOf(0.05));
+            ValueChange underLimit = null;
+            UrunTukenmeDTO urunTukenmeDTO = new UrunTukenmeDTO();
+            for (int i = changes.size() - 2; i >= 0; i--) {
+                Change change = changes.get(i);
+                ValueChange stokDegisikligi = (ValueChange) change;
+                BigDecimal stokDegisikligiMiktari = (BigDecimal) stokDegisikligi.getRight();
+                BigDecimal oncekiHali = (BigDecimal) stokDegisikligi.getLeft();
+
+                if (stokDegisikligiMiktari.compareTo(oncekiHali) > 0) {
+                    underLimit = (ValueChange) changes.get(i + 1);
+                    break;
+                }
+
+                if (stokDegisikligiMiktari.compareTo(limitStok) <= 0) {
+                    underLimit = stokDegisikligi;
+                    break;
+                }
+            }
+
+            if (underLimit == null) {
+                underLimit = (ValueChange) changes.get(0);
+            }
+            LocalDateTime stokBittiTarihi = underLimit.getCommitMetadata().get().getCommitDate();
+            ZonedDateTime stokBittiTarihiZoned = stokBittiTarihi.atZone(ZoneId.systemDefault());
+            LocalDateTime ilkStokGirisTarihi = firstChange.getCommitMetadata().get().getCommitDate();
+            ZonedDateTime ilkStokGirisTarihiZoned = ilkStokGirisTarihi.atZone(ZoneId.systemDefault());
+            long durationInDays = Duration.between(ilkStokGirisTarihi, stokBittiTarihi).toDays();
+            urunTukenmeDTO.setRaporVeriOlcekSuresi(BigDecimal.valueOf(durationInDays));
+
+            List<SatisStokHareketleri> satisRaporlariByUrunAndTarih = satisStokHareketleriRepository
+                .getSatisRaporlariByUrunAndTarih(ilkStokGirisTarihiZoned, stokBittiTarihiZoned, urunId);
+            urunTukenmeDTO.setStokGunluguList(satisRaporlariByUrunAndTarih);
+            long satisRaporlariToplamiByUrunAndTarih = satisStokHareketleriRepository
+                .getSatisRaporlariToplamiByUrunAndTarih(ilkStokGirisTarihiZoned, stokBittiTarihiZoned, urunId);
+            BigDecimal urununAylikTukenmeMiktari = BigDecimal.valueOf(satisRaporlariToplamiByUrunAndTarih)
+                .divide(BigDecimal.valueOf(durationInDays), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(30));
+            urunTukenmeDTO.setAylikTukenmeHizi(urununAylikTukenmeMiktari);
+            urunTukenmeDTO.setHaftalikTukenmeHizi(urununAylikTukenmeMiktari.divide(BigDecimal.valueOf(4), 2, RoundingMode.HALF_UP));
+
+            return urunTukenmeDTO;
+        } catch (Exception e) {
+            throw new InsufficientDataException("Yeterli veri bulunamadi");
+        }
+
     }
 }

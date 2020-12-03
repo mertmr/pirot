@@ -5,6 +5,7 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import Ciro from './ciro';
 import AylikSatislar from './aylik-satis';
 import OrtakFaturalar from './ortak-faturalar';
+import Tukenme from './tukenme';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -14,6 +15,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/ciro`} component={Ciro}/>
       <ErrorBoundaryRoute path={`${match.url}/aylikSatislar`} component={AylikSatislar} />
       <ErrorBoundaryRoute path={`${match.url}/ortakFaturalar`} component={OrtakFaturalar} />
+      <ErrorBoundaryRoute path={`${match.url}/tukenme`} component={Tukenme} />
     </Switch>
   </div>
 );

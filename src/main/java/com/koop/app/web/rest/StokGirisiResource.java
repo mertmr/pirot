@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.StokGirisi;
 import com.koop.app.domain.Urun;
 import com.koop.app.domain.User;
+import com.koop.app.dto.UrunStokGirisiDTO;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.service.StokGirisiService;
 import com.koop.app.service.UserService;
@@ -167,5 +168,15 @@ public class StokGirisiResource {
             page
         );
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * Sadece o urun icin yapilan stok girisi hareketlerini getirir
+     */
+    @GetMapping("/findOnlyStokGirisiByUrun")
+    public ResponseEntity<List<UrunStokGirisiDTO>> findOnlyStokGirisiByUrun(@RequestParam Long id) {
+        log.debug("REST request to findOnlyStokGirisiByUrun for query: {}", id);
+        List<UrunStokGirisiDTO> stokGirisiList = stokGirisiService.findOnlyStokGirisiByUrun(id);
+        return ResponseEntity.ok().body(stokGirisiList);
     }
 }

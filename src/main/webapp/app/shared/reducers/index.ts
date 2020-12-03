@@ -73,6 +73,7 @@ import dashboardReportsState, { DashboardReportsState } from './dashboard-report
 import ciroState, { CiroState } from 'app/reports/ciro/ciro.reducer';
 import aylikSatislarState, { AylikSatislarState } from 'app/reports/aylik-satis/aylik-satislar.reducer';
 import ortakFaturalarState, { OrtakFaturaState } from 'app/reports/ortak-faturalar/ortak-faturalar.reducer';
+import tukenmeState, { TukenmeState } from 'app/reports/tukenme/tukenme.reducer';
 
 export interface IRootState {
   readonly authentication: AuthenticationState;
@@ -103,6 +104,7 @@ export interface IRootState {
   readonly loadingBar: any;
   readonly dashboardReportsState: DashboardReportsState;
   readonly ciroState: CiroState;
+  readonly tukenmeState: TukenmeState;
   readonly aylikSatislarState: AylikSatislarState;
   readonly ortakFaturalarState: OrtakFaturaState;
 }
@@ -135,6 +137,7 @@ const rootReducer = combineReducers<IRootState>({
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   dashboardReportsState,
   ciroState,
+  tukenmeState,
   aylikSatislarState,
   ortakFaturalarState,
   loadingBar,
