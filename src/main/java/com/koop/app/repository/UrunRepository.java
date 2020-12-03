@@ -32,7 +32,11 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     @Query("select urun from Urun urun where urun.active=true order by urun.urunAdi")
     Page<Urun> findAll(@NonNull Pageable var1);
 
-    @Query("select urun from Urun urun where urun.satista=true order by urun.urunAdi")
+    @Query("select urun from Urun urun " +
+        "left join fetch urun.kdvKategorisi kdv " +
+        "left join fetch urun.urunFiyatHesap ufh " +
+        "left join fetch urun.urunSorumlusu us " +
+        "where urun.satista=true order by urun.urunAdi")
     List<Urun> getAllUrunForStokGirisi();
 
     @Query("select urun from Urun urun")

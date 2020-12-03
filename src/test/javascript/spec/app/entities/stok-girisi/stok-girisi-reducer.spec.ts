@@ -16,6 +16,7 @@ import reducer, {
 } from 'app/entities/stok-girisi/stok-girisi.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IStokGirisi, defaultValue } from 'app/shared/model/stok-girisi.model';
+import { IStokGirisiUrun } from 'app/shared/model/stok-girisi-urun.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -29,7 +30,8 @@ describe('Entities reducer tests', () => {
   const initialState = {
     loading: false,
     errorMessage: null,
-    entities: [] as ReadonlyArray<IStokGirisi>,
+    entities: [] as Array<IStokGirisi>,
+    stokGirisiByurunList: [] as Array<IStokGirisiUrun>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,
