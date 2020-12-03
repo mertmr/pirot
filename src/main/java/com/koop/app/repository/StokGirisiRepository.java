@@ -1,7 +1,6 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.StokGirisi;
-import com.koop.app.dto.UrunStokGirisiDTO;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,11 +29,17 @@ public interface StokGirisiRepository extends JpaRepository<StokGirisi, Long> {
 
     @Query(
         "select stokGirisi from StokGirisi stokGirisi " +
-        " left join fetch stokGirisi.user " +
+            " left join fetch stokGirisi.user " +
             " where stokGirisi.urun.id=:id " +
             " and stokGirisi.stokHareketiTipi='STOK_GIRISI' " +
             " and stokGirisi.tarih>'2020-08-01 00:00:00.000000' " +
             " order by stokGirisi.id desc "
     )
     List<StokGirisi> findOnlyStokGirisiByUrun(@Param("id") Long id);
+
+    @Query(
+        "select stokGirisi from StokGirisi stokGirisi " +
+            " where lower(stokGirisi.urun.urunAdi) like lower(CONCAT('%',:query,'%'))"
+    )
+    Page<StokGirisi> findByUrunAdi(@Param("query") String query, Pageable pageable);
 }

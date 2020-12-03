@@ -7,14 +7,14 @@ import com.koop.app.domain.enumeration.StokHareketiTipi;
 import com.koop.app.dto.UrunStokGirisiDTO;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.repository.UrunRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 @Service
 public class StokGirisiService {
