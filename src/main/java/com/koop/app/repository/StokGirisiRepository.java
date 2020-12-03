@@ -36,10 +36,4 @@ public interface StokGirisiRepository extends JpaRepository<StokGirisi, Long> {
             " order by stokGirisi.id desc "
     )
     List<StokGirisi> findOnlyStokGirisiByUrun(@Param("id") Long id);
-
-    @Query(
-        "select stokGirisi from StokGirisi stokGirisi " +
-            " where lower(stokGirisi.urun.urunAdi) like lower(CONCAT('%',:query,'%'))"
-    )
-    Page<StokGirisi> findByUrunAdi(@Param("query") String query, Pageable pageable);
 }
