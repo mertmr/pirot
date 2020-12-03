@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import { Button, Input, Row, Table } from 'reactstrap';
+import {RouteComponentProps} from 'react-router-dom';
+import {Table} from 'reactstrap';
 import {AvForm, AvGroup} from 'availity-reactstrap-validation';
 import {IRootState} from 'app/shared/reducers';
 import {getTukenmeHizi} from './tukenme.reducer';
@@ -9,17 +9,17 @@ import {Dropdown} from "primereact/dropdown";
 import {getAllUrunForStokGirisi} from "app/entities/urun/urun.reducer";
 import {findOnlyStokGirisiByUrun} from "app/entities/stok-girisi/stok-girisi.reducer";
 import {defaultValue} from "app/shared/model/urun.model";
-import {convertDateTimeFromServer, convertDateTimeToServer, convertDateToString} from "app/shared/util/date-utils";
-import {APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT, APP_LOCAL_DATETIME_FORMAT} from "app/config/constants";
-import {TextFormat, Translate} from "react-jhipster";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {convertDateToString} from "app/shared/util/date-utils";
+import {APP_DATE_FORMAT} from "app/config/constants";
+import {TextFormat} from "react-jhipster";
+import {defaultValueStokGirisiUrun} from "app/shared/model/stok-girisi-urun.model";
 
 export interface ITukenmePageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {
 }
 
 export const TukenmePage = (props: ITukenmePageProps) => {
 
-  const [stokGirisi, setStokGirisi] = useState('');
+  const [stokGirisi, setStokGirisi] = useState(defaultValueStokGirisiUrun);
   const [urun, setUrun] = useState(defaultValue);
 
   useEffect(() => {
@@ -74,25 +74,31 @@ export const TukenmePage = (props: ITukenmePageProps) => {
           <span>Haftalık Tükenme Hızı: {tukenme.haftalikTukenmeHizi}</span>
         </AvGroup>
         <AvGroup>
+          <span>Bu Periyotta Girilen Fire: {tukenme.urunFire} {urun.birim}</span>
+        </AvGroup>
+        <AvGroup>
+          <span>Firenin Girilen Stoğa Oranı: %{(tukenme.urunFire / stokGirisi.miktar * 100).toFixed(2)}</span>
+        </AvGroup>
+        <AvGroup>
           <span>Rapor Veri Ölçek Süresi: {tukenme.raporVeriOlcekSuresi} gün</span>
         </AvGroup>
         {tukenme.stokGunluguList && tukenme.stokGunluguList.length > 0 ? (
-        <Table striped responsive>
-          <thead>
-          <tr>
-            <th>Satış Tarihi</th>
-            <th>Satış Miktarı</th>
-          </tr>
-          </thead>
-          <tbody>
-          {tukenme.stokGunluguList.map((stokGunlugu, i) => (
-            <tr key={`stokGunlugu-${i}`}>
-              <td><TextFormat type="date" value={stokGunlugu.satis.tarih} format={APP_DATE_FORMAT} /></td>
-              <td>{stokGunlugu.miktar}</td>
+          <Table striped responsive>
+            <thead>
+            <tr>
+              <th>Satış Tarihi</th>
+              <th>Satış Miktarı</th>
             </tr>
-          ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+            {tukenme.stokGunluguList.map((stokGunlugu, i) => (
+              <tr key={`stokGunlugu-${i}`}>
+                <td><TextFormat type="date" value={stokGunlugu.satis.tarih} format={APP_DATE_FORMAT}/></td>
+                <td>{stokGunlugu.miktar}</td>
+              </tr>
+            ))}
+            </tbody>
+          </Table>
         ) : (
           <div className="alert alert-warning"></div>
         )}

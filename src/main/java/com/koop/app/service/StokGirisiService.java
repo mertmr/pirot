@@ -78,6 +78,7 @@ public class StokGirisiService {
         for (StokGirisi stokGirisi : onlyStokGirisiByUrun) {
             UrunStokGirisiDTO urunStokGirisiDTO = new UrunStokGirisiDTO();
             urunStokGirisiDTO.setStokGirisiId(stokGirisi.getId());
+            urunStokGirisiDTO.setMiktar(BigDecimal.valueOf(stokGirisi.getMiktar()));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm");
             urunStokGirisiDTO.setStokGirisAciklamasi("Miktar: " + stokGirisi.getMiktar() +
                 " - Tarihi: " + stokGirisi.getTarih().format(formatter));

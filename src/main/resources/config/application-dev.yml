@@ -24,6 +24,7 @@ spring:
     active: dev
     include:
       - swagger
+      - no-liquibase
       # Uncomment to activate TLS for the dev profile
       #- tls
   devtools:
@@ -37,9 +38,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/koop;DB_CLOSE_DELAY=-1
+    url: jdbc:postgresql://172.104.151.49:5435/koop
     username: koop
-    password:
+    password: 4796mert
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -47,17 +48,17 @@ spring:
     console:
       enabled: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: true
     properties:
       hibernate.id.new_generator_mappings: true
       hibernate.connection.provider_disables_autocommit: true
       hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
-      hibernate.generate_statistics: false
-  liquibase:
-    # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev, faker
+      hibernate.generate_statistics: true
+  #  liquibase:
+  #    # Remove 'faker' if you do not want the sample data to be loaded automatically
+  #    contexts: dev, faker
   mail:
     host: localhost
     port: 25

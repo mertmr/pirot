@@ -1,10 +1,13 @@
 package com.koop.app.dto;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 public class UrunStokGirisiDTO {
 
     private Long stokGirisiId;
+
+    private BigDecimal miktar;
 
     private String stokGirisAciklamasi;
 
@@ -32,5 +35,13 @@ public class UrunStokGirisiDTO {
 
     public void setStokGirisiTarihi(ZonedDateTime stokGirisiTarihi) {
         this.stokGirisiTarihi = stokGirisiTarihi;
+    }
+
+    public BigDecimal getMiktar() {
+        return miktar;
+    }
+
+    public void setMiktar(BigDecimal miktar) {
+        this.miktar = miktar;
     }
 }
