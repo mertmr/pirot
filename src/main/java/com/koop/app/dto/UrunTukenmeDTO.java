@@ -1,6 +1,7 @@
 package com.koop.app.dto;
 
 import com.koop.app.domain.SatisStokHareketleri;
+import com.koop.app.domain.StokGirisi;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,6 +15,8 @@ public class UrunTukenmeDTO {
     private BigDecimal raporVeriOlcekSuresi;
 
     private List<SatisStokHareketleri> stokGunluguList;
+
+    private BigDecimal urunFire;
 
     public BigDecimal getAylikTukenmeHizi() {
         return aylikTukenmeHizi;
@@ -45,5 +48,13 @@ public class UrunTukenmeDTO {
 
     public void setRaporVeriOlcekSuresi(BigDecimal raporVeriOlcekSuresi) {
         this.raporVeriOlcekSuresi = raporVeriOlcekSuresi;
+    }
+
+    public void setUrunFire(BigDecimal urunFire) {
+        this.urunFire = urunFire;
+    }
+
+    public BigDecimal getUrunFire() {
+        return urunFire;
     }
 }

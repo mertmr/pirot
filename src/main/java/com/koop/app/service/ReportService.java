@@ -3,7 +3,6 @@ package com.koop.app.service;
 import com.koop.app.domain.*;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.dto.Ciro;
-import com.koop.app.dto.SatisStokRaporu;
 import com.koop.app.dto.UrunTukenmeDTO;
 import com.koop.app.dto.fatura.*;
 import com.koop.app.repository.*;
@@ -39,6 +38,8 @@ public class ReportService {
 
     private final NobetHareketleriRepository nobetHareketleriRepository;
 
+    private final StokGirisiRepository stokGirisiRepository;
+
     private final Javers javers;
 
     public ReportService(
@@ -49,7 +50,7 @@ public class ReportService {
         GiderRepository giderRepository,
         DashboardReportService dashboardReportService,
         NobetHareketleriRepository nobetHareketleriRepository,
-        Javers javers) {
+        StokGirisiRepository stokGirisiRepository, Javers javers) {
         this.satisRepository = satisRepository;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.kdvKategorisiRepository = kdvKategorisiRepository;
@@ -57,6 +58,7 @@ public class ReportService {
         this.giderRepository = giderRepository;
         this.dashboardReportService = dashboardReportService;
         this.nobetHareketleriRepository = nobetHareketleriRepository;
+        this.stokGirisiRepository = stokGirisiRepository;
         this.javers = javers;
     }
 
@@ -265,9 +267,12 @@ public class ReportService {
             urunTukenmeDTO.setAylikTukenmeHizi(urununAylikTukenmeMiktari);
             urunTukenmeDTO.setHaftalikTukenmeHizi(urununAylikTukenmeMiktari.divide(BigDecimal.valueOf(4), 2, RoundingMode.HALF_UP));
 
+            BigDecimal urunFire = stokGirisiRepository.getUrunFire(ilkStokGirisTarihiZoned, stokBittiTarihiZoned, urunId);
+            urunTukenmeDTO.setUrunFire(urunFire);
+
             return urunTukenmeDTO;
         } catch (Exception e) {
-            throw new InsufficientDataException("Yeterli veri bulunamadi");
+            throw new InsufficientDataException("Yeterli veri bulunamadi", e);
         }
 
     }

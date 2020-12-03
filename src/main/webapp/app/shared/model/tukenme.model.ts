@@ -4,6 +4,7 @@ export interface ITukenme {
   aylikTukenmeHizi?: number;
   haftalikTukenmeHizi?: number;
   raporVeriOlcekSuresi?: number;
+  urunFire?: number;
   stokGunluguList?: ISatisStokHareketleri[];
 }
 
