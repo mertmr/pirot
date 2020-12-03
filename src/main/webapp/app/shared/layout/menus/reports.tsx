@@ -22,5 +22,8 @@ export const ReportsMenu = (props: IReportsProps) => (
         Ortaklara Kesilen Faturalar
       </MenuItem>
     )}
+    <MenuItem icon="asterisk" to="/reports/tukenme" onClick={props.onClick}>
+      Ürün Tükenme Hızı
+    </MenuItem>
   </NavDropdown>
 );

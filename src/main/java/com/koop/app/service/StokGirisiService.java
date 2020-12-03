@@ -4,13 +4,17 @@ import com.koop.app.domain.StokGirisi;
 import com.koop.app.domain.Urun;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.domain.enumeration.StokHareketiTipi;
+import com.koop.app.dto.UrunStokGirisiDTO;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.repository.UrunRepository;
-import java.math.BigDecimal;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StokGirisiService {
@@ -66,5 +70,21 @@ public class StokGirisiService {
 
     public Page<StokGirisi> search(String query, Pageable pageable) {
         return stokGirisiRepository.findByUrunAdi(query, pageable);
+    }
+
+    public List<UrunStokGirisiDTO> findOnlyStokGirisiByUrun(Long id) {
+        List<StokGirisi> onlyStokGirisiByUrun = stokGirisiRepository.findOnlyStokGirisiByUrun(id);
+        List<UrunStokGirisiDTO> urunStokGirisiDTOS = new ArrayList<>();
+        for (StokGirisi stokGirisi : onlyStokGirisiByUrun) {
+            UrunStokGirisiDTO urunStokGirisiDTO = new UrunStokGirisiDTO();
+            urunStokGirisiDTO.setStokGirisiId(stokGirisi.getId());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm");
+            urunStokGirisiDTO.setStokGirisAciklamasi("Miktar: " + stokGirisi.getMiktar() +
+                " - Tarihi: " + stokGirisi.getTarih().format(formatter));
+            urunStokGirisiDTO.setStokGirisiTarihi(stokGirisi.getTarih());
+            urunStokGirisiDTOS.add(urunStokGirisiDTO);
+        }
+//        urunStokGirisiDTOS.remove(0); //son stok girisi genelde tukenmemis oluyor, dolayisiyla rapor uretmek imkansiza yakin
+        return urunStokGirisiDTOS;
     }
 }

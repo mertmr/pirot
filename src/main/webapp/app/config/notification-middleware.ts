@@ -5,6 +5,9 @@ const addErrorAlert = (message, key?, data?) => {
   key = key ? key : message;
   toast.error(translate(key, data));
 };
+const addErrorAlertWithoutTranslation = message => {
+  toast.error(message);
+};
 export default () => next => action => {
   // If not a promise, continue on
   if (!isPromise(action.payload)) {
@@ -87,6 +90,9 @@ export default () => next => action => {
             }
             case 404:
               addErrorAlert('Not found', 'error.url.not.found');
+              break;
+            case 500:
+              addErrorAlertWithoutTranslation(data.detail);
               break;
 
             default:
