@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import com.koop.app.config.tenancy.TenantEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "satis_stok_hareketleri")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class SatisStokHareketleri implements Serializable {
+public class SatisStokHareketleri extends TenantEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity SatisStokHareketleri.
     -->
@@ -14,6 +14,9 @@
         <createTable tableName="satis_stok_hareketleri">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tenant_id" type="varchar(50)">
+                <constraints nullable="false" />
             </column>
             <column name="miktar" type="integer">
                 <constraints nullable="false" />

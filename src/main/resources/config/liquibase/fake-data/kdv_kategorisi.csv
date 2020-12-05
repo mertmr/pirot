@@ -1,3 +1,5 @@
-id;kategori_adi;kdv_orani
-1;Tüketim;8
-2;Temizlik;18
+id;kategori_adi;kdv_orani;tenant_id
+1;Tüketim;8;kadikoy
+2;Temizlik;18;kadikoy
+3;Tüketim-Besiktas;8;besiktas
+4;Temizlik-Besiktas;18;besiktas

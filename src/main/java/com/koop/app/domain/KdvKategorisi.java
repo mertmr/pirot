@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import com.koop.app.config.tenancy.TenantEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -13,7 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "kdv_kategorisi")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class KdvKategorisi implements Serializable {
+public class KdvKategorisi extends TenantEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

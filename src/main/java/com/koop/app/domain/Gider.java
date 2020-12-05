@@ -1,6 +1,7 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.koop.app.config.tenancy.TenantEntity;
 import com.koop.app.domain.enumeration.GiderTipi;
 import com.koop.app.domain.enumeration.OdemeAraci;
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "gider")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Gider implements Serializable {
+public class Gider extends TenantEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

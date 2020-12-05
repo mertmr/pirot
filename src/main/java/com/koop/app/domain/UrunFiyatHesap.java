@@ -2,6 +2,8 @@ package com.koop.app.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.koop.app.config.tenancy.TenantEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "urun_fiyat_hesap")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class UrunFiyatHesap implements Serializable {
+public class UrunFiyatHesap extends TenantEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

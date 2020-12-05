@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity KasaHareketleri.
     -->
@@ -17,6 +17,9 @@
             </column>
             <column name="kasa_miktar" type="decimal(21,2)">
                 <constraints nullable="true" />
+            </column>
+            <column name="tenant_id" type="varchar(50)">
+                <constraints nullable="false" />
             </column>
             <column name="hareket" type="varchar(255)">
                 <constraints nullable="true" />

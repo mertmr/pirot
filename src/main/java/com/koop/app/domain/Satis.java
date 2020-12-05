@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
+
+import com.koop.app.config.tenancy.TenantEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -20,7 +22,7 @@ import org.javers.core.metamodel.annotation.DiffIgnore;
 @Entity
 @Table(name = "satis")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Satis implements Serializable {
+public class Satis extends TenantEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
