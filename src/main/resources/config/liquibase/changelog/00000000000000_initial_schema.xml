@@ -19,6 +19,9 @@
             <column name="id" type="bigint" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="tenant_id" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
             <column name="login" type="varchar(50)">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_user_login"/>
             </column>
