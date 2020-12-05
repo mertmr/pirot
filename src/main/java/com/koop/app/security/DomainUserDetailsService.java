@@ -2,6 +2,8 @@ package com.koop.app.security;
 
 import com.koop.app.domain.User;
 import com.koop.app.repository.UserRepository;
+import com.koop.app.repository.tenancy.UserSystemWideAuthRepository;
+import com.koop.app.service.UserService;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,14 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
+    private final UserSystemWideAuthRepository userSystemWideAuthRepository;
+
+    private final UserService userService;
+
+    public DomainUserDetailsService(UserRepository userRepository, UserSystemWideAuthRepository userSystemWideAuthRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userSystemWideAuthRepository = userSystemWideAuthRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -36,7 +44,7 @@ public class DomainUserDetailsService implements UserDetailsService {
         log.debug("Authenticating {}", login);
 
         if (new EmailValidator().isValid(login, null)) {
-            return userRepository
+            return userSystemWideAuthRepository
                 .findOneWithAuthoritiesByEmailIgnoreCase(login)
                 .map(user -> createSpringSecurityUser(login, user))
                 .orElseThrow(
@@ -45,8 +53,7 @@ public class DomainUserDetailsService implements UserDetailsService {
         }
 
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        return userRepository
-            .findOneWithAuthoritiesByLogin(lowercaseLogin)
+        return userSystemWideAuthRepository.findOneWithAuthoritiesByLogin(lowercaseLogin)
             .map(user -> createSpringSecurityUser(lowercaseLogin, user))
             .orElseThrow(
                 () -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database")

@@ -9,19 +9,23 @@ import com.koop.app.security.AuthoritiesConstants;
 import com.koop.app.security.SecurityUtils;
 import com.koop.app.service.dto.UserDTO;
 import io.github.jhipster.security.RandomUtil;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -39,16 +43,19 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final JdbcTemplate jdbcTemplate;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
-    ) {
+        CacheManager cacheManager,
+        JdbcTemplate jdbcTemplate) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -352,4 +359,12 @@ public class UserService {
     public List<User> findAllUsersWithLogin() {
         return userRepository.findAllUsersWithLogin();
     }
+
+//    public Optional<User> findOneWithAuthoritiesByLogin(String lowercaseLogin) {
+//        String sql = "select * from koop_user where login=?";
+//        User user = jdbcTemplate.queryForObject(sql, new Object[]{lowercaseLogin},
+//            (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
+//        );
+//        return Optional.of(user);
+//    }
 }
