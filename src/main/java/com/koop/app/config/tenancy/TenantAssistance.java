@@ -1,9 +1,7 @@
 package com.koop.app.config.tenancy;
 
-import com.koop.app.web.rest.UserJWTController;
+import com.koop.app.security.CurrentUser;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Optional;
 
 public final class TenantAssistance {
 
@@ -11,10 +9,17 @@ public final class TenantAssistance {
     }
 
     public static String resolveCurrentTenantIdentifier() {
-        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-            .filter(authentication -> authentication instanceof UserJWTController.JWTToken)
-            .map(authentication -> (UserJWTController.JWTToken) authentication)
-            .map(UserJWTController.JWTToken::getIdToken)
-            .orElseThrow(() -> new UnknownTenantException("Tenant is empty"));
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CurrentUser) {
+            CurrentUser authentication = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (authentication != null) {
+                String name = authentication.getTenant();
+                if (name != null)
+                    return name;
+            }
+        } else {
+            return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        }
+
+        throw new UnknownTenantException("Tenant is empty");
     }
 }
