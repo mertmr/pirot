@@ -1,11 +1,11 @@
 id;tarih;tutar;notlar;gider_tipi;odeme_araci;tenant_id
-1;2020-01-03T03:49:22;70708;override monitor Shoes;SU;BANKA;kadikoy
-2;2020-01-03T08:36:17;79489;adapter impactful;TAKSI;BANKA;kadikoy
-3;2020-01-02T10:03:37;95296;Ergonomic Frozen Shoes Cape;VERGI;BANKA;kadikoy
-4;2020-01-02T20:55:43;67086;plum;ELEKTRIK;BANKA;besiktas
-5;2020-01-02T10:32:40;39791;application Proactive;KARGO;NAKIT;kadikoy
-6;2020-01-02T22:05:32;80475;Refined Metal Car;DIGER;BANKA;besiktas
-7;2020-01-03T02:03:00;77689;Sleek Fresh Chair;AIDAT;BANKA;kadikoy
-8;2020-01-03T05:02:40;78517;compressing Auto Loan Account salmon;AIDAT;BANKA;kadikoy
-9;2020-01-02T16:33:57;41181;invoice Product leading-edge;SU;NAKIT;kadikoy
-10;2020-01-02T12:51:15;47451;exploit;ELEKTRIK;NAKIT;kadikoy
+1;2020-01-03T03:49:22;70708;override monitor Shoes;SU;BANKA;1
+2;2020-01-03T08:36:17;79489;adapter impactful;TAKSI;BANKA;1
+3;2020-01-02T10:03:37;95296;Ergonomic Frozen Shoes Cape;VERGI;BANKA;1
+4;2020-01-02T20:55:43;67086;plum;ELEKTRIK;BANKA;2
+5;2020-01-02T10:32:40;39791;application Proactive;KARGO;NAKIT;1
+6;2020-01-02T22:05:32;80475;Refined Metal Car;DIGER;BANKA;2
+7;2020-01-03T02:03:00;77689;Sleek Fresh Chair;AIDAT;BANKA;1
+8;2020-01-03T05:02:40;78517;compressing Auto Loan Account salmon;AIDAT;BANKA;1
+9;2020-01-02T16:33:57;41181;invoice Product leading-edge;SU;NAKIT;1
+10;2020-01-02T12:51:15;47451;exploit;ELEKTRIK;NAKIT;1

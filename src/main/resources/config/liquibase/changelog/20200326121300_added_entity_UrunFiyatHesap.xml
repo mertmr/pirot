@@ -15,7 +15,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="tenant_id" type="varchar(50)">
+            <column name="tenant_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="amortisman" type="integer">
@@ -44,7 +44,12 @@
     </changeSet>
 
     <changeSet id="20200326121300-1-relations" author="jhipster">
-
+        <createIndex
+            indexName="idx_tenant_ufh"
+            schemaName="public"
+            tableName="urun_fiyat_hesap">
+            <column name="tenant_id"/>
+        </createIndex>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
