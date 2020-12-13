@@ -1,33 +1,22 @@
 package com.koop.app.service;
 
 import com.koop.app.domain.Kisiler;
-import com.koop.app.repository.KisilerRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 @Service
 public class KisilerService {
-    private final KisilerRepository kisilerRepository;
+    private final EntityManager em;
 
-    public KisilerService(KisilerRepository kisilerRepository) {
-        this.kisilerRepository = kisilerRepository;
+    public KisilerService(EntityManager em) {
+        this.em = em;
     }
 
     public Kisiler getRandomKisi() {
-        long qty = kisilerRepository.countActive();
-        int idx = (int) (Math.random() * qty);
-        if (idx == 0) {
-            idx++;
-        }
-        if (idx > 25) {
-            idx = 25;
-        }
-        Page<Kisiler> kisiPage = kisilerRepository.findAllActive(PageRequest.of(idx, 1));
-        Kisiler kisi = null;
-        if (kisiPage.hasContent()) {
-            kisi = kisiPage.getContent().get(0);
-        }
-        return kisi;
+        String sql = "select kisiler from Kisiler kisiler where kisiler.active=true order by function('RAND')";
+        Query query = em.createQuery(sql);
+        return (Kisiler) query.setMaxResults(1).setFirstResult(1).getSingleResult();
     }
 }
