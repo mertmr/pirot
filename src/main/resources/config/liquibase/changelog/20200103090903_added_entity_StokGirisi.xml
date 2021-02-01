@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity StokGirisi.
     -->
@@ -14,6 +14,9 @@
         <createTable tableName="stok_girisi">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="false" />
             </column>
             <column name="miktar" type="integer">
                 <constraints nullable="false" />
@@ -42,7 +45,12 @@
     </changeSet>
 
     <changeSet id="20200103090903-1-relations" author="jhipster">
-
+        <createIndex
+            indexName="idx_tenant_sg"
+            schemaName="public"
+            tableName="stok_girisi">
+            <column name="tenant_id"/>
+        </createIndex>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 

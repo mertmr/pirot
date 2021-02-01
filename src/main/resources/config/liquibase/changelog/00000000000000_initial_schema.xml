@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
 
-        <changeSet id="00000000000000" author="jhipster">
+    <changeSet id="00000000000000" author="jhipster">
         <createSequence sequenceName="sequence_generator" startValue="1050" incrementBy="50"/>
     </changeSet>
 
@@ -16,8 +14,11 @@
     -->
     <changeSet id="00000000000001" author="jhipster">
         <createTable tableName="koop_user">
-            <column name="id" type="bigint" >
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
             <column name="login" type="varchar(50)">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_user_login"/>
@@ -30,7 +31,7 @@
             </column>
             <column name="image_url" type="varchar(256)"/>
             <column name="activated" type="boolean" valueBoolean="false">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="lang_key" type="varchar(10)"/>
             <column name="activation_key" type="varchar(20)"/>
@@ -61,6 +62,14 @@
             </column>
         </createTable>
 
+        <createTable tableName="koop_tenant">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tenant_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
         <addPrimaryKey columnNames="user_id, authority_name" tableName="koop_user_authority"/>
 
         <addForeignKeyConstraint baseColumnNames="authority_name"
@@ -75,37 +84,44 @@
                                  referencedColumnNames="id"
                                  referencedTableName="koop_user"/>
 
-        <addNotNullConstraint   columnName="password_hash"
-                                columnDataType="varchar(60)"
-                                tableName="koop_user"/>
+        <addNotNullConstraint columnName="password_hash"
+                              columnDataType="varchar(60)"
+                              tableName="koop_user"/>
         <loadData
-                  file="config/liquibase/data/user.csv"
-                  separator=";"
-                  tableName="koop_user">
+            file="config/liquibase/data/user.csv"
+            separator=";"
+            tableName="koop_user">
             <column name="id" type="numeric"/>
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
         <dropDefaultValue tableName="koop_user" columnName="created_date" columnDataType="datetime"/>
         <loadData
-                  file="config/liquibase/data/authority.csv"
-                  separator=";"
-                  tableName="koop_authority">
+            file="config/liquibase/data/authority.csv"
+            separator=";"
+            tableName="koop_authority">
             <column name="name" type="string"/>
         </loadData>
 
         <loadData
-                  file="config/liquibase/data/user_authority.csv"
-                  separator=";"
-                  tableName="koop_user_authority">
+            file="config/liquibase/data/user_authority.csv"
+            separator=";"
+            tableName="koop_user_authority">
             <column name="user_id" type="numeric"/>
         </loadData>
+        <loadData
+            file="config/liquibase/fake-data/tenant.csv"
+            separator=";"
+            tableName="koop_tenant">
+            <column name="id" type="numeric"/>
+            <column name="tenant_name" type="string"/>
+        </loadData>
         <createTable tableName="koop_persistent_audit_event">
-            <column name="event_id" type="bigint" >
+            <column name="event_id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="principal" type="varchar(50)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="event_date" type="timestamp"/>
             <column name="event_type" type="varchar(255)"/>
@@ -144,7 +160,7 @@
 
     <changeSet author="jhipster" id="00000000000002" context="test">
         <createTable tableName="koop_date_time_wrapper">
-            <column  name="id" type="BIGINT">
+            <column name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="koop_date_time_wrapperPK"/>
             </column>
             <column name="instant" type="timestamp"/>

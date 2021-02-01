@@ -15,9 +15,10 @@ import { IRootState } from 'app/shared/reducers';
 export interface IHomeProp extends StateProps, DispatchProps {}
 
 export const Home = (props: IHomeProp) => {
-  const { account, dashboardReports } = props;
+  const { account, dashboardReports, isAuthenticated } = props;
 
   useEffect(() => {
+    if(isAuthenticated)
     props.getDashboardReports();
   }, []);
 

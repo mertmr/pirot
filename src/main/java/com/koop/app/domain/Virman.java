@@ -1,6 +1,7 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.koop.app.config.tenancy.TenantEntity;
 import com.koop.app.domain.enumeration.Hesap;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "virman")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Virman implements Serializable {
+public class Virman extends TenantEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
