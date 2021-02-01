@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row } from 'reactstrap';
+import { Button, Col, Label, Row, UncontrolledTooltip, Badge } from 'reactstrap';
 import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -100,24 +100,13 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 </Label>
                 <AvField
                   id="urun-urunAdi"
+                  disabled={!isAdmin}
                   type="text"
                   name="urunAdi"
                   validate={{
                     required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
-              </AvGroup>
-              <AvGroup>
-                <Label id="stokLabel" for="urun-stok">
-                  <Translate contentKey="koopApp.urun.stok">Stok</Translate>
-                </Label>
-                <AvField id="urun-stok" type="text" name="stok" disabled />
-              </AvGroup>
-              <AvGroup>
-                <Label id="stokSiniriLabel" for="urun-stokSiniri">
-                  <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
-                </Label>
-                <AvField id="urun-stokSiniri" type="text" name="stokSiniri" />
               </AvGroup>
               <AvGroup>
                 <Label id="musteriFiyatiLabel" for="urun-musteriFiyati">
@@ -129,20 +118,23 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="birimLabel" for="urun-birim">
                   <Translate contentKey="koopApp.urun.birim">Birim</Translate>
                 </Label>
-                <AvInput id="urun-birim" type="select" className="form-control" name="birim" value={(!isNew && urunEntity.birim) || 'ADET'}>
+                <AvInput id="urun-birim" type="select" className="form-control" name="birim" disabled={!isAdmin}
+                         value={(!isNew && urunEntity.birim) || 'ADET'}>
                   <option value="ADET">{translate('koopApp.Birim.ADET')}</option>
                   <option value="GRAM">{translate('koopApp.Birim.GRAM')}</option>
                 </AvInput>
               </AvGroup>
               <AvGroup check>
                 <Label id="dayanismaUrunuLabel">
-                  <AvInput id="urun-dayanismaUrunu" type="checkbox" className="form-check-input" name="dayanismaUrunu" />
+                  <AvInput id="urun-dayanismaUrunu" type="checkbox" disabled={!isAdmin}
+                           className="form-check-input" name="dayanismaUrunu" />
                   <Translate contentKey="koopApp.urun.dayanismaUrunu">Dayanisma Urunu</Translate>
                 </Label>
               </AvGroup>
               <AvGroup check>
                 <Label id="satistaLabel">
-                  <AvInput id="urun-satista" type="checkbox" className="form-check-input" name="satista" />
+                  <AvInput id="urun-satista" type="checkbox" disabled={!isAdmin}
+                           className="form-check-input" name="satista" />
                   <Translate contentKey="koopApp.urun.satista">Satista</Translate>
                 </Label>
               </AvGroup>
@@ -153,6 +145,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <AvInput
                   id="urun-urunKategorisi"
                   type="select"
+                  disabled={!isAdmin}
                   className="form-control"
                   name="urunKategorisi"
                   value={(!isNew && urunEntity.urunKategorisi) || 'GIDA'}
@@ -160,6 +153,21 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <option value="GIDA">{translate('koopApp.UrunKategorisi.GIDA')}</option>
                   <option value="GIDA_DISI">{translate('koopApp.UrunKategorisi.GIDA_DISI')}</option>
                 </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <span>
+                <Label id="stokSiniriLabel" for="urun-stokSiniri">
+                  <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
+                </Label>
+                  <Badge id="stok-siniri-info" style={{ marginLeft: '5px' }} color="info">Bilgi</Badge>
+                <AvField id="urun-stokSiniri" type="text" name="stokSiniri"/>
+                <UncontrolledTooltip
+                  placement={"right"}
+                  target={"stok-siniri-info"}
+                >
+                Opsiyonel alan: Bu ürünün stok miktarı buraya gireceğiniz stok sınırı altına indiğinde o ürünün sorumlusuna mail atar. Ürün sorumlusu seçmeyi unutmayın!
+                </UncontrolledTooltip>
+                </span>
               </AvGroup>
               <AvGroup>
                 <div>
@@ -186,7 +194,8 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label for="urun-kdvKategorisi">
                   <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate>
                 </Label>
-                <AvInput id="urun-kdvKategorisi" type="select" className="form-control" name="kdvKategorisi.id">
+                <AvInput id="urun-kdvKategorisi" type="select" disabled={!isAdmin}
+                         className="form-control" name="kdvKategorisi.id">
                   <option value="" key="0" />
                   {kdvKategorisis
                     ? kdvKategorisis.map(otherEntity => (

@@ -11,7 +11,8 @@ import { getAllUrunForStokGirisi, getEntities, getSearchEntities } from './urun.
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
-import { CSVLink } from 'react-csv';
+import { ExportSheet } from 'react-xlsx-sheet';
+import XLSX from 'xlsx';
 
 export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -87,12 +88,19 @@ export const Urun = (props: IUrunProps) => {
       activePage: currentPage,
     });
 
+  const head = [
+    { title: 'Ürün Adı', dataIndex: 'urunAdi' },
+    { title: 'Stok', dataIndex: 'stok' },
+    { title: 'Birim', dataIndex: 'birim' },
+    { title: 'Fiyat', dataIndex: 'musteriFiyati' },
+  ]
+
   const { urunList, match, totalItems, isAdmin, satisUrunleri } = props;
   return (
     <div>
       <h2 id="urun-heading">
         <Translate contentKey="koopApp.urun.home.title">Uruns</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        <Link to={`${match.url}/new`} style={isAdmin ? {} : { display: 'none' }} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="koopApp.urun.home.createLabel">Create new Urun</Translate>
@@ -184,7 +192,6 @@ export const Urun = (props: IUrunProps) => {
                         tag={Link}
                         to={`${match.url}/${urun.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
-                        disabled={!isAdmin}
                         size="sm"
                       >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
@@ -229,14 +236,14 @@ export const Urun = (props: IUrunProps) => {
           />
         </Row>
       </div>
-      <CSVLink
-        className="btn btn-primary float-left jh-create-entity"
-        style={{ marginRight: '10px' }}
-        data={satisUrunleri.map(x => ({ urunAdi: x.urunAdi, stok: x.stok, fiyat: x.musteriFiyati }))}
-        filename={'stokDurumu.csv'}
+      <ExportSheet
+        header={head}
+        fileName={`stokDurumu`}
+        dataSource={satisUrunleri}
+        xlsx={XLSX}
       >
-        Stok Raporu
-      </CSVLink>
+        <button className="btn btn-primary float-left jh-create-entity">Stok Raporu</button>
+      </ExportSheet>
     </div>
   );
 };
