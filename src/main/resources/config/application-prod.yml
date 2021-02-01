@@ -117,7 +117,7 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: https://pirot.kadikoykoop.org/ # Modify according to your server's URL
+    base-url: https://pirot.kadikoykoop.org # Modify according to your server's URL
   metrics:
     logs: # Reports metrics in the logs
       enabled: false
