@@ -53,6 +53,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   };
   const [stokHareketleriListState, setStokHareketleriLists] = useState([yeniUrun] as ISatisStokHareketleri[]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isFisrtPageOpening, setIsFisrtPageOpening] = useState(true);
 
   const { satisEntity, users, loading, updating } = props;
 
@@ -164,7 +165,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   }, []);
 
   useEffect(() => {
-    if (isNew) {
+    if (isNew && isFisrtPageOpening) {
       setStokHareketleriLists([
         {
           miktar: 0,
@@ -176,7 +177,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
         },
       ]);
       setSatis(defaultValueWithNew);
-    } else {
+      setIsFisrtPageOpening(false);
+    } else if(!isNew && isFisrtPageOpening) {
       setStokHareketleriLists(cloneDeep(satisEntity.stokHareketleriLists));
       const kdvKategorisis = satisEntity.stokHareketleriLists.map(value => value.urun.kdvKategorisi);
       setKdvKategorisiList([...kdvKategorisis]);
@@ -193,6 +195,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
       handleClose();
     }
   }, [props.updateSuccess]);
+
+  const refreshSatisUrunleri = () => {
+    props.getSatisUrunleri();
+    setIsFisrtPageOpening(false);
+  }
 
   const saveEntity = (event, errors, values) => {
     if (satis.tarih) {
@@ -260,6 +267,11 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       <AvGroup>
                         <Col style={{ padding: '0' }}>
                           <Row>
+                            <Col className="col-1" style={{ marginTop: '10px' }}>
+                              <Button onClick={refreshSatisUrunleri} color={'btn btn-primary'}>
+                                <FontAwesomeIcon icon="sync" />
+                              </Button>
+                            </Col>
                             <Col className="col-sm-5 col-12" style={{ marginTop: '10px' }}>
                               <Dropdown
                                 value={stokHareketi.urun}
@@ -300,7 +312,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                             <Col style={{ marginTop: '10px' }}>
                               <div className="btn-group flex-btn-group-container">
                                 <Button tag={Link} color="danger" size="sm" onClick={() => deleteRow(i)}>
-                                  <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">SİL</span>
+                                  <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline"/>
                                 </Button>
                               </div>
                             </Col>

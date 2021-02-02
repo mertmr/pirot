@@ -245,7 +245,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 <Label id="nobetSuresiLabel" for="nobet-hareketleri-nobetSuresi">
                   <Translate contentKey="koopApp.nobetHareketleri.nobetSuresi">Nobet Suresi</Translate>
                 </Label>
-                <AvField id="nobet-hareketleri-nobetSuresi" type="text" name="nobetSuresi" />
+                <AvField id="nobet-hareketleri-nobetSuresi" type="number" name="nobetSuresi" />
               </AvGroup>
               <AvGroup>
                 <Label id="notlarLabel" for="nobet-hareketleri-notlar">

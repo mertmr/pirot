@@ -9,7 +9,9 @@ public final class TenantAssistance {
     }
 
     public static String resolveCurrentTenantIdentifier() {
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CurrentUser) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            return null;
+        } else if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CurrentUser) {
             CurrentUser authentication = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (authentication != null) {
                 String name = authentication.getTenant();
