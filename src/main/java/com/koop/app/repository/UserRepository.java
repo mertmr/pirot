@@ -35,7 +35,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
     @Query("select user from User user where user.activated=true")
-    List<User> findAllUsersWithLogin();
+    List<User> findAllUsersWithLoginByTenantId(Long tenantId);
 
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findOneWithAuthoritiesById(Long id);

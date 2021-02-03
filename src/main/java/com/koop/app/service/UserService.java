@@ -1,6 +1,7 @@
 package com.koop.app.service;
 
 import com.koop.app.config.Constants;
+import com.koop.app.config.tenancy.TenantAssistance;
 import com.koop.app.domain.Authority;
 import com.koop.app.domain.User;
 import com.koop.app.repository.AuthorityRepository;
@@ -357,7 +358,7 @@ public class UserService {
     }
 
     public List<User> findAllUsersWithLogin() {
-        return userRepository.findAllUsersWithLogin();
+        return userRepository.findAllUsersWithLoginByTenantId(TenantAssistance.resolveCurrentTenantIdentifier());
     }
 
 //    public Optional<User> findOneWithAuthoritiesByLogin(String lowercaseLogin) {
