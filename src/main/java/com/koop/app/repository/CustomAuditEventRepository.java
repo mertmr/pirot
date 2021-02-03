@@ -52,15 +52,15 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void add(AuditEvent event) {
-        if (!AUTHORIZATION_FAILURE.equals(event.getType()) && !Constants.ANONYMOUS_USER.equals(event.getPrincipal())) {
-            PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
-            persistentAuditEvent.setPrincipal(event.getPrincipal());
-            persistentAuditEvent.setAuditEventType(event.getType());
-            persistentAuditEvent.setAuditEventDate(event.getTimestamp());
-            Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
-            persistentAuditEvent.setData(truncate(eventData));
-            persistenceAuditEventRepository.save(persistentAuditEvent);
-        }
+//        if (!AUTHORIZATION_FAILURE.equals(event.getType()) && !Constants.ANONYMOUS_USER.equals(event.getPrincipal())) {
+//            PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
+//            persistentAuditEvent.setPrincipal(event.getPrincipal());
+//            persistentAuditEvent.setAuditEventType(event.getType());
+//            persistentAuditEvent.setAuditEventDate(event.getTimestamp());
+//            Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
+//            persistentAuditEvent.setData(truncate(eventData));
+//            persistenceAuditEventRepository.save(persistentAuditEvent);
+//        }
     }
 
     /**

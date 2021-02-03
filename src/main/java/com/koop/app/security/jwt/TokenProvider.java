@@ -84,7 +84,7 @@ public class TokenProvider {
             validity = new Date(now + this.tokenValidityInMilliseconds);
         }
 
-        String tenant = null;
+        Long tenant = null;
         if (SecurityContextHolder.getContext().getAuthentication() != null &&
             (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CurrentUser)) {
             CurrentUser currentUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -109,9 +109,9 @@ public class TokenProvider {
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
 
-        String tenant = null;
+        Long tenant = null;
         if (claims.get(TENANT) != null)
-            tenant = claims.get(TENANT).toString();
+            tenant = Long.valueOf(claims.get(TENANT).toString());
         CurrentUser principal = new CurrentUser(claims.getSubject(), "", authorities, tenant);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);

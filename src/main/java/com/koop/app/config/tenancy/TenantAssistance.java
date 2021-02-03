@@ -8,18 +8,18 @@ public final class TenantAssistance {
     private TenantAssistance() {
     }
 
-    public static String resolveCurrentTenantIdentifier() {
+    public static Long resolveCurrentTenantIdentifier() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             return null;
         } else if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CurrentUser) {
             CurrentUser authentication = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (authentication != null) {
-                String name = authentication.getTenant();
-                if (name != null)
-                    return name;
+                Long tenant = authentication.getTenant();
+                if (tenant != null)
+                    return tenant;
             }
         } else {
-            return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+            return 0L;
         }
 
         throw new UnknownTenantException("Tenant is empty");

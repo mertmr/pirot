@@ -10,7 +10,7 @@ public class CurrentUser implements UserDetails {
 
     private String firstName;
     private String lastName;
-    private String tenant;
+    private Long tenant;
 
     private final String password;
 
@@ -30,11 +30,11 @@ public class CurrentUser implements UserDetails {
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CurrentUser(String username, String password, Collection<? extends GrantedAuthority> authorities, String tenant) {
+    public CurrentUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Long tenant) {
         this(username, username, username, password, true, authorities, tenant);
     }
 
-    public CurrentUser(String email, String displayName, String username, String password, Boolean enabled, Collection<? extends GrantedAuthority> authorities, String tenant) {
+    public CurrentUser(String email, String displayName, String username, String password, Boolean enabled, Collection<? extends GrantedAuthority> authorities, Long tenant) {
         this.email = email;
         this.displayName = displayName;
         this.enabled=enabled;
@@ -110,11 +110,11 @@ public class CurrentUser implements UserDetails {
         this.lastName = lastName;
     }
 
-    public String getTenant() {
+    public Long getTenant() {
         return tenant;
     }
 
-    public void setTenant(String tenant) {
+    public void setTenant(Long tenant) {
         this.tenant = tenant;
     }
 }

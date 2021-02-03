@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 
+import java.math.BigDecimal;
+
 import static com.koop.app.config.tenancy.TenantEntity.TENANT_FILTER_ARGUMENT_NAME;
 import static com.koop.app.config.tenancy.TenantEntity.TENANT_FILTER_NAME;
 
@@ -42,7 +44,7 @@ public class TenantServiceAspect {
                         .unwrap(Session.class) // requires transaction
                         .enableFilter(TENANT_FILTER_NAME)
                         .setParameter(
-                            TENANT_FILTER_ARGUMENT_NAME, TenantAssistance.resolveCurrentTenantIdentifier());
+                            TENANT_FILTER_ARGUMENT_NAME, TenantAssistance.resolveCurrentTenantIdentifier().longValue());
                 filter.validate();
             }
             return pjp.proceed();

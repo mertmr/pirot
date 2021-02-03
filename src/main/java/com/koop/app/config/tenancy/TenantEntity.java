@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass()
 @FilterDef(
     name = TenantEntity.TENANT_FILTER_NAME,
-    parameters = @ParamDef(name = TenantEntity.TENANT_FILTER_ARGUMENT_NAME, type = "string"),
+    parameters = @ParamDef(name = TenantEntity.TENANT_FILTER_ARGUMENT_NAME, type = "long"),
     defaultCondition =
         TenantEntity.TENANT_ID_PROPERTY_NAME + "= :" + TenantEntity.TENANT_FILTER_ARGUMENT_NAME)
 @Filter(name = TenantEntity.TENANT_FILTER_NAME)
@@ -19,13 +19,13 @@ public class TenantEntity {
     static final String TENANT_ID_PROPERTY_NAME = "tenant_id";
     static final String TENANT_FILTER_ARGUMENT_NAME = "tenantId";
     @Column(name = TENANT_ID_PROPERTY_NAME, nullable = false)
-    String tenantId;
+    Long tenantId;
 
-    public String getTenantId() {
+    public Long getTenantId() {
         return tenantId;
     }
 
-    public void setTenantId(String tenantId) {
+    public void setTenantId(Long tenantId) {
         this.tenantId = tenantId;
     }
 }
