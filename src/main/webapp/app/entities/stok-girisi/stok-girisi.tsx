@@ -152,9 +152,8 @@ export const StokGirisi = (props: IStokGirisiProps) => {
                 </td>
                 <td>{stokGirisi.tarih ?
                   <TextFormat type="date" value={stokGirisi.tarih} format={APP_DATE_FORMAT}/> : null}</td>
-                <td>{stokGirisi.user ? stokGirisi.user.login : ''}</td>
-                <td>{stokGirisi.urun ?
-                  <Link to={`urun/${stokGirisi.urun.id}`}>{stokGirisi.urun.urunAdi}</Link> : ''}</td>
+                <td>{stokGirisi.user}</td>
+                <td>{stokGirisi.urunAdi}</td>
                 <td className="text-right">
                   <div className="btn-group flex-btn-group-container">
                     <Button tag={Link} to={`${match.url}/${stokGirisi.id}`} color="info" size="sm">
@@ -201,7 +200,7 @@ export const StokGirisi = (props: IStokGirisiProps) => {
 };
 
 const mapStateToProps = ({stokGirisi}: IRootState) => ({
-  stokGirisiList: stokGirisi.entities,
+  stokGirisiList: stokGirisi.entitiesDto,
   loading: stokGirisi.loading,
   totalItems: stokGirisi.totalItems,
 });

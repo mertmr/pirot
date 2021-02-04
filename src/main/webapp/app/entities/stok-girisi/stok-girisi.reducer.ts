@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IStokGirisi, defaultValue } from 'app/shared/model/stok-girisi.model';
 import { IStokGirisiUrun } from 'app/shared/model/stok-girisi-urun.model';
+import { IStokGirisiDto } from 'app/shared/model/stok-girisi-dto.model';
 
 export const ACTION_TYPES = {
   SEARCH_ONLY_STOKGIRISI_BY_URUN: 'urun/SEARCH_ONLY_STOKGIRISI_BY_URUN',
@@ -22,6 +23,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as Array<IStokGirisi>,
+  entitiesDto: [] as Array<IStokGirisiDto>,
   stokGirisiByurunList: [] as Array<IStokGirisiUrun>,
   entity: defaultValue,
   updating: false,
@@ -69,11 +71,17 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
         errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.SEARCH_STOKGIRISI_BY_URUN):
-    case SUCCESS(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_STOKGIRISI_LIST):
+      return {
+        ...state,
+        loading: false,
+        entitiesDto: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.SEARCH_ONLY_STOKGIRISI_BY_URUN):
@@ -129,11 +137,11 @@ export const searchStokGirisiByUrun: ICrudSearchAction<IStokGirisi> = (query, pa
   payload: axios.get<IStokGirisi>(`${apiSearchUrl}?query=${query}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`),
 });
 
-export const getEntities: ICrudGetAllAction<IStokGirisi> = (page, size, sort) => {
+export const getEntities: ICrudGetAllAction<IStokGirisiDto> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_STOKGIRISI_LIST,
-    payload: axios.get<IStokGirisi>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+    payload: axios.get<IStokGirisiDto>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 

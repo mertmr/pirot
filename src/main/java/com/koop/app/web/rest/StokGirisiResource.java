@@ -7,6 +7,7 @@ import com.koop.app.dto.UrunStokGirisiDTO;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.service.StokGirisiService;
 import com.koop.app.service.UserService;
+import com.koop.app.service.dto.StokGirisiDto;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -112,9 +113,9 @@ public class StokGirisiResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stokGirisis in body.
      */
     @GetMapping("/stok-girisis")
-    public ResponseEntity<List<StokGirisi>> getAllStokGirisis(Pageable pageable) {
+    public ResponseEntity<List<StokGirisiDto>> getAllStokGirisis(Pageable pageable) {
         log.debug("REST request to get a page of StokGirisis");
-        Page<StokGirisi> page = stokGirisiRepository.findAll(pageable);
+        Page<StokGirisiDto> page = stokGirisiRepository.findAllWithUrun(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
             ServletUriComponentsBuilder.fromCurrentRequest(),
             page

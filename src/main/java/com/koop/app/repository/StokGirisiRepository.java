@@ -1,9 +1,11 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.StokGirisi;
+import com.koop.app.service.dto.StokGirisiDto;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -50,4 +52,10 @@ public interface StokGirisiRepository extends JpaRepository<StokGirisi, Long> {
     BigDecimal getUrunFire(@Param("fromDate") ZonedDateTime fromDate,
                            @Param("toDate") ZonedDateTime toDate,
                            @Param("urunId") Long urunId);
+
+    @Query("select new com.koop.app.service.dto.StokGirisiDto(st.id, st.miktar, st.notlar, st.stokHareketiTipi, st.tarih, user.login, urun.urunAdi) " +
+        "from StokGirisi st " +
+        "LEFT JOIN st.urun urun " +
+        "LEFT JOIN st.user user ")
+    Page<StokGirisiDto> findAllWithUrun(Pageable pageable);
 }
