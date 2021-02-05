@@ -136,7 +136,7 @@ describe('Entities reducer tests', () => {
         ...initialState,
         loading: false,
         totalItems: payload.headers['x-total-count'],
-        entities: payload.data,
+        entitiesDto: payload.data,
       });
     });
 
