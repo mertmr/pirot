@@ -18,9 +18,10 @@ export const Home = (props: IHomeProp) => {
   const { account, dashboardReports, isAuthenticated } = props;
 
   useEffect(() => {
-    if(isAuthenticated)
-    props.getDashboardReports();
-  }, []);
+    if(isAuthenticated) {
+      props.getDashboardReports();
+    }
+  }, [account]);
 
   return (
     <Row>

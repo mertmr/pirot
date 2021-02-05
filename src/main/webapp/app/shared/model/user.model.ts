@@ -1,5 +1,6 @@
 export interface IUser {
   id?: any;
+  tenantId?: any;
   login?: string;
   firstName?: string;
   lastName?: string;
