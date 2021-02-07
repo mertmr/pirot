@@ -40,6 +40,6 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
         "where urun.satista=true order by urun.urunAdi")
     List<Urun> getAllUrunForStokGirisi();
 
-    @Query("select urun from Urun urun")
+    @Query("select urun from Urun urun where urun.active=true")
     Page<Urun> findEverything(Pageable pageable);
 }
