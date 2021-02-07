@@ -161,9 +161,9 @@ public class StokGirisiResource {
      * @return the result of the search.
      */
     @GetMapping("/searchStokGirisiByUrun")
-    public ResponseEntity<List<StokGirisi>> searchUruns(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<StokGirisiDto>> searchUruns(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Uruns for query {}", query);
-        Page<StokGirisi> page = stokGirisiService.search(query, pageable);
+        Page<StokGirisiDto> page = stokGirisiService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
             ServletUriComponentsBuilder.fromCurrentRequest(),
             page

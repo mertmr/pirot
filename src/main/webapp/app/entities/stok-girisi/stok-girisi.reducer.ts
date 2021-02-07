@@ -24,7 +24,7 @@ const initialState = {
   errorMessage: null,
   entities: [] as Array<IStokGirisi>,
   entitiesDto: [] as Array<IStokGirisiDto>,
-  stokGirisiByurunList: [] as Array<IStokGirisiUrun>,
+  stokGirisiByurunList: [] as Array<IStokGirisiDto>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -74,7 +74,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
       return {
         ...state,
         loading: false,
-        entities: action.payload.data,
+        entitiesDto: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_STOKGIRISI_LIST):

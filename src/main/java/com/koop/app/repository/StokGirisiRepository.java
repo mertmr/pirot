@@ -25,11 +25,12 @@ public interface StokGirisiRepository extends JpaRepository<StokGirisi, Long> {
     @Query("select stokGirisi from StokGirisi stokGirisi where stokGirisi.user.login = ?#{principal.username}")
     List<StokGirisi> findByUserIsCurrentUser();
 
-    @Query(
-        "select stokGirisi from StokGirisi stokGirisi " +
-            " where lower(stokGirisi.urun.urunAdi) like lower(CONCAT('%',:query,'%'))"
-    )
-    Page<StokGirisi> findByUrunAdi(@Param("query") String query, Pageable pageable);
+    @Query("select new com.koop.app.service.dto.StokGirisiDto(st.id, st.miktar, st.notlar, st.stokHareketiTipi, st.tarih, user.login, urun.urunAdi) " +
+        "from StokGirisi st " +
+        "LEFT JOIN st.urun urun " +
+        "LEFT JOIN st.user user " +
+        "where lower(st.urun.urunAdi) like lower(CONCAT('%',:query,'%'))")
+    Page<StokGirisiDto> findByUrunAdi(@Param("query") String query, Pageable pageable);
 
     @Query(
         "select stokGirisi from StokGirisi stokGirisi " +
