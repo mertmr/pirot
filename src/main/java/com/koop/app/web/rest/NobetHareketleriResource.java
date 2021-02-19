@@ -8,14 +8,6 @@ import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +18,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.NobetHareketleri}.
@@ -101,8 +102,11 @@ public class NobetHareketleriResource {
         if (nobetHareketleri.getTarih() == null) {
             nobetHareketleri.setTarih(ZonedDateTime.now());
         }
-        User currentUser = userService.getCurrentUser();
-        nobetHareketleri.setUser(currentUser);
+
+        if (nobetHareketleri.getUser() == null) {
+            User currentUser = userService.getCurrentUser();
+            nobetHareketleri.setUser(currentUser);
+        }
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity
             .ok()
@@ -120,9 +124,7 @@ public class NobetHareketleriResource {
     /**
      * {@code GET  /nobet-hareketleris} : get all the nobetHareketleris.
      *
-
      * @param pageable the pagination information.
-
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of nobetHareketleris in body.
      */
     @GetMapping("/nobet-hareketleris")
@@ -165,7 +167,7 @@ public class NobetHareketleriResource {
             .build();
     }
 
-    @GetMapping(params = { "fromDate", "userId" }, path = "/nobet-hareketleris/acilis")
+    @GetMapping(params = {"fromDate", "userId"}, path = "/nobet-hareketleris/acilis")
     public ResponseEntity<NobetHareketleri> getAcilisHareketiByNobetci(
         @RequestParam(value = "fromDate") String fromDate,
         @RequestParam(value = "userId") Long userId

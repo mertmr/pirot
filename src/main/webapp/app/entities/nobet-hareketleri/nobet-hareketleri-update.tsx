@@ -57,7 +57,9 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   }, [props.updateSuccess]);
 
   const saveEntity = (event, errors, values) => {
-    values.tarih = convertDateTimeToServer(values.tarih);
+    if (isNew) {
+      values.tarih = convertDateTimeToServer(values.tarih);
+    }
 
     if (errors.length === 0) {
       const entity = {
