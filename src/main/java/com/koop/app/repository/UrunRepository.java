@@ -37,7 +37,7 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
         "left join fetch urun.urunFiyatHesap ufh " +
         "left join fetch urun.urunSorumlusu us " +
         "left join fetch urun.urunFiyatHesap uf " +
-        "where urun.satista=true order by urun.urunAdi")
+        "where urun.satista=true and urun.active=true order by urun.urunAdi")
     List<Urun> getAllUrunForStokGirisi();
 
     @Query("select urun from Urun urun where urun.active=true")
