@@ -195,7 +195,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate>
                 </Label>
                 <AvInput id="urun-kdvKategorisi" type="select" disabled={!isAdmin}
-                         className="form-control" name="kdvKategorisi.id">
+                         className="form-control" name="kdvKategorisi.id" required>
                   <option value="" key="0" />
                   {kdvKategorisis
                     ? kdvKategorisis.map(otherEntity => (
