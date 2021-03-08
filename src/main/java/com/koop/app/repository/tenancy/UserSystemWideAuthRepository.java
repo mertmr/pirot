@@ -30,4 +30,6 @@ public interface UserSystemWideAuthRepository extends JpaRepository<User, Long> 
     @EntityGraph(attributePaths = "authorities")
     @Cacheable(cacheNames = USERS_BY_LOGIN_CACHE)
     Optional<User> findOneWithAuthoritiesByLogin(String login);
+
+    Optional<User> findOneByEmailIgnoreCase(String email);
 }

@@ -3,6 +3,7 @@ package com.koop.app.web.rest;
 import com.koop.app.config.Constants;
 import com.koop.app.domain.User;
 import com.koop.app.repository.UserRepository;
+import com.koop.app.repository.tenancy.UserSystemWideAuthRepository;
 import com.koop.app.security.AuthoritiesConstants;
 import com.koop.app.service.MailService;
 import com.koop.app.service.UserService;
@@ -69,10 +70,13 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    private final UserSystemWideAuthRepository userSystemWideAuthRepository;
+
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, UserSystemWideAuthRepository userSystemWideAuthRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.userSystemWideAuthRepository = userSystemWideAuthRepository;
     }
 
     /**
@@ -97,7 +101,7 @@ public class UserResource {
             // Lowercase the user login before comparing with database
         } else if (userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).isPresent()) {
             throw new LoginAlreadyUsedException();
-        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
+        } else if (userSystemWideAuthRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
@@ -121,7 +125,7 @@ public class UserResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        Optional<User> existingUser = userSystemWideAuthRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new EmailAlreadyUsedException();
         }

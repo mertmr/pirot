@@ -3,6 +3,7 @@ package com.koop.app.repository;
 import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.dto.AylikSatislar;
 import com.koop.app.dto.fatura.OrtakFaturaDbReport;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
+@JaversSpringDataAuditable
 public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokHareketleri, Long> {
     @Query("select sum(satisStokHareketleri.tutar) from SatisStokHareketleri satisStokHareketleri")
     Double findAllTutar();

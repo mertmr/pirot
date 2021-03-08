@@ -9,6 +9,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-//@JaversSpringDataAuditable
+@JaversSpringDataAuditable
 public interface SatisRepository extends JpaRepository<Satis, Long> {
     String SATISLAR_BY_ID_CACHE = "satislarById";
 

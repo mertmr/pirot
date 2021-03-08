@@ -6,6 +6,7 @@ import com.koop.app.domain.Authority;
 import com.koop.app.domain.User;
 import com.koop.app.repository.AuthorityRepository;
 import com.koop.app.repository.UserRepository;
+import com.koop.app.repository.tenancy.UserSystemWideAuthRepository;
 import com.koop.app.security.AuthoritiesConstants;
 import com.koop.app.security.SecurityUtils;
 import com.koop.app.service.dto.UserDTO;
@@ -16,8 +17,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final UserSystemWideAuthRepository userSystemWideAuthRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -48,11 +49,12 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
-        PasswordEncoder passwordEncoder,
+        UserSystemWideAuthRepository userSystemWideAuthRepository, PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager,
         JdbcTemplate jdbcTemplate) {
         this.userRepository = userRepository;
+        this.userSystemWideAuthRepository = userSystemWideAuthRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -92,7 +94,7 @@ public class UserService {
     }
 
     public Optional<User> requestPasswordReset(String mail) {
-        return userRepository
+        return userSystemWideAuthRepository
             .findOneByEmailIgnoreCase(mail)
             .filter(User::getActivated)
             .map(
@@ -116,7 +118,7 @@ public class UserService {
                     }
                 }
             );
-        userRepository
+        userSystemWideAuthRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
             .ifPresent(
                 existingUser -> {

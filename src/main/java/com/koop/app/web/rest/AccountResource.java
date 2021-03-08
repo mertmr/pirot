@@ -2,6 +2,7 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.User;
 import com.koop.app.repository.UserRepository;
+import com.koop.app.repository.tenancy.UserSystemWideAuthRepository;
 import com.koop.app.security.SecurityUtils;
 import com.koop.app.service.MailService;
 import com.koop.app.service.UserService;
@@ -37,12 +38,15 @@ public class AccountResource {
 
     private final UserRepository userRepository;
 
+    private final UserSystemWideAuthRepository userSystemWideAuthRepository;
+
     private final UserService userService;
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserSystemWideAuthRepository userSystemWideAuthRepository, UserService userService, MailService mailService) {
         this.userRepository = userRepository;
+        this.userSystemWideAuthRepository = userSystemWideAuthRepository;
         this.userService = userService;
         this.mailService = mailService;
     }
@@ -117,7 +121,7 @@ public class AccountResource {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(() -> new AccountResourceException("Current user login not found"));
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        Optional<User> existingUser = userSystemWideAuthRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
             throw new EmailAlreadyUsedException();
         }
