@@ -42,4 +42,6 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
 
     @Query("select urun from Urun urun where urun.active=true")
     Page<Urun> findEverything(Pageable pageable);
+
+    List<Urun> findByIdIn(List<Long> urunIdList);
 }

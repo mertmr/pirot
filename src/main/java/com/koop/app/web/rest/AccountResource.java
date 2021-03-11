@@ -27,13 +27,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AccountResource {
 
-    private static class AccountResourceException extends RuntimeException {
-
-        private AccountResourceException(String message) {
-            super(message);
-        }
-    }
-
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
     private final UserRepository userRepository;
@@ -49,6 +42,12 @@ public class AccountResource {
         this.userSystemWideAuthRepository = userSystemWideAuthRepository;
         this.userService = userService;
         this.mailService = mailService;
+    }
+
+    private static class AccountResourceException extends RuntimeException {
+        private AccountResourceException(String message) {
+            super(message);
+        }
     }
 
     /**

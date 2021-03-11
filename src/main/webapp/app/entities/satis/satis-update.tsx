@@ -246,9 +246,15 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="koopApp.satis.home.createOrEditLabel" className="d-none d-md-inline">
-            <Translate contentKey="koopApp.satis.home.createOrEditLabel">Create or edit a Satis</Translate>
-          </h2>
+            {isNew ? (
+              <h2 id="koopApp.satis.home.createOrEditLabel" className="d-none d-md-inline">
+                <Translate contentKey="koopApp.satis.home.createOrEditLabel">Create or edit a Satis</Translate>
+              </h2>
+            ): (
+              <h2 id="koopApp.satis.home.createOrEditLabel" className="d-md-inline">
+                <div className="alert alert-warning">Satış düzenlemesi yapıyorsunuz. Kasada fark çıkabilir, dikkatli olun!!!</div>
+              </h2>
+            )}
         </Col>
       </Row>
       <Row className="justify-content-center">

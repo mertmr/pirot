@@ -67,6 +67,7 @@ public class SatisService {
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
 
         for (SatisStokHareketleri stokHareketi : stokHareketleriLists) {
+            controlIfStockCHanged(stokHareketleriLists);
             Urun urun = stokHareketi.getUrun();
             if (urun.getStok() != null) {
                 urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokHareketi.getMiktar())));
@@ -84,6 +85,21 @@ public class SatisService {
         }
 
         return result;
+    }
+
+    private void controlIfStockCHanged(Set<SatisStokHareketleri> stokHareketleriLists) {
+        List<Long> urunIdList = stokHareketleriLists.stream()
+            .map(satisStokHareketleri -> satisStokHareketleri.getUrun().getId()).collect(Collectors.toList());
+        List<Urun> urunList = urunRepository.findByIdIn(urunIdList);
+        Map<Long, Urun> satisUrunList = stokHareketleriLists.stream()
+            .collect(Collectors.toMap(satisStokHareketleri -> satisStokHareketleri.getUrun().getId(), SatisStokHareketleri::getUrun));
+        for (Urun urun : urunList) {
+            Urun satisUrunu = satisUrunList.get(urun.getId());
+            if(urun.getStok().compareTo(satisUrunu.getStok()) != 0){
+                throw new StockChangedException();
+            }
+        }
+
     }
 
     public Satis updateSatis(Satis satis) {
