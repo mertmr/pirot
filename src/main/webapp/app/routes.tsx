@@ -9,8 +9,6 @@ import PasswordResetInit from 'app/modules/account/password-reset/init/password-
 import PasswordResetFinish from 'app/modules/account/password-reset/finish/password-reset-finish';
 import Logout from 'app/modules/login/logout';
 import Home from 'app/modules/home/home';
-import Entities from 'app/entities';
-import Reports from 'app/reports';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
@@ -23,6 +21,16 @@ const Account = Loadable({
 
 const Admin = Loadable({
   loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
+  loading: () => <div>loading ...</div>,
+});
+
+const Entities = Loadable({
+  loader: () => import(/* webpackChunkName: "entities" */ 'app/entities'),
+  loading: () => <div>loading ...</div>,
+});
+
+const Reports = Loadable({
+  loader: () => import(/* webpackChunkName: "reports" */ 'app/reports'),
   loading: () => <div>loading ...</div>,
 });
 

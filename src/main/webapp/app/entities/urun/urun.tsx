@@ -11,8 +11,8 @@ import { getAllUrunForStokGirisi, getEntities, getSearchEntities } from './urun.
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
-import XLSX from 'xlsx';
-import Exportsheetcustom from "app/entities/urun/exportsheetcustom";
+// import XLSX from 'xlsx';
+// import Exportsheetcustom from "app/entities/urun/exportsheetcustom";
 
 export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -236,14 +236,14 @@ export const Urun = (props: IUrunProps) => {
           />
         </Row>
       </div>
-      <Exportsheetcustom
+      {/* <Exportsheetcustom
         header={head}
         fileName={`stokDurumu`}
         dataSource={satisUrunleri}
         xlsx={XLSX}
       >
         <button className="btn btn-primary float-left jh-create-entity">Stok Raporu</button>
-      </Exportsheetcustom>
+      </Exportsheetcustom> */}
     </div>
   );
 };

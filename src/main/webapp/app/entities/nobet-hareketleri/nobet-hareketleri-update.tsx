@@ -23,7 +23,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
   const [fark, setFark] = useState(0);
   const [farkDenge, setFarkDenge] = useState(0);
   const [money200, setMoney200] = useState(0);
-  const [money100, setMoney100] = useState(0);
+  const [money100,  setMoney100] = useState(0);
   const [money50, setMoney50] = useState(0);
   const [money20, setMoney20] = useState(0);
   const [money10, setMoney10] = useState(0);
@@ -89,7 +89,7 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
           money20 * 20 +
           money10 * 10 +
           money5 * 5 +
-          money1 +
+          money1 * 1 +
           money05 * 0.5 +
           money025 * 0.25 +
           money01 * 0.1 +
@@ -119,6 +119,10 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
     props.getDashboardReports();
   }, []);
 
+  const updateStokGirisi = value => {
+    props.getDashboardReports();
+  };
+
   return (
     <div>
       <Row className="justify-content-center">
@@ -144,80 +148,186 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
-                <Row>
-                  <Col>
-                    <label htmlFor="200moneyField" className="col-sm-3 col-form-label">
+                <Col>
+                  <Row>
+                    <label htmlFor="200moneyField" className="col-sm-2 col-form-label">
                       200
                     </label>
-                    <InputNumber type="number" id="200moneyField" name="money200" value={money200} onChange={value => setMoney200(value)} />
-                  </Col>
-                  <Col>
-                    <label htmlFor="100moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="200moneyField"
+                      className="col-sm-2"
+                      name="money200"
+                      value={money200}
+                      onChange={e => setMoney200(Number(e.target.value))}
+                    />
+                    <label htmlFor="100moneyField" className="col-sm-2 col-form-label">
                       100
                     </label>
-                    <InputNumber type="number" id="100moneyField" name="money100" value={money100} onChange={value => setMoney100(value)} />
-                  </Col>
-                  <Col>
-                    <label htmlFor="50moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="100moneyField"
+                      className="col-sm-2"
+                      name="money100"
+                      value={money100}
+                      onChange={e => setMoney100(Number(e.target.value))}
+                    />
+                    <label htmlFor="50moneyField" className="col-sm-2 col-form-label">
                       50
                     </label>
-                    <InputNumber type="number" id="50moneyField" onChange={value => setMoney50(value)} />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <label htmlFor="20moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="50moneyField"
+                      className="col-sm-2"
+                      name="money50"
+                      value={money50}
+                      onChange={e => setMoney50(Number(e.target.value))}
+                    />
+                    <label htmlFor="20moneyField" className="col-sm-2 col-form-label">
                       20
                     </label>
-                    <InputNumber type="number" id="20moneyField" onChange={value => setMoney20(value)} />
-                  </Col>
-                  <Col>
-                    <label htmlFor="10moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="20moneyField"
+                      className="col-sm-2"
+                      name="money20"
+                      value={money20}
+                      onChange={e => setMoney20(Number(e.target.value))}
+                    />
+                    <label htmlFor="10moneyField" className="col-sm-2 col-form-label">
                       10
                     </label>
-                    <InputNumber type="number" id="10moneyField" onChange={value => setMoney10(value)} />
-                  </Col>
-                  <Col>
-                    <label htmlFor="5moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="10moneyField"
+                      className="col-sm-2"
+                      type="number"
+                      name="money10"
+                      value={money10}
+                      onChange={e => setMoney10(Number(e.target.value))}
+                    />
+                    <label htmlFor="5moneyField" className="col-sm-2 col-form-label">
                       5
                     </label>
-                    <InputNumber type="number" id="5moneyField" onChange={value => setMoney5(value)} />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <label htmlFor="1moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="5moneyField"
+                      className="col-sm-2"
+                      name="money5"
+                      value={money5}
+                      onChange={e => setMoney5(Number(e.target.value))}
+                    />
+                    <label htmlFor="1moneyField" className="col-sm-2 col-form-label">
                       1
                     </label>
-                    <InputNumber type="number" id="1moneyField" onChange={value => setMoney1(value)} />
-                  </Col>
-                  <Col>
-                    <label htmlFor="05moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="1moneyField"
+                      className="col-sm-2"
+                      value={money1}
+                      onChange={e => setMoney1(Number(e.target.value))}
+                    />
+                    <label htmlFor="05moneyField" className="col-sm-2 col-form-label">
                       0.50
                     </label>
-                    <InputNumber type="number" id="05moneyField" onChange={value => setMoney05(value)} />
-                  </Col>
-                  <Col>
-                    <label htmlFor="025moneyField" className="col-sm-3 col-form-label">
+                    <input
+                      id="05moneyField"
+                      className="col-sm-2"
+                      name="money05"
+                      value={money05}
+                      onChange={e => setMoney05(Number(Number(e.target.value)))}
+                    />
+                    <label htmlFor="025moneyField" className="col-sm-2 col-form-label">
                       0.25
                     </label>
-                    <InputNumber type="number" id="025moneyField" onChange={value => setMoney025(value)} />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col class="col-md-3">
-                    <label htmlFor="0.1moneyField" className="col-sm-2 col-form-label">
-                      0.1
+                    <input
+                      id="025moneyField"
+                      className="col-sm-2"
+                      name="money025"
+                      value={money025}
+                      onChange={e => setMoney025(Number(e.target.value))}
+                    />
+                    <label htmlFor="01moneyField" className="col-sm-2 col-form-label">
+                      0.10
                     </label>
-                    <InputNumber type="number" id="01moneyField" onChange={value => setMoney01(value)} />
-                  </Col>
-                  <Col class="col-md-3">
+                    <input
+                      id="01moneyField"
+                      className="col-sm-2"
+                      name="money01"
+                      value={money01}
+                      onChange={e => setMoney01(Number(e.target.value))}
+                    />
                     <label htmlFor="005moneyField" className="col-sm-2 col-form-label">
                       0.05
                     </label>
-                    <InputNumber type="number" id="005moneyField" onChange={value => setMoney005(value)} />
-                  </Col>
-                </Row>
+                    <input
+                      id="005moneyField"
+                      className="col-sm-2"
+                      name="money005"
+                      value={money005}
+                      onChange={e => setMoney005(Number(e.target.value))}
+                    />
+                  </Row>
+              {/*    <Col>*/}
+              {/*      <label htmlFor="100moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        100*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="100moneyField" name="money100" value={money100} onChange={value => setMoney100(value)} />*/}
+              {/*    </Col>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="50moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        50*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="50moneyField" value={money50} onChange={value => setMoney50(value)} />*/}
+              {/*    </Col>*/}
+              {/*  </Row>*/}
+              {/*  <Row>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="20moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        20*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="20moneyField" onChange={value => setMoney20(value)} />*/}
+              {/*    </Col>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="10moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        10*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="10moneyField" onChange={value => setMoney10(value)} />*/}
+              {/*    </Col>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="5moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        5*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="5moneyField" onChange={value => setMoney5(value)} />*/}
+              {/*    </Col>*/}
+              {/*  </Row>*/}
+              {/*  <Row>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="1moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        1*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="1moneyField" onChange={value => setMoney1(value)} />*/}
+              {/*    </Col>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="05moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        0.50*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="05moneyField" onChange={value => setMoney05(value)} />*/}
+              {/*    </Col>*/}
+              {/*    <Col>*/}
+              {/*      <label htmlFor="025moneyField" className="col-sm-3 col-form-label">*/}
+              {/*        0.25*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="025moneyField" onChange={value => setMoney025(value)} />*/}
+              {/*    </Col>*/}
+              {/*  </Row>*/}
+              {/*  <Row>*/}
+              {/*    <Col class="col-md-3">*/}
+              {/*      <label htmlFor="0.1moneyField" className="col-sm-2 col-form-label">*/}
+              {/*        0.1*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="01moneyField" onChange={value => setMoney01(value)} />*/}
+              {/*    </Col>*/}
+              {/*    <Col class="col-md-3">*/}
+              {/*      <label htmlFor="005moneyField" className="col-sm-2 col-form-label">*/}
+              {/*        0.05*/}
+              {/*      </label>*/}
+              {/*      <InputNumber type="number" id="005moneyField" onChange={value => setMoney005(value)} />*/}
+              {/*    </Col>*/}
+                </Col>
               </AvGroup>
               <AvGroup>
                 <Label id="kasaLabel" for="nobet-hareketleri-kasa">
@@ -248,12 +358,6 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                   <Translate contentKey="koopApp.nobetHareketleri.nobetSuresi">Nobet Suresi</Translate>
                 </Label>
                 <AvField id="nobet-hareketleri-nobetSuresi" type="number" name="nobetSuresi" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="notlarLabel" for="nobet-hareketleri-notlar">
-                  <Translate contentKey="koopApp.nobetHareketleri.notlar">Notlar</Translate>
-                </Label>
-                <AvField id="nobet-hareketleri-notlar" type="text" name="notlar" />
               </AvGroup>
               <AvGroup>
                 <Label id="acilisKapanis" for="nobet-hareketleri-acilisKapanis">
