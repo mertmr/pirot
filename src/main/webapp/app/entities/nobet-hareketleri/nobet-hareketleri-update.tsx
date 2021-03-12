@@ -9,8 +9,6 @@ import { IRootState } from 'app/shared/reducers';
 
 import { createEntity, getEntity, reset, updateEntity } from './nobet-hareketleri.reducer';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { InputNumber } from 'antd';
-import 'antd/lib/input-number/style/index.css';
 import { getDashboardReports } from 'app/shared/reducers/dashboard-reports.reducer';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 
@@ -261,72 +259,6 @@ export const NobetHareketleriUpdate = (props: INobetHareketleriUpdateProps) => {
                       onChange={e => setMoney005(Number(e.target.value))}
                     />
                   </Row>
-              {/*    <Col>*/}
-              {/*      <label htmlFor="100moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        100*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="100moneyField" name="money100" value={money100} onChange={value => setMoney100(value)} />*/}
-              {/*    </Col>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="50moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        50*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="50moneyField" value={money50} onChange={value => setMoney50(value)} />*/}
-              {/*    </Col>*/}
-              {/*  </Row>*/}
-              {/*  <Row>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="20moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        20*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="20moneyField" onChange={value => setMoney20(value)} />*/}
-              {/*    </Col>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="10moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        10*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="10moneyField" onChange={value => setMoney10(value)} />*/}
-              {/*    </Col>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="5moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        5*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="5moneyField" onChange={value => setMoney5(value)} />*/}
-              {/*    </Col>*/}
-              {/*  </Row>*/}
-              {/*  <Row>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="1moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        1*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="1moneyField" onChange={value => setMoney1(value)} />*/}
-              {/*    </Col>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="05moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        0.50*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="05moneyField" onChange={value => setMoney05(value)} />*/}
-              {/*    </Col>*/}
-              {/*    <Col>*/}
-              {/*      <label htmlFor="025moneyField" className="col-sm-3 col-form-label">*/}
-              {/*        0.25*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="025moneyField" onChange={value => setMoney025(value)} />*/}
-              {/*    </Col>*/}
-              {/*  </Row>*/}
-              {/*  <Row>*/}
-              {/*    <Col class="col-md-3">*/}
-              {/*      <label htmlFor="0.1moneyField" className="col-sm-2 col-form-label">*/}
-              {/*        0.1*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="01moneyField" onChange={value => setMoney01(value)} />*/}
-              {/*    </Col>*/}
-              {/*    <Col class="col-md-3">*/}
-              {/*      <label htmlFor="005moneyField" className="col-sm-2 col-form-label">*/}
-              {/*        0.05*/}
-              {/*      </label>*/}
-              {/*      <InputNumber type="number" id="005moneyField" onChange={value => setMoney005(value)} />*/}
-              {/*    </Col>*/}
                 </Col>
               </AvGroup>
               <AvGroup>

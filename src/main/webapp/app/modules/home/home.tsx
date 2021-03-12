@@ -1,16 +1,11 @@
 import './home.scss';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
-import 'antd/lib/statistic/style/index.css';
-import 'antd/lib/card/style/index.css';
-import { Card, Statistic } from 'antd';
 import { getDashboardReports } from 'app/shared/reducers/dashboard-reports.reducer';
-
-import { IRootState } from 'app/shared/reducers';
 
 export interface IHomeProp extends StateProps, DispatchProps {}
 
@@ -41,24 +36,36 @@ export const Home = (props: IHomeProp) => {
             </Alert>
             <Row gutter={18}>
               <Col span={6}>
-                <Card>
-                  <Statistic title="Kasa" value={dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} suffix="TL" />
-                </Card>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Kasa</h5>
+                  <p className="card-text"> {dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} TL</p>
+                </div>
+              </div>
               </Col>
               <Col span={6}>
-                <Card>
-                  <Statistic title="Günlük Ciro" value={dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} suffix="TL" />
-                </Card>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Günlük Ciro</h5>
+                    <p className="card-text">  {dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} TL</p>
+                  </div>
+                </div>
               </Col>
               <Col span={6}>
-                <Card>
-                  <Statistic title="Kartlı Satış" value={dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} suffix="TL" />
-                </Card>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Kartlı Satış</h5>
+                    <p className="card-text">  {dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} TL</p>
+                  </div>
+                </div>
               </Col>
               <Col span={6}>
-                <Card>
-                  <Statistic title="Nakit Satış" value={dashboardReports.nakitSatis ? dashboardReports.nakitSatis : 0} suffix="TL" />
-                </Card>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Nakit Satış</h5>
+                    <p className="card-text"> {dashboardReports.nakitSatis ? dashboardReports.nakitSatis : 0} TL</p>
+                  </div>
+                </div>
               </Col>
             </Row>
           </div>

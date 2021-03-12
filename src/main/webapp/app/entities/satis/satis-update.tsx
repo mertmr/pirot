@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Label, Row, Table } from 'reactstrap';
-import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, Input } from 'availity-reactstrap-validation';
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
@@ -12,19 +12,11 @@ import {
   createEntity as createStokHareketi,
   updateEntity as updateStokHareketi,
 } from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/model/satis.model';
 import { defaultValueList as kdvDefaultList } from 'app/shared/model/kdv-kategorisi.model';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
-import { DatePicker, InputNumber, Select } from 'antd';
-import 'antd/lib/input-number/style/index.css';
-import 'antd/lib/date-picker/style/index.css';
-import 'antd/lib/select/style/index.css';
-import 'antd/lib/input/style/index.css';
 import { getAllUrunForStokGirisi, getSatisUrunleri } from 'app/entities/urun/urun.reducer';
-import moment from 'moment';
-import 'moment/locale/tr';
-import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
 import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.css';
@@ -32,8 +24,8 @@ import 'primeicons/primeicons.css';
 import { Birim } from 'app/shared/model/enumerations/birim.model';
 import { toast } from 'react-toastify';
 import cloneDeep from 'lodash/cloneDeep';
-// import 'primeflex/primeflex.css';
-// import './sass/App.scss';
+import { Calendar } from 'primereact/calendar';
+import 'primeflex/primeflex.css';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -145,14 +137,12 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     addRow();
   };
 
-  const updateDateSatisField = (value, dateString) => {
+  const updateDateSatisField = (value) => {
     setSatis({
       ...satis,
-      ['tarih']: dateString,
+      ['tarih']: value,
     });
   };
-
-  const { Option } = Select;
 
   useEffect(() => {
     if (isNew) {
@@ -297,12 +287,16 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                               <Col>Kalan Stok</Col>
                               <Col>{stokHareketi.urun.stok} {stokHareketi.urun.birim}</Col>
                             </Col>
-                            <Col style={{ marginTop: '10px' }}>
+                            <Col style={{ marginTop: '10px' }}  className="col-sm-2">
                               <Col>
                                 <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                               </Col>
                               <Col>
-                                <InputNumber type="number" value={stokHareketi.miktar} onChange={value => onChangeMiktar(value, i)} />
+                                <input
+                                  className="col-sm-12"
+                                  value={stokHareketi.miktar}
+                                  onChange={e => onChangeMiktar(e.target.value, i)}
+                                />
                               </Col>
                             </Col>
                             <Col style={{ marginTop: '10px' }}>
@@ -343,26 +337,24 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   </AvGroup>
                   <AvGroup>
                     <Label for="satis-nakitTutar">Nakit Verilen</Label>
-                    <InputNumber type="number" style={{ marginLeft: '10px' }} onChange={value => onChangeParaUstu(value)} />
+                    <input
+                      style={{ marginLeft: '10px' }}
+                      className="col-sm-2"
+                      onChange={e => onChangeParaUstu(Number(e.target.value))}
+                    />
                   </AvGroup>
                   <AvGroup>
                     <Label for="satis-paraustu">Para Üstü</Label>
-                    <InputNumber type="number" style={{ marginLeft: '10px' }} value={paraUstu} />
+                    <input
+                      style={{ marginLeft: '10px' }}
+                      className="col-sm-2"
+                      value={paraUstu}
+                    />
                   </AvGroup>
                   <AvGroup>
                     <Label for="gider-user">Satış Tarihi</Label>
-                    <DatePicker
-                      showTime
-                      name="tarih"
-                      className="form-control"
-                      placeholder="Tarih Seçin"
-                      onChange={updateDateSatisField}
-                      defaultValue={
-                        isNew
-                          ? moment(new Date(), 'YYYY-MM-DD')
-                          : moment(convertDateTimeFromServer(props.satisEntity.tarih), APP_LOCAL_DATETIME_FORMAT)
-                      }
-                    />
+                    <Calendar id="time24" style={{ marginLeft: '10px' }} value={new Date()} dateFormat="dd/mm/yy"
+                              onChange={(e) => updateDateSatisField(e.value)} showTime showSeconds />
                   </AvGroup>
                   <AvGroup check>
                     <Label id="kartliSatisLabel">
