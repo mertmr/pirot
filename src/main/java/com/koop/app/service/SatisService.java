@@ -65,9 +65,9 @@ public class SatisService {
         Satis result = satisRepository.save(satis);
 
         stokHareketleriLists.forEach(satisStokHareketleri -> satisStokHareketleri.setSatis(satis));
+        controlIfStockCHanged(stokHareketleriLists);
 
         for (SatisStokHareketleri stokHareketi : stokHareketleriLists) {
-            controlIfStockCHanged(stokHareketleriLists);
             Urun urun = stokHareketi.getUrun();
             if (urun.getStok() != null) {
                 urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokHareketi.getMiktar())));
