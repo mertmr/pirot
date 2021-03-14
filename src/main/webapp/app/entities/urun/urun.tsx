@@ -92,13 +92,18 @@ export const Urun = (props: IUrunProps) => {
     <div>
       <h2 id="urun-heading">
         <Translate contentKey="koopApp.urun.home.title">Ürunler</Translate>
-        <Link to={`${match.url}/new`} style={isAdmin ? {} : { display: 'none' }} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        <Link
+          to={`${match.url}/new`}
+          style={isAdmin ? {} : { display: 'none' }}
+          className="btn btn-primary float-right jh-create-entity"
+          id="jh-create-entity"
+        >
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="koopApp.urun.home.createLabel">Create new Urun</Translate>
         </Link>
       </h2>
-      <Row className="col-12" style={{ marginTop: '20px', marginRight: '0', paddingRight: '0', marginLeft: '0', paddingLeft: '0'}}>
+      <Row className="col-12" style={{ marginTop: '20px', marginRight: '0', paddingRight: '0', marginLeft: '0', paddingLeft: '0' }}>
         <Col className="col-12">
           <AvForm onSubmit={startSearching}>
             <AvGroup>

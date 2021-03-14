@@ -132,7 +132,7 @@ export const createEntity: ICrudPutAction<ISatis> = entity => async dispatch => 
     type: ACTION_TYPES.CREATE_SATIS,
     payload: axios.post(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
+  dispatch(getEntities(0, 25, 'tarih,desc'));
   return result;
 };
 

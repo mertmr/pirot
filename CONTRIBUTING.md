@@ -151,14 +151,14 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
--   All features or bug fixes **must be tested** by one or more tests.
--   All files must follow the [.editorconfig file](http://editorconfig.org/) located at the root of the JHipster generator project. Please note that generated projects use the same `.editorconfig` file, so that both the generator and the generated projects share the same configuration.
--   Java files **must be** formatted using Intellij IDEA default code style.
--   Generators JavaScript files **must follow** the eslint configuration defined at the project root, which is based on [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript).
--   Any client side feature/change should be done for both Angular and react clients
--   Web apps JavaScript files **must follow** [Google's JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html).
--   Angular Typescript files **must follow** the [Official Angular style guide](https://angular.io/styleguide).
--   React/Redux Typescript files **may follow** the [React/Redux Typescript guide](https://github.com/piotrwitek/react-redux-typescript-guide).
+- All features or bug fixes **must be tested** by one or more tests.
+- All files must follow the [.editorconfig file](http://editorconfig.org/) located at the root of the JHipster generator project. Please note that generated projects use the same `.editorconfig` file, so that both the generator and the generated projects share the same configuration.
+- Java files **must be** formatted using Intellij IDEA default code style.
+- Generators JavaScript files **must follow** the eslint configuration defined at the project root, which is based on [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript).
+- Any client side feature/change should be done for both Angular and react clients
+- Web apps JavaScript files **must follow** [Google's JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html).
+- Angular Typescript files **must follow** the [Official Angular style guide](https://angular.io/styleguide).
+- React/Redux Typescript files **may follow** the [React/Redux Typescript guide](https://github.com/piotrwitek/react-redux-typescript-guide).
 
 Please ensure to run `npm run lint` and `npm test` on the project root before submitting a pull request. You can also run `npm run lint-fix` to fix some of the lint issues automatically.
 
@@ -187,9 +187,9 @@ to read on GitHub as well as in various git tools.
 
 The Header contains a succinct description of the change:
 
--   use the imperative, present tense: "change" not "changed" nor "changes"
--   don't capitalize first letter
--   no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize first letter
+- no dot (.) at the end
 
 ### Body
 
@@ -217,7 +217,6 @@ see http://spring.io/blog/2014/09/26/spring-boot-1-1-7-released
 
 Fix #1234
 ```
-
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
 [jhipster 6.9.1 archive]: https://www.jhipster.tech/documentation-archive/v6.9.1

@@ -11,7 +11,7 @@ import { getEntities, getSearchEntities } from './satis.reducer';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { getSortState } from 'app/shared/util/pagination-utils';
-import {Checkbox} from 'primereact/checkbox';
+import { Checkbox } from 'primereact/checkbox';
 
 export interface ISatisProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -160,10 +160,10 @@ export const Satis = (props: ISatisProps) => {
                   </td>
                   <td>{satis.toplamTutar}</td>
                   <td>
-                    <Checkbox onChange={e => null} checked={satis.ortagaSatis}/>
+                    <Checkbox onChange={e => null} checked={satis.ortagaSatis} />
                   </td>
                   <td>
-                    <Checkbox onChange={e => null} checked={satis.kartliSatis}/>
+                    <Checkbox onChange={e => null} checked={satis.kartliSatis} />
                   </td>
                   <td>{satis.user ? satis.user.login : ''}</td>
                   <td className="text-right">

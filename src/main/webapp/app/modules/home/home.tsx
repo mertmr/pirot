@@ -13,7 +13,7 @@ export const Home = (props: IHomeProp) => {
   const { account, dashboardReports, isAuthenticated } = props;
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       props.getDashboardReports();
     }
   }, [account]);
@@ -36,18 +36,18 @@ export const Home = (props: IHomeProp) => {
             </Alert>
             <Row gutter={18}>
               <Col span={6}>
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">Kasa</h5>
-                  <p className="card-text"> {dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} TL</p>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Kasa</h5>
+                    <p className="card-text"> {dashboardReports.kasadaNeVar ? dashboardReports.kasadaNeVar : 0} TL</p>
+                  </div>
                 </div>
-              </div>
               </Col>
               <Col span={6}>
                 <div className="card">
                   <div className="card-body">
                     <h5 className="card-title">Günlük Ciro</h5>
-                    <p className="card-text">  {dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} TL</p>
+                    <p className="card-text"> {dashboardReports.gunlukCiro ? dashboardReports.gunlukCiro : 0} TL</p>
                   </div>
                 </div>
               </Col>
@@ -55,7 +55,7 @@ export const Home = (props: IHomeProp) => {
                 <div className="card">
                   <div className="card-body">
                     <h5 className="card-title">Kartlı Satış</h5>
-                    <p className="card-text">  {dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} TL</p>
+                    <p className="card-text"> {dashboardReports.kartliSatis ? dashboardReports.kartliSatis : 0} TL</p>
                   </div>
                 </div>
               </Col>
