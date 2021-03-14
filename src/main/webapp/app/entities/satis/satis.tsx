@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, InputGroup, Row, Table } from 'reactstrap';
+import { Button, Col, InputGroup, Row, Table, Input } from 'reactstrap';
 import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { JhiItemCount, JhiPagination, TextFormat, Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Checkbox } from 'antd';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities, getSearchEntities } from './satis.reducer';
 import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { getSortState } from 'app/shared/util/pagination-utils';
+import { Checkbox } from 'primereact/checkbox';
 
 export interface ISatisProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -160,10 +160,10 @@ export const Satis = (props: ISatisProps) => {
                   </td>
                   <td>{satis.toplamTutar}</td>
                   <td>
-                    <Checkbox checked={satis.ortagaSatis} disabled />
+                    <Checkbox onChange={e => null} checked={satis.ortagaSatis} />
                   </td>
                   <td>
-                    <Checkbox checked={satis.kartliSatis} disabled />
+                    <Checkbox onChange={e => null} checked={satis.kartliSatis} />
                   </td>
                   <td>{satis.user ? satis.user.login : ''}</td>
                   <td className="text-right">

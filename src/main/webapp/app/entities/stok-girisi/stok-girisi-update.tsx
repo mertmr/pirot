@@ -18,9 +18,7 @@ import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
-import { InputNumber } from 'antd';
 import { Birim } from 'app/shared/model/enumerations/birim.model';
-import { StokHareketiTipi } from 'app/shared/model/enumerations/stok-hareketi-tipi.model';
 
 export interface IStokGirisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -214,7 +212,9 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   value={(!isNew && stokGirisiEntity.stokHareketiTipi) || 'STOK_GIRISI'}
                 >
                   <option value="STOK_GIRISI">{translate('koopApp.StokHareketiTipi.STOK_GIRISI')}</option>
-                  <option style={isAdmin ? {} : { display: 'none' }} value="FIRE">{translate('koopApp.StokHareketiTipi.FIRE')}</option>
+                  <option style={isAdmin ? {} : { display: 'none' }} value="FIRE">
+                    {translate('koopApp.StokHareketiTipi.FIRE')}
+                  </option>
                   <option style={isAdmin ? {} : { display: 'none' }} value="STOK_DUZELTME">
                     {translate('koopApp.StokHareketiTipi.STOK_DUZELTME')}
                   </option>
