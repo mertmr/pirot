@@ -89,6 +89,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     new PacktrackerPlugin({
       project_token: '48f37371-7794-4def-8d6c-a29a79dfdb3e',
       upload: true,
+      branch: process.env.GITHUB_REF,
       fail_build: true
     }),
     new MiniCssExtractPlugin({
