@@ -159,7 +159,7 @@ public class SatisService {
             kasaHareketleriService.createKasaHareketi(satis.getToplamTutar(), SATIS_GUNCELLEMESI);
         }
         if (Boolean.FALSE.equals(satisOncekiHali.isKartliSatis()) && Boolean.TRUE.equals(satis.isKartliSatis())) {
-            kasaHareketleriService.createKasaHareketi(satis.getToplamTutar().negate(), SATIS_GUNCELLEMESI);
+            kasaHareketleriService.createKasaHareketi(satisOncekiHali.getToplamTutar().negate(), SATIS_GUNCELLEMESI);
         }
     }
 
