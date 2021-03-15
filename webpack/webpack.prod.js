@@ -9,6 +9,7 @@ const sass = require('sass');
 
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
+const PacktrackerPlugin = require('@packtracker/webpack-plugin')
 
 const ENV = 'production';
 
@@ -85,6 +86,11 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     ]
   },
   plugins: [
+    new PacktrackerPlugin({
+      project_token: '48f37371-7794-4def-8d6c-a29a79dfdb3e',
+      upload: true,
+      fail_build: true
+    }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       filename: 'content/[name].[hash].css',
