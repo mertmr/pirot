@@ -138,6 +138,8 @@ exports[`Header Renders a Header component in prod profile with LoadingBar, Navb
           onClick={[Function]}
         />
         <Component
+          isAdmin={true}
+          isAuthenticated={true}
           onClick={[Function]}
         />
         <Component

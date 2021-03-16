@@ -55,7 +55,7 @@ describe('Header', () => {
   it('Renders a Header component in dev profile with LoadingBar, Navbar, Nav and dev ribbon.', () => {
     const component = wrapper();
     // the created snapshot must be committed to source control
-   // expect(component).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
     expect(component.find(LoadingBar).length).toEqual(1);
     const navbar = component.find(Navbar);
     expect(navbar.length).toEqual(1);
