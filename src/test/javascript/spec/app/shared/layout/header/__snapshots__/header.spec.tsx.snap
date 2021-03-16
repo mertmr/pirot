@@ -62,6 +62,8 @@ exports[`Header Renders a Header component in dev profile with LoadingBar, Navba
           onClick={[Function]}
         />
         <Component
+          isAdmin={true}
+          isAuthenticated={true}
           onClick={[Function]}
         />
         <Component
