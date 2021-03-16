@@ -89,19 +89,6 @@ export const KasaHareketleriUpdate = (props: IKasaHareketleriUpdateProps) => {
                 </Label>
                 <AvField id="kasa-hareketleri-hareket" type="text" name="hareket" />
               </AvGroup>
-              <AvGroup>
-                <Label id="tarihLabel" for="kasa-hareketleri-tarih">
-                  <Translate contentKey="koopApp.kasaHareketleri.tarih">Tarih</Translate>
-                </Label>
-                <AvInput
-                  id="kasa-hareketleri-tarih"
-                  type="datetime-local"
-                  className="form-control"
-                  name="tarih"
-                  placeholder={'YYYY-MM-DD HH:mm'}
-                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.kasaHareketleriEntity.tarih)}
-                />
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/kasa-hareketleri" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
