@@ -3,9 +3,6 @@ import './header.scss';
 import React, { useState } from 'react';
 import { Translate, Storage } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, NavbarBrand, Collapse } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { NavLink as Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand } from './header-components';
@@ -39,20 +36,7 @@ const Header = (props: IHeaderProps) => {
       </div>
     ) : null;
 
-  const [collapse, setCollapse] = useState(false);
-  const [status, setStatus] = useState('Closed');
-
-  const onEntering = () => setStatus('Opening...');
-
-  const onEntered = () => setStatus('Opened');
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const toggleMenuOnClick = event => {
-    const langKey = event.target.value;
-    Storage.session.set('locale', langKey);
-    props.onLocaleChange(langKey);
-  };
 
   /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
