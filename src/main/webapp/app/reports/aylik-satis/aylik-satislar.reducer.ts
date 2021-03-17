@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { defaultValue } from 'app/shared/model/aylis-satislar.model';
+import { IAylikSatislar } from 'app/shared/model/aylis-satislar.model';
 
 export const ACTION_TYPES = {
   FETCH_AYLIK_SATISLARS: 'aylikSatislar/FETCH_AYLIK_SATISLARS',
@@ -10,7 +10,7 @@ export const ACTION_TYPES = {
 const initialState = {
   loading: false,
   errorMessage: null,
-  aylikSatislar: defaultValue,
+  aylikSatislar: [] as ReadonlyArray<IAylikSatislar>,
 };
 
 export type AylikSatislarState = Readonly<typeof initialState>;
@@ -44,8 +44,8 @@ export default (state: AylikSatislarState = initialState, action): AylikSatislar
 
 // Actions
 
-export const getAylikSatislars = () => {
-  const requestUrl = `api/satis-stok-hareketleris/getSatisRaporlari`;
+export const getAylikSatislars = id => {
+  const requestUrl = `api/satis-stok-hareketleris/getSatisRaporlari/${id}`;
   return {
     type: ACTION_TYPES.FETCH_AYLIK_SATISLARS,
     payload: axios.get(requestUrl),

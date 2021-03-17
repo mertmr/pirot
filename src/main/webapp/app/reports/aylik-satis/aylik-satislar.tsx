@@ -4,72 +4,67 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
 import { IRootState } from 'app/shared/reducers';
+import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import { getAylikSatislars } from './aylik-satislar.reducer';
+import { Dropdown } from "primereact/dropdown";
+import { defaultValue } from "app/shared/model/urun.model";
+import { getAllUrunForStokGirisi } from "app/entities/urun/urun.reducer";
+import { TextFormat } from "react-jhipster";
+import { APP_DATE_FORMAT } from "app/config/constants";
 
 export interface IAylikSatislarsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
-const previousMonth = (): string => {
-  const now: Date = new Date();
-  const fromDate =
-    now.getMonth() === 0
-      ? new Date(now.getFullYear() - 1, 11, now.getDate())
-      : new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-  return fromDate.toISOString().slice(0, 10);
-};
-
-const today = (): string => {
-  // Today + 1 day - needed if the current day must be included
-  const day: Date = new Date();
-  day.setDate(day.getDate() + 1);
-  const toDate = new Date(day.getFullYear(), day.getMonth(), day.getDate());
-  return toDate.toISOString().slice(0, 10);
-};
-
 export const AylikSatislarsPage = (props: IAylikSatislarsPageProps) => {
-  const [fromDate, setFromDate] = useState(previousMonth());
-  const [toDate, setToDate] = useState(today());
+
+  const [urun, setUrun] = useState(defaultValue);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    getAllAylikSatislars();
-  }, [fromDate, toDate]);
+    props.getAllUrunForStokGirisi();
+  }, []);
 
-  const onChangeFromDate = evt => setFromDate(evt.target.value);
-
-  const onChangeToDate = evt => setToDate(evt.target.value);
-
-  const getAllAylikSatislars = () => {
-    props.getAylikSatislars();
+  const updateStokGirisi = e => {
+    props.getAylikSatislars(e.target.value.id);
+    setUrun(e.target.value);
   };
 
-  const { aylikSatislar } = props;
+  const { aylikSatislar, satisUrunleri } = props;
 
   return (
     <div>
       <h2 id="aylikSatislars-page-heading">Aylık Satışlar</h2>
-      {aylikSatislar && aylikSatislar.aylikSatisMap && aylikSatislar.tarihListesi && aylikSatislar.tarihListesi.length > 0 ? (
+      <AvForm>
+        <span>Tükenme Raporunu Öğrenmek İstediğiniz Ürünü Seçin</span>
+        <AvGroup>
+          <Dropdown
+            value={urun}
+            options={satisUrunleri}
+            optionLabel="urunAdi"
+            style={{ width: '100%' }}
+            onChange={updateStokGirisi}
+            filter={true}
+            filterPlaceholder="Ürün seçiniz"
+            filterBy="urunAdi"
+            placeholder="Ürün seçiniz"
+          />
+        </AvGroup>
+      </AvForm>
+      {aylikSatislar && aylikSatislar.length > 0 ? (
         <Table striped responsive>
           <thead>
-            <tr>
-              <th>Ürünler</th>
-              {aylikSatislar.tarihListesi.map((tarih, i) => (
-                <th key={`tarihListesi-${i}`}>{tarih.slice(0, 7)}</th>
-              ))}
-            </tr>
+          <tr>
+            <th>Satış Tarihi</th>
+            <th>Satış Miktarı</th>
+          </tr>
           </thead>
           <tbody>
-            {aylikSatislar.urunAdiListesi.map((urun, i) => (
-              <tr key={`urunAdiListesi-${i}`}>
-                <td>{urun}</td>
-                {aylikSatislar.tarihListesi.map((tarihim, k) => (
-                  <td key={`map-${k}`}>
-                    {aylikSatislar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
-                      ? aylikSatislar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
-                      : '-'}
-                  </td>
-                ))}
-              </tr>
-            ))}
+          {aylikSatislar.map((aylikSatis, i) => (
+            <tr key={`aylikSatis-${i}`}>
+              <td>
+                {aylikSatis.year} - {aylikSatis.month}
+              </td>
+              <td>{aylikSatis.miktar}</td>
+            </tr>
+          ))}
           </tbody>
         </Table>
       ) : (
@@ -82,9 +77,13 @@ export const AylikSatislarsPage = (props: IAylikSatislarsPageProps) => {
 const mapStateToProps = (storeState: IRootState) => ({
   aylikSatislar: storeState.aylikSatislarState.aylikSatislar,
   totalItems: storeState.ciroState.totalItems,
+  satisUrunleri: storeState.urun.satisUrunleri,
 });
 
-const mapDispatchToProps = { getAylikSatislars };
+const mapDispatchToProps = {
+  getAylikSatislars,
+  getAllUrunForStokGirisi,
+};
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -1,9 +1,9 @@
 import { Moment } from 'moment';
 
 export interface IAylikSatislar {
-  aylikSatisMap?: Map<string, number>;
-  tarihListesi?: Array<string>;
-  urunAdiListesi?: Array<string>;
+  year?: number;
+  month?: number;
+  miktar?: number;
 }
 
 export const defaultValue: Readonly<IAylikSatislar> = {};

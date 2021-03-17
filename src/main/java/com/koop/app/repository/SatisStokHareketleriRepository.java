@@ -30,10 +30,11 @@ public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokH
             "FROM SatisStokHareketleri st " +
             "         join Satis s on st.satis.id = s.id " +
             "         join Urun u on st.urun.id = u.id " +
+            " where u.id = :id " +
             "GROUP BY year(s.tarih), month(s.tarih), u.urunAdi  " +
             "order by year(s.tarih), month(s.tarih) desc "
     )
-    List<AylikSatislar> getSatisRaporlari();
+    List<AylikSatislar> getSatisRaporlari(@Param("id") Long id);
 
     @Query(
         "select satisStokHareketleri from SatisStokHareketleri satisStokHareketleri " +

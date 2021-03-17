@@ -162,49 +162,8 @@ public class SatisStokHareketleriResource {
             .build();
     }
 
-    @GetMapping("/satis-stok-hareketleris/getSatisRaporlari")
-    public AylikSatislarRaporu getSatisRaporlari() {
-        List<AylikSatislar> satisRaporlari = satisStokHareketleriRepository.getSatisRaporlari();
-        AylikSatislarRaporu aylikSatislarRaporu = new AylikSatislarRaporu();
-
-        aylikSatislarRaporu.setAylikSatisMap(
-            satisRaporlari
-                .stream()
-                .collect(
-                    Collectors.toMap(
-                        aylikSatislar -> {
-                            if (String.valueOf(aylikSatislar.getMonth()).length() == 1) {
-                                return (
-                                    aylikSatislar.getYear() +
-                                    ".0" +
-                                    aylikSatislar.getMonth() +
-                                    aylikSatislar.getUrunAdi()
-                                );
-                            }
-                            return (
-                                aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi()
-                            );
-                        },
-                        AylikSatislar::getMiktar,
-                        (aylikSatislar1, aylikSatislar2) -> aylikSatislar1
-                    )
-                )
-        );
-
-        List<ZonedDateTime> tarihListesi = new ArrayList<>();
-        for (AylikSatislar satisRaporu : satisRaporlari) {
-            int month = satisRaporu.getMonth();
-            int year = satisRaporu.getYear();
-            ZonedDateTime yearMonth = ZonedDateTime.of(year, month, 1, 0, 0, 0, 0, ZoneId.systemDefault());
-            tarihListesi.add(yearMonth);
-        }
-        tarihListesi = tarihListesi.stream().distinct().collect(Collectors.toList());
-        tarihListesi.sort(ChronoZonedDateTime::compareTo);
-        aylikSatislarRaporu.setTarihListesi(tarihListesi);
-
-        aylikSatislarRaporu.setUrunAdiListesi(
-            satisRaporlari.stream().map(AylikSatislar::getUrunAdi).distinct().collect(Collectors.toList())
-        );
-        return aylikSatislarRaporu;
+    @GetMapping("/satis-stok-hareketleris/getSatisRaporlari/{id}")
+    public List<AylikSatislar> getSatisRaporlari(@PathVariable Long id) {
+        return satisStokHareketleriRepository.getSatisRaporlari(id);
     }
 }
