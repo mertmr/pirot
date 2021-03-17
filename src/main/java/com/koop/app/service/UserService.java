@@ -102,7 +102,7 @@ public class UserService {
                     user.setResetKey(RandomUtil.generateResetKey());
                     user.setResetDate(Instant.now());
                     this.clearUserCaches(user);
-                    return user;
+                    return userRepository.save(user);
                 }
             );
     }
@@ -136,6 +136,7 @@ public class UserService {
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
         newUser.setLastName(userDTO.getLastName());
+        newUser.setTenantId(userDTO.getTenantId());
         if (userDTO.getEmail() != null) {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
@@ -167,6 +168,7 @@ public class UserService {
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setTenantId(userDTO.getTenantId());
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }

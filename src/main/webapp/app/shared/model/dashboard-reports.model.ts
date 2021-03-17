@@ -4,6 +4,8 @@ export interface IDashboardReports {
   gunlukCiro?: number;
   kartliSatis?: number;
   nakitSatis?: number;
+  haftalikCiroRakamlari?: [];
+  haftalikCiroTarihleri?: [];
 }
 
 export const defaultValue: Readonly<IDashboardReports> = {};

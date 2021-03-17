@@ -38,13 +38,17 @@ public class TenantServiceAspect {
     @Around("execution(public * *(..)) && enableMultiTenancy()))")
     public Object aroundExecution(final ProceedingJoinPoint pjp) throws Throwable {
         if(!pjp.getSignature().getDeclaringTypeName().equals("com.koop.app.repository.tenancy.UserSystemWideAuthRepository")) {
-            if(TenantAssistance.resolveCurrentTenantIdentifier() != null) {
+            Long tenantIdentifier = TenantAssistance.resolveCurrentTenantIdentifier();
+            if(tenantIdentifier == null) {
+                return pjp.proceed();
+            }
+            else {
                 final Filter filter =
                     this.entityManager
                         .unwrap(Session.class) // requires transaction
                         .enableFilter(TENANT_FILTER_NAME)
                         .setParameter(
-                            TENANT_FILTER_ARGUMENT_NAME, TenantAssistance.resolveCurrentTenantIdentifier().longValue());
+                            TENANT_FILTER_ARGUMENT_NAME, tenantIdentifier.longValue());
                 filter.validate();
             }
             return pjp.proceed();

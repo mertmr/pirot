@@ -6,6 +6,7 @@ import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
 import { getDashboardReports } from 'app/shared/reducers/dashboard-reports.reducer';
+import { Chart } from 'primereact/chart';
 
 export interface IHomeProp extends StateProps, DispatchProps {}
 
@@ -17,6 +18,37 @@ export const Home = (props: IHomeProp) => {
       props.getDashboardReports();
     }
   }, [account]);
+
+  const basicData = {
+    labels: dashboardReports.haftalikCiroTarihleri,
+    datasets: [
+      {
+        label: 'Günlük Ciro',
+        backgroundColor: '#42A5F5',
+        data: dashboardReports.haftalikCiroRakamlari
+      }
+    ]
+  };
+
+  const basicOptions = {
+    legend: {
+      labels: {
+        fontColor: '#495057'
+      }
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          fontColor: '#495057'
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          fontColor: '#495057'
+        }
+      }]
+    }
+  };
 
   return (
     <Row>
@@ -68,6 +100,8 @@ export const Home = (props: IHomeProp) => {
                 </div>
               </Col>
             </Row>
+            <div className="row mt-5"/>
+            <Chart type="bar" data={basicData} options={basicOptions} />
           </div>
         ) : (
           <div>

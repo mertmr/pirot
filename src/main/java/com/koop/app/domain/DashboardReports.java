@@ -1,5 +1,8 @@
 package com.koop.app.domain;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public class DashboardReports {
     private double kasadaNeVar = 0;
 
@@ -10,6 +13,26 @@ public class DashboardReports {
     private double kartliSatis = 0;
 
     private double nakitSatis = 0;
+
+    private List<String> haftalikCiroTarihleri;
+
+    private List<BigDecimal> haftalikCiroRakamlari;
+
+    public List<String> getHaftalikCiroTarihleri() {
+        return haftalikCiroTarihleri;
+    }
+
+    public void setHaftalikCiroTarihleri(List<String> haftalikCiroTarihleri) {
+        this.haftalikCiroTarihleri = haftalikCiroTarihleri;
+    }
+
+    public List<BigDecimal> getHaftalikCiroRakamlari() {
+        return haftalikCiroRakamlari;
+    }
+
+    public void setHaftalikCiroRakamlari(List<BigDecimal> haftalikCiroRakamlari) {
+        this.haftalikCiroRakamlari = haftalikCiroRakamlari;
+    }
 
     public double getKasadaNeVar() {
         return kasadaNeVar;

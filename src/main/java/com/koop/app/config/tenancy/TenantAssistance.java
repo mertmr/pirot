@@ -25,7 +25,7 @@ public final class TenantAssistance {
                 log.error(tenant.toString());
             }
         } else {
-            return 0L;
+            return null;
         }
 
         throw new UnknownTenantException("Tenant is empty");

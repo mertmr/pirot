@@ -45,7 +45,11 @@ public final class TenantInterceptor extends EmptyInterceptor {
         if (entity instanceof TenantEntity) {
             for (int index = 0; index < propertyName.length; index++) {
                 if (propertyName[index].equals(TENANT_FILTER_ARGUMENT_NAME)) {
-                    state[index] = TenantAssistance.resolveCurrentTenantIdentifier();
+                    Long tenantIdentifier = TenantAssistance.resolveCurrentTenantIdentifier();
+                    if(tenantIdentifier == null) {
+                        return false;
+                    }
+                    state[index] = tenantIdentifier;
                     return true;
                 }
             }
