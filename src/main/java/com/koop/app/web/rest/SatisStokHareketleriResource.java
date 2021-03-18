@@ -2,23 +2,12 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.dto.AylikSatislar;
-import com.koop.app.dto.AylikSatislarRaporu;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.chrono.ChronoZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +18,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.SatisStokHareketleri}.
@@ -164,6 +162,10 @@ public class SatisStokHareketleriResource {
 
     @GetMapping("/satis-stok-hareketleris/getSatisRaporlari/{id}")
     public List<AylikSatislar> getSatisRaporlari(@PathVariable Long id) {
-        return satisStokHareketleriRepository.getSatisRaporlari(id);
+        List<AylikSatislar> satisRaporlari = satisStokHareketleriRepository.getSatisRaporlari(id);
+        Comparator<AylikSatislar> comparator = Comparator
+            .comparing(o -> ZonedDateTime.of(o.getYear(), o.getMonth(), 1, 0, 0, 0, 0, ZoneId.systemDefault()));
+        satisRaporlari.sort(comparator.reversed());
+        return satisRaporlari;
     }
 }
