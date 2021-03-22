@@ -50,7 +50,7 @@ export const App = (props: IAppProps) => {
           isInProduction={props.isInProduction}
           isSwaggerEnabled={props.isSwaggerEnabled}
         />
-        <div className="app-container" style={{ paddingTop }}>
+        <div className="app-container">
           <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
           <ErrorBoundary>
             <Header
