@@ -6,6 +6,8 @@
 body {
   background: #fafafa;
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  color: #495057;
 }
 
 @media (max-width: 400px) {
@@ -33,8 +35,13 @@ h2 {
   }
 }
 
+.wrapperx {
+  overflow-x: hidden;
+}
+
 .app-container {
   box-sizing: border-box;
+  width: 100%;
   .view-container {
     width: 100%;
     height: calc(100% - 40px);

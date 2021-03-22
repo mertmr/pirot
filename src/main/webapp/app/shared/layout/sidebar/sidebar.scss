@@ -1,0 +1,127 @@
+$header-color: #fff;
+$header-color-secondary: #bbb;
+$header-color-hover: darken($header-color, 20%);
+
+/* ==========================================================================
+Navbar styles
+========================================================================== */
+.app-sidebar {
+  box-sizing: border-box;
+  min-height: 100vh;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+  .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+  }
+  .list-group {
+    width: 15rem;
+  }
+}
+
+.jh-navbar-sidebar {
+  background-color: #3c4b64;
+  height: 100%; /* 100% Full-height */
+  display: block;
+  width: 250px;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: all 0.5s;
+  padding-top: 0px;
+  .profile-image {
+    margin: -10px 0px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+  .dropdown-item {
+    white-space: normal;
+  }
+  .dropdown-item.active,
+  .dropdown-item.active:focus,
+  .dropdown-item.active:hover {
+    background-color: #353d47;
+  }
+  .dropdown-toggle::after {
+    margin-left: 0.15em;
+  }
+  ul.navbar-nav {
+    padding: 0.5em;
+    .nav-item {
+      margin-left: 0;
+    }
+  }
+  a.nav-link {
+    font-weight: 400;
+    > span {
+      margin-left: 5px;
+    }
+  }
+  .jh-navbar-toggler {
+    color: #ccc;
+    font-size: 1.5em;
+    padding: 10px;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.sidebar-collapse {
+  height: 100%; /* 100% Full-height */
+}
+
+.pirot-navbar {
+  position: absolute;
+  top: 10px;
+}
+
+.navbar-version {
+  font-size: 10px;
+  color: $header-color-secondary;
+  padding: 0 0 0 10px;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    overflow: auto;
+    max-height: 85vh;
+    align-items: flex-start;
+    -webkit-overflow-scrolling: touch; // mobile safari
+  }
+}
+
+.brand-logo {
+  &:hover {
+    text-decoration: none;
+  }
+  .brand-icon {
+    height: 35px;
+    width: auto;
+    display: inline-block;
+    img {
+      height: 45px;
+    }
+  }
+}
+
+.brand-title {
+  font-size: 24px;
+  color: $header-color;
+  &:hover {
+    color: $header-color-hover;
+    text-decoration: none;
+  }
+}
+
+.loading-bar {
+  height: 3px;
+  background-color: #009cd8;
+  position: absolute;
+  top: 0px;
+  z-index: 1031;
+}

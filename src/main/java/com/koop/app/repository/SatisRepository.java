@@ -67,7 +67,7 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
         "from Satis satis " +
         "where satis.tarih between :from and :to " +
         "group by cast(satis.tarih as date) " +
-        "order by cast(satis.tarih as date) desc"
+        "order by cast(satis.tarih as date)"
     )
     List<Ciro> getCiroReports(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
 

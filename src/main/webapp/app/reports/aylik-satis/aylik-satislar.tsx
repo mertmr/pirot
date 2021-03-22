@@ -6,16 +6,15 @@ import { Table } from 'reactstrap';
 import { IRootState } from 'app/shared/reducers';
 import { AvForm, AvGroup } from 'availity-reactstrap-validation';
 import { getAylikSatislars } from './aylik-satislar.reducer';
-import { Dropdown } from "primereact/dropdown";
-import { defaultValue } from "app/shared/model/urun.model";
-import { getAllUrunForStokGirisi } from "app/entities/urun/urun.reducer";
-import { TextFormat } from "react-jhipster";
-import { APP_DATE_FORMAT } from "app/config/constants";
+import { Dropdown } from 'primereact/dropdown';
+import { defaultValue } from 'app/shared/model/urun.model';
+import { getAllUrunForStokGirisi } from 'app/entities/urun/urun.reducer';
+import { TextFormat } from 'react-jhipster';
+import { APP_DATE_FORMAT } from 'app/config/constants';
 
 export interface IAylikSatislarsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export const AylikSatislarsPage = (props: IAylikSatislarsPageProps) => {
-
   const [urun, setUrun] = useState(defaultValue);
 
   useEffect(() => {
@@ -51,20 +50,20 @@ export const AylikSatislarsPage = (props: IAylikSatislarsPageProps) => {
       {aylikSatislar && aylikSatislar.length > 0 ? (
         <Table striped responsive>
           <thead>
-          <tr>
-            <th>Satış Tarihi</th>
-            <th>Satış Miktarı</th>
-          </tr>
+            <tr>
+              <th>Satış Tarihi</th>
+              <th>Satış Miktarı</th>
+            </tr>
           </thead>
           <tbody>
-          {aylikSatislar.map((aylikSatis, i) => (
-            <tr key={`aylikSatis-${i}`}>
-              <td>
-                {aylikSatis.year} - {aylikSatis.month}
-              </td>
-              <td>{aylikSatis.miktar}</td>
-            </tr>
-          ))}
+            {aylikSatislar.map((aylikSatis, i) => (
+              <tr key={`aylikSatis-${i}`}>
+                <td>
+                  {aylikSatis.year} - {aylikSatis.month}
+                </td>
+                <td>{aylikSatis.miktar}</td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       ) : (
