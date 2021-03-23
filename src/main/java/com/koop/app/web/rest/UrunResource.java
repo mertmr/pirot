@@ -5,6 +5,8 @@ import com.koop.app.domain.UrunFiyat;
 import com.koop.app.domain.User;
 import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.StockChangedException;
+import com.koop.app.service.StockException;
 import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
@@ -113,6 +115,10 @@ public class UrunResource {
         Urun result = urunRepository.save(urun);
         if (oncekiFiyat != result.getMusteriFiyati().doubleValue()) {
             createUrunFiyatEntry(urun, currentUser);
+        }
+
+        if(oncekiUrun.getStok().compareTo(urun.getStok()) != 0) {
+            throw new StockException();
         }
         return ResponseEntity
             .ok()
