@@ -1,0 +1,28 @@
+{
+  "koopApp": {
+    "borcAlacak": {
+      "home": {
+        "title": "Borc Alacaks",
+        "createLabel": "Create a new Borc Alacak",
+        "createOrEditLabel": "Create or edit a Borc Alacak",
+        "notFound": "No Borc Alacaks found"
+      },
+      "created": "A new Borc Alacak is created with identifier {{ param }}",
+      "updated": "A Borc Alacak is updated with identifier {{ param }}",
+      "deleted": "A Borc Alacak is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Borc Alacak {{ id }}?"
+      },
+      "detail": {
+        "title": "Borc Alacak"
+      },
+      "tutar": "Tutar",
+      "notlar": "Notlar",
+      "odemeAraci": "Odeme Araci",
+      "hareketTipi": "Hareket Tipi",
+      "tarih": "Tarih",
+      "user": "User",
+      "urun": "Urun"
+    }
+  }
+}

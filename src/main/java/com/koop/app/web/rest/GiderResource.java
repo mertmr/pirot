@@ -1,0 +1,128 @@
+package com.koop.app.web.rest;
+
+import com.koop.app.domain.Gider;
+import com.koop.app.repository.GiderRepository;
+import com.koop.app.web.rest.errors.BadRequestAlertException;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing {@link com.koop.app.domain.Gider}.
+ */
+@RestController
+@RequestMapping("/api")
+@Transactional
+public class GiderResource {
+
+    private final Logger log = LoggerFactory.getLogger(GiderResource.class);
+
+    private static final String ENTITY_NAME = "gider";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
+    private final GiderRepository giderRepository;
+
+    public GiderResource(GiderRepository giderRepository) {
+        this.giderRepository = giderRepository;
+    }
+
+    /**
+     * {@code POST  /giders} : Create a new gider.
+     *
+     * @param gider the gider to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new gider, or with status {@code 400 (Bad Request)} if the gider has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/giders")
+    public ResponseEntity<Gider> createGider(@Valid @RequestBody Gider gider) throws URISyntaxException {
+        log.debug("REST request to save Gider : {}", gider);
+        if (gider.getId() != null) {
+            throw new BadRequestAlertException("A new gider cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Gider result = giderRepository.save(gider);
+        return ResponseEntity.created(new URI("/api/giders/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /giders} : Updates an existing gider.
+     *
+     * @param gider the gider to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated gider,
+     * or with status {@code 400 (Bad Request)} if the gider is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the gider couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/giders")
+    public ResponseEntity<Gider> updateGider(@Valid @RequestBody Gider gider) throws URISyntaxException {
+        log.debug("REST request to update Gider : {}", gider);
+        if (gider.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        Gider result = giderRepository.save(gider);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, gider.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code GET  /giders} : get all the giders.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of giders in body.
+     */
+    @GetMapping("/giders")
+    public ResponseEntity<List<Gider>> getAllGiders(Pageable pageable) {
+        log.debug("REST request to get a page of Giders");
+        Page<Gider> page = giderRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /giders/:id} : get the "id" gider.
+     *
+     * @param id the id of the gider to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the gider, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/giders/{id}")
+    public ResponseEntity<Gider> getGider(@PathVariable Long id) {
+        log.debug("REST request to get Gider : {}", id);
+        Optional<Gider> gider = giderRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(gider);
+    }
+
+    /**
+     * {@code DELETE  /giders/:id} : delete the "id" gider.
+     *
+     * @param id the id of the gider to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/giders/{id}")
+    public ResponseEntity<Void> deleteGider(@PathVariable Long id) {
+        log.debug("REST request to delete Gider : {}", id);
+        giderRepository.deleteById(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+}

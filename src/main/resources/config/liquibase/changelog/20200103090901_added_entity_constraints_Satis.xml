@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity Satis.
+    -->
+    <changeSet id="20200103090901-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="satis"
+                                 constraintName="fk_satis_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="koop_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="kisi_id"
+                                 baseTableName="satis"
+                                 constraintName="fk_satis_kisi_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="kisiler"/>
+
+    </changeSet>
+</databaseChangeLog>
