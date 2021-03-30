@@ -4,10 +4,10 @@ import com.koop.app.domain.DashboardReports;
 import com.koop.app.domain.Gider;
 import com.koop.app.domain.NobetHareketleri;
 import com.koop.app.domain.Virman;
-import com.koop.app.dto.Ciro;
 import java.util.List;
 
 public class GunSonuRaporuDto {
+
     private List<Gider> giderList;
 
     private Virman virman;

@@ -1,17 +1,17 @@
-import { Moment } from 'moment';
+import dayjs from 'dayjs';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { IUser } from 'app/shared/model/user.model';
 import { IKisiler } from 'app/shared/model/kisiler.model';
 
 export interface ISatis {
   id?: number;
-  tarih?: string;
-  toplamTutar?: number;
-  ortagaSatis?: boolean;
-  kartliSatis?: boolean;
-  stokHareketleriLists?: ISatisStokHareketleri[];
-  user?: IUser;
-  kisi?: IKisiler;
+  tarih?: string | null;
+  toplamTutar?: number | null;
+  ortagaSatis?: boolean | null;
+  kartliSatis?: boolean | null;
+  stokHareketleriLists?: ISatisStokHareketleri[] | null;
+  user?: IUser | null;
+  kisi?: IKisiler | null;
 }
 
 export const defaultValue: Readonly<ISatis> = {

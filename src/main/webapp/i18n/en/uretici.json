@@ -3,6 +3,7 @@
     "uretici": {
       "home": {
         "title": "Ureticis",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Uretici",
         "createOrEditLabel": "Create or edit a Uretici",
         "notFound": "No Ureticis found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Uretici"
       },
+      "id": "ID",
       "adi": "Adi",
       "adres": "Adres",
       "bankaBilgileri": "Banka Bilgileri",

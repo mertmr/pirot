@@ -3,6 +3,7 @@
     "urunFiyatHesap": {
       "home": {
         "title": "Urun Fiyat Hesaps",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Urun Fiyat Hesap",
         "createOrEditLabel": "Create or edit a Urun Fiyat Hesap",
         "notFound": "No Urun Fiyat Hesaps found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Urun Fiyat Hesap"
       },
+      "id": "ID",
       "amortisman": "Amortisman",
       "giderPusulaMustahsil": "Gider Pusula Mustahsil",
       "dukkanGider": "Dukkan Gider",

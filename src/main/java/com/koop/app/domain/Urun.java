@@ -19,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "urun")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Urun extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id

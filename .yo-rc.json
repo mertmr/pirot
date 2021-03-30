@@ -23,7 +23,7 @@
     "useSass": true,
     "clientFramework": "react",
     "cacheProvider": "caffeine",
-    "jhipsterVersion": "6.10.1",
+    "jhipsterVersion": "7.0.0",
     "buildTool": "maven",
     "skipUserManagement": false,
     "clientPackageManager": "npm",
@@ -56,7 +56,28 @@
     "ingressDomain": "192.168.99.100.nip.io",
     "monitoring": "no",
     "istio": false,
-    "ingressType": "nginx"
+    "ingressType": "nginx",
+    "withAdminUi": true,
+    "skipCheckLengthOfIdentifier": false,
+    "skipFakeData": false,
+    "pages": [],
+    "reactive": false,
+    "entities": [
+      "Gider",
+      "KdvKategorisi",
+      "Satis",
+      "SatisStokHareketleri",
+      "StokGirisi",
+      "Uretici",
+      "Urun",
+      "UrunFiyat",
+      "Virman",
+      "BorcAlacak",
+      "KasaHareketleri",
+      "NobetHareketleri",
+      "Kisiler",
+      "UrunFiyatHesap"
+    ]
   },
   "entities": []
 }

@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.koop.app.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
-public class GiderTest {
+class GiderTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Gider.class);
         Gider gider1 = new Gider();
         gider1.setId(1L);

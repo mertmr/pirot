@@ -3,6 +3,7 @@ package com.koop.app.dto;
 import com.koop.app.domain.SatisStokHareketleri;
 
 public class SatisStokRaporu {
+
     private long toplamSatisMiktari;
 
     private SatisStokHareketleri satisStokHareketleri;
@@ -12,8 +13,7 @@ public class SatisStokRaporu {
         this.satisStokHareketleri = satisStokHareketleri;
     }
 
-    public SatisStokRaporu() {
-    }
+    public SatisStokRaporu() {}
 
     public long getToplamSatisMiktari() {
         return toplamSatisMiktari;

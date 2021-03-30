@@ -1,10 +1,9 @@
 package com.koop.app.domain;
 
+import com.koop.app.config.tenancy.TenantEntity;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
-
-import com.koop.app.config.tenancy.TenantEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,6 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "kisiler")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Kisiler extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id

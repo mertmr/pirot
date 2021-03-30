@@ -1,4 +1,4 @@
-export const enum AcilisKapanis {
+export enum AcilisKapanis {
   ACILIS = 'ACILIS',
 
   KAPANIS = 'KAPANIS',

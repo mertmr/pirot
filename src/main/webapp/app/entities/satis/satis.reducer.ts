@@ -12,6 +12,7 @@ export const ACTION_TYPES = {
   FETCH_SATIS: 'satis/FETCH_SATIS',
   CREATE_SATIS: 'satis/CREATE_SATIS',
   UPDATE_SATIS: 'satis/UPDATE_SATIS',
+  PARTIAL_UPDATE_SATIS: 'satis/PARTIAL_UPDATE_SATIS',
   DELETE_SATIS: 'satis/DELETE_SATIS',
   RESET: 'satis/RESET',
 };
@@ -44,6 +45,7 @@ export default (state: SatisState = initialState, action): SatisState => {
     case REQUEST(ACTION_TYPES.CREATE_SATIS):
     case REQUEST(ACTION_TYPES.UPDATE_SATIS):
     case REQUEST(ACTION_TYPES.DELETE_SATIS):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_SATIS):
       return {
         ...state,
         errorMessage: null,
@@ -55,6 +57,7 @@ export default (state: SatisState = initialState, action): SatisState => {
     case FAILURE(ACTION_TYPES.FETCH_SATIS):
     case FAILURE(ACTION_TYPES.CREATE_SATIS):
     case FAILURE(ACTION_TYPES.UPDATE_SATIS):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_SATIS):
     case FAILURE(ACTION_TYPES.DELETE_SATIS):
       return {
         ...state,
@@ -79,6 +82,7 @@ export default (state: SatisState = initialState, action): SatisState => {
       };
     case SUCCESS(ACTION_TYPES.CREATE_SATIS):
     case SUCCESS(ACTION_TYPES.UPDATE_SATIS):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_SATIS):
       return {
         ...state,
         updating: false,
@@ -139,7 +143,15 @@ export const createEntity: ICrudPutAction<ISatis> = entity => async dispatch => 
 export const updateEntity: ICrudPutAction<ISatis> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_SATIS,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<ISatis> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_SATIS,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

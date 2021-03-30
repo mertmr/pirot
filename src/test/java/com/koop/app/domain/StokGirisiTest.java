@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.koop.app.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
-public class StokGirisiTest {
+class StokGirisiTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(StokGirisi.class);
         StokGirisi stokGirisi1 = new StokGirisi();
         stokGirisi1.setId(1L);

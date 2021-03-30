@@ -5,14 +5,10 @@ import com.koop.app.domain.UrunFiyat;
 import com.koop.app.domain.User;
 import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.repository.UrunRepository;
-import com.koop.app.service.StockChangedException;
 import com.koop.app.service.StockException;
 import com.koop.app.service.UrunService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
@@ -29,6 +25,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Urun}.
@@ -37,6 +36,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class UrunResource {
+
     private static final String ENTITY_NAME = "urun";
     private final Logger log = LoggerFactory.getLogger(UrunResource.class);
     private final UrunRepository urunRepository;
@@ -86,9 +86,7 @@ public class UrunResource {
         }
         return ResponseEntity
             .created(new URI("/api/uruns/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -117,7 +115,7 @@ public class UrunResource {
             createUrunFiyatEntry(urun, currentUser);
         }
 
-        if(oncekiUrun.getStok().compareTo(urun.getStok()) != 0) {
+        if (oncekiUrun.getStok().compareTo(urun.getStok()) != 0) {
             throw new StockException();
         }
         return ResponseEntity
@@ -145,10 +143,7 @@ public class UrunResource {
     public ResponseEntity<List<Urun>> getAllUruns(Pageable pageable) {
         log.debug("REST request to get a page of Uruns");
         Page<Urun> page = urunRepository.findEverything(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -205,10 +200,7 @@ public class UrunResource {
     public ResponseEntity<List<Urun>> searchUruns(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Uruns for query {}", query);
         Page<Urun> page = urunService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

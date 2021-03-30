@@ -2,10 +2,11 @@
   "koopApp": {
     "borcAlacak": {
       "home": {
-        "title": "Borc Alacak",
+        "title": "Borc Alacaks",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Borc Alacak",
         "createOrEditLabel": "Create or edit a Borc Alacak",
-        "notFound": "No Borc Alacak found"
+        "notFound": "No Borc Alacaks found"
       },
       "created": "A new Borc Alacak is created with identifier {{ param }}",
       "updated": "A Borc Alacak is updated with identifier {{ param }}",
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Borc Alacak"
       },
+      "id": "ID",
       "tutar": "Tutar",
       "notlar": "Notlar",
       "odemeAraci": "Odeme Araci",

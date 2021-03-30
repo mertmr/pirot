@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Translate, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -16,7 +16,7 @@ export interface IKdvKategorisiProps extends StateProps, DispatchProps, RouteCom
 
 export const KdvKategorisi = (props: IKdvKategorisiProps) => {
   const [paginationState, setPaginationState] = useState(
-    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
+    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE, 'id'), props.location.search)
   );
 
   const getAllEntities = () => {
@@ -64,16 +64,26 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
       activePage: currentPage,
     });
 
+  const handleSyncList = () => {
+    sortEntities();
+  };
+
   const { kdvKategorisiList, match, loading, totalItems } = props;
   return (
     <div>
-      <h2 id="kdv-kategorisi-heading">
+      <h2 id="kdv-kategorisi-heading" data-cy="KdvKategorisiHeading">
         <Translate contentKey="koopApp.kdvKategorisi.home.title">Kdv Kategorisis</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="koopApp.kdvKategorisi.home.createLabel">Create new Kdv Kategorisi</Translate>
-        </Link>
+        <div className="d-flex justify-content-end">
+          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
+            <Translate contentKey="koopApp.kdvKategorisi.home.refreshListLabel">Refresh List</Translate>
+          </Button>
+          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+            <FontAwesomeIcon icon="plus" />
+            &nbsp;
+            <Translate contentKey="koopApp.kdvKategorisi.home.createLabel">Create new Kdv Kategorisi</Translate>
+          </Link>
+        </div>
       </h2>
       <div className="table-responsive">
         {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
@@ -81,7 +91,7 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="koopApp.kdvKategorisi.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('kategoriAdi')}>
                   <Translate contentKey="koopApp.kdvKategorisi.kategoriAdi">Kategori Adi</Translate> <FontAwesomeIcon icon="sort" />
@@ -94,17 +104,18 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
             </thead>
             <tbody>
               {kdvKategorisiList.map((kdvKategorisi, i) => (
-                <tr key={`entity-${i}`}>
+                <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
                     <Button tag={Link} to={`${match.url}/${kdvKategorisi.id}`} color="link" size="sm">
                       {kdvKategorisi.id}
                     </Button>
                   </td>
+                  <td>{kdvKategorisi.id}</td>
                   <td>{kdvKategorisi.kategoriAdi}</td>
                   <td>{kdvKategorisi.kdvOrani}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${kdvKategorisi.id}`} color="info" size="sm">
+                      <Button tag={Link} to={`${match.url}/${kdvKategorisi.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
@@ -115,6 +126,7 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
                         to={`${match.url}/${kdvKategorisi.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
+                        data-cy="entityEditButton"
                       >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
                         <span className="d-none d-md-inline">
@@ -126,6 +138,7 @@ export const KdvKategorisi = (props: IKdvKategorisiProps) => {
                         to={`${match.url}/${kdvKategorisi.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="danger"
                         size="sm"
+                        data-cy="entityDeleteButton"
                       >
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">

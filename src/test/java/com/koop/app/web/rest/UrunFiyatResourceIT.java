@@ -42,13 +42,11 @@ import org.springframework.validation.Validator;
 @AutoConfigureMockMvc
 @WithMockUser
 public class UrunFiyatResourceIT {
+
     private static final BigDecimal DEFAULT_FIYAT = new BigDecimal(1);
     private static final BigDecimal UPDATED_FIYAT = new BigDecimal(2);
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
-        Instant.ofEpochMilli(0L),
-        ZoneOffset.UTC
-    );
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -125,11 +123,7 @@ public class UrunFiyatResourceIT {
         int databaseSizeBeforeCreate = urunFiyatRepository.findAll().size();
         // Create the UrunFiyat
         restUrunFiyatMockMvc
-            .perform(
-                post("/api/urun-fiyats")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urunFiyat))
-            )
+            .perform(post("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isCreated());
 
         // Validate the UrunFiyat in the database
@@ -150,11 +144,7 @@ public class UrunFiyatResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUrunFiyatMockMvc
-            .perform(
-                post("/api/urun-fiyats")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urunFiyat))
-            )
+            .perform(post("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isBadRequest());
 
         // Validate the UrunFiyat in the database
@@ -218,9 +208,7 @@ public class UrunFiyatResourceIT {
 
         restUrunFiyatMockMvc
             .perform(
-                put("/api/urun-fiyats")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyat))
+                put("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedUrunFiyat))
             )
             .andExpect(status().isOk());
 
@@ -239,11 +227,7 @@ public class UrunFiyatResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunFiyatMockMvc
-            .perform(
-                put("/api/urun-fiyats")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urunFiyat))
-            )
+            .perform(put("/api/urun-fiyats").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urunFiyat)))
             .andExpect(status().isBadRequest());
 
         // Validate the UrunFiyat in the database

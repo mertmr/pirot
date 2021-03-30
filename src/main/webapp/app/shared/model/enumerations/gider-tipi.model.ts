@@ -1,4 +1,4 @@
-export const enum GiderTipi {
+export enum GiderTipi {
   KARGO = 'KARGO',
 
   SU = 'SU',

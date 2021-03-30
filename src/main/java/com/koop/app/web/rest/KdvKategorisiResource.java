@@ -3,9 +3,6 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.KdvKategorisi;
 import com.koop.app.repository.KdvKategorisiRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -17,11 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.KdvKategorisi}.
@@ -30,6 +29,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class KdvKategorisiResource {
+
     private final Logger log = LoggerFactory.getLogger(KdvKategorisiResource.class);
 
     private static final String ENTITY_NAME = "kdvKategorisi";
@@ -51,22 +51,15 @@ public class KdvKategorisiResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/kdv-kategorisis")
-    public ResponseEntity<KdvKategorisi> createKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi)
-        throws URISyntaxException {
+    public ResponseEntity<KdvKategorisi> createKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi) throws URISyntaxException {
         log.debug("REST request to save KdvKategorisi : {}", kdvKategorisi);
         if (kdvKategorisi.getId() != null) {
-            throw new BadRequestAlertException(
-                "A new kdvKategorisi cannot already have an ID",
-                ENTITY_NAME,
-                "idexists"
-            );
+            throw new BadRequestAlertException("A new kdvKategorisi cannot already have an ID", ENTITY_NAME, "idexists");
         }
         KdvKategorisi result = kdvKategorisiRepository.save(kdvKategorisi);
         return ResponseEntity
             .created(new URI("/api/kdv-kategorisis/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -80,8 +73,7 @@ public class KdvKategorisiResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/kdv-kategorisis")
-    public ResponseEntity<KdvKategorisi> updateKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi)
-        throws URISyntaxException {
+    public ResponseEntity<KdvKategorisi> updateKdvKategorisi(@Valid @RequestBody KdvKategorisi kdvKategorisi) throws URISyntaxException {
         log.debug("REST request to update KdvKategorisi : {}", kdvKategorisi);
         if (kdvKategorisi.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -89,9 +81,7 @@ public class KdvKategorisiResource {
         KdvKategorisi result = kdvKategorisiRepository.save(kdvKategorisi);
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kdvKategorisi.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kdvKategorisi.getId().toString()))
             .body(result);
     }
 
@@ -105,10 +95,7 @@ public class KdvKategorisiResource {
     public ResponseEntity<List<KdvKategorisi>> getAllKdvKategorisis(Pageable pageable) {
         log.debug("REST request to get a page of KdvKategorisis");
         Page<KdvKategorisi> page = kdvKategorisiRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

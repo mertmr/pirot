@@ -1,24 +1,22 @@
 package com.koop.app.config.tenancy;
 
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.lang.NonNull;
-
+import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.Objects;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.lang.NonNull;
 
 public class MultiTenancyRepository<T, I> extends SimpleJpaRepository<T, I> {
 
     private final JpaEntityInformation<T, I> entityInformation;
     private final EntityManager entityManager;
 
-    public MultiTenancyRepository(
-        final JpaEntityInformation<T, I> entityInformation, final EntityManager entityManager) {
+    public MultiTenancyRepository(final JpaEntityInformation<T, I> entityInformation, final EntityManager entityManager) {
         super(entityInformation, entityManager);
         this.entityInformation = entityInformation;
         this.entityManager = entityManager;
@@ -32,10 +30,7 @@ public class MultiTenancyRepository<T, I> extends SimpleJpaRepository<T, I> {
         final CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityType);
 
-        cq.where(
-            criteriaBuilder.equal(
-                cq.from(entityType).get(this.entityInformation.getRequiredIdAttribute().getName()),
-                id));
+        cq.where(criteriaBuilder.equal(cq.from(entityType).get(this.entityInformation.getRequiredIdAttribute().getName()), id));
         final TypedQuery<T> q = this.entityManager.createQuery(cq);
 
         return q.getResultStream().findFirst();
@@ -53,15 +48,12 @@ public class MultiTenancyRepository<T, I> extends SimpleJpaRepository<T, I> {
 
     @Override
     public void delete(@NonNull final T entity) {
-        Objects.requireNonNull(
-            entity, "Entity can not be null for Object [" + this.entityInformation.getJavaType() + "]");
+        Objects.requireNonNull(entity, "Entity can not be null for Object [" + this.entityInformation.getJavaType() + "]");
 
-        if (this.entityInformation.isNew(entity)
-            || this.findById(this.entityInformation.getRequiredId(entity)).isEmpty()) {
+        if (this.entityInformation.isNew(entity) || this.findById(this.entityInformation.getRequiredId(entity)).isEmpty()) {
             return;
         }
 
-        this.entityManager.remove(
-            this.entityManager.contains(entity) ? entity : this.entityManager.merge(entity));
+        this.entityManager.remove(this.entityManager.contains(entity) ? entity : this.entityManager.merge(entity));
     }
 }

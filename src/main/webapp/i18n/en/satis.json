@@ -3,6 +3,7 @@
     "satis": {
       "home": {
         "title": "Satis",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Satis",
         "createOrEditLabel": "Create or edit a Satis",
         "notFound": "No Satis found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Satis"
       },
+      "id": "ID",
       "tarih": "Tarih",
       "toplamTutar": "Toplam Tutar",
       "ortagaSatis": "Ortaga Satis",

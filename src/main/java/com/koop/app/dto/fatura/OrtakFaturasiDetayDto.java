@@ -1,11 +1,10 @@
 package com.koop.app.dto.fatura;
 
 import com.koop.app.domain.KdvKategorisi;
-
 import java.math.BigDecimal;
-import java.util.List;
 
 public class OrtakFaturasiDetayDto {
+
     private String urunAdiKdv;
 
     private String miktar;

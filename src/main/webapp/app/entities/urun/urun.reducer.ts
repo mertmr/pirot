@@ -16,6 +16,7 @@ export const ACTION_TYPES = {
   FETCH_URUN: 'urun/FETCH_URUN',
   CREATE_URUN: 'urun/CREATE_URUN',
   UPDATE_URUN: 'urun/UPDATE_URUN',
+  PARTIAL_UPDATE_URUN: 'urun/PARTIAL_UPDATE_URUN',
   DELETE_URUN: 'urun/DELETE_URUN',
   RESET: 'urun/RESET',
 };
@@ -53,6 +54,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case REQUEST(ACTION_TYPES.CREATE_URUN):
     case REQUEST(ACTION_TYPES.UPDATE_URUN):
     case REQUEST(ACTION_TYPES.DELETE_URUN):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_URUN):
       return {
         ...state,
         errorMessage: null,
@@ -67,6 +69,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case FAILURE(ACTION_TYPES.FETCH_URUN):
     case FAILURE(ACTION_TYPES.CREATE_URUN):
     case FAILURE(ACTION_TYPES.UPDATE_URUN):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_URUN):
     case FAILURE(ACTION_TYPES.DELETE_URUN):
       return {
         ...state,
@@ -107,6 +110,7 @@ export default (state: UrunState = initialState, action): UrunState => {
       };
     case SUCCESS(ACTION_TYPES.CREATE_URUN):
     case SUCCESS(ACTION_TYPES.UPDATE_URUN):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_URUN):
       return {
         ...state,
         updating: false,
@@ -191,7 +195,15 @@ export const createEntity: ICrudPutAction<IUrun> = entity => async dispatch => {
 export const updateEntity: ICrudPutAction<IUrun> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_URUN,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IUrun> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_URUN,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

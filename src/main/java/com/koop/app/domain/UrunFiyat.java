@@ -1,13 +1,11 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.koop.app.config.tenancy.TenantEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 import javax.persistence.*;
-
-import com.koop.app.config.tenancy.TenantEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,6 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "urun_fiyat")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UrunFiyat extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id

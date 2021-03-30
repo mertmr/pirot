@@ -1,11 +1,10 @@
 package com.koop.app.config.tenancy;
 
-import org.hibernate.EmptyInterceptor;
-import org.hibernate.type.Type;
+import static com.koop.app.config.tenancy.TenantEntity.TENANT_FILTER_ARGUMENT_NAME;
 
 import java.io.Serializable;
-
-import static com.koop.app.config.tenancy.TenantEntity.TENANT_FILTER_ARGUMENT_NAME;
+import org.hibernate.EmptyInterceptor;
+import org.hibernate.type.Type;
 
 public final class TenantInterceptor extends EmptyInterceptor {
 
@@ -15,7 +14,8 @@ public final class TenantInterceptor extends EmptyInterceptor {
         final Serializable id,
         final Object[] state,
         final String[] propertyNames,
-        final Type[] types) {
+        final Type[] types
+    ) {
         return this.addTenantIdIfObjectIsTenantEntity(entity, state, propertyNames);
     }
 
@@ -26,7 +26,8 @@ public final class TenantInterceptor extends EmptyInterceptor {
         final Object[] currentState,
         final Object[] previousState,
         final String[] propertyNames,
-        final Type[] types) {
+        final Type[] types
+    ) {
         return this.addTenantIdIfObjectIsTenantEntity(entity, currentState, propertyNames);
     }
 
@@ -36,17 +37,17 @@ public final class TenantInterceptor extends EmptyInterceptor {
         final Serializable id,
         final Object[] state,
         final String[] propertyNames,
-        final Type[] types) {
+        final Type[] types
+    ) {
         this.addTenantIdIfObjectIsTenantEntity(entity, state, propertyNames);
     }
 
-    private boolean addTenantIdIfObjectIsTenantEntity(
-        Object entity, Object[] state, String[] propertyName) {
+    private boolean addTenantIdIfObjectIsTenantEntity(Object entity, Object[] state, String[] propertyName) {
         if (entity instanceof TenantEntity) {
             for (int index = 0; index < propertyName.length; index++) {
                 if (propertyName[index].equals(TENANT_FILTER_ARGUMENT_NAME)) {
                     Long tenantIdentifier = TenantAssistance.resolveCurrentTenantIdentifier();
-                    if(tenantIdentifier == null) {
+                    if (tenantIdentifier == null) {
                         return false;
                     }
                     state[index] = tenantIdentifier;

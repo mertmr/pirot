@@ -1,6 +1,7 @@
 package com.koop.app.dto.fatura;
 
 public class ReportDatesDto {
+
     private String reportDate;
 
     public ReportDatesDto(String reportDate) {

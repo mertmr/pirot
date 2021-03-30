@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
+import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './virman.reducer';
-import { IVirman } from 'app/shared/model/virman.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IVirmanDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,10 +20,16 @@ export const VirmanDetail = (props: IVirmanDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="koopApp.virman.detail.title">Virman</Translate> [<b>{virmanEntity.id}</b>]
+        <h2 data-cy="virmanDetailsHeading">
+          <Translate contentKey="koopApp.virman.detail.title">Virman</Translate>
         </h2>
         <dl className="jh-entity-details">
+          <dt>
+            <span id="id">
+              <Translate contentKey="global.field.id">ID</Translate>
+            </span>
+          </dt>
+          <dd>{virmanEntity.id}</dd>
           <dt>
             <span id="tutar">
               <Translate contentKey="koopApp.virman.tutar">Tutar</Translate>
@@ -60,7 +65,7 @@ export const VirmanDetail = (props: IVirmanDetailProps) => {
           </dt>
           <dd>{virmanEntity.user ? virmanEntity.user.login : ''}</dd>
         </dl>
-        <Button tag={Link} to="/virman" replace color="info">
+        <Button tag={Link} to="/virman" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

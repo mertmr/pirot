@@ -49,7 +49,6 @@
         "health": "Sağlık",
         "configuration": "Yapılandırma",
         "logs": "Kayıtlar",
-        "audits": "Denetim",
         "apidocs": "API",
         "database": "Veritabanı",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
@@ -154,6 +153,8 @@
     "emailexists": "E-posta adresi zaten kullanılıyor!",
     "idexists": "A new {{entityName}} cannot already have an ID",
     "idnull": "Invalid ID",
+    "idinvalid": "Invalid Id",
+    "idnotfound": "ID cannot be found",
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""

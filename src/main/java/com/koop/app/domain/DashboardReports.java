@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class DashboardReports {
+
     private double kasadaNeVar = 0;
 
     private double bankadaNeVar = 0;

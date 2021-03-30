@@ -15,6 +15,7 @@ export const EntitiesMenu = (props: IEntitiesMenuProps) => (
     name={translate('global.menu.entities.main')}
     id="entity-menu"
     style={{ maxHeight: '90vh', overflow: 'auto' }}
+    data-cy="entity"
   >
     <MenuItem icon="money-check" to="/satis" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.satis" />

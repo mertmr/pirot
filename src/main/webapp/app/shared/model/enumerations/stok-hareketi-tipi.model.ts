@@ -1,4 +1,4 @@
-export const enum StokHareketiTipi {
+export enum StokHareketiTipi {
   STOK_GIRISI = 'STOK_GIRISI',
 
   FIRE = 'FIRE',

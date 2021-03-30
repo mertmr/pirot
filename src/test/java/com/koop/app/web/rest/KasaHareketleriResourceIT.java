@@ -33,16 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 public class KasaHareketleriResourceIT {
+
     private static final BigDecimal DEFAULT_KASA_MIKTAR = new BigDecimal(1);
     private static final BigDecimal UPDATED_KASA_MIKTAR = new BigDecimal(2);
 
     private static final String DEFAULT_HAREKET = "AAAAAAAAAA";
     private static final String UPDATED_HAREKET = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
-        Instant.ofEpochMilli(0L),
-        ZoneOffset.UTC
-    );
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -171,9 +169,7 @@ public class KasaHareketleriResourceIT {
     @Transactional
     public void getNonExistingKasaHareketleri() throws Exception {
         // Get the kasaHareketleri
-        restKasaHareketleriMockMvc
-            .perform(get("/api/kasa-hareketleris/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restKasaHareketleriMockMvc.perform(get("/api/kasa-hareketleris/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test

@@ -1,4 +1,4 @@
-export const enum Birim {
+export enum Birim {
   ADET = 'ADET',
 
   GRAM = 'GRAM',

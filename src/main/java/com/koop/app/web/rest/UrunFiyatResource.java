@@ -5,9 +5,6 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.UrunFiyatRepository;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
@@ -23,6 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.UrunFiyat}.
@@ -31,6 +31,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class UrunFiyatResource {
+
     private static final String ENTITY_NAME = "urunFiyat";
     private final Logger log = LoggerFactory.getLogger(UrunFiyatResource.class);
     private final UrunFiyatRepository urunFiyatRepository;
@@ -63,9 +64,7 @@ public class UrunFiyatResource {
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity
             .created(new URI("/api/urun-fiyats/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -90,9 +89,7 @@ public class UrunFiyatResource {
         UrunFiyat result = urunFiyatRepository.save(urunFiyat);
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyat.getId().toString()))
             .body(result);
     }
 
@@ -106,10 +103,7 @@ public class UrunFiyatResource {
     public ResponseEntity<List<UrunFiyat>> getAllUrunFiyats(Pageable pageable) {
         log.debug("REST request to get a page of UrunFiyats");
         Page<UrunFiyat> page = urunFiyatRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

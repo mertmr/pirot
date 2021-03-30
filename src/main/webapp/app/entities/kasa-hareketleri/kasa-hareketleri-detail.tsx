@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
+import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './kasa-hareketleri.reducer';
-import { IKasaHareketleri } from 'app/shared/model/kasa-hareketleri.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IKasaHareketleriDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,10 +20,16 @@ export const KasaHareketleriDetail = (props: IKasaHareketleriDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="koopApp.kasaHareketleri.detail.title">KasaHareketleri</Translate> [<b>{kasaHareketleriEntity.id}</b>]
+        <h2 data-cy="kasaHareketleriDetailsHeading">
+          <Translate contentKey="koopApp.kasaHareketleri.detail.title">KasaHareketleri</Translate>
         </h2>
         <dl className="jh-entity-details">
+          <dt>
+            <span id="id">
+              <Translate contentKey="global.field.id">ID</Translate>
+            </span>
+          </dt>
+          <dd>{kasaHareketleriEntity.id}</dd>
           <dt>
             <span id="kasaMiktar">
               <Translate contentKey="koopApp.kasaHareketleri.kasaMiktar">Kasa Miktar</Translate>
@@ -46,7 +51,7 @@ export const KasaHareketleriDetail = (props: IKasaHareketleriDetailProps) => {
             {kasaHareketleriEntity.tarih ? <TextFormat value={kasaHareketleriEntity.tarih} type="date" format={APP_DATE_FORMAT} /> : null}
           </dd>
         </dl>
-        <Button tag={Link} to="/kasa-hareketleri" replace color="info">
+        <Button tag={Link} to="/kasa-hareketleri" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

@@ -3,6 +3,7 @@
     "kasaHareketleri": {
       "home": {
         "title": "Kasa Hareketleris",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Kasa Hareketleri",
         "createOrEditLabel": "Create or edit a Kasa Hareketleri",
         "notFound": "No Kasa Hareketleris found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Kasa Hareketleri"
       },
+      "id": "ID",
       "kasaMiktar": "Kasa Miktar",
       "hareket": "Hareket",
       "tarih": "Tarih"

@@ -3,9 +3,9 @@ package com.koop.app.repository;
 import com.koop.app.domain.NobetHareketleri;
 import java.time.ZonedDateTime;
 import java.util.List;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @JaversSpringDataAuditable
 public interface NobetHareketleriRepository extends JpaRepository<NobetHareketleri, Long> {
-    @Query(
-        "select nobetHareketleri from NobetHareketleri nobetHareketleri where nobetHareketleri.user.login = ?#{principal.username}"
-    )
+    @Query("select nobetHareketleri from NobetHareketleri nobetHareketleri where nobetHareketleri.user.login = ?#{principal.username}")
     List<NobetHareketleri> findByUserIsCurrentUser();
 
     @Query(

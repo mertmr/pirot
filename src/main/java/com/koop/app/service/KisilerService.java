@@ -1,13 +1,13 @@
 package com.koop.app.service;
 
 import com.koop.app.domain.Kisiler;
-import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import org.springframework.stereotype.Service;
 
 @Service
 public class KisilerService {
+
     private final EntityManager em;
 
     public KisilerService(EntityManager em) {

@@ -3,6 +3,7 @@
     "kisiler": {
       "home": {
         "title": "Kisilers",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Kisiler",
         "createOrEditLabel": "Create or edit a Kisiler",
         "notFound": "No Kisilers found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Kisiler"
       },
+      "id": "ID",
       "kisiAdi": "Kisi Adi",
       "notlar": "Notlar",
       "tarih": "Tarih",

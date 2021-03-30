@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   FETCH_BORCALACAK: 'borcAlacak/FETCH_BORCALACAK',
   CREATE_BORCALACAK: 'borcAlacak/CREATE_BORCALACAK',
   UPDATE_BORCALACAK: 'borcAlacak/UPDATE_BORCALACAK',
+  PARTIAL_UPDATE_BORCALACAK: 'borcAlacak/PARTIAL_UPDATE_BORCALACAK',
   DELETE_BORCALACAK: 'borcAlacak/DELETE_BORCALACAK',
   RESET: 'borcAlacak/RESET',
 };
@@ -42,6 +43,7 @@ export default (state: BorcAlacakState = initialState, action): BorcAlacakState 
     case REQUEST(ACTION_TYPES.CREATE_BORCALACAK):
     case REQUEST(ACTION_TYPES.UPDATE_BORCALACAK):
     case REQUEST(ACTION_TYPES.DELETE_BORCALACAK):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_BORCALACAK):
       return {
         ...state,
         errorMessage: null,
@@ -52,6 +54,7 @@ export default (state: BorcAlacakState = initialState, action): BorcAlacakState 
     case FAILURE(ACTION_TYPES.FETCH_BORCALACAK):
     case FAILURE(ACTION_TYPES.CREATE_BORCALACAK):
     case FAILURE(ACTION_TYPES.UPDATE_BORCALACAK):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_BORCALACAK):
     case FAILURE(ACTION_TYPES.DELETE_BORCALACAK):
       return {
         ...state,
@@ -75,6 +78,7 @@ export default (state: BorcAlacakState = initialState, action): BorcAlacakState 
       };
     case SUCCESS(ACTION_TYPES.CREATE_BORCALACAK):
     case SUCCESS(ACTION_TYPES.UPDATE_BORCALACAK):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_BORCALACAK):
       return {
         ...state,
         updating: false,
@@ -129,7 +133,15 @@ export const createEntity: ICrudPutAction<IBorcAlacak> = entity => async dispatc
 export const updateEntity: ICrudPutAction<IBorcAlacak> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_BORCALACAK,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IBorcAlacak> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_BORCALACAK,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

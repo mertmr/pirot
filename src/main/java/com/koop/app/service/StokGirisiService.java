@@ -8,17 +8,17 @@ import com.koop.app.dto.UrunStokGirisiDTO;
 import com.koop.app.repository.StokGirisiRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.service.dto.StokGirisiDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class StokGirisiService {
+
     private final StokGirisiRepository stokGirisiRepository;
 
     private final UrunRepository urunRepository;
@@ -81,12 +81,13 @@ public class StokGirisiService {
             urunStokGirisiDTO.setStokGirisiId(stokGirisi.getId());
             urunStokGirisiDTO.setMiktar(BigDecimal.valueOf(stokGirisi.getMiktar()));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm");
-            urunStokGirisiDTO.setStokGirisAciklamasi("Miktar: " + stokGirisi.getMiktar() +
-                " - Tarihi: " + stokGirisi.getTarih().format(formatter));
+            urunStokGirisiDTO.setStokGirisAciklamasi(
+                "Miktar: " + stokGirisi.getMiktar() + " - Tarihi: " + stokGirisi.getTarih().format(formatter)
+            );
             urunStokGirisiDTO.setStokGirisiTarihi(stokGirisi.getTarih());
             urunStokGirisiDTOS.add(urunStokGirisiDTO);
         }
-//        urunStokGirisiDTOS.remove(0); //son stok girisi genelde tukenmemis oluyor, dolayisiyla rapor uretmek imkansiza yakin
+        //        urunStokGirisiDTOS.remove(0); //son stok girisi genelde tukenmemis oluyor, dolayisiyla rapor uretmek imkansiza yakin
         return urunStokGirisiDTOS;
     }
 }

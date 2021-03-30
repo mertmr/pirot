@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   FETCH_SATISSTOKHAREKETLERI: 'satisStokHareketleri/FETCH_SATISSTOKHAREKETLERI',
   CREATE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/CREATE_SATISSTOKHAREKETLERI',
   UPDATE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/UPDATE_SATISSTOKHAREKETLERI',
+  PARTIAL_UPDATE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/PARTIAL_UPDATE_SATISSTOKHAREKETLERI',
   DELETE_SATISSTOKHAREKETLERI: 'satisStokHareketleri/DELETE_SATISSTOKHAREKETLERI',
   RESET: 'satisStokHareketleri/RESET',
 };
@@ -42,6 +43,7 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
     case REQUEST(ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI):
     case REQUEST(ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI):
     case REQUEST(ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_SATISSTOKHAREKETLERI):
       return {
         ...state,
         errorMessage: null,
@@ -52,6 +54,7 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
     case FAILURE(ACTION_TYPES.FETCH_SATISSTOKHAREKETLERI):
     case FAILURE(ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI):
     case FAILURE(ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_SATISSTOKHAREKETLERI):
     case FAILURE(ACTION_TYPES.DELETE_SATISSTOKHAREKETLERI):
       return {
         ...state,
@@ -75,6 +78,7 @@ export default (state: SatisStokHareketleriState = initialState, action): SatisS
       };
     case SUCCESS(ACTION_TYPES.CREATE_SATISSTOKHAREKETLERI):
     case SUCCESS(ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_SATISSTOKHAREKETLERI):
       return {
         ...state,
         updating: false,
@@ -129,7 +133,15 @@ export const createEntity: ICrudPutAction<ISatisStokHareketleri> = entity => asy
 export const updateEntity: ICrudPutAction<ISatisStokHareketleri> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_SATISSTOKHAREKETLERI,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<ISatisStokHareketleri> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_SATISSTOKHAREKETLERI,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

@@ -5,9 +5,14 @@ import com.koop.app.dto.AylikSatislar;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.SatisStokHareketleri}.
@@ -35,6 +34,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class SatisStokHareketleriResource {
+
     private static final String ENTITY_NAME = "satisStokHareketleri";
     private final Logger log = LoggerFactory.getLogger(SatisStokHareketleriResource.class);
     private final SatisStokHareketleriRepository satisStokHareketleriRepository;
@@ -44,10 +44,7 @@ public class SatisStokHareketleriResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public SatisStokHareketleriResource(
-        SatisStokHareketleriRepository satisStokHareketleriRepository,
-        UrunRepository urunRepository
-    ) {
+    public SatisStokHareketleriResource(SatisStokHareketleriRepository satisStokHareketleriRepository, UrunRepository urunRepository) {
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.urunRepository = urunRepository;
     }
@@ -60,25 +57,17 @@ public class SatisStokHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/satis-stok-hareketleris")
-    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(
-        @Valid @RequestBody SatisStokHareketleri satisStokHareketleri
-    )
+    public ResponseEntity<SatisStokHareketleri> createSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri)
         throws URISyntaxException {
         log.debug("REST request to save SatisStokHareketleri : {}", satisStokHareketleri);
         if (satisStokHareketleri.getId() != null) {
-            throw new BadRequestAlertException(
-                "A new satisStokHareketleri cannot already have an ID",
-                ENTITY_NAME,
-                "idexists"
-            );
+            throw new BadRequestAlertException("A new satisStokHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
         }
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
         urunRepository.save(result.getUrun());
         return ResponseEntity
             .created(new URI("/api/satis-stok-hareketleris/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -92,9 +81,7 @@ public class SatisStokHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/satis-stok-hareketleris")
-    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(
-        @Valid @RequestBody SatisStokHareketleri satisStokHareketleri
-    )
+    public ResponseEntity<SatisStokHareketleri> updateSatisStokHareketleri(@Valid @RequestBody SatisStokHareketleri satisStokHareketleri)
         throws URISyntaxException {
         log.debug("REST request to update SatisStokHareketleri : {}", satisStokHareketleri);
         if (satisStokHareketleri.getId() == null) {
@@ -103,14 +90,7 @@ public class SatisStokHareketleriResource {
         SatisStokHareketleri result = satisStokHareketleriRepository.save(satisStokHareketleri);
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(
-                    applicationName,
-                    true,
-                    ENTITY_NAME,
-                    satisStokHareketleri.getId().toString()
-                )
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, satisStokHareketleri.getId().toString()))
             .body(result);
     }
 
@@ -124,10 +104,7 @@ public class SatisStokHareketleriResource {
     public ResponseEntity<List<SatisStokHareketleri>> getAllSatisStokHareketleris(Pageable pageable) {
         log.debug("REST request to get a page of SatisStokHareketleris");
         Page<SatisStokHareketleri> page = satisStokHareketleriRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -163,8 +140,9 @@ public class SatisStokHareketleriResource {
     @GetMapping("/satis-stok-hareketleris/getSatisRaporlari/{id}")
     public List<AylikSatislar> getSatisRaporlari(@PathVariable Long id) {
         List<AylikSatislar> satisRaporlari = satisStokHareketleriRepository.getSatisRaporlari(id);
-        Comparator<AylikSatislar> comparator = Comparator
-            .comparing(o -> ZonedDateTime.of(o.getYear(), o.getMonth(), 1, 0, 0, 0, 0, ZoneId.systemDefault()));
+        Comparator<AylikSatislar> comparator = Comparator.comparing(
+            o -> ZonedDateTime.of(o.getYear(), o.getMonth(), 1, 0, 0, 0, 0, ZoneId.systemDefault())
+        );
         satisRaporlari.sort(comparator.reversed());
         return satisRaporlari;
     }

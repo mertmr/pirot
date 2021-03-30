@@ -1,10 +1,10 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.KasaHareketleri;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 

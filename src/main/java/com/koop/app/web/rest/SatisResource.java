@@ -6,9 +6,6 @@ import com.koop.app.repository.SatisRepository;
 import com.koop.app.service.MailService;
 import com.koop.app.service.SatisService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,6 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Satis}.
@@ -32,6 +32,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class SatisResource {
+
     private static final String ENTITY_NAME = "satis";
     private final Logger log = LoggerFactory.getLogger(SatisResource.class);
     private final SatisRepository satisRepository;
@@ -64,20 +65,14 @@ public class SatisResource {
         stokKontrolu(satis);
         return ResponseEntity
             .created(new URI("/api/satis/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     private void stokKontrolu(Satis satis) {
         for (SatisStokHareketleri stokHareketi : satis.getStokHareketleriLists()) {
             BigDecimal stokSiniri = stokHareketi.getUrun().getStokSiniri();
-            if (
-                stokSiniri != null &&
-                stokHareketi.getUrun().getStok() != null &&
-                stokSiniri.compareTo(BigDecimal.ZERO) != 0
-            ) {
+            if (stokSiniri != null && stokHareketi.getUrun().getStok() != null && stokSiniri.compareTo(BigDecimal.ZERO) != 0) {
                 BigDecimal guncelStok = stokHareketi.getUrun().getStok();
                 if (guncelStok.compareTo(stokSiniri) <= 0) {
                     String content =
@@ -88,13 +83,7 @@ public class SatisResource {
                         "  --  Güncel stok: " +
                         guncelStok;
                     if (stokHareketi.getUrun().getUrunSorumlusu() != null) {
-                        mailService.sendEmail(
-                            stokHareketi.getUrun().getUrunSorumlusu().getEmail(),
-                            "Stok Uyarısı",
-                            content,
-                            false,
-                            true
-                        );
+                        mailService.sendEmail(stokHareketi.getUrun().getUrunSorumlusu().getEmail(), "Stok Uyarısı", content, false, true);
                     }
                 }
             }
@@ -134,10 +123,7 @@ public class SatisResource {
     public ResponseEntity<List<Satis>> getAllSatis(Pageable pageable) {
         log.debug("REST request to get a page of Satis");
         Page<Satis> satislar = satisRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            satislar
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), satislar);
         return ResponseEntity.ok().headers(headers).body(satislar.getContent());
     }
 
@@ -182,10 +168,7 @@ public class SatisResource {
     public ResponseEntity<List<Satis>> searchSatis(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Satis for query {}", query);
         Page<Satis> page = satisService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

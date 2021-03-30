@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
+import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './stok-girisi.reducer';
-import { IStokGirisi } from 'app/shared/model/stok-girisi.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IStokGirisiDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,10 +20,16 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="koopApp.stokGirisi.detail.title">StokGirisi</Translate> [<b>{stokGirisiEntity.id}</b>]
+        <h2 data-cy="stokGirisiDetailsHeading">
+          <Translate contentKey="koopApp.stokGirisi.detail.title">StokGirisi</Translate>
         </h2>
         <dl className="jh-entity-details">
+          <dt>
+            <span id="id">
+              <Translate contentKey="global.field.id">ID</Translate>
+            </span>
+          </dt>
+          <dd>{stokGirisiEntity.id}</dd>
           <dt>
             <span id="miktar">
               <Translate contentKey="koopApp.stokGirisi.miktar">Miktar</Translate>
@@ -58,7 +63,7 @@ export const StokGirisiDetail = (props: IStokGirisiDetailProps) => {
           </dt>
           <dd>{stokGirisiEntity.urun ? stokGirisiEntity.urun.urunAdi : ''}</dd>
         </dl>
-        <Button tag={Link} to="/stok-girisi" replace color="info">
+        <Button tag={Link} to="/stok-girisi" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

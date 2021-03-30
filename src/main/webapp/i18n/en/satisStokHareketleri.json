@@ -3,6 +3,7 @@
     "satisStokHareketleri": {
       "home": {
         "title": "Satis Stok Hareketleris",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Satis Stok Hareketleri",
         "createOrEditLabel": "Create or edit a Satis Stok Hareketleri",
         "notFound": "No Satis Stok Hareketleris found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Satis Stok Hareketleri"
       },
+      "id": "ID",
       "miktar": "Miktar",
       "tutar": "Tutar",
       "urun": "Urun",

@@ -7,13 +7,6 @@ import com.koop.app.dto.UrunTukenmeDTO;
 import com.koop.app.dto.fatura.*;
 import com.koop.app.repository.*;
 import com.koop.app.service.error.InsufficientDataException;
-import org.javers.core.Javers;
-import org.javers.core.diff.Change;
-import org.javers.core.diff.changetype.ValueChange;
-import org.javers.repository.jql.QueryBuilder;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.*;
@@ -21,9 +14,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.javers.core.Javers;
+import org.javers.core.diff.Change;
+import org.javers.core.diff.changetype.ValueChange;
+import org.javers.repository.jql.QueryBuilder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {
+
     private final SatisRepository satisRepository;
 
     private final SatisStokHareketleriRepository satisStokHareketleriRepository;
@@ -50,7 +50,9 @@ public class ReportService {
         GiderRepository giderRepository,
         DashboardReportService dashboardReportService,
         NobetHareketleriRepository nobetHareketleriRepository,
-        StokGirisiRepository stokGirisiRepository, Javers javers) {
+        StokGirisiRepository stokGirisiRepository,
+        Javers javers
+    ) {
         this.satisRepository = satisRepository;
         this.satisStokHareketleriRepository = satisStokHareketleriRepository;
         this.kdvKategorisiRepository = kdvKategorisiRepository;
@@ -98,11 +100,7 @@ public class ReportService {
         int year = Integer.parseInt(reportDate.split("-")[0]);
         int month = Integer.parseInt(reportDate.split("-")[1]);
 
-        List<OrtakFaturaDbReport> ortakFaturaDbReports = satisStokHareketleriRepository.ortakFaturaKisiAy(
-            year,
-            month,
-            kisiId
-        );
+        List<OrtakFaturaDbReport> ortakFaturaDbReports = satisStokHareketleriRepository.ortakFaturaKisiAy(year, month, kisiId);
 
         List<OrtakFaturasiDetayDto> ortakFaturasiList = new ArrayList<>();
         for (OrtakFaturaDbReport ortakFaturaDbReport : ortakFaturaDbReports) {
@@ -118,20 +116,20 @@ public class ReportService {
                 ortakFaturasi.setMiktar(miktar + " KG");
                 BigDecimal birimFiyat = ortakFaturaDbReport.getToplamTutar().divide(miktar, 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
-                ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat()
-                    .multiply(miktar).setScale(2, RoundingMode.HALF_UP)); //set kdv without
+                ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat().multiply(miktar).setScale(2, RoundingMode.HALF_UP)); //set kdv without
             } else {
-                ortakFaturasi.setMiktar(
-                    ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim()
-                );
-                if (ortakFaturaDbReport.getMiktar() == 0L)
-                    continue;
+                ortakFaturasi.setMiktar(ortakFaturaDbReport.getMiktar() + " " + ortakFaturaDbReport.getUrun().getBirim());
+                if (ortakFaturaDbReport.getMiktar() == 0L) continue;
                 BigDecimal birimFiyat = ortakFaturaDbReport
                     .getToplamTutar()
                     .divide(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()), 2, RoundingMode.HALF_UP);
                 ortakFaturasi.setBirimFiyat(kdvsizFiyatHesapla(kdvOrani, birimFiyat));
-                ortakFaturasi.setToplamTutar(ortakFaturasi.getBirimFiyat()
-                    .multiply(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar())).setScale(2, RoundingMode.HALF_UP)); //set kdv without
+                ortakFaturasi.setToplamTutar(
+                    ortakFaturasi
+                        .getBirimFiyat()
+                        .multiply(BigDecimal.valueOf(ortakFaturaDbReport.getMiktar()))
+                        .setScale(2, RoundingMode.HALF_UP)
+                ); //set kdv without
             }
 
             ortakFaturasiList.add(ortakFaturasi);
@@ -145,16 +143,13 @@ public class ReportService {
         for (KdvKategorisi kdvKategorisi : kdvKategorisiList) {
             List<OrtakFaturasiDetayDto> ortakFaturaDbReportListKdv = ortakFaturasiList
                 .stream()
-                .filter(
-                    ortakFaturaDbReport -> ortakFaturaDbReport.getKdvKategorisi().getId().equals(kdvKategorisi.getId())
-                )
+                .filter(ortakFaturaDbReport -> ortakFaturaDbReport.getKdvKategorisi().getId().equals(kdvKategorisi.getId()))
                 .collect(Collectors.toList());
             KdvToplam kdvToplam = new KdvToplam();
             double kdvSum = ortakFaturaDbReportListKdv
                 .stream()
                 .mapToDouble(
-                    ortakFaturaDbReport ->
-                        ortakFaturaDbReport.getToplamTutar().doubleValue() * kdvKategorisi.getKdvOrani() * 0.01D
+                    ortakFaturaDbReport -> ortakFaturaDbReport.getToplamTutar().doubleValue() * kdvKategorisi.getKdvOrani() * 0.01D
                 )
                 .sum();
             kdvToplam.setKdvKategorisi(kdvKategorisi.getKategoriAdi());
@@ -162,10 +157,7 @@ public class ReportService {
             kdvToplamList.add(kdvToplam);
         }
         ortakFaturasiDto.setKdvToplamList(kdvToplamList);
-        double tumKdvToplami = kdvToplamList
-            .stream()
-            .mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().doubleValue())
-            .sum();
+        double tumKdvToplami = kdvToplamList.stream().mapToDouble(kdvToplam -> kdvToplam.getKdvTutari().doubleValue()).sum();
         tumKdvToplami = BigDecimal.valueOf(tumKdvToplami).setScale(2, RoundingMode.HALF_UP).doubleValue();
         ortakFaturasiDto.setTumKdvToplami(tumKdvToplami);
         double tumToplamKdvHaric = ortakFaturasiList
@@ -174,8 +166,7 @@ public class ReportService {
             .sum();
         tumToplamKdvHaric = BigDecimal.valueOf(tumToplamKdvHaric).setScale(2, RoundingMode.HALF_UP).doubleValue();
         ortakFaturasiDto.setTumToplamKdvHaric(tumToplamKdvHaric);
-        double tumToplam = BigDecimal.valueOf(tumKdvToplami + tumToplamKdvHaric)
-            .setScale(2, RoundingMode.HALF_UP).doubleValue();
+        double tumToplam = BigDecimal.valueOf(tumKdvToplami + tumToplamKdvHaric).setScale(2, RoundingMode.HALF_UP).doubleValue();
         ortakFaturasiDto.setTumToplam(tumToplam);
 
         return ortakFaturasiDto;
@@ -257,13 +248,21 @@ public class ReportService {
             long durationInDays = Duration.between(ilkStokGirisTarihi, stokBittiTarihi).toDays();
             urunTukenmeDTO.setRaporVeriOlcekSuresi(BigDecimal.valueOf(durationInDays));
 
-            List<SatisStokHareketleri> satisRaporlariByUrunAndTarih = satisStokHareketleriRepository
-                .getSatisRaporlariByUrunAndTarih(ilkStokGirisTarihiZoned, stokBittiTarihiZoned, urunId);
+            List<SatisStokHareketleri> satisRaporlariByUrunAndTarih = satisStokHareketleriRepository.getSatisRaporlariByUrunAndTarih(
+                ilkStokGirisTarihiZoned,
+                stokBittiTarihiZoned,
+                urunId
+            );
             urunTukenmeDTO.setStokGunluguList(satisRaporlariByUrunAndTarih);
-            long satisRaporlariToplamiByUrunAndTarih = satisStokHareketleriRepository
-                .getSatisRaporlariToplamiByUrunAndTarih(ilkStokGirisTarihiZoned, stokBittiTarihiZoned, urunId);
-            BigDecimal urununAylikTukenmeMiktari = BigDecimal.valueOf(satisRaporlariToplamiByUrunAndTarih)
-                .divide(BigDecimal.valueOf(durationInDays), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(30));
+            long satisRaporlariToplamiByUrunAndTarih = satisStokHareketleriRepository.getSatisRaporlariToplamiByUrunAndTarih(
+                ilkStokGirisTarihiZoned,
+                stokBittiTarihiZoned,
+                urunId
+            );
+            BigDecimal urununAylikTukenmeMiktari = BigDecimal
+                .valueOf(satisRaporlariToplamiByUrunAndTarih)
+                .divide(BigDecimal.valueOf(durationInDays), 2, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(30));
             urunTukenmeDTO.setAylikTukenmeHizi(urununAylikTukenmeMiktari);
             urunTukenmeDTO.setHaftalikTukenmeHizi(urununAylikTukenmeMiktari.divide(BigDecimal.valueOf(4), 2, RoundingMode.HALF_UP));
 
@@ -274,6 +273,5 @@ public class ReportService {
         } catch (Exception e) {
             throw new InsufficientDataException("Yeterli veri bulunamadi", e);
         }
-
     }
 }

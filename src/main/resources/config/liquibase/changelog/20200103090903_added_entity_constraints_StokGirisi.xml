@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
     <!--
         Added the constraints for entity StokGirisi.
     -->
@@ -10,13 +10,13 @@
         
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="stok_girisi"
-                                 constraintName="fk_stok_girisi_user_id"
+                                 constraintName="fk_stok_girisi__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="koop_user"/>
 
         <addForeignKeyConstraint baseColumnNames="urun_id"
                                  baseTableName="stok_girisi"
-                                 constraintName="fk_stok_girisi_urun_id"
+                                 constraintName="fk_stok_girisi__urun_id"
                                  referencedColumnNames="id"
                                  referencedTableName="urun"/>
 

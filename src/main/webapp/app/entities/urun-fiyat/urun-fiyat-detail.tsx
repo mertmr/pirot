@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
+import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './urun-fiyat.reducer';
-import { IUrunFiyat } from 'app/shared/model/urun-fiyat.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IUrunFiyatDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,10 +20,16 @@ export const UrunFiyatDetail = (props: IUrunFiyatDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="koopApp.urunFiyat.detail.title">UrunFiyat</Translate> [<b>{urunFiyatEntity.id}</b>]
+        <h2 data-cy="urunFiyatDetailsHeading">
+          <Translate contentKey="koopApp.urunFiyat.detail.title">UrunFiyat</Translate>
         </h2>
         <dl className="jh-entity-details">
+          <dt>
+            <span id="id">
+              <Translate contentKey="global.field.id">ID</Translate>
+            </span>
+          </dt>
+          <dd>{urunFiyatEntity.id}</dd>
           <dt>
             <span id="fiyat">
               <Translate contentKey="koopApp.urunFiyat.fiyat">Fiyat</Translate>
@@ -46,7 +51,7 @@ export const UrunFiyatDetail = (props: IUrunFiyatDetailProps) => {
           </dt>
           <dd>{urunFiyatEntity.urun ? urunFiyatEntity.urun.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/urun-fiyat" replace color="info">
+        <Button tag={Link} to="/urun-fiyat" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

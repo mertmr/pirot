@@ -3,6 +3,7 @@
     "stokGirisi": {
       "home": {
         "title": "Stok Girisis",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Stok Girisi",
         "createOrEditLabel": "Create or edit a Stok Girisi",
         "notFound": "No Stok Girisis found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Stok Girisi"
       },
+      "id": "ID",
       "miktar": "Miktar",
       "agirlik": "Agirlik",
       "notlar": "Notlar",

@@ -5,7 +5,8 @@ import java.util.List;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @JaversSpringDataAuditable
 public interface UrunRepository extends JpaRepository<Urun, Long> {
-
     @Query(
         "select urun " +
         " from Urun urun " +
@@ -32,12 +32,14 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     @Query("select urun from Urun urun where urun.active=true order by urun.urunAdi")
     Page<Urun> findAll(@NonNull Pageable var1);
 
-    @Query("select urun from Urun urun " +
+    @Query(
+        "select urun from Urun urun " +
         "left join fetch urun.kdvKategorisi kdv " +
         "left join fetch urun.urunFiyatHesap ufh " +
         "left join fetch urun.urunSorumlusu us " +
         "left join fetch urun.urunFiyatHesap uf " +
-        "where urun.satista=true and urun.active=true order by urun.urunAdi")
+        "where urun.satista=true and urun.active=true order by urun.urunAdi"
+    )
     List<Urun> getAllUrunForStokGirisi();
 
     @Query("select urun from Urun urun where urun.active=true")

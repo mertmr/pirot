@@ -4,12 +4,10 @@ import com.koop.app.domain.Kisiler;
 import com.koop.app.domain.Satis;
 import com.koop.app.dto.Ciro;
 import com.koop.app.dto.fatura.ReportDatesDto;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,9 +50,7 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today")
     Double findCiro(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 
-    @Query(
-        "select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today and satis.kartliSatis = true"
-    )
+    @Query("select sum(satis.toplamTutar) from Satis satis where satis.tarih between :yesterday and :today and satis.kartliSatis = true")
     Double findCiroKartli(@Param("today") ZonedDateTime today, @Param("yesterday") ZonedDateTime yesterday);
 
     @Query(
@@ -81,11 +77,7 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
     )
     List<ReportDatesDto> getOrtaklarFaturaDatesTop10(Pageable pageable);
 
-    @Query(
-        "select distinct satis.kisi " +
-        "from Satis satis " +
-        "where month(satis.tarih) = :month and year(satis.tarih) = :year "
-    )
+    @Query("select distinct satis.kisi " + "from Satis satis " + "where month(satis.tarih) = :month and year(satis.tarih) = :year ")
     List<Kisiler> ortakFaturaKisiList(@Param("year") int year, @Param("month") int month);
 
     @Query(
@@ -117,11 +109,7 @@ public interface SatisRepository extends JpaRepository<Satis, Long> {
         "group by cast(satis.tarih as date), satis.user.login " +
         "order by cast(satis.tarih as date) desc"
     )
-    Ciro getCiroReportGroupByNobetciAndDate(
-        @Param("from") ZonedDateTime from,
-        @Param("to") ZonedDateTime to,
-        @Param("userId") Long userId
-    );
+    Ciro getCiroReportGroupByNobetciAndDate(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to, @Param("userId") Long userId);
     //    @Query("select satis from Satis satis left join fetch satis.user")
     //    Page<Satis> findAllSatis(Pageable pageable);
 

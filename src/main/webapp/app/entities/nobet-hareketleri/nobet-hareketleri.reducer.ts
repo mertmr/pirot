@@ -14,6 +14,7 @@ export const ACTION_TYPES = {
   FETCH_GUN_SONU: 'nobetHareketleri/FETCH_GUN_SONU',
   CREATE_NOBETHAREKETLERI: 'nobetHareketleri/CREATE_NOBETHAREKETLERI',
   UPDATE_NOBETHAREKETLERI: 'nobetHareketleri/UPDATE_NOBETHAREKETLERI',
+  PARTIAL_UPDATE_NOBETHAREKETLERI: 'nobetHareketleri/PARTIAL_UPDATE_NOBETHAREKETLERI',
   DELETE_NOBETHAREKETLERI: 'nobetHareketleri/DELETE_NOBETHAREKETLERI',
   RESET: 'nobetHareketleri/RESET',
 };
@@ -49,6 +50,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
     case REQUEST(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case REQUEST(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
     case REQUEST(ACTION_TYPES.DELETE_NOBETHAREKETLERI):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_NOBETHAREKETLERI):
       return {
         ...state,
         errorMessage: null,
@@ -61,6 +63,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
     case FAILURE(ACTION_TYPES.FETCH_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_NOBETHAREKETLERI):
     case FAILURE(ACTION_TYPES.DELETE_NOBETHAREKETLERI):
       return {
         ...state,
@@ -96,6 +99,7 @@ export default (state: NobetHareketleriState = initialState, action): NobetHarek
       };
     case SUCCESS(ACTION_TYPES.CREATE_NOBETHAREKETLERI):
     case SUCCESS(ACTION_TYPES.UPDATE_NOBETHAREKETLERI):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_NOBETHAREKETLERI):
       return {
         ...state,
         updating: false,
@@ -159,7 +163,15 @@ export const createEntity: ICrudPutAction<INobetHareketleri> = entity => async d
 export const updateEntity: ICrudPutAction<INobetHareketleri> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_NOBETHAREKETLERI,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<INobetHareketleri> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_NOBETHAREKETLERI,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

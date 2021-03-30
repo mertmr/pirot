@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.koop.app.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
-public class UreticiTest {
+class UreticiTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Uretici.class);
         Uretici uretici1 = new Uretici();
         uretici1.setId(1L);

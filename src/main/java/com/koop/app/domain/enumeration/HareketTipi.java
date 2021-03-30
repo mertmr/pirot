@@ -5,5 +5,5 @@ package com.koop.app.domain.enumeration;
  */
 public enum HareketTipi {
     URUN_GIRISI,
-    ODEME
+    ODEME,
 }

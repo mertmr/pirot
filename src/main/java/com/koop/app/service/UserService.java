@@ -9,23 +9,22 @@ import com.koop.app.repository.UserRepository;
 import com.koop.app.repository.tenancy.UserSystemWideAuthRepository;
 import com.koop.app.security.AuthoritiesConstants;
 import com.koop.app.security.SecurityUtils;
+import com.koop.app.service.dto.AdminUserDTO;
 import com.koop.app.service.dto.UserDTO;
-import io.github.jhipster.security.RandomUtil;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+import tech.jhipster.security.RandomUtil;
 
 /**
  * Service class for managing users.
@@ -33,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class UserService {
+
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
@@ -45,20 +45,18 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    private final JdbcTemplate jdbcTemplate;
-
     public UserService(
         UserRepository userRepository,
-        UserSystemWideAuthRepository userSystemWideAuthRepository, PasswordEncoder passwordEncoder,
+        UserSystemWideAuthRepository userSystemWideAuthRepository,
+        PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager,
-        JdbcTemplate jdbcTemplate) {
+        CacheManager cacheManager
+    ) {
         this.userRepository = userRepository;
         this.userSystemWideAuthRepository = userSystemWideAuthRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -96,7 +94,7 @@ public class UserService {
     public Optional<User> requestPasswordReset(String mail) {
         return userSystemWideAuthRepository
             .findOneByEmailIgnoreCase(mail)
-            .filter(User::getActivated)
+            .filter(User::isActivated)
             .map(
                 user -> {
                     user.setResetKey(RandomUtil.generateResetKey());
@@ -107,7 +105,7 @@ public class UserService {
             );
     }
 
-    public User registerUser(UserDTO userDTO, String password) {
+    public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(
@@ -154,7 +152,7 @@ public class UserService {
     }
 
     private boolean removeNonActivatedUser(User existingUser) {
-        if (existingUser.getActivated()) {
+        if (existingUser.isActivated()) {
             return false;
         }
         userRepository.delete(existingUser);
@@ -163,7 +161,7 @@ public class UserService {
         return true;
     }
 
-    public User createUser(UserDTO userDTO) {
+    public User createUser(AdminUserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
@@ -205,7 +203,7 @@ public class UserService {
      * @param userDTO user to update.
      * @return updated user.
      */
-    public Optional<UserDTO> updateUser(UserDTO userDTO) {
+    public Optional<AdminUserDTO> updateUser(AdminUserDTO userDTO) {
         return Optional
             .of(userRepository.findById(userDTO.getId()))
             .filter(Optional::isPresent)
@@ -236,7 +234,7 @@ public class UserService {
                     return user;
                 }
             )
-            .map(UserDTO::new);
+            .map(AdminUserDTO::new);
     }
 
     public void deleteUser(String login) {
@@ -299,8 +297,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    public Page<AdminUserDTO> getAllManagedUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).map(AdminUserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getAllPublicUsers(Pageable pageable) {
+        return userRepository.findAllByIdNotNullAndActivatedIsTrue(pageable).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -321,9 +324,7 @@ public class UserService {
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         userRepository
-            .findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(
-                Instant.now().minus(3, ChronoUnit.DAYS)
-            )
+            .findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS))
             .forEach(
                 user -> {
                     log.debug("Deleting not activated user {}", user.getLogin());
@@ -364,12 +365,4 @@ public class UserService {
     public List<User> findAllUsersWithLogin() {
         return userRepository.findAllUsersWithLoginByTenantId(TenantAssistance.resolveCurrentTenantIdentifier());
     }
-
-//    public Optional<User> findOneWithAuthoritiesByLogin(String lowercaseLogin) {
-//        String sql = "select * from koop_user where login=?";
-//        User user = jdbcTemplate.queryForObject(sql, new Object[]{lowercaseLogin},
-//            (rs, rowNum) -> new User(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"))
-//        );
-//        return Optional.of(user);
-//    }
 }

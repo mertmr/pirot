@@ -13,6 +13,8 @@
     "indicator": {
       "diskSpace": "Disk alanı",
       "mail": "E-posta",
+      "livenessState": "Liveness state",
+      "readinessState": "Readiness state",
       "ping": "Application",
       "db": "Veritabanı"
     },

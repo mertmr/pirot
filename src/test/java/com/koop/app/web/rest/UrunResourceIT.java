@@ -41,6 +41,7 @@ import org.springframework.validation.Validator;
 @AutoConfigureMockMvc
 @WithMockUser
 public class UrunResourceIT {
+
     private static final String DEFAULT_URUN_ADI = "AAAAAAAAAA";
     private static final String UPDATED_URUN_ADI = "BBBBBBBBBB";
 
@@ -99,12 +100,7 @@ public class UrunResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final UrunResource urunResource = new UrunResource(
-            urunRepository,
-            userService,
-            urunService,
-            urunFiyatRepository
-        );
+        final UrunResource urunResource = new UrunResource(urunRepository, userService, urunService, urunFiyatRepository);
         this.restUrunMockMvc =
             MockMvcBuilders
                 .standaloneSetup(urunResource)
@@ -166,11 +162,7 @@ public class UrunResourceIT {
         int databaseSizeBeforeCreate = urunRepository.findAll().size();
         // Create the Urun
         restUrunMockMvc
-            .perform(
-                post("/api/uruns")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urun))
-            )
+            .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isCreated());
 
         // Validate the Urun in the database
@@ -197,11 +189,7 @@ public class UrunResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restUrunMockMvc
-            .perform(
-                post("/api/uruns")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urun))
-            )
+            .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
         // Validate the Urun in the database
@@ -219,11 +207,7 @@ public class UrunResourceIT {
         // Create the Urun, which fails.
 
         restUrunMockMvc
-            .perform(
-                post("/api/uruns")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urun))
-            )
+            .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
         List<Urun> urunList = urunRepository.findAll();
@@ -240,11 +224,7 @@ public class UrunResourceIT {
         // Create the Urun, which fails.
 
         restUrunMockMvc
-            .perform(
-                post("/api/uruns")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urun))
-            )
+            .perform(post("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
         List<Urun> urunList = urunRepository.findAll();
@@ -326,11 +306,7 @@ public class UrunResourceIT {
             .urunKategorisi(UPDATED_URUN_KATEGORISI);
 
         restUrunMockMvc
-            .perform(
-                put("/api/uruns")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedUrun))
-            )
+            .perform(put("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedUrun)))
             .andExpect(status().isOk());
 
         // Validate the Urun in the database
@@ -354,11 +330,7 @@ public class UrunResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restUrunMockMvc
-            .perform(
-                put("/api/uruns")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(urun))
-            )
+            .perform(put("/api/uruns").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(urun)))
             .andExpect(status().isBadRequest());
 
         // Validate the Urun in the database

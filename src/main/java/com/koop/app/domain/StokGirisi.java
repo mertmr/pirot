@@ -5,9 +5,8 @@ import com.koop.app.config.tenancy.TenantEntity;
 import com.koop.app.domain.enumeration.StokHareketiTipi;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,6 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "stok_girisi")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class StokGirisi extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id

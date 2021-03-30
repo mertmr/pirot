@@ -3,9 +3,6 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.KasaHareketleri;
 import com.koop.app.repository.KasaHareketleriRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
@@ -17,11 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.KasaHareketleri}.
@@ -30,6 +29,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class KasaHareketleriResource {
+
     private final Logger log = LoggerFactory.getLogger(KasaHareketleriResource.class);
 
     private static final String ENTITY_NAME = "kasaHareketleri";
@@ -51,23 +51,16 @@ public class KasaHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/kasa-hareketleris")
-    public ResponseEntity<KasaHareketleri> createKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri)
-        throws URISyntaxException {
+    public ResponseEntity<KasaHareketleri> createKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri) throws URISyntaxException {
         log.debug("REST request to save KasaHareketleri : {}", kasaHareketleri);
         if (kasaHareketleri.getId() != null) {
-            throw new BadRequestAlertException(
-                "A new kasaHareketleri cannot already have an ID",
-                ENTITY_NAME,
-                "idexists"
-            );
+            throw new BadRequestAlertException("A new kasaHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
         }
         kasaHareketleri.setTarih(ZonedDateTime.now());
         KasaHareketleri result = kasaHareketleriRepository.save(kasaHareketleri);
         return ResponseEntity
             .created(new URI("/api/kasa-hareketleris/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -81,8 +74,7 @@ public class KasaHareketleriResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/kasa-hareketleris")
-    public ResponseEntity<KasaHareketleri> updateKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri)
-        throws URISyntaxException {
+    public ResponseEntity<KasaHareketleri> updateKasaHareketleri(@RequestBody KasaHareketleri kasaHareketleri) throws URISyntaxException {
         log.debug("REST request to update KasaHareketleri : {}", kasaHareketleri);
         if (kasaHareketleri.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -90,14 +82,7 @@ public class KasaHareketleriResource {
         KasaHareketleri result = kasaHareketleriRepository.save(kasaHareketleri);
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(
-                    applicationName,
-                    true,
-                    ENTITY_NAME,
-                    kasaHareketleri.getId().toString()
-                )
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kasaHareketleri.getId().toString()))
             .body(result);
     }
 
@@ -111,10 +96,7 @@ public class KasaHareketleriResource {
     public ResponseEntity<List<KasaHareketleri>> getAllKasaHareketleris(Pageable pageable) {
         log.debug("REST request to get a page of KasaHareketleris");
         Page<KasaHareketleri> page = kasaHareketleriRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

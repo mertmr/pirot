@@ -5,8 +5,8 @@ export interface ISatisStokHareketleri {
   id?: number;
   miktar?: number;
   tutar?: number;
-  urun?: IUrun;
-  satis?: ISatis;
+  urun?: IUrun | null;
+  satis?: ISatis | null;
 }
 
 export const defaultValue: Readonly<ISatisStokHareketleri> = {};

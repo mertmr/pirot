@@ -5,6 +5,7 @@ import com.koop.app.domain.Urun;
 import java.math.BigDecimal;
 
 public class OrtakFaturaDbReport {
+
     private String urunIsmi;
 
     private Long miktar;
@@ -15,13 +16,7 @@ public class OrtakFaturaDbReport {
 
     private BigDecimal toplamTutar;
 
-    public OrtakFaturaDbReport(
-        String urunIsmi,
-        Long miktar,
-        Urun urun,
-        KdvKategorisi kdvKategorisi,
-        BigDecimal toplamTutar
-    ) {
+    public OrtakFaturaDbReport(String urunIsmi, Long miktar, Urun urun, KdvKategorisi kdvKategorisi, BigDecimal toplamTutar) {
         this.urunIsmi = urunIsmi;
         this.miktar = miktar;
         this.urun = urun;

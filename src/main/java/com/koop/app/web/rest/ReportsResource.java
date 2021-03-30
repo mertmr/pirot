@@ -1,9 +1,7 @@
 package com.koop.app.web.rest;
 
 import com.koop.app.domain.Kisiler;
-import com.koop.app.domain.StokGirisi;
 import com.koop.app.domain.Uretici;
-import com.koop.app.domain.Urun;
 import com.koop.app.dto.Ciro;
 import com.koop.app.dto.UrunTukenmeDTO;
 import com.koop.app.dto.fatura.GunSonuRaporuDto;
@@ -11,14 +9,10 @@ import com.koop.app.dto.fatura.OrtakFaturasiDto;
 import com.koop.app.dto.fatura.ReportDatesDto;
 import com.koop.app.service.ReportService;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @Transactional
 public class ReportsResource {
+
     private final Logger log = LoggerFactory.getLogger(ReportsResource.class);
     private final ReportService reportService;
 
@@ -50,9 +45,7 @@ public class ReportsResource {
     }
 
     @GetMapping(params = { "fromDate" }, path = "/reports/ciro/by-nobetci")
-    public ResponseEntity<List<Ciro>> getCiroReportGroupByNobetci(
-        @RequestParam(value = "fromDate") LocalDate fromDate
-    ) {
+    public ResponseEntity<List<Ciro>> getCiroReportGroupByNobetci(@RequestParam(value = "fromDate") LocalDate fromDate) {
         log.debug("REST request to get ciro report by nobetci");
         return ResponseEntity.ok().body(reportService.getCiroReportGroupByNobetci(fromDate));
     }
@@ -98,7 +91,10 @@ public class ReportsResource {
     }
 
     @GetMapping("/reports/urunTukenmeHizi")
-    public ResponseEntity<UrunTukenmeDTO> urunTukenmeHizi(@RequestParam(value = "urunId") Long urunId, @RequestParam(value = "stokGirisiDate") String stokGirisiDate) {
+    public ResponseEntity<UrunTukenmeDTO> urunTukenmeHizi(
+        @RequestParam(value = "urunId") Long urunId,
+        @RequestParam(value = "stokGirisiDate") String stokGirisiDate
+    ) {
         UrunTukenmeDTO urunTukenmeDTO = reportService.urunTukenmeHizi(urunId, stokGirisiDate);
         return ResponseEntity.ok().body(urunTukenmeDTO);
     }

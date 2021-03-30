@@ -3,6 +3,7 @@
     "gider": {
       "home": {
         "title": "Giders",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Gider",
         "createOrEditLabel": "Create or edit a Gider",
         "notFound": "No Giders found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Gider"
       },
+      "id": "ID",
       "tarih": "Tarih",
       "tutar": "Tutar",
       "notlar": "Notlar",

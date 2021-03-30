@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 public class KdvKategorisiResourceIT {
+
     private static final String DEFAULT_KATEGORI_ADI = "AAAAAAAAAA";
     private static final String UPDATED_KATEGORI_ADI = "BBBBBBBBBB";
 
@@ -192,9 +193,7 @@ public class KdvKategorisiResourceIT {
     @Transactional
     public void getNonExistingKdvKategorisi() throws Exception {
         // Get the kdvKategorisi
-        restKdvKategorisiMockMvc
-            .perform(get("/api/kdv-kategorisis/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restKdvKategorisiMockMvc.perform(get("/api/kdv-kategorisis/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test

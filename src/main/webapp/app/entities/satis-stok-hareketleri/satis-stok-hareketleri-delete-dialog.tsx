@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './satis-stok-hareketleri.reducer';
 
@@ -33,7 +32,7 @@ export const SatisStokHareketleriDeleteDialog = (props: ISatisStokHareketleriDel
   const { satisStokHareketleriEntity } = props;
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}>
+      <ModalHeader toggle={handleClose} data-cy="satisStokHareketleriDeleteDialogHeading">
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
       <ModalBody id="koopApp.satisStokHareketleri.delete.question">
@@ -47,7 +46,7 @@ export const SatisStokHareketleriDeleteDialog = (props: ISatisStokHareketleriDel
           &nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button id="koop-confirm-delete-satisStokHareketleri" color="danger" onClick={confirmDelete}>
+        <Button id="koop-confirm-delete-satisStokHareketleri" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>

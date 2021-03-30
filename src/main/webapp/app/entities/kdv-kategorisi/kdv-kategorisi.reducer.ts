@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   FETCH_KDVKATEGORISI: 'kdvKategorisi/FETCH_KDVKATEGORISI',
   CREATE_KDVKATEGORISI: 'kdvKategorisi/CREATE_KDVKATEGORISI',
   UPDATE_KDVKATEGORISI: 'kdvKategorisi/UPDATE_KDVKATEGORISI',
+  PARTIAL_UPDATE_KDVKATEGORISI: 'kdvKategorisi/PARTIAL_UPDATE_KDVKATEGORISI',
   DELETE_KDVKATEGORISI: 'kdvKategorisi/DELETE_KDVKATEGORISI',
   RESET: 'kdvKategorisi/RESET',
 };
@@ -42,6 +43,7 @@ export default (state: KdvKategorisiState = initialState, action): KdvKategorisi
     case REQUEST(ACTION_TYPES.CREATE_KDVKATEGORISI):
     case REQUEST(ACTION_TYPES.UPDATE_KDVKATEGORISI):
     case REQUEST(ACTION_TYPES.DELETE_KDVKATEGORISI):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_KDVKATEGORISI):
       return {
         ...state,
         errorMessage: null,
@@ -52,6 +54,7 @@ export default (state: KdvKategorisiState = initialState, action): KdvKategorisi
     case FAILURE(ACTION_TYPES.FETCH_KDVKATEGORISI):
     case FAILURE(ACTION_TYPES.CREATE_KDVKATEGORISI):
     case FAILURE(ACTION_TYPES.UPDATE_KDVKATEGORISI):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_KDVKATEGORISI):
     case FAILURE(ACTION_TYPES.DELETE_KDVKATEGORISI):
       return {
         ...state,
@@ -75,6 +78,7 @@ export default (state: KdvKategorisiState = initialState, action): KdvKategorisi
       };
     case SUCCESS(ACTION_TYPES.CREATE_KDVKATEGORISI):
     case SUCCESS(ACTION_TYPES.UPDATE_KDVKATEGORISI):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_KDVKATEGORISI):
       return {
         ...state,
         updating: false,
@@ -129,7 +133,15 @@ export const createEntity: ICrudPutAction<IKdvKategorisi> = entity => async disp
 export const updateEntity: ICrudPutAction<IKdvKategorisi> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_KDVKATEGORISI,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IKdvKategorisi> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_KDVKATEGORISI,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

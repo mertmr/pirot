@@ -3,19 +3,19 @@ package com.koop.app.service.dto;
 import com.koop.app.config.Constants;
 import com.koop.app.domain.Authority;
 import com.koop.app.domain.User;
-
+import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A DTO representing a user, with his authorities.
  */
 public class UserDTO {
+
     private Long id;
 
     @NotBlank
@@ -63,7 +63,7 @@ public class UserDTO {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
-        this.activated = user.getActivated();
+        this.activated = user.isActivated();
         this.imageUrl = user.getImageUrl();
         this.langKey = user.getLangKey();
         this.createdBy = user.getCreatedBy();

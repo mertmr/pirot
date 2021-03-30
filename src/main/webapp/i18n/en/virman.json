@@ -3,6 +3,7 @@
     "virman": {
       "home": {
         "title": "Virmen",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Virman",
         "createOrEditLabel": "Create or edit a Virman",
         "notFound": "No Virmen found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Virman"
       },
+      "id": "ID",
       "tutar": "Tutar",
       "notlar": "Notlar",
       "cikisHesabi": "Cikis Hesabi",

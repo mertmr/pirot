@@ -1,15 +1,13 @@
 package com.koop.app.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.koop.app.config.tenancy.TenantEntity;
 import com.koop.app.domain.enumeration.GiderTipi;
 import com.koop.app.domain.enumeration.OdemeAraci;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "gider")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Gider extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -49,7 +48,6 @@ public class Gider extends TenantEntity implements Serializable {
     private OdemeAraci odemeAraci;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "giders", allowSetters = true)
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -61,8 +59,13 @@ public class Gider extends TenantEntity implements Serializable {
         this.id = id;
     }
 
+    public Gider id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public ZonedDateTime getTarih() {
-        return tarih;
+        return this.tarih;
     }
 
     public Gider tarih(ZonedDateTime tarih) {
@@ -75,7 +78,7 @@ public class Gider extends TenantEntity implements Serializable {
     }
 
     public BigDecimal getTutar() {
-        return tutar;
+        return this.tutar;
     }
 
     public Gider tutar(BigDecimal tutar) {
@@ -88,7 +91,7 @@ public class Gider extends TenantEntity implements Serializable {
     }
 
     public String getNotlar() {
-        return notlar;
+        return this.notlar;
     }
 
     public Gider notlar(String notlar) {
@@ -101,7 +104,7 @@ public class Gider extends TenantEntity implements Serializable {
     }
 
     public GiderTipi getGiderTipi() {
-        return giderTipi;
+        return this.giderTipi;
     }
 
     public Gider giderTipi(GiderTipi giderTipi) {
@@ -114,7 +117,7 @@ public class Gider extends TenantEntity implements Serializable {
     }
 
     public OdemeAraci getOdemeAraci() {
-        return odemeAraci;
+        return this.odemeAraci;
     }
 
     public Gider odemeAraci(OdemeAraci odemeAraci) {
@@ -127,11 +130,11 @@ public class Gider extends TenantEntity implements Serializable {
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public Gider user(User user) {
-        this.user = user;
+        this.setUser(user);
         return this;
     }
 
@@ -154,7 +157,8 @@ public class Gider extends TenantEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -162,23 +166,23 @@ public class Gider extends TenantEntity implements Serializable {
     public String toString() {
         return (
             "Gider{" +
-            "id=" +
-            getId() +
-            ", tarih='" +
-            getTarih() +
-            "'" +
-            ", tutar=" +
-            getTutar() +
-            ", notlar='" +
-            getNotlar() +
-            "'" +
-            ", giderTipi='" +
-            getGiderTipi() +
-            "'" +
-            ", odemeAraci='" +
-            getOdemeAraci() +
-            "'" +
-            "}"
+                "id=" +
+                getId() +
+                ", tarih='" +
+                getTarih() +
+                "'" +
+                ", tutar=" +
+                getTutar() +
+                ", notlar='" +
+                getNotlar() +
+                "'" +
+                ", giderTipi='" +
+                getGiderTipi() +
+                "'" +
+                ", odemeAraci='" +
+                getOdemeAraci() +
+                "'" +
+                "}"
         );
     }
 }

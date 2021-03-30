@@ -1,10 +1,8 @@
 package com.koop.app.security;
 
-
+import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
 
 public class CurrentUser implements UserDetails {
 
@@ -34,20 +32,38 @@ public class CurrentUser implements UserDetails {
         this(username, username, username, password, true, authorities, tenant);
     }
 
-    public CurrentUser(String email, String displayName, String username, String password, Boolean enabled, Collection<? extends GrantedAuthority> authorities, Long tenant) {
+    public CurrentUser(
+        String email,
+        String displayName,
+        String username,
+        String password,
+        Boolean enabled,
+        Collection<? extends GrantedAuthority> authorities,
+        Long tenant
+    ) {
         this.email = email;
         this.displayName = displayName;
-        this.enabled=enabled;
-        this.username=username;
-        this.password=password;
-        this.accountNonExpired=true;
-        this.accountNonLocked=true;
-        this.credentialsNonExpired=true;
-        this.authorities=authorities;
+        this.enabled = enabled;
+        this.username = username;
+        this.password = password;
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.authorities = authorities;
         this.tenant = tenant;
     }
 
-    public CurrentUser(String email, String displayName, String password, String username, Boolean enabled, Boolean accountNonExpired, Boolean accountNonLocked, boolean credentialsNonExpired, Collection<? extends GrantedAuthority> authorities) {
+    public CurrentUser(
+        String email,
+        String displayName,
+        String password,
+        String username,
+        Boolean enabled,
+        Boolean accountNonExpired,
+        Boolean accountNonLocked,
+        boolean credentialsNonExpired,
+        Collection<? extends GrantedAuthority> authorities
+    ) {
         this.authorities = authorities;
         this.email = email;
         this.displayName = displayName;

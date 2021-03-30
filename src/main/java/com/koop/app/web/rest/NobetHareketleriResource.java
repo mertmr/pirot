@@ -5,9 +5,14 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.NobetHareketleriRepository;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.NobetHareketleri}.
@@ -35,6 +34,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class NobetHareketleriResource {
+
     private final Logger log = LoggerFactory.getLogger(NobetHareketleriResource.class);
 
     private static final String ENTITY_NAME = "nobetHareketleri";
@@ -63,11 +63,7 @@ public class NobetHareketleriResource {
         throws URISyntaxException {
         log.debug("REST request to save NobetHareketleri : {}", nobetHareketleri);
         if (nobetHareketleri.getId() != null) {
-            throw new BadRequestAlertException(
-                "A new nobetHareketleri cannot already have an ID",
-                ENTITY_NAME,
-                "idexists"
-            );
+            throw new BadRequestAlertException("A new nobetHareketleri cannot already have an ID", ENTITY_NAME, "idexists");
         }
         if (nobetHareketleri.getTarih() == null) {
             nobetHareketleri.setTarih(ZonedDateTime.now());
@@ -77,9 +73,7 @@ public class NobetHareketleriResource {
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity
             .created(new URI("/api/nobet-hareketleris/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -110,14 +104,7 @@ public class NobetHareketleriResource {
         NobetHareketleri result = nobetHareketleriRepository.save(nobetHareketleri);
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(
-                    applicationName,
-                    true,
-                    ENTITY_NAME,
-                    nobetHareketleri.getId().toString()
-                )
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, nobetHareketleri.getId().toString()))
             .body(result);
     }
 
@@ -131,10 +118,7 @@ public class NobetHareketleriResource {
     public ResponseEntity<List<NobetHareketleri>> getAllNobetHareketleris(Pageable pageable) {
         log.debug("REST request to get a page of NobetHareketleris");
         Page<NobetHareketleri> page = nobetHareketleriRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -167,7 +151,7 @@ public class NobetHareketleriResource {
             .build();
     }
 
-    @GetMapping(params = {"fromDate", "userId"}, path = "/nobet-hareketleris/acilis")
+    @GetMapping(params = { "fromDate", "userId" }, path = "/nobet-hareketleris/acilis")
     public ResponseEntity<NobetHareketleri> getAcilisHareketiByNobetci(
         @RequestParam(value = "fromDate") String fromDate,
         @RequestParam(value = "userId") Long userId

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -11,14 +11,13 @@ import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './gider.reducer';
 import { IGider } from 'app/shared/model/gider.model';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 
 export interface IGiderUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const GiderUpdate = (props: IGiderUpdateProps) => {
-  const [userId, setUserId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { giderEntity, users, loading, updating } = props;
 
@@ -49,6 +48,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
       const entity = {
         ...giderEntity,
         ...values,
+        user: users.find(it => it.id.toString() === values.userId.toString()),
       };
 
       if (isNew) {
@@ -63,7 +63,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="koopApp.gider.home.createOrEditLabel">
+          <h2 id="koopApp.gider.home.createOrEditLabel" data-cy="GiderCreateUpdateHeading">
             <Translate contentKey="koopApp.gider.home.createOrEditLabel">Create or edit a Gider</Translate>
           </h2>
         </Col>
@@ -83,11 +83,26 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
+                <Label id="tarihLabel" for="gider-tarih">
+                  <Translate contentKey="koopApp.gider.tarih">Tarih</Translate>
+                </Label>
+                <AvInput
+                  id="gider-tarih"
+                  data-cy="tarih"
+                  type="datetime-local"
+                  className="form-control"
+                  name="tarih"
+                  placeholder={'YYYY-MM-DD HH:mm'}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.giderEntity.tarih)}
+                />
+              </AvGroup>
+              <AvGroup>
                 <Label id="tutarLabel" for="gider-tutar">
                   <Translate contentKey="koopApp.gider.tutar">Tutar</Translate>
                 </Label>
                 <AvField
                   id="gider-tutar"
+                  data-cy="tutar"
                   type="text"
                   name="tutar"
                   validate={{
@@ -102,6 +117,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 </Label>
                 <AvField
                   id="gider-notlar"
+                  data-cy="notlar"
                   type="text"
                   name="notlar"
                   validate={{
@@ -115,6 +131,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 </Label>
                 <AvInput
                   id="gider-giderTipi"
+                  data-cy="giderTipi"
                   type="select"
                   className="form-control"
                   name="giderTipi"
@@ -136,6 +153,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 </Label>
                 <AvInput
                   id="gider-odemeAraci"
+                  data-cy="odemeAraci"
                   type="select"
                   className="form-control"
                   name="odemeAraci"
@@ -143,6 +161,21 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 >
                   <option value="NAKIT">{translate('koopApp.OdemeAraci.NAKIT')}</option>
                   <option value="BANKA">{translate('koopApp.OdemeAraci.BANKA')}</option>
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <Label for="gider-user">
+                  <Translate contentKey="koopApp.gider.user">User</Translate>
+                </Label>
+                <AvInput id="gider-user" data-cy="user" type="select" className="form-control" name="userId">
+                  <option value="" key="0" />
+                  {users
+                    ? users.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.login}
+                        </option>
+                      ))
+                    : null}
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/gider" replace color="info">
@@ -153,7 +186,7 @@ export const GiderUpdate = (props: IGiderUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

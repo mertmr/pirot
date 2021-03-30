@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SatisService {
+
     private static final String SATIS_GUNCELLEMESI = "Satis Guncellemesi";
 
     private final SatisRepository satisRepository;
@@ -74,10 +75,7 @@ public class SatisService {
             }
         }
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
-        List<Urun> urunList = stokHareketleriLists
-            .stream()
-            .map(SatisStokHareketleri::getUrun)
-            .collect(Collectors.toList());
+        List<Urun> urunList = stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList());
         urunRepository.saveAll(urunList);
 
         if (Boolean.FALSE.equals(satis.isKartliSatis())) {
@@ -88,18 +86,20 @@ public class SatisService {
     }
 
     private void controlIfStockCHanged(Set<SatisStokHareketleri> stokHareketleriLists) {
-        List<Long> urunIdList = stokHareketleriLists.stream()
-            .map(satisStokHareketleri -> satisStokHareketleri.getUrun().getId()).collect(Collectors.toList());
+        List<Long> urunIdList = stokHareketleriLists
+            .stream()
+            .map(satisStokHareketleri -> satisStokHareketleri.getUrun().getId())
+            .collect(Collectors.toList());
         List<Urun> urunList = urunRepository.findByIdIn(urunIdList);
-        Map<Long, Urun> satisUrunList = stokHareketleriLists.stream()
+        Map<Long, Urun> satisUrunList = stokHareketleriLists
+            .stream()
             .collect(Collectors.toMap(satisStokHareketleri -> satisStokHareketleri.getUrun().getId(), SatisStokHareketleri::getUrun));
         for (Urun urun : urunList) {
             Urun satisUrunu = satisUrunList.get(urun.getId());
-            if(urun.getStok().compareTo(satisUrunu.getStok()) != 0){
+            if (urun.getStok().compareTo(satisUrunu.getStok()) != 0) {
                 throw new StockChangedException();
             }
         }
-
     }
 
     public Satis updateSatis(Satis satis) {
@@ -109,9 +109,7 @@ public class SatisService {
         Satis satisOncekiHali = satisOncekiHaliOptional.orElseThrow(SatisNotFoundUsedException::new);
         if (Boolean.FALSE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.TRUE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(kisilerService.getRandomKisi());
-        } else if (
-            Boolean.TRUE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.FALSE.equals(satis.isOrtagaSatis())
-        ) {
+        } else if (Boolean.TRUE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.FALSE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(null);
         }
 
@@ -142,9 +140,7 @@ public class SatisService {
         }
 
         satisStokHareketleriRepository.saveAll(stokHareketleriLists);
-        urunRepository.saveAll(
-            stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList())
-        );
+        urunRepository.saveAll(stokHareketleriLists.stream().map(SatisStokHareketleri::getUrun).collect(Collectors.toList()));
 
         createSatisUpdateHareketi(satis, satisOncekiHali);
         return satisRepository.save(satis);

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 
-import { TranslatorContext, Storage } from 'react-jhipster';
+import { TranslatorContext } from 'react-jhipster';
 
 export const ACTION_TYPES = {
   SET_LOCALE: 'locale/SET_LOCALE',
@@ -17,6 +18,7 @@ export default (state: LocaleState = initialState, action): LocaleState => {
     case ACTION_TYPES.SET_LOCALE: {
       const currentLocale = action.locale;
       if (state.currentLocale !== currentLocale) {
+        dayjs.locale(currentLocale);
         TranslatorContext.setLocale(currentLocale);
       }
       return {

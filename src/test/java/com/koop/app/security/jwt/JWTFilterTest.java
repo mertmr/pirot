@@ -3,7 +3,6 @@ package com.koop.app.security.jwt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.koop.app.security.AuthoritiesConstants;
-import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Collections;
@@ -17,8 +16,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
+import tech.jhipster.config.JHipsterProperties;
 
 public class JWTFilterTest {
+
     private TokenProvider tokenProvider;
 
     private JWTFilter jwtFilter;
@@ -31,9 +32,7 @@ public class JWTFilterTest {
             tokenProvider,
             "key",
             Keys.hmacShaKeyFor(
-                Decoders.BASE64.decode(
-                    "fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"
-                )
+                Decoders.BASE64.decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8")
             )
         );
 

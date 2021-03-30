@@ -15,6 +15,7 @@ export const ACTION_TYPES = {
   FETCH_STOKGIRISI: 'stokGirisi/FETCH_STOKGIRISI',
   CREATE_STOKGIRISI: 'stokGirisi/CREATE_STOKGIRISI',
   UPDATE_STOKGIRISI: 'stokGirisi/UPDATE_STOKGIRISI',
+  PARTIAL_UPDATE_STOKGIRISI: 'stokGirisi/PARTIAL_UPDATE_STOKGIRISI',
   DELETE_STOKGIRISI: 'stokGirisi/DELETE_STOKGIRISI',
   RESET: 'stokGirisi/RESET',
 };
@@ -50,6 +51,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
     case REQUEST(ACTION_TYPES.CREATE_STOKGIRISI):
     case REQUEST(ACTION_TYPES.UPDATE_STOKGIRISI):
     case REQUEST(ACTION_TYPES.DELETE_STOKGIRISI):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_STOKGIRISI):
       return {
         ...state,
         errorMessage: null,
@@ -62,6 +64,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
     case FAILURE(ACTION_TYPES.FETCH_STOKGIRISI):
     case FAILURE(ACTION_TYPES.CREATE_STOKGIRISI):
     case FAILURE(ACTION_TYPES.UPDATE_STOKGIRISI):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_STOKGIRISI):
     case FAILURE(ACTION_TYPES.DELETE_STOKGIRISI):
       return {
         ...state,
@@ -99,6 +102,7 @@ export default (state: StokGirisiState = initialState, action): StokGirisiState 
       };
     case SUCCESS(ACTION_TYPES.CREATE_STOKGIRISI):
     case SUCCESS(ACTION_TYPES.UPDATE_STOKGIRISI):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_STOKGIRISI):
       return {
         ...state,
         updating: false,
@@ -164,7 +168,15 @@ export const createEntity: ICrudPutAction<IStokGirisi> = entity => async dispatc
 export const updateEntity: ICrudPutAction<IStokGirisi> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_STOKGIRISI,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IStokGirisi> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_STOKGIRISI,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

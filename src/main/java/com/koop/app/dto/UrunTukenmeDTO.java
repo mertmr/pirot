@@ -1,8 +1,6 @@
 package com.koop.app.dto;
 
 import com.koop.app.domain.SatisStokHareketleri;
-import com.koop.app.domain.StokGirisi;
-
 import java.math.BigDecimal;
 import java.util.List;
 

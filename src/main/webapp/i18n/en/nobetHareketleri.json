@@ -3,6 +3,7 @@
     "nobetHareketleri": {
       "home": {
         "title": "Nobet Hareketleris",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Nobet Hareketleri",
         "createOrEditLabel": "Create or edit a Nobet Hareketleri",
         "notFound": "No Nobet Hareketleris found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Nobet Hareketleri"
       },
+      "id": "ID",
       "kasa": "Kasa",
       "pirot": "Pirot",
       "fark": "Fark",

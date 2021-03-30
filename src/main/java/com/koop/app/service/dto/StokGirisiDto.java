@@ -1,7 +1,6 @@
 package com.koop.app.service.dto;
 
 import com.koop.app.domain.enumeration.StokHareketiTipi;
-
 import java.time.ZonedDateTime;
 
 public class StokGirisiDto {
@@ -20,7 +19,15 @@ public class StokGirisiDto {
 
     private String urunAdi;
 
-    public StokGirisiDto(Long id, Integer miktar, String notlar, StokHareketiTipi stokHareketiTipi, ZonedDateTime tarih, String user, String urunAdi) {
+    public StokGirisiDto(
+        Long id,
+        Integer miktar,
+        String notlar,
+        StokHareketiTipi stokHareketiTipi,
+        ZonedDateTime tarih,
+        String user,
+        String urunAdi
+    ) {
         this.id = id;
         this.miktar = miktar;
         this.notlar = notlar;

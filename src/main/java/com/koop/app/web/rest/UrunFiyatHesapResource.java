@@ -3,9 +3,6 @@ package com.koop.app.web.rest;
 import com.koop.app.domain.UrunFiyatHesap;
 import com.koop.app.repository.UrunFiyatHesapRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -16,11 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.UrunFiyatHesap}.
@@ -29,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class UrunFiyatHesapResource {
+
     private final Logger log = LoggerFactory.getLogger(UrunFiyatHesapResource.class);
 
     private static final String ENTITY_NAME = "urunFiyatHesap";
@@ -50,22 +50,15 @@ public class UrunFiyatHesapResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/urun-fiyat-hesaps")
-    public ResponseEntity<UrunFiyatHesap> createUrunFiyatHesap(@RequestBody UrunFiyatHesap urunFiyatHesap)
-        throws URISyntaxException {
+    public ResponseEntity<UrunFiyatHesap> createUrunFiyatHesap(@RequestBody UrunFiyatHesap urunFiyatHesap) throws URISyntaxException {
         log.debug("REST request to save UrunFiyatHesap : {}", urunFiyatHesap);
         if (urunFiyatHesap.getId() != null) {
-            throw new BadRequestAlertException(
-                "A new urunFiyatHesap cannot already have an ID",
-                ENTITY_NAME,
-                "idexists"
-            );
+            throw new BadRequestAlertException("A new urunFiyatHesap cannot already have an ID", ENTITY_NAME, "idexists");
         }
         UrunFiyatHesap result = urunFiyatHesapRepository.save(urunFiyatHesap);
         return ResponseEntity
             .created(new URI("/api/urun-fiyat-hesaps/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -79,8 +72,7 @@ public class UrunFiyatHesapResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/urun-fiyat-hesaps")
-    public ResponseEntity<UrunFiyatHesap> updateUrunFiyatHesap(@RequestBody UrunFiyatHesap urunFiyatHesap)
-        throws URISyntaxException {
+    public ResponseEntity<UrunFiyatHesap> updateUrunFiyatHesap(@RequestBody UrunFiyatHesap urunFiyatHesap) throws URISyntaxException {
         log.debug("REST request to update UrunFiyatHesap : {}", urunFiyatHesap);
         if (urunFiyatHesap.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -88,14 +80,7 @@ public class UrunFiyatHesapResource {
         UrunFiyatHesap result = urunFiyatHesapRepository.save(urunFiyatHesap);
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(
-                    applicationName,
-                    true,
-                    ENTITY_NAME,
-                    urunFiyatHesap.getId().toString()
-                )
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, urunFiyatHesap.getId().toString()))
             .body(result);
     }
 
@@ -109,10 +94,7 @@ public class UrunFiyatHesapResource {
     public ResponseEntity<List<UrunFiyatHesap>> getAllUrunFiyatHesaps(Pageable pageable) {
         log.debug("REST request to get a page of UrunFiyatHesaps");
         Page<UrunFiyatHesap> page = urunFiyatHesapRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

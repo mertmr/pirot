@@ -2,16 +2,13 @@ package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.koop.app.config.tenancy.TenantEntity;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-
+import com.koop.app.domain.enumeration.AcilisKapanis;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-
-import com.koop.app.domain.enumeration.AcilisKapanis;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A NobetHareketleri.
@@ -182,6 +179,7 @@ public class NobetHareketleri extends TenantEntity implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

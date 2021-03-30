@@ -13,6 +13,7 @@ export const ACTION_TYPES = {
   FETCH_VIRMAN_USER: 'virman/FETCH_VIRMAN_USER',
   CREATE_VIRMAN: 'virman/CREATE_VIRMAN',
   UPDATE_VIRMAN: 'virman/UPDATE_VIRMAN',
+  PARTIAL_UPDATE_VIRMAN: 'virman/PARTIAL_UPDATE_VIRMAN',
   DELETE_VIRMAN: 'virman/DELETE_VIRMAN',
   RESET: 'virman/RESET',
 };
@@ -46,6 +47,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
     case REQUEST(ACTION_TYPES.CREATE_VIRMAN):
     case REQUEST(ACTION_TYPES.UPDATE_VIRMAN):
     case REQUEST(ACTION_TYPES.DELETE_VIRMAN):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_VIRMAN):
       return {
         ...state,
         errorMessage: null,
@@ -58,6 +60,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
     case FAILURE(ACTION_TYPES.FETCH_VIRMAN_USER):
     case FAILURE(ACTION_TYPES.CREATE_VIRMAN):
     case FAILURE(ACTION_TYPES.UPDATE_VIRMAN):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_VIRMAN):
     case FAILURE(ACTION_TYPES.DELETE_VIRMAN):
       return {
         ...state,
@@ -83,6 +86,7 @@ export default (state: VirmanState = initialState, action): VirmanState => {
       };
     case SUCCESS(ACTION_TYPES.CREATE_VIRMAN):
     case SUCCESS(ACTION_TYPES.UPDATE_VIRMAN):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_VIRMAN):
       return {
         ...state,
         updating: false,
@@ -153,7 +157,15 @@ export const createEntity: ICrudPutAction<IVirman> = entity => async dispatch =>
 export const updateEntity: ICrudPutAction<IVirman> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_VIRMAN,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IVirman> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_VIRMAN,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class DashboardReportsResource {
+
     private final Logger log = LoggerFactory.getLogger(DashboardReportsResource.class);
 
     private final DashboardReportService dashboardReportService;

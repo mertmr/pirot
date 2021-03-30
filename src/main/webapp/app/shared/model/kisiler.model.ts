@@ -1,11 +1,11 @@
-import { Moment } from 'moment';
+import dayjs from 'dayjs';
 
 export interface IKisiler {
   id?: number;
-  kisiAdi?: string;
-  notlar?: string;
-  tarih?: string;
-  active?: boolean;
+  kisiAdi?: string | null;
+  notlar?: string | null;
+  tarih?: string | null;
+  active?: boolean | null;
 }
 
 export const defaultValue: Readonly<IKisiler> = {

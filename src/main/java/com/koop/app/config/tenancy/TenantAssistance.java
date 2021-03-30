@@ -9,8 +9,7 @@ public final class TenantAssistance {
 
     private static final Logger log = LoggerFactory.getLogger(TenantAssistance.class);
 
-    private TenantAssistance() {
-    }
+    private TenantAssistance() {}
 
     public static Long resolveCurrentTenantIdentifier() {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -19,8 +18,7 @@ public final class TenantAssistance {
             CurrentUser authentication = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (authentication != null) {
                 Long tenant = authentication.getTenant();
-                if (tenant != null)
-                    return tenant;
+                if (tenant != null) return tenant;
 
                 log.error(tenant.toString());
             }

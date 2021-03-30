@@ -3,6 +3,7 @@
     "urun": {
       "home": {
         "title": "Uruns",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Urun",
         "createOrEditLabel": "Create or edit a Urun",
         "notFound": "No Uruns found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Urun"
       },
+      "id": "ID",
       "urunAdi": "Urun Adi",
       "stok": "Stok",
       "stokSiniri": "Stok Siniri",

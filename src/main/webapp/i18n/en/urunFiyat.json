@@ -3,6 +3,7 @@
     "urunFiyat": {
       "home": {
         "title": "Urun Fiyats",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Urun Fiyat",
         "createOrEditLabel": "Create or edit a Urun Fiyat",
         "notFound": "No Urun Fiyats found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Urun Fiyat"
       },
+      "id": "ID",
       "fiyat": "Fiyat",
       "tarih": "Tarih",
       "user": "User",

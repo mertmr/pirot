@@ -7,7 +7,6 @@ import com.koop.app.domain.enumeration.OdemeAraci;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "borc_alacak")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BorcAlacak extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -44,11 +44,10 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     private ZonedDateTime tarih;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "borcAlacaks", allowSetters = true)
     private User user;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "borcAlacaks", allowSetters = true)
+    @JsonIgnoreProperties(value = { "urunSorumlusu", "kdvKategorisi", "urunFiyatHesap" }, allowSetters = true)
     private Urun urun;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -60,8 +59,13 @@ public class BorcAlacak extends TenantEntity implements Serializable {
         this.id = id;
     }
 
+    public BorcAlacak id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public BigDecimal getTutar() {
-        return tutar;
+        return this.tutar;
     }
 
     public BorcAlacak tutar(BigDecimal tutar) {
@@ -74,7 +78,7 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     }
 
     public String getNotlar() {
-        return notlar;
+        return this.notlar;
     }
 
     public BorcAlacak notlar(String notlar) {
@@ -87,7 +91,7 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     }
 
     public OdemeAraci getOdemeAraci() {
-        return odemeAraci;
+        return this.odemeAraci;
     }
 
     public BorcAlacak odemeAraci(OdemeAraci odemeAraci) {
@@ -100,7 +104,7 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     }
 
     public HareketTipi getHareketTipi() {
-        return hareketTipi;
+        return this.hareketTipi;
     }
 
     public BorcAlacak hareketTipi(HareketTipi hareketTipi) {
@@ -113,7 +117,7 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     }
 
     public ZonedDateTime getTarih() {
-        return tarih;
+        return this.tarih;
     }
 
     public BorcAlacak tarih(ZonedDateTime tarih) {
@@ -126,11 +130,11 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public BorcAlacak user(User user) {
-        this.user = user;
+        this.setUser(user);
         return this;
     }
 
@@ -139,11 +143,11 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     }
 
     public Urun getUrun() {
-        return urun;
+        return this.urun;
     }
 
     public BorcAlacak urun(Urun urun) {
-        this.urun = urun;
+        this.setUrun(urun);
         return this;
     }
 
@@ -166,7 +170,8 @@ public class BorcAlacak extends TenantEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -174,23 +179,23 @@ public class BorcAlacak extends TenantEntity implements Serializable {
     public String toString() {
         return (
             "BorcAlacak{" +
-            "id=" +
-            getId() +
-            ", tutar=" +
-            getTutar() +
-            ", notlar='" +
-            getNotlar() +
-            "'" +
-            ", odemeAraci='" +
-            getOdemeAraci() +
-            "'" +
-            ", hareketTipi='" +
-            getHareketTipi() +
-            "'" +
-            ", tarih='" +
-            getTarih() +
-            "'" +
-            "}"
+                "id=" +
+                getId() +
+                ", tutar=" +
+                getTutar() +
+                ", notlar='" +
+                getNotlar() +
+                "'" +
+                ", odemeAraci='" +
+                getOdemeAraci() +
+                "'" +
+                ", hareketTipi='" +
+                getHareketTipi() +
+                "'" +
+                ", tarih='" +
+                getTarih() +
+                "'" +
+                "}"
         );
     }
 }

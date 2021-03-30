@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -15,7 +15,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface IKdvKategorisiUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { kdvKategorisiEntity, loading, updating } = props;
 
@@ -56,7 +56,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="koopApp.kdvKategorisi.home.createOrEditLabel">
+          <h2 id="koopApp.kdvKategorisi.home.createOrEditLabel" data-cy="KdvKategorisiCreateUpdateHeading">
             <Translate contentKey="koopApp.kdvKategorisi.home.createOrEditLabel">Create or edit a KdvKategorisi</Translate>
           </h2>
         </Col>
@@ -81,6 +81,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
                 </Label>
                 <AvField
                   id="kdv-kategorisi-kategoriAdi"
+                  data-cy="kategoriAdi"
                   type="text"
                   name="kategoriAdi"
                   validate={{
@@ -94,6 +95,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
                 </Label>
                 <AvField
                   id="kdv-kategorisi-kdvOrani"
+                  data-cy="kdvOrani"
                   type="string"
                   className="form-control"
                   name="kdvOrani"
@@ -111,7 +113,7 @@ export const KdvKategorisiUpdate = (props: IKdvKategorisiUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

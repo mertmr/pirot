@@ -1,4 +1,4 @@
-export const enum OdemeAraci {
+export enum OdemeAraci {
   NAKIT = 'NAKIT',
 
   BANKA = 'BANKA',

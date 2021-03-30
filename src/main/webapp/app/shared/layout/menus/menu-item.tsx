@@ -9,14 +9,15 @@ export interface IMenuItem {
   to: string;
   id?: string;
   onClick?: any;
+  'data-cy'?: string;
 }
 
 export default class MenuItem extends React.Component<IMenuItem> {
   render() {
-    const { to, icon, id, children, onClick } = this.props;
+    const { to, icon, id, children, onClick, 'data-cy': string } = this.props;
 
     return (
-      <DropdownItem tag={Link} to={to} id={id} onClick={onClick}>
+      <DropdownItem tag={Link} to={to} id={id} onClick={onClick} data-cy={this.props['data-cy']}>
         <FontAwesomeIcon icon={icon} fixedWidth /> {children}
       </DropdownItem>
     );

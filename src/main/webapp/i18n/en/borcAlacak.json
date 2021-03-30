@@ -3,6 +3,7 @@
     "borcAlacak": {
       "home": {
         "title": "Borc Alacaks",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Borc Alacak",
         "createOrEditLabel": "Create or edit a Borc Alacak",
         "notFound": "No Borc Alacaks found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Borc Alacak"
       },
+      "id": "ID",
       "tutar": "Tutar",
       "notlar": "Notlar",
       "odemeAraci": "Odeme Araci",

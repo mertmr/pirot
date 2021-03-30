@@ -11,5 +11,5 @@ public enum GiderTipi {
     KIRA,
     AIDAT,
     TAKSI,
-    ELEKTRIK
+    ELEKTRIK,
 }

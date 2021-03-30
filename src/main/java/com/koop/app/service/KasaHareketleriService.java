@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KasaHareketleriService {
+
     private final KasaHareketleriRepository kasaHareketleriRepository;
 
     public KasaHareketleriService(KasaHareketleriRepository kasaHareketleriRepository) {

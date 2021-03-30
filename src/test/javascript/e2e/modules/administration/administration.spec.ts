@@ -9,8 +9,8 @@ const expect = chai.expect;
 describe('Administration', () => {
   let navBarPage: NavBarPage;
   let signInPage: SignInPage;
-  const username = process.env.E2E_USERNAME || 'admin';
-  const password = process.env.E2E_PASSWORD || 'admin';
+  const username = process.env.E2E_USERNAME ?? 'admin';
+  const password = process.env.E2E_PASSWORD ?? 'admin';
 
   before(async () => {
     await browser.get('/');
@@ -47,11 +47,6 @@ describe('Administration', () => {
   it('should load configuration', async () => {
     await navBarPage.clickOnAdminMenuItem('configuration');
     expect(await element(by.id('configuration-page-heading')).getText()).to.eq('Configuration');
-  });
-
-  it('should load audits', async () => {
-    await navBarPage.clickOnAdminMenuItem('audits');
-    expect(await element(by.id('audits-page-heading')).getText()).to.eq('Audits');
   });
 
   it('should load logs', async () => {

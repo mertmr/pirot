@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
     <!--
         Added the constraints for entity Satis.
     -->
@@ -10,13 +10,13 @@
         
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="satis"
-                                 constraintName="fk_satis_user_id"
+                                 constraintName="fk_satis__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="koop_user"/>
 
         <addForeignKeyConstraint baseColumnNames="kisi_id"
                                  baseTableName="satis"
-                                 constraintName="fk_satis_kisi_id"
+                                 constraintName="fk_satis__kisi_id"
                                  referencedColumnNames="id"
                                  referencedTableName="kisiler"/>
 

@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IUrunFiyat } from 'app/shared/model/urun-fiyat.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './urun-fiyat.reducer';
 
@@ -33,7 +32,7 @@ export const UrunFiyatDeleteDialog = (props: IUrunFiyatDeleteDialogProps) => {
   const { urunFiyatEntity } = props;
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}>
+      <ModalHeader toggle={handleClose} data-cy="urunFiyatDeleteDialogHeading">
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
       <ModalBody id="koopApp.urunFiyat.delete.question">
@@ -47,7 +46,7 @@ export const UrunFiyatDeleteDialog = (props: IUrunFiyatDeleteDialogProps) => {
           &nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button id="koop-confirm-delete-urunFiyat" color="danger" onClick={confirmDelete}>
+        <Button id="koop-confirm-delete-urunFiyat" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>

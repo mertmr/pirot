@@ -1,6 +1,5 @@
 package com.koop.app.aop.logging;
 
-import io.github.jhipster.config.JHipsterConstants;
 import java.util.Arrays;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+import tech.jhipster.config.JHipsterConstants;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
@@ -20,6 +20,7 @@ import org.springframework.core.env.Profiles;
  */
 @Aspect
 public class LoggingAspect {
+
     private final Environment env;
 
     public LoggingAspect(Environment env) {
@@ -41,11 +42,7 @@ public class LoggingAspect {
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
      */
-    @Pointcut(
-        "within(com.koop.app.repository..*)" +
-        " || within(com.koop.app.service..*)" +
-        " || within(com.koop.app.web.rest..*)"
-    )
+    @Pointcut("within(com.koop.app.repository..*)" + " || within(com.koop.app.service..*)" + " || within(com.koop.app.web.rest..*)")
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
@@ -98,11 +95,7 @@ public class LoggingAspect {
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         Logger log = logger(joinPoint);
         if (log.isDebugEnabled()) {
-            log.debug(
-                "Enter: {}() with argument[s] = {}",
-                joinPoint.getSignature().getName(),
-                Arrays.toString(joinPoint.getArgs())
-            );
+            log.debug("Enter: {}() with argument[s] = {}", joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
         }
         try {
             Object result = joinPoint.proceed();
@@ -111,11 +104,7 @@ public class LoggingAspect {
             }
             return result;
         } catch (IllegalArgumentException e) {
-            log.error(
-                "Illegal argument: {} in {}()",
-                Arrays.toString(joinPoint.getArgs()),
-                joinPoint.getSignature().getName()
-            );
+            log.error("Illegal argument: {} in {}()", Arrays.toString(joinPoint.getArgs()), joinPoint.getSignature().getName());
             throw e;
         }
     }

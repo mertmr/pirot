@@ -1,7 +1,6 @@
 package com.koop.app.service;
 
 import com.koop.app.domain.User;
-import io.github.jhipster.config.JHipsterProperties;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import javax.mail.MessagingException;
@@ -16,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import tech.jhipster.config.JHipsterProperties;
 
 /**
  * Service for sending emails.
@@ -24,6 +24,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 public class MailService {
+
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     private static final String USER = "user";

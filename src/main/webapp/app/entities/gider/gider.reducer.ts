@@ -14,6 +14,7 @@ export const ACTION_TYPES = {
   FETCH_GIDER: 'gider/FETCH_GIDER',
   CREATE_GIDER: 'gider/CREATE_GIDER',
   UPDATE_GIDER: 'gider/UPDATE_GIDER',
+  PARTIAL_UPDATE_GIDER: 'gider/PARTIAL_UPDATE_GIDER',
   DELETE_GIDER: 'gider/DELETE_GIDER',
   RESET: 'gider/RESET',
 };
@@ -47,6 +48,7 @@ export default (state: GiderState = initialState, action): GiderState => {
     case REQUEST(ACTION_TYPES.CREATE_GIDER):
     case REQUEST(ACTION_TYPES.UPDATE_GIDER):
     case REQUEST(ACTION_TYPES.DELETE_GIDER):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_GIDER):
       return {
         ...state,
         errorMessage: null,
@@ -59,6 +61,7 @@ export default (state: GiderState = initialState, action): GiderState => {
     case FAILURE(ACTION_TYPES.FETCH_GIDER):
     case FAILURE(ACTION_TYPES.CREATE_GIDER):
     case FAILURE(ACTION_TYPES.UPDATE_GIDER):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_GIDER):
     case FAILURE(ACTION_TYPES.DELETE_GIDER):
       return {
         ...state,
@@ -84,6 +87,7 @@ export default (state: GiderState = initialState, action): GiderState => {
       };
     case SUCCESS(ACTION_TYPES.CREATE_GIDER):
     case SUCCESS(ACTION_TYPES.UPDATE_GIDER):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_GIDER):
       return {
         ...state,
         updating: false,
@@ -144,7 +148,15 @@ export const createEntity: ICrudPutAction<IGider> = entity => async dispatch => 
 export const updateEntity: ICrudPutAction<IGider> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_GIDER,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IGider> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_GIDER,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

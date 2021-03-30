@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -19,9 +19,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ISatisStokHareketleriUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdateProps) => {
-  const [urunId, setUrunId] = useState('0');
-  const [satisId, setSatisId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { satisStokHareketleriEntity, uruns, satis, loading, updating } = props;
 
@@ -51,6 +49,8 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
       const entity = {
         ...satisStokHareketleriEntity,
         ...values,
+        urun: uruns.find(it => it.id.toString() === values.urunId.toString()),
+        satis: satis.find(it => it.id.toString() === values.satisId.toString()),
       };
 
       if (isNew) {
@@ -65,7 +65,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="koopApp.satisStokHareketleri.home.createOrEditLabel">
+          <h2 id="koopApp.satisStokHareketleri.home.createOrEditLabel" data-cy="SatisStokHareketleriCreateUpdateHeading">
             <Translate contentKey="koopApp.satisStokHareketleri.home.createOrEditLabel">Create or edit a SatisStokHareketleri</Translate>
           </h2>
         </Col>
@@ -90,6 +90,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 </Label>
                 <AvField
                   id="satis-stok-hareketleri-miktar"
+                  data-cy="miktar"
                   type="string"
                   className="form-control"
                   name="miktar"
@@ -105,6 +106,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 </Label>
                 <AvField
                   id="satis-stok-hareketleri-tutar"
+                  data-cy="tutar"
                   type="text"
                   name="tutar"
                   validate={{
@@ -117,7 +119,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 <Label for="satis-stok-hareketleri-urun">
                   <Translate contentKey="koopApp.satisStokHareketleri.urun">Urun</Translate>
                 </Label>
-                <AvInput id="satis-stok-hareketleri-urun" type="select" className="form-control" name="urun.id">
+                <AvInput id="satis-stok-hareketleri-urun" data-cy="urun" type="select" className="form-control" name="urunId">
                   <option value="" key="0" />
                   {uruns
                     ? uruns.map(otherEntity => (
@@ -132,7 +134,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 <Label for="satis-stok-hareketleri-satis">
                   <Translate contentKey="koopApp.satisStokHareketleri.satis">Satis</Translate>
                 </Label>
-                <AvInput id="satis-stok-hareketleri-satis" type="select" className="form-control" name="satis.id">
+                <AvInput id="satis-stok-hareketleri-satis" data-cy="satis" type="select" className="form-control" name="satisId">
                   <option value="" key="0" />
                   {satis
                     ? satis.map(otherEntity => (
@@ -151,7 +153,7 @@ export const SatisStokHareketleriUpdate = (props: ISatisStokHareketleriUpdatePro
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>

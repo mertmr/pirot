@@ -1,13 +1,13 @@
 package com.koop.app.repository;
 
 import com.koop.app.domain.Gider;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -28,11 +28,7 @@ public interface GiderRepository extends JpaRepository<Gider, Long> {
     Page<Gider> search(@Param("login") String login, Pageable pageable);
 
     @Query("select gider from Gider gider where gider.tarih between :from and :to " + "and gider.user.id = :userId")
-    List<Gider> getUserGiders(
-        @Param("from") ZonedDateTime from,
-        @Param("to") ZonedDateTime to,
-        @Param("userId") Long userId
-    );
+    List<Gider> getUserGiders(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to, @Param("userId") Long userId);
 
     @Query("select gider from Gider gider " + "where gider.tarih between :from and :to ")
     List<Gider> findGiderByGun(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);

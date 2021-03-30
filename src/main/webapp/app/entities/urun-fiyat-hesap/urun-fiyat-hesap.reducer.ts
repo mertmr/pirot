@@ -12,6 +12,7 @@ export const ACTION_TYPES = {
   FETCH_URUNFIYATHESAPBYURUN: 'urunFiyatHesap/FETCH_URUNFIYATHESAPBYURUN',
   CREATE_URUNFIYATHESAP: 'urunFiyatHesap/CREATE_URUNFIYATHESAP',
   UPDATE_URUNFIYATHESAP: 'urunFiyatHesap/UPDATE_URUNFIYATHESAP',
+  PARTIAL_UPDATE_URUNFIYATHESAP: 'urunFiyatHesap/PARTIAL_UPDATE_URUNFIYATHESAP',
   DELETE_URUNFIYATHESAP: 'urunFiyatHesap/DELETE_URUNFIYATHESAP',
   RESET: 'urunFiyatHesap/RESET',
 };
@@ -44,6 +45,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
     case REQUEST(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case REQUEST(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
     case REQUEST(ACTION_TYPES.DELETE_URUNFIYATHESAP):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_URUNFIYATHESAP):
       return {
         ...state,
         errorMessage: null,
@@ -55,6 +57,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.DELETE_URUNFIYATHESAP):
       return {
         ...state,
@@ -79,6 +82,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
       };
     case SUCCESS(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case SUCCESS(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_URUNFIYATHESAP):
       return {
         ...state,
         updating: false,
@@ -141,7 +145,15 @@ export const createEntity: ICrudPutAction<IUrunFiyatHesap> = entity => async dis
 export const updateEntity: ICrudPutAction<IUrunFiyatHesap> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_URUNFIYATHESAP,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<IUrunFiyatHesap> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_URUNFIYATHESAP,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

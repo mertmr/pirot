@@ -8,10 +8,12 @@ import com.koop.app.service.MailService;
 import com.koop.app.service.UserService;
 import com.koop.app.service.dto.PasswordChangeDTO;
 import com.koop.app.service.dto.UserDTO;
-import com.koop.app.web.rest.errors.*;
+import com.koop.app.web.rest.errors.EmailAlreadyUsedException;
+import com.koop.app.web.rest.errors.InvalidPasswordException;
+import com.koop.app.web.rest.errors.LoginAlreadyUsedException;
 import com.koop.app.web.rest.vm.KeyAndPasswordVM;
 import com.koop.app.web.rest.vm.ManagedUserVM;
-import java.util.*;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +41,12 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserSystemWideAuthRepository userSystemWideAuthRepository, UserService userService, MailService mailService) {
+    public AccountResource(
+        UserRepository userRepository,
+        UserSystemWideAuthRepository userSystemWideAuthRepository,
+        UserService userService,
+        MailService mailService
+    ) {
         this.userRepository = userRepository;
         this.userSystemWideAuthRepository = userSystemWideAuthRepository;
         this.userService = userService;
@@ -47,6 +54,7 @@ public class AccountResource {
     }
 
     private static class AccountResourceException extends RuntimeException {
+
         private AccountResourceException(String message) {
             super(message);
         }
@@ -182,10 +190,7 @@ public class AccountResource {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
             throw new InvalidPasswordException();
         }
-        Optional<User> user = userService.completePasswordReset(
-            keyAndPassword.getNewPassword(),
-            keyAndPassword.getKey()
-        );
+        Optional<User> user = userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey());
 
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this reset key");

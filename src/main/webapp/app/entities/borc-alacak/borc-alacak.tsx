@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Translate, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -16,7 +16,7 @@ export interface IBorcAlacakProps extends StateProps, DispatchProps, RouteCompon
 
 export const BorcAlacak = (props: IBorcAlacakProps) => {
   const [paginationState, setPaginationState] = useState(
-    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
+    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE, 'id'), props.location.search)
   );
 
   const getAllEntities = () => {
@@ -64,16 +64,26 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
       activePage: currentPage,
     });
 
+  const handleSyncList = () => {
+    sortEntities();
+  };
+
   const { borcAlacakList, match, loading, totalItems } = props;
   return (
     <div>
-      <h2 id="borc-alacak-heading">
+      <h2 id="borc-alacak-heading" data-cy="BorcAlacakHeading">
         <Translate contentKey="koopApp.borcAlacak.home.title">Borc Alacaks</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="koopApp.borcAlacak.home.createLabel">Create new Borc Alacak</Translate>
-        </Link>
+        <div className="d-flex justify-content-end">
+          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} />{' '}
+            <Translate contentKey="koopApp.borcAlacak.home.refreshListLabel">Refresh List</Translate>
+          </Button>
+          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+            <FontAwesomeIcon icon="plus" />
+            &nbsp;
+            <Translate contentKey="koopApp.borcAlacak.home.createLabel">Create new Borc Alacak</Translate>
+          </Link>
+        </div>
       </h2>
       <div className="table-responsive">
         {borcAlacakList && borcAlacakList.length > 0 ? (
@@ -81,7 +91,7 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="koopApp.borcAlacak.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('tutar')}>
                   <Translate contentKey="koopApp.borcAlacak.tutar">Tutar</Translate> <FontAwesomeIcon icon="sort" />
@@ -109,12 +119,13 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
             </thead>
             <tbody>
               {borcAlacakList.map((borcAlacak, i) => (
-                <tr key={`entity-${i}`}>
+                <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
                     <Button tag={Link} to={`${match.url}/${borcAlacak.id}`} color="link" size="sm">
                       {borcAlacak.id}
                     </Button>
                   </td>
+                  <td>{borcAlacak.id}</td>
                   <td>{borcAlacak.tutar}</td>
                   <td>{borcAlacak.notlar}</td>
                   <td>
@@ -128,7 +139,7 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
                   <td>{borcAlacak.urun ? <Link to={`urun/${borcAlacak.urun.id}`}>{borcAlacak.urun.urunAdi}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${borcAlacak.id}`} color="info" size="sm">
+                      <Button tag={Link} to={`${match.url}/${borcAlacak.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
@@ -139,6 +150,7 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
                         to={`${match.url}/${borcAlacak.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
+                        data-cy="entityEditButton"
                       >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
                         <span className="d-none d-md-inline">
@@ -150,6 +162,7 @@ export const BorcAlacak = (props: IBorcAlacakProps) => {
                         to={`${match.url}/${borcAlacak.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="danger"
                         size="sm"
+                        data-cy="entityDeleteButton"
                       >
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">

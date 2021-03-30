@@ -6,9 +6,8 @@ import com.koop.app.domain.enumeration.Hesap;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "virman")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Virman extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id

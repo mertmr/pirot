@@ -5,28 +5,24 @@ import com.koop.app.domain.KasaHareketleri;
 import com.koop.app.dto.Ciro;
 import com.koop.app.repository.KasaHareketleriRepository;
 import com.koop.app.repository.SatisRepository;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
 public class DashboardReportService {
+
     private final SatisRepository satisRepository;
 
     private final KasaHareketleriRepository kasaHareketleriRepository;
 
-    public DashboardReportService(
-        SatisRepository satisRepository,
-        KasaHareketleriRepository kasaHareketleriRepository) {
+    public DashboardReportService(SatisRepository satisRepository, KasaHareketleriRepository kasaHareketleriRepository) {
         this.satisRepository = satisRepository;
         this.kasaHareketleriRepository = kasaHareketleriRepository;
     }

@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './urun.reducer';
-import { IUrun } from 'app/shared/model/urun.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IUrunDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,10 +20,16 @@ export const UrunDetail = (props: IUrunDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          <Translate contentKey="koopApp.urun.detail.title">Urun</Translate> [<b>{urunEntity.id}</b>]
+        <h2 data-cy="urunDetailsHeading">
+          <Translate contentKey="koopApp.urun.detail.title">Urun</Translate>
         </h2>
         <dl className="jh-entity-details">
+          <dt>
+            <span id="id">
+              <Translate contentKey="global.field.id">ID</Translate>
+            </span>
+          </dt>
+          <dd>{urunEntity.id}</dd>
           <dt>
             <span id="urunAdi">
               <Translate contentKey="koopApp.urun.urunAdi">Urun Adi</Translate>
@@ -82,7 +87,7 @@ export const UrunDetail = (props: IUrunDetailProps) => {
           </dt>
           <dd>{urunEntity.kdvKategorisi ? urunEntity.kdvKategorisi.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/urun" replace color="info">
+        <Button tag={Link} to="/urun" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>

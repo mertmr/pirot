@@ -4,6 +4,9 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.UserRepository;
 import com.koop.app.repository.tenancy.UserSystemWideAuthRepository;
 import com.koop.app.service.UserService;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,15 +18,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
 /**
  * Authenticate a user from the database.
  */
 @Component("userDetailsService")
 public class DomainUserDetailsService implements UserDetailsService {
+
     private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
 
     private final UserRepository userRepository;
@@ -32,7 +32,11 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
 
-    public DomainUserDetailsService(UserRepository userRepository, UserSystemWideAuthRepository userSystemWideAuthRepository, UserService userService) {
+    public DomainUserDetailsService(
+        UserRepository userRepository,
+        UserSystemWideAuthRepository userSystemWideAuthRepository,
+        UserService userService
+    ) {
         this.userRepository = userRepository;
         this.userSystemWideAuthRepository = userSystemWideAuthRepository;
         this.userService = userService;
@@ -47,24 +51,18 @@ public class DomainUserDetailsService implements UserDetailsService {
             return userSystemWideAuthRepository
                 .findOneWithAuthoritiesByEmailIgnoreCase(login)
                 .map(user -> createSpringSecurityUser(login, user))
-                .orElseThrow(
-                    () -> new UsernameNotFoundException("User with email " + login + " was not found in the database")
-                );
+                .orElseThrow(() -> new UsernameNotFoundException("User with email " + login + " was not found in the database"));
         }
 
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        return userSystemWideAuthRepository.findOneWithAuthoritiesByLogin(lowercaseLogin)
+        return userSystemWideAuthRepository
+            .findOneWithAuthoritiesByLogin(lowercaseLogin)
             .map(user -> createSpringSecurityUser(lowercaseLogin, user))
-            .orElseThrow(
-                () -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database")
-            );
+            .orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database"));
     }
 
-    private CurrentUser createSpringSecurityUser(
-        String lowercaseLogin,
-        User user
-    ) {
-        if (!user.getActivated()) {
+    private CurrentUser createSpringSecurityUser(String lowercaseLogin, User user) {
+        if (!user.isActivated()) {
             throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
         }
         List<GrantedAuthority> grantedAuthorities = user
@@ -73,8 +71,17 @@ public class DomainUserDetailsService implements UserDetailsService {
             .map(authority -> new SimpleGrantedAuthority(authority.getName()))
             .collect(Collectors.toList());
 
-        CurrentUser currentUser = new CurrentUser(user.getLogin(), user.getFirstName(), user.getPassword(), user.getLogin(), true, true, true,
-            true, grantedAuthorities);
+        CurrentUser currentUser = new CurrentUser(
+            user.getLogin(),
+            user.getFirstName(),
+            user.getPassword(),
+            user.getLogin(),
+            true,
+            true,
+            true,
+            true,
+            grantedAuthorities
+        );
         currentUser.setTenant(user.getTenantId());
         return currentUser;
     }

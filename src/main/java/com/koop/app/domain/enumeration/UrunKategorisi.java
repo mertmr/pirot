@@ -5,5 +5,5 @@ package com.koop.app.domain.enumeration;
  */
 public enum UrunKategorisi {
     GIDA,
-    GIDA_DISI
+    GIDA_DISI,
 }

@@ -3,6 +3,7 @@
     "kdvKategorisi": {
       "home": {
         "title": "Kdv Kategorisis",
+        "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Kdv Kategorisi",
         "createOrEditLabel": "Create or edit a Kdv Kategorisi",
         "notFound": "No Kdv Kategorisis found"
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Kdv Kategorisi"
       },
+      "id": "ID",
       "kategoriAdi": "Kategori Adi",
       "kdvOrani": "Kdv Orani"
     }

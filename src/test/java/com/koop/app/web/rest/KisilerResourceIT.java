@@ -32,16 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 public class KisilerResourceIT {
+
     private static final String DEFAULT_KISI_ADI = "AAAAAAAAAA";
     private static final String UPDATED_KISI_ADI = "BBBBBBBBBB";
 
     private static final String DEFAULT_NOTLAR = "AAAAAAAAAA";
     private static final String UPDATED_NOTLAR = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
-        Instant.ofEpochMilli(0L),
-        ZoneOffset.UTC
-    );
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     private static final Boolean DEFAULT_ACTIVE = true;
@@ -65,11 +63,7 @@ public class KisilerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Kisiler createEntity(EntityManager em) {
-        Kisiler kisiler = new Kisiler()
-            .kisiAdi(DEFAULT_KISI_ADI)
-            .notlar(DEFAULT_NOTLAR)
-            .tarih(DEFAULT_TARIH)
-            .active(DEFAULT_ACTIVE);
+        Kisiler kisiler = new Kisiler().kisiAdi(DEFAULT_KISI_ADI).notlar(DEFAULT_NOTLAR).tarih(DEFAULT_TARIH).active(DEFAULT_ACTIVE);
         return kisiler;
     }
 
@@ -80,11 +74,7 @@ public class KisilerResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Kisiler createUpdatedEntity(EntityManager em) {
-        Kisiler kisiler = new Kisiler()
-            .kisiAdi(UPDATED_KISI_ADI)
-            .notlar(UPDATED_NOTLAR)
-            .tarih(UPDATED_TARIH)
-            .active(UPDATED_ACTIVE);
+        Kisiler kisiler = new Kisiler().kisiAdi(UPDATED_KISI_ADI).notlar(UPDATED_NOTLAR).tarih(UPDATED_TARIH).active(UPDATED_ACTIVE);
         return kisiler;
     }
 
@@ -99,11 +89,7 @@ public class KisilerResourceIT {
         int databaseSizeBeforeCreate = kisilerRepository.findAll().size();
         // Create the Kisiler
         restKisilerMockMvc
-            .perform(
-                post("/api/kisilers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kisiler))
-            )
+            .perform(post("/api/kisilers").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(kisiler)))
             .andExpect(status().isCreated());
 
         // Validate the Kisiler in the database
@@ -126,11 +112,7 @@ public class KisilerResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restKisilerMockMvc
-            .perform(
-                post("/api/kisilers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kisiler))
-            )
+            .perform(post("/api/kisilers").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(kisiler)))
             .andExpect(status().isBadRequest());
 
         // Validate the Kisiler in the database
@@ -197,9 +179,7 @@ public class KisilerResourceIT {
 
         restKisilerMockMvc
             .perform(
-                put("/api/kisilers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedKisiler))
+                put("/api/kisilers").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedKisiler))
             )
             .andExpect(status().isOk());
 
@@ -220,11 +200,7 @@ public class KisilerResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKisilerMockMvc
-            .perform(
-                put("/api/kisilers")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kisiler))
-            )
+            .perform(put("/api/kisilers").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(kisiler)))
             .andExpect(status().isBadRequest());
 
         // Validate the Kisiler in the database

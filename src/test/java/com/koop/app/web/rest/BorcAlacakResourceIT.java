@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 public class BorcAlacakResourceIT {
+
     private static final BigDecimal DEFAULT_TUTAR = new BigDecimal(1);
     private static final BigDecimal UPDATED_TUTAR = new BigDecimal(2);
 
@@ -47,10 +48,7 @@ public class BorcAlacakResourceIT {
     private static final HareketTipi DEFAULT_HAREKET_TIPI = HareketTipi.URUN_GIRISI;
     private static final HareketTipi UPDATED_HAREKET_TIPI = HareketTipi.ODEME;
 
-    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(
-        Instant.ofEpochMilli(0L),
-        ZoneOffset.UTC
-    );
+    private static final ZonedDateTime DEFAULT_TARIH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_TARIH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
@@ -108,9 +106,7 @@ public class BorcAlacakResourceIT {
         // Create the BorcAlacak
         restBorcAlacakMockMvc
             .perform(
-                post("/api/borc-alacaks")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(borcAlacak))
+                post("/api/borc-alacaks").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(borcAlacak))
             )
             .andExpect(status().isCreated());
 
@@ -136,9 +132,7 @@ public class BorcAlacakResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restBorcAlacakMockMvc
             .perform(
-                post("/api/borc-alacaks")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(borcAlacak))
+                post("/api/borc-alacaks").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(borcAlacak))
             )
             .andExpect(status().isBadRequest());
 
@@ -238,9 +232,7 @@ public class BorcAlacakResourceIT {
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBorcAlacakMockMvc
             .perform(
-                put("/api/borc-alacaks")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(borcAlacak))
+                put("/api/borc-alacaks").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(borcAlacak))
             )
             .andExpect(status().isBadRequest());
 

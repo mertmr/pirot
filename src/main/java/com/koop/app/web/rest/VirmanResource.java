@@ -6,9 +6,6 @@ import com.koop.app.repository.VirmanRepository;
 import com.koop.app.service.KasaHareketleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -28,6 +25,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.Virman}.
@@ -36,6 +36,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 @Transactional
 public class VirmanResource {
+
     private static final String ENTITY_NAME = "virman";
     private final Logger log = LoggerFactory.getLogger(VirmanResource.class);
     private final VirmanRepository virmanRepository;
@@ -45,11 +46,7 @@ public class VirmanResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public VirmanResource(
-        VirmanRepository virmanRepository,
-        UserService userService,
-        KasaHareketleriService kasaHareketleriService
-    ) {
+    public VirmanResource(VirmanRepository virmanRepository, UserService userService, KasaHareketleriService kasaHareketleriService) {
         this.virmanRepository = virmanRepository;
         this.userService = userService;
         this.kasaHareketleriService = kasaHareketleriService;
@@ -77,9 +74,7 @@ public class VirmanResource {
         kasaHareketleriService.createKasaHareketi(virman.getTutar().negate(), "Kasadan Virman Cikti");
         return ResponseEntity
             .created(new URI("/api/virmen/" + result.getId()))
-            .headers(
-                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString())
-            )
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -106,10 +101,7 @@ public class VirmanResource {
 
         Optional<Virman> optionalVirman = virmanRepository.findById(virman.getId());
         Virman oncekiVirman = optionalVirman.orElseThrow(RuntimeException::new);
-        kasaHareketleriService.createKasaHareketi(
-            virman.getTutar().subtract(oncekiVirman.getTutar()).negate(),
-            "Virmanda Düzenleme"
-        );
+        kasaHareketleriService.createKasaHareketi(virman.getTutar().subtract(oncekiVirman.getTutar()).negate(), "Virmanda Düzenleme");
         Virman result = virmanRepository.save(virman);
         return ResponseEntity
             .ok()
@@ -127,10 +119,7 @@ public class VirmanResource {
     public ResponseEntity<List<Virman>> getAllVirmen(Pageable pageable) {
         log.debug("REST request to get a page of Virmen");
         Page<Virman> page = virmanRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -175,10 +164,7 @@ public class VirmanResource {
     public ResponseEntity<List<Virman>> searchVirman(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Virman for query {}", query);
         Page<Virman> page = virmanRepository.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-            ServletUriComponentsBuilder.fromCurrentRequest(),
-            page
-        );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

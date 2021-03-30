@@ -1,18 +1,18 @@
-import { Moment } from 'moment';
+import dayjs from 'dayjs';
 import { IUser } from 'app/shared/model/user.model';
 import { AcilisKapanis } from 'app/shared/model/enumerations/acilis-kapanis.model';
 
 export interface INobetHareketleri {
   id?: number;
-  kasa?: number;
-  pirot?: number;
-  fark?: number;
-  farkDenge?: number;
-  nobetSuresi?: number;
-  notlar?: string;
-  acilisKapanis?: AcilisKapanis;
-  tarih?: string;
-  user?: IUser;
+  kasa?: number | null;
+  pirot?: number | null;
+  fark?: number | null;
+  farkDenge?: number | null;
+  nobetSuresi?: number | null;
+  notlar?: string | null;
+  acilisKapanis?: AcilisKapanis | null;
+  tarih?: string | null;
+  user?: IUser | null;
 }
 
 export const defaultValue: Readonly<INobetHareketleri> = {};

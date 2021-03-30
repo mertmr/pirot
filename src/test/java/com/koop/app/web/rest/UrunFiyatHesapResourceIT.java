@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 public class UrunFiyatHesapResourceIT {
+
     private static final Integer DEFAULT_AMORTISMAN = 1;
     private static final Integer UPDATED_AMORTISMAN = 2;
 
@@ -186,9 +187,7 @@ public class UrunFiyatHesapResourceIT {
     @Transactional
     public void getNonExistingUrunFiyatHesap() throws Exception {
         // Get the urunFiyatHesap
-        restUrunFiyatHesapMockMvc
-            .perform(get("/api/urun-fiyat-hesaps/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restUrunFiyatHesapMockMvc.perform(get("/api/urun-fiyat-hesaps/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test

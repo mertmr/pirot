@@ -5,5 +5,5 @@ package com.koop.app.domain.enumeration;
  */
 public enum Birim {
     ADET,
-    GRAM
+    GRAM,
 }

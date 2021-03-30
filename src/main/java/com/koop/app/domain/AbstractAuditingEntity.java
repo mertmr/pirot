@@ -1,13 +1,12 @@
 package com.koop.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.koop.app.config.tenancy.TenantEntity;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-
-import com.koop.app.config.tenancy.TenantEntity;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,6 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditingEntity extends TenantEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @CreatedBy

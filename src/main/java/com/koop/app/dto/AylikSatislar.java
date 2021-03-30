@@ -1,6 +1,7 @@
 package com.koop.app.dto;
 
 public class AylikSatislar {
+
     private int year;
 
     private int month;

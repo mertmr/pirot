@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -19,9 +19,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface IUrunFiyatUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
-  const [userId, setUserId] = useState('0');
-  const [urunId, setUrunId] = useState('0');
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { urunFiyatEntity, users, uruns, loading, updating } = props;
 
@@ -53,6 +51,8 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
       const entity = {
         ...urunFiyatEntity,
         ...values,
+        user: users.find(it => it.id.toString() === values.userId.toString()),
+        urun: uruns.find(it => it.id.toString() === values.urunId.toString()),
       };
 
       if (isNew) {
@@ -67,7 +67,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="koopApp.urunFiyat.home.createOrEditLabel">
+          <h2 id="koopApp.urunFiyat.home.createOrEditLabel" data-cy="UrunFiyatCreateUpdateHeading">
             <Translate contentKey="koopApp.urunFiyat.home.createOrEditLabel">Create or edit a UrunFiyat</Translate>
           </h2>
         </Col>
@@ -90,7 +90,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 <Label id="fiyatLabel" for="urun-fiyat-fiyat">
                   <Translate contentKey="koopApp.urunFiyat.fiyat">Fiyat</Translate>
                 </Label>
-                <AvField id="urun-fiyat-fiyat" type="text" name="fiyat" />
+                <AvField id="urun-fiyat-fiyat" data-cy="fiyat" type="text" name="fiyat" />
               </AvGroup>
               <AvGroup>
                 <Label id="tarihLabel" for="urun-fiyat-tarih">
@@ -98,6 +98,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 </Label>
                 <AvInput
                   id="urun-fiyat-tarih"
+                  data-cy="tarih"
                   type="datetime-local"
                   className="form-control"
                   name="tarih"
@@ -109,7 +110,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 <Label for="urun-fiyat-user">
                   <Translate contentKey="koopApp.urunFiyat.user">User</Translate>
                 </Label>
-                <AvInput id="urun-fiyat-user" type="select" className="form-control" name="user.id">
+                <AvInput id="urun-fiyat-user" data-cy="user" type="select" className="form-control" name="userId">
                   <option value="" key="0" />
                   {users
                     ? users.map(otherEntity => (
@@ -124,7 +125,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 <Label for="urun-fiyat-urun">
                   <Translate contentKey="koopApp.urunFiyat.urun">Urun</Translate>
                 </Label>
-                <AvInput id="urun-fiyat-urun" type="select" className="form-control" name="urun.id">
+                <AvInput id="urun-fiyat-urun" data-cy="urun" type="select" className="form-control" name="urunId">
                   <option value="" key="0" />
                   {uruns
                     ? uruns.map(otherEntity => (
@@ -143,7 +144,7 @@ export const UrunFiyatUpdate = (props: IUrunFiyatUpdateProps) => {
                 </span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
