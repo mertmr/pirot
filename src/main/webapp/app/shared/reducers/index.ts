@@ -72,6 +72,7 @@ import urunFiyatHesap, {
 import dashboardReportsState, { DashboardReportsState } from './dashboard-reports.reducer';
 import ciroState, { CiroState } from 'app/reports/ciro/ciro.reducer';
 import aylikSatislarState, { AylikSatislarState } from 'app/reports/aylik-satis/aylik-satislar.reducer';
+import aylikSatislarMaliState, { AylikSatisMalilarState } from 'app/reports/aylik-satis-mali/aylik-satislar-mali.reducer';
 import ortakFaturalarState, { OrtakFaturaState } from 'app/reports/ortak-faturalar/ortak-faturalar.reducer';
 import tukenmeState, { TukenmeState } from 'app/reports/tukenme/tukenme.reducer';
 
@@ -106,6 +107,7 @@ export interface IRootState {
   readonly ciroState: CiroState;
   readonly tukenmeState: TukenmeState;
   readonly aylikSatislarState: AylikSatislarState;
+  readonly aylikSatislarMaliState: AylikSatisMalilarState;
   readonly ortakFaturalarState: OrtakFaturaState;
 }
 
@@ -139,6 +141,7 @@ const rootReducer = combineReducers<IRootState>({
   ciroState,
   tukenmeState,
   aylikSatislarState,
+  aylikSatislarMaliState,
   ortakFaturalarState,
   loadingBar,
 });

@@ -2,6 +2,7 @@ package com.koop.app.web.rest;
 
 import com.koop.app.domain.SatisStokHareketleri;
 import com.koop.app.dto.AylikSatislar;
+import com.koop.app.dto.AylikSatislarRaporu;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
@@ -24,9 +25,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoZonedDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link com.koop.app.domain.SatisStokHareketleri}.
@@ -167,5 +171,35 @@ public class SatisStokHareketleriResource {
             .comparing(o -> ZonedDateTime.of(o.getYear(), o.getMonth(), 1, 0, 0, 0, 0, ZoneId.systemDefault()));
         satisRaporlari.sort(comparator.reversed());
         return satisRaporlari;
+    }
+
+    @GetMapping("/satis-stok-hareketleris/getMaliSatisRaporlari")
+    public AylikSatislarRaporu getMaliSatisRaporlari() {
+        List<AylikSatislar> satisRaporlari = satisStokHareketleriRepository.getMaliSatisRaporlari();
+        AylikSatislarRaporu aylikSatislarRaporu = new AylikSatislarRaporu();
+
+        aylikSatislarRaporu.setAylikSatisMap(satisRaporlari.stream().collect(Collectors.toMap(aylikSatislar -> {
+                if(String.valueOf(aylikSatislar.getMonth()).length() == 1) {
+                    return aylikSatislar.getYear() + ".0" + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+                }
+                return aylikSatislar.getYear() + "." + aylikSatislar.getMonth() + aylikSatislar.getUrunAdi();
+            }, AylikSatislar::getMiktar,
+            (aylikSatislar1, aylikSatislar2) -> aylikSatislar1)));
+
+        List<ZonedDateTime> tarihListesi = new ArrayList<>();
+        for (AylikSatislar satisRaporu : satisRaporlari) {
+            int month = satisRaporu.getMonth();
+            int year = satisRaporu.getYear();
+            ZonedDateTime yearMonth = ZonedDateTime.of(year, month, 1, 0, 0, 0,
+                0, ZoneId.systemDefault());
+            tarihListesi.add(yearMonth);
+        }
+        tarihListesi = tarihListesi.stream().distinct().collect(Collectors.toList());
+        tarihListesi.sort(ChronoZonedDateTime::compareTo);
+        aylikSatislarRaporu.setTarihListesi(tarihListesi);
+
+        aylikSatislarRaporu.setUrunAdiListesi(satisRaporlari.stream().map(AylikSatislar::getUrunAdi).
+            distinct().collect(Collectors.toList()));
+        return aylikSatislarRaporu;
     }
 }

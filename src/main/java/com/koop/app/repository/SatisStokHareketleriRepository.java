@@ -36,6 +36,17 @@ public interface SatisStokHareketleriRepository extends JpaRepository<SatisStokH
     )
     List<AylikSatislar> getSatisRaporlari(@Param("id") Long id);
 
+    @Query("SELECT new com.koop.app.dto.AylikSatislar(year(s.tarih), " +
+        "       month(s.tarih), " +
+        "       u.urunAdi, " +
+        "       sum(st.miktar)) " +
+        "FROM SatisStokHareketleri st " +
+        "         join Satis s on st.satis.id = s.id " +
+        "         join Urun u on st.urun.id = u.id " +
+        "GROUP BY year(s.tarih), month(s.tarih), u.urunAdi  " +
+        "order by year(s.tarih), month(s.tarih) desc ")
+    List<AylikSatislar> getMaliSatisRaporlari();
+
     @Query(
         "select satisStokHareketleri from SatisStokHareketleri satisStokHareketleri " +
             "join fetch satisStokHareketleri.satis " +

@@ -18,6 +18,11 @@ export const ReportsMenu = (props: IReportsProps) => (
       Aylık Satışlar
     </MenuItem>
     {props.isAuthenticated && props.isAdmin && (
+      <MenuItem icon="asterisk" to="/reports/aylikSatislarMali" onClick={props.onClick}>
+        Aylık Satışlar - Mali Birim
+      </MenuItem>
+    )}
+    {props.isAuthenticated && props.isAdmin && (
       <MenuItem icon="asterisk" to="/reports/ortakFaturalar" onClick={props.onClick}>
         Ortaklara Kesilen Faturalar
       </MenuItem>
