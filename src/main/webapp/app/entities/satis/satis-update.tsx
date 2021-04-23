@@ -28,6 +28,7 @@ import { Calendar } from "primereact/calendar";
 import "primeflex/primeflex.css";
 import { AutoComplete } from "primereact/autocomplete";
 import Fuse from 'fuse.js'
+import { Autocomplete } from '@material-ui/core';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
@@ -326,6 +327,13 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                             // onChange={(e) => setUrunQuery(e.value)}
                                             onChange={(e) => setUrunQuery(e.value)}
                                             onSelect={(e) => onChangeUrun(e, `${i}`)}
+                              />
+                              <Autocomplete
+                                id="combo-box-demo"
+                                options={top100Films}
+                                getOptionLabel={(option) => option.title}
+                                style={{ width: 300 }}
+                                renderInput={(params) => <TextField {...params} label="Combo box" variant="outlined" />}
                               />
 
                             </Col>
