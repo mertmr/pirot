@@ -29,6 +29,22 @@ import "primeflex/primeflex.css";
 import { AutoComplete } from "primereact/autocomplete";
 import Fuse from 'fuse.js'
 import { Autocomplete } from '@material-ui/core';
+  updateEntity as updateStokHareketi,
+} from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/model/satis.model';
+import { defaultValueList as kdvDefaultList } from 'app/shared/model/kdv-kategorisi.model';
+import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
+import { getAllUrunForStokGirisi, getSatisUrunleri } from 'app/entities/urun/urun.reducer';
+import { Dropdown } from 'primereact/dropdown';
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.css';
+import 'primeicons/primeicons.css';
+import { Birim } from 'app/shared/model/enumerations/birim.model';
+import { toast } from 'react-toastify';
+import cloneDeep from 'lodash/cloneDeep';
+import { Calendar } from 'primereact/calendar';
+import 'primeflex/primeflex.css';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
 }
@@ -132,6 +148,21 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const { satisUrunleri } = props;
 
+  const onChangeUrun = e => {
+    const yeniUrunler = [...stokHareketleriListState];
+    const secilenUrun = e.value;
+    yeniUrunler[e.target.name].urun = secilenUrun;
+    if (secilenUrun.birim === Birim.GRAM) {
+    yeniUrunler[e.target.name].miktar = 100;
+    yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar * 0.001;
+  }
+    else {
+      yeniUrunler[e.target.name].miktar = 1;
+      yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
+    }
+    setStokHareketleriLists(yeniUrunler);
+    toplamHesapla(yeniUrunler);
+    addRow();
 
 
   const options = {
