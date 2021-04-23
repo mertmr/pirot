@@ -26,7 +26,6 @@ import { toast } from 'react-toastify';
 import cloneDeep from 'lodash/cloneDeep';
 import { Calendar } from 'primereact/calendar';
 import 'primeflex/primeflex.css';
-import { Code } from '@material-ui/icons';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -131,8 +130,14 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     const yeniUrunler = [...stokHareketleriListState];
     const secilenUrun = e.value;
     yeniUrunler[e.target.name].urun = secilenUrun;
-    yeniUrunler[e.target.name].miktar = 1;
-    yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
+    if (secilenUrun.birim === Birim.GRAM) {
+    yeniUrunler[e.target.name].miktar = 100;
+    yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar * 0.001;
+  }
+    else {
+      yeniUrunler[e.target.name].miktar = 1;
+      yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
+    }
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
     addRow();

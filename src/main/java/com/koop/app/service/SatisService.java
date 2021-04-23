@@ -177,7 +177,7 @@ public class SatisService {
                     int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
                     urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
                 } else {
-                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
+                    urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
                 }
             }
         }
