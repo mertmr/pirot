@@ -13,6 +13,7 @@
     "@fortawesome/react-fontawesome": "0.1.9",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "*",
     "@packtracker/webpack-plugin": "^2.3.0",
     "availity-reactstrap-validation": "2.6.1",
     "axios": "0.21.1",

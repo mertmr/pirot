@@ -25,29 +25,33 @@ export const Home = (props: IHomeProp) => {
       {
         label: 'Günlük Ciro',
         backgroundColor: '#42A5F5',
-        data: dashboardReports.haftalikCiroRakamlari
-      }
-    ]
+        data: dashboardReports.haftalikCiroRakamlari,
+      },
+    ],
   };
 
   const basicOptions = {
     legend: {
       labels: {
-        fontColor: '#495057'
-      }
+        fontColor: '#495057',
+      },
     },
     scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: '#495057'
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          fontColor: '#495057'
-        }
-      }]
-    }
+      xAxes: [
+        {
+          ticks: {
+            fontColor: '#495057',
+          },
+        },
+      ],
+      yAxes: [
+        {
+          ticks: {
+            fontColor: '#495057',
+          },
+        },
+      ],
+    },
   };
 
   return (
@@ -100,7 +104,7 @@ export const Home = (props: IHomeProp) => {
                 </div>
               </Col>
             </Row>
-            <div className="row mt-5"/>
+            <div className="row mt-5" />
             <Chart type="bar" data={basicData} options={basicOptions} />
           </div>
         ) : (

@@ -47,29 +47,32 @@ export const AylikSatisMalilarsPage = (props: IAylikSatisMalilarsPageProps) => {
   return (
     <div>
       <h2 id="aylikSatisMalilars-page-heading">Aylık Satışlar</h2>
-      {aylikSatisMalilar && aylikSatisMalilar.aylikSatisMap && aylikSatisMalilar.tarihListesi && aylikSatisMalilar.tarihListesi.length > 0 ? (
+      {aylikSatisMalilar &&
+      aylikSatisMalilar.aylikSatisMap &&
+      aylikSatisMalilar.tarihListesi &&
+      aylikSatisMalilar.tarihListesi.length > 0 ? (
         <Table striped responsive>
           <thead>
-          <tr>
-            <th>Ürünler</th>
-            {aylikSatisMalilar.tarihListesi.map((tarih, i) => (
-              <th key={`tarihListesi-${i}`}>{tarih.slice(0, 7)}</th>
-            ))}
-          </tr>
-          </thead>
-          <tbody>
-          {aylikSatisMalilar.urunAdiListesi.map((urun, i) => (
-            <tr key={`urunAdiListesi-${i}`}>
-              <td>{urun}</td>
-              {aylikSatisMalilar.tarihListesi.map((tarihim, k) => (
-                <td key={`map-${k}`}>
-                  {aylikSatisMalilar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
-                    ? aylikSatisMalilar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
-                    : '-'}
-                </td>
+            <tr>
+              <th>Ürünler</th>
+              {aylikSatisMalilar.tarihListesi.map((tarih, i) => (
+                <th key={`tarihListesi-${i}`}>{tarih.slice(0, 7)}</th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {aylikSatisMalilar.urunAdiListesi.map((urun, i) => (
+              <tr key={`urunAdiListesi-${i}`}>
+                <td>{urun}</td>
+                {aylikSatisMalilar.tarihListesi.map((tarihim, k) => (
+                  <td key={`map-${k}`}>
+                    {aylikSatisMalilar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
+                      ? aylikSatisMalilar.aylikSatisMap[tarihim.slice(0, 4) + '.' + tarihim.slice(5, 7) + urun]
+                      : '-'}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </Table>
       ) : (

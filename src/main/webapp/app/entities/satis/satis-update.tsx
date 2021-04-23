@@ -1,34 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Link, RouteComponentProps } from "react-router-dom";
-import { Button, Col, Label, Row, Table } from "reactstrap";
-import { AvForm, AvGroup, AvInput } from "availity-reactstrap-validation";
-import { Translate } from "react-jhipster";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IRootState } from "app/shared/reducers";
-import { getUsers } from "app/modules/administration/user-management/user-management.reducer";
-import { createEntity, getEntity, reset, updateEntity } from "./satis.reducer";
+import React, { useEffect, useState, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Col, Label, Row, Table } from 'reactstrap';
+import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Translate } from 'react-jhipster';
+import TextField from '@material-ui/core/TextField';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IRootState } from 'app/shared/reducers';
+import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
+import { createEntity, getEntity, reset, updateEntity } from './satis.reducer';
 import {
   createEntity as createStokHareketi,
-  updateEntity as updateStokHareketi
-} from "../satis-stok-hareketleri/satis-stok-hareketleri.reducer";
-import { convertDateTimeToServer } from "app/shared/util/date-utils";
-import { defaultValue as satisDefault, defaultValueWithNew } from "app/shared/model/satis.model";
-import { defaultValueList as kdvDefaultList } from "app/shared/model/kdv-kategorisi.model";
-import { ISatisStokHareketleri } from "app/shared/model/satis-stok-hareketleri.model";
-import { getAllUrunForStokGirisi, getSatisUrunleri } from "app/entities/urun/urun.reducer";
-import { Dropdown } from "primereact/dropdown";
-import "primereact/resources/themes/nova-light/theme.css";
-import "primereact/resources/primereact.css";
-import "primeicons/primeicons.css";
-import { Birim } from "app/shared/model/enumerations/birim.model";
-import { toast } from "react-toastify";
-import cloneDeep from "lodash/cloneDeep";
-import { Calendar } from "primereact/calendar";
-import "primeflex/primeflex.css";
-import { AutoComplete } from "primereact/autocomplete";
-import Fuse from 'fuse.js'
-import { Autocomplete } from '@material-ui/core';
   updateEntity as updateStokHareketi,
 } from '../satis-stok-hareketleri/satis-stok-hareketleri.reducer';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -45,9 +27,11 @@ import { toast } from 'react-toastify';
 import cloneDeep from 'lodash/cloneDeep';
 import { Calendar } from 'primereact/calendar';
 import 'primeflex/primeflex.css';
+import { AutoComplete } from 'primereact/autocomplete';
+import Fuse from 'fuse.js';
+import { Autocomplete } from '@material-ui/lab';
 
-export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
-}
+export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [paraUstu, setParaUstu] = useState(0);
@@ -61,9 +45,9 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     miktar: 0,
     urun: {
       id: 0,
-      urunAdi: "",
-      musteriFiyati: 0
-    }
+      urunAdi: '',
+      musteriFiyati: 0,
+    },
   };
   const [stokHareketleriListState, setStokHareketleriLists] = useState([yeniUrun] as ISatisStokHareketleri[]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
@@ -72,7 +56,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const { satisEntity, users, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push("/satis" + props.location.search);
+    props.history.push('/satis' + props.location.search);
   };
 
   const addRow = () => {
@@ -92,7 +76,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
     setSatis({
       ...satis,
-      toplamTutar
+      toplamTutar,
     });
     if (nakit && nakit > 0) {
       setParaUstu(nakit - toplamTutar);
@@ -130,7 +114,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriListState];
     if (value > yeniUrunler[i].urun.stok) {
-      toast.error("Stoktan daha fazla miktar girdiniz!");
+      toast.error('Stoktan daha fazla miktar girdiniz!');
       value = yeniUrunler[i].urun.stok;
     }
 
@@ -148,65 +132,33 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const { satisUrunleri } = props;
 
-  const onChangeUrun = e => {
-    const yeniUrunler = [...stokHareketleriListState];
-    const secilenUrun = e.value;
-    yeniUrunler[e.target.name].urun = secilenUrun;
-    if (secilenUrun.birim === Birim.GRAM) {
-    yeniUrunler[e.target.name].miktar = 100;
-    yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar * 0.001;
-  }
-    else {
-      yeniUrunler[e.target.name].miktar = 1;
-      yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
-    }
-    setStokHareketleriLists(yeniUrunler);
-    toplamHesapla(yeniUrunler);
-    addRow();
-
-
   const options = {
-    // isCaseSensitive: false,
-    // includeScore: false,
-    // shouldSort: true,
-    // includeMatches: false,
-    // findAllMatches: false,
-    // minMatchCharLength: 1,
-    // location: 0,
-    // threshold: 0.6,
-    // distance: 100,
-    // useExtendedSearch: false,
-    // ignoreLocation: false,
-    // ignoreFieldNorm: false,
-    keys: [
-      "urunAdi"
-    ]
+    keys: ['urunAdi'],
   };
 
   const fuse = new Fuse(satisUrunleri, options);
 
-  const searchUrun = (event) => {
-    setTimeout(() => {
-      let _filteredCountries;
-      if (!event.query.trim().length) {
-        _filteredCountries = [...satisUrunleri];
+  const searchUrun = value => {
+      if (!value.trim().length) {
+        return [...satisUrunleri];
+      } else {
+        return fuse.search(value.trim());
       }
-      else {
-        _filteredCountries = fuse.search(event.query.trim());
-      }
-
-      setFilteredUruns(_filteredCountries);
-    }, 250);
-
-  }
+  };
 
   const onChangeUrun = (e, key) => {
-    if(typeof e.value !== "string"){
+    if (typeof e !== 'string') {
       const yeniUrunler = [...stokHareketleriListState];
-      const secilenUrun = e.value;
-      yeniUrunler[key].urun = secilenUrun;
+    const secilenUrun = e;
+    yeniUrunler[key].urun = secilenUrun;
+    if (secilenUrun.birim === Birim.GRAM) {
+    yeniUrunler[key].miktar = 100;
+    yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar * 0.001;
+  }
+    else {
       yeniUrunler[key].miktar = 1;
       yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar;
+    }
       setStokHareketleriLists(yeniUrunler);
       toplamHesapla(yeniUrunler);
       addRow();
@@ -216,7 +168,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const updateDateSatisField = value => {
     setSatis({
       ...satis,
-      ["tarih"]: value
+      ['tarih']: value,
     });
   };
 
@@ -237,10 +189,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
           miktar: 0,
           urun: {
             id: 0,
-            urunAdi: "",
-            musteriFiyati: 0
-          }
-        }
+            urunAdi: '',
+            musteriFiyati: 0,
+          },
+        },
       ]);
       setSatis(defaultValueWithNew);
       setIsFisrtPageOpening(false);
@@ -290,23 +242,25 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
           satisEntity,
           stokHareketleriLists,
           toplamTutar,
-          ...values
+          ...values,
         };
         props.createEntity(yenisatis);
       } else {
         let yenisatis = {
-          ...satisEntity
+          ...satisEntity,
         };
         yenisatis = {
           ...yenisatis,
           stokHareketleriLists,
           toplamTutar,
-          ...values
+          ...values,
         };
         props.updateEntity(yenisatis);
       }
     }
   };
+
+  const filterOptions = (optionss, { inputValue }) => searchUrun(inputValue);
 
   return (
     <div>
@@ -318,9 +272,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
             </h2>
           ) : (
             <h2 id="koopApp.satis.home.createOrEditLabel" className="d-md-inline">
-              <div className="alert alert-warning">Satış düzenlemesi yapıyorsunuz. Kasada fark çıkabilir, dikkatli
-                olun!!!
-              </div>
+              <div className="alert alert-warning">Satış düzenlemesi yapıyorsunuz. Kasada fark çıkabilir, dikkatli olun!!!</div>
             </h2>
           )}
         </Col>
@@ -339,65 +291,58 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   {stokHareketleriListState.map((stokHareketi, i) => (
                     <div key={`entity-${i}`} className="urun-sinir">
                       <AvGroup>
-                        <Col style={{ padding: "0" }}>
+                        <Col style={{ padding: '0' }}>
                           <Row className="g-2">
-                            <Col className="col-1" style={{ marginTop: "10px", padding: "15, 0, 0, 0" }}>
-                              <Button onClick={refreshSatisUrunleri} color={"btn btn-primary"}>
+                            <Col className="col-1" style={{ marginTop: '10px', padding: '15, 0, 0, 0' }}>
+                              <Button onClick={refreshSatisUrunleri} color={'btn btn-primary'}>
                                 <FontAwesomeIcon icon="sync" />
                               </Button>
                             </Col>
-                            <Col className="col-md-5 col-12" style={{ marginTop: "10px", padding: "0px" }}>
-                              <AutoComplete value={urunQuery}
-                                            suggestions={filteredUruns}
-                                            style={{ width: "100%" }}
-                                            completeMethod={searchUrun}
-                                            name={`${i}`}
-                                            field="urunAdi"
-                                            dropdown
-                                            key={stokHareketi.urun.id}
-                                            // onChange={(e) => setUrunQuery(e.value)}
-                                            onChange={(e) => setUrunQuery(e.value)}
-                                            onSelect={(e) => onChangeUrun(e, `${i}`)}
-                              />
+                            <Col className="col-md-5 col-12" style={{ marginTop: '10px', padding: '0px' }}>
                               <Autocomplete
-                                id="combo-box-demo"
-                                options={top100Films}
-                                getOptionLabel={(option) => option.title}
-                                style={{ width: 300 }}
-                                renderInput={(params) => <TextField {...params} label="Combo box" variant="outlined" />}
+                                options={satisUrunleri}
+                                freeSolo
+                                value={stokHareketi.urun}
+                                getOptionLabel={option => option.urunAdi}
+                                onChange={(event, newValue) => {
+                                  onChangeUrun(newValue, i);
+                                }}
+                                filterOptions={filterOptions}
+                                renderInput={params => (
+                                  <TextField {...params} variant="outlined" fullWidth />
+                                )}
                               />
-
                             </Col>
-                            <Col style={{ marginTop: "10px", padding: "0px" }}>
+                            <Col style={{ marginTop: '10px', padding: '0px' }}>
                               <Col>Kalan Stok</Col>
                               <Col>
                                 {stokHareketi.urun.stok} {stokHareketi.urun.birim}
                               </Col>
                             </Col>
-                            <Col style={{ marginTop: "10px", padding: "0px" }} className="col-md col-6">
+                            <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
                               <Col>
                                 <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                               </Col>
                               <Col>
                                 <input
                                   className="col-md-12"
-                                  style={{ width: "80px" }}
+                                  style={{ width: '80px' }}
                                   value={stokHareketi.miktar}
                                   onChange={e => onChangeMiktar(e.target.value, i)}
                                 />
                               </Col>
                             </Col>
-                            <Col style={{ marginTop: "10px", padding: "0px" }}>
+                            <Col style={{ marginTop: '10px', padding: '0px' }}>
                               <Col>Birim Fiyat</Col>
                               <Col>{stokHareketi.urun.musteriFiyati} TL</Col>
                             </Col>
-                            <Col style={{ marginTop: "10px", padding: "0px" }}>
+                            <Col style={{ marginTop: '10px', padding: '0px' }}>
                               <Col>
                                 <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
                               </Col>
                               <Col>{stokHareketi.tutar} TL</Col>
                             </Col>
-                            <Col style={{ marginTop: "10px", padding: "0px" }}>
+                            <Col style={{ marginTop: '10px', padding: '0px' }}>
                               <div className="btn-group flex-btn-group-container">
                                 <Button tag={Link} color="danger" size="sm" onClick={() => deleteRow(i)}>
                                   <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline" />
@@ -409,7 +354,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       </AvGroup>
                     </div>
                   ))}
-                  <AvGroup style={{ marginTop: "20px" }}>
+                  <AvGroup style={{ marginTop: '20px' }}>
                     <Label for="satis-toplamTutar">
                       <Translate contentKey="koopApp.satis.toplamTutar" />
                     </Label>
@@ -425,18 +370,17 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   </AvGroup>
                   <AvGroup>
                     <Label for="satis-nakitTutar">Nakit Verilen</Label>
-                    <input style={{ marginLeft: "10px" }} className="col-sm-2"
-                           onChange={e => onChangeParaUstu(Number(e.target.value))} />
+                    <input style={{ marginLeft: '10px' }} className="col-sm-2" onChange={e => onChangeParaUstu(Number(e.target.value))} />
                   </AvGroup>
                   <AvGroup>
                     <Label for="satis-paraustu">Para Üstü</Label>
-                    <input style={{ marginLeft: "10px" }} className="col-sm-2" value={paraUstu} />
+                    <input style={{ marginLeft: '10px' }} className="col-sm-2" value={paraUstu} />
                   </AvGroup>
                   <AvGroup>
                     <Label for="gider-user">Satış Tarihi</Label>
                     <Calendar
                       id="time24"
-                      style={{ marginLeft: "10px" }}
+                      style={{ marginLeft: '10px' }}
                       value={new Date()}
                       dateFormat="dd/mm/yy"
                       onChange={e => updateDateSatisField(e.value)}
@@ -464,24 +408,24 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                 {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
                   <Table responsive>
                     <thead>
-                    <tr>
-                      <th className="hand">
-                        <Translate contentKey="koopApp.kdvKategorisi.kategoriAdi">Kategori Adi</Translate>
-                        <FontAwesomeIcon icon="sort" />
-                      </th>
-                      <th className="hand">
-                        <Translate contentKey="koopApp.kdvKategorisi.kdvOrani">Kdv Orani</Translate>
-                      </th>
-                      <th />
-                    </tr>
+                      <tr>
+                        <th className="hand">
+                          <Translate contentKey="koopApp.kdvKategorisi.kategoriAdi">Kategori Adi</Translate>
+                          <FontAwesomeIcon icon="sort" />
+                        </th>
+                        <th className="hand">
+                          <Translate contentKey="koopApp.kdvKategorisi.kdvOrani">Kdv Orani</Translate>
+                        </th>
+                        <th />
+                      </tr>
                     </thead>
                     <tbody>
-                    {kdvKategorisiList.map((kdvKategorisi, i) => (
-                      <tr key={`entity-${i}`}>
-                        <td>{kdvKategorisi.kategoriAdi}</td>
-                        <td>{kdvKategorisi.kdvOrani}</td>
-                      </tr>
-                    ))}
+                      {kdvKategorisiList.map((kdvKategorisi, i) => (
+                        <tr key={`entity-${i}`}>
+                          <td>{kdvKategorisi.kategoriAdi}</td>
+                          <td>{kdvKategorisi.kdvOrani}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 ) : (
@@ -523,7 +467,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.satis.loading,
   updating: storeState.satis.updating,
   updateSuccess: storeState.satis.updateSuccess,
-  satisUrunleri: storeState.urun.satisUrunleri
+  satisUrunleri: storeState.urun.satisUrunleri,
 });
 
 const mapDispatchToProps = {
@@ -535,7 +479,7 @@ const mapDispatchToProps = {
   getSatisUrunleri,
   createStokHareketi,
   updateStokHareketi,
-  getAllUrunForStokGirisi
+  getAllUrunForStokGirisi,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
