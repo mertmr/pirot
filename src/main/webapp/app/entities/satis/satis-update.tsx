@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Label, Row, Table } from 'reactstrap';
-import { AvForm, AvGroup, AvInput, Input } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Translate } from 'react-jhipster';
+import TextField from '@material-ui/core/TextField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
@@ -26,20 +27,25 @@ import { toast } from 'react-toastify';
 import cloneDeep from 'lodash/cloneDeep';
 import { Calendar } from 'primereact/calendar';
 import 'primeflex/primeflex.css';
+import { AutoComplete } from 'primereact/autocomplete';
+import Fuse from 'fuse.js';
+import { Autocomplete } from '@material-ui/lab';
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [paraUstu, setParaUstu] = useState(0);
   const [nakit, setNakit] = useState(0);
+  const [urunQuery, setUrunQuery] = useState(null);
   const [kdvKategorisiList, setKdvKategorisiList] = useState(kdvDefaultList);
   const [satis, setSatis] = useState(satisDefault);
+  const [filteredUruns, setFilteredUruns] = useState([]);
 
   const yeniUrun = {
     miktar: 0,
     urun: {
       id: 0,
-      urunAdi: 'Ürün seçiniz',
+      urunAdi: '',
       musteriFiyati: 0,
     },
   };
@@ -126,21 +132,37 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const { satisUrunleri } = props;
 
-  const onChangeUrun = e => {
-    const yeniUrunler = [...stokHareketleriListState];
-    const secilenUrun = e.value;
-    yeniUrunler[e.target.name].urun = secilenUrun;
+  const options = {
+    keys: ['urunAdi'],
+  };
+
+  const fuse = new Fuse(satisUrunleri, options);
+
+  const searchUrun = value => {
+      if (!value.trim().length) {
+        return [...satisUrunleri];
+      } else {
+        return fuse.search(value.trim());
+      }
+  };
+
+  const onChangeUrun = (e, key) => {
+    if (typeof e !== 'string') {
+      const yeniUrunler = [...stokHareketleriListState];
+    const secilenUrun = e;
+    yeniUrunler[key].urun = secilenUrun;
     if (secilenUrun.birim === Birim.GRAM) {
-    yeniUrunler[e.target.name].miktar = 100;
-    yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar * 0.001;
+    yeniUrunler[key].miktar = 100;
+    yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar * 0.001;
   }
     else {
-      yeniUrunler[e.target.name].miktar = 1;
-      yeniUrunler[e.target.name].tutar = secilenUrun.musteriFiyati * yeniUrunler[e.target.name].miktar;
+      yeniUrunler[key].miktar = 1;
+      yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar;
     }
-    setStokHareketleriLists(yeniUrunler);
-    toplamHesapla(yeniUrunler);
-    addRow();
+      setStokHareketleriLists(yeniUrunler);
+      toplamHesapla(yeniUrunler);
+      addRow();
+    }
   };
 
   const updateDateSatisField = value => {
@@ -167,7 +189,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
           miktar: 0,
           urun: {
             id: 0,
-            urunAdi: 'Ürün seçiniz',
+            urunAdi: '',
             musteriFiyati: 0,
           },
         },
@@ -238,6 +260,8 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
   };
 
+  const filterOptions = (optionss, { inputValue }) => searchUrun(inputValue);
+
   return (
     <div>
       <Row className="justify-content-center">
@@ -275,18 +299,18 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                               </Button>
                             </Col>
                             <Col className="col-md-5 col-12" style={{ marginTop: '10px', padding: '0px' }}>
-                              <Dropdown
-                                value={stokHareketi.urun}
-                                style={{ width: '100%' }}
+                              <Autocomplete
                                 options={satisUrunleri}
-                                optionLabel="urunAdi"
-                                onChange={onChangeUrun}
-                                filter={true}
-                                name={`${i}`}
-                                key={stokHareketi.urun.id}
-                                filterPlaceholder="Ürün seçiniz"
-                                filterBy="urunAdi"
-                                placeholder="Ürün seçiniz"
+                                freeSolo
+                                value={stokHareketi.urun}
+                                getOptionLabel={option => option.urunAdi}
+                                onChange={(event, newValue) => {
+                                  onChangeUrun(newValue, i);
+                                }}
+                                filterOptions={filterOptions}
+                                renderInput={params => (
+                                  <TextField {...params} variant="outlined" fullWidth />
+                                )}
                               />
                             </Col>
                             <Col style={{ marginTop: '10px', padding: '0px' }}>
