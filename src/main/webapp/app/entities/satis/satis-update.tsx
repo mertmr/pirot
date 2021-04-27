@@ -18,7 +18,6 @@ import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/mo
 import { defaultValueList as kdvDefaultList } from 'app/shared/model/kdv-kategorisi.model';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { getAllUrunForStokGirisi, getSatisUrunleri } from 'app/entities/urun/urun.reducer';
-import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
@@ -27,7 +26,6 @@ import { toast } from 'react-toastify';
 import cloneDeep from 'lodash/cloneDeep';
 import { Calendar } from 'primereact/calendar';
 import 'primeflex/primeflex.css';
-import { AutoComplete } from 'primereact/autocomplete';
 import Fuse from 'fuse.js';
 import { Autocomplete } from '@material-ui/lab';
 

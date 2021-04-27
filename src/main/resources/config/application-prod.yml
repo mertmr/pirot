@@ -98,6 +98,7 @@ server:
 
 jhipster:
   http:
+    version: V_2_0
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
   cache: # Cache configuration
