@@ -117,7 +117,7 @@ public class UrunResource {
             createUrunFiyatEntry(urun, currentUser);
         }
 
-        if(oncekiUrun.getStok().compareTo(urun.getStok()) != 0) {
+        if(oncekiUrun.getStok() != null && oncekiUrun.getStok().compareTo(urun.getStok()) != 0) {
             throw new StockException();
         }
         return ResponseEntity
