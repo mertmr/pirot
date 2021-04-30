@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <!--
+        Added the entity Setting.
+    -->
+    <changeSet id="20200107161127-1" author="mert">
+        <createTable tableName="setting">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="constrained" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="data_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="min_value" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="max_value" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="20200107161127-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/kisiler.csv"
+                  separator=";"
+                  tableName="kisiler">
+            <column name="id" type="numeric"/>
+            <column name="kisi_adi" type="string"/>
+            <column name="notlar" type="string"/>
+            <column name="tarih" type="datetime"/>
+            <column name="active" type="boolean"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>
