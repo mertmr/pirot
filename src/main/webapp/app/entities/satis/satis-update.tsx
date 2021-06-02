@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Label, Row, Table } from 'reactstrap';
@@ -34,10 +34,9 @@ export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteCompo
 export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [paraUstu, setParaUstu] = useState(0);
   const [nakit, setNakit] = useState(0);
-  const [urunQuery, setUrunQuery] = useState(null);
   const [kdvKategorisiList, setKdvKategorisiList] = useState(kdvDefaultList);
   const [satis, setSatis] = useState(satisDefault);
-  const [filteredUruns, setFilteredUruns] = useState([]);
+  const [isKrediKartli, setKrediKartli] = useState(false);
 
   const yeniUrun = {
     miktar: 0,
@@ -48,10 +47,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     },
   };
   const [stokHareketleriListState, setStokHareketleriLists] = useState([yeniUrun] as ISatisStokHareketleri[]);
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
   const [isFisrtPageOpening, setIsFisrtPageOpening] = useState(true);
 
-  const { satisEntity, users, loading, updating } = props;
+  const { satisEntity, loading, updating, account } = props;
 
   const handleClose = () => {
     props.history.push('/satis' + props.location.search);
@@ -81,19 +80,27 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     }
   };
 
+  const fixNumber = tutar => {
+    if (account.tenantId === 1) {
+      return Number((Math.round(tutar * 20) / 20).toFixed(2));
+    } else {
+      return Number((Math.round(tutar * 4) / 4).toFixed(2));
+    }
+  };
+
   useEffect(() => {
-    const yeniKdvList = [];
+    let yeniKdvList = [];
     const copyStokHareketleriListState = cloneDeep(stokHareketleriListState);
     copyStokHareketleriListState.forEach(satisStokHareketi => {
       const urun = satisStokHareketi.urun;
       if (urun.id !== 0) {
         const exist = yeniKdvList.map(a => a.id).includes(urun.kdvKategorisi.id);
         if (!exist) {
-          urun.kdvKategorisi.kdvOrani = Number((Math.round(satisStokHareketi.tutar * 4) / 4).toFixed(2));
+          urun.kdvKategorisi.kdvOrani = fixNumber(satisStokHareketi.tutar);
           yeniKdvList.push(urun.kdvKategorisi);
         } else {
-          urun.kdvKategorisi.kdvOrani = Number((Math.round(satisStokHareketi.tutar * 4) / 4).toFixed(2));
-          yeniKdvList.filter(kdvKategori => {
+          urun.kdvKategorisi.kdvOrani = fixNumber(satisStokHareketi.tutar);
+          yeniKdvList = yeniKdvList.filter(kdvKategori => {
             if (kdvKategori.id === urun.kdvKategorisi.id) kdvKategori.kdvOrani = urun.kdvKategorisi.kdvOrani + kdvKategori.kdvOrani;
           });
         }
@@ -109,6 +116,13 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     toplamHesapla(yeniUrunler);
   };
 
+  const indirimHesapla = tutar => {
+    if (account.tenantId === 1) {
+      return fixNumber(tutar * (100 / 102));
+    }
+    return tutar;
+  };
+
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriListState];
     if (value > yeniUrunler[i].urun.stok) {
@@ -119,10 +133,12 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     yeniUrunler[i].miktar = value;
     if (yeniUrunler[i].urun.birim === Birim.GRAM) {
       const tutar = value * 0.001 * yeniUrunler[i].urun.musteriFiyati;
-      yeniUrunler[i].tutar = Number((Math.round(tutar * 4) / 4).toFixed(2));
+      yeniUrunler[i].tutar = fixNumber(tutar);
+      if (!isKrediKartli) yeniUrunler[i].tutar = fixNumber(indirimHesapla(yeniUrunler[i].tutar));
     } else {
       const tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
-      yeniUrunler[i].tutar = Number((Math.round(tutar * 4) / 4).toFixed(2));
+      yeniUrunler[i].tutar = fixNumber(tutar);
+      if (!isKrediKartli) yeniUrunler[i].tutar = fixNumber(indirimHesapla(yeniUrunler[i].tutar));
     }
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
@@ -136,27 +152,53 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
 
   const fuse = new Fuse(satisUrunleri, options);
 
+  const fiyatHesapla = satisStokHareketi => {
+    if (satisStokHareketi.urun.birim === Birim.GRAM) {
+      return fixNumber(satisStokHareketi.urun.musteriFiyati * satisStokHareketi.miktar * 0.001);
+    } else {
+      return fixNumber(satisStokHareketi.urun.musteriFiyati * satisStokHareketi.miktar);
+    }
+  };
+
+  const handleKrediKartiKomisyonu = event => {
+    const stokHareketleriKomisyonlu = [...stokHareketleriListState];
+    if (event.target.value === 'false') {
+      setKrediKartli(true);
+      stokHareketleriKomisyonlu.forEach(satisStokHareketi => {
+        satisStokHareketi.tutar = fiyatHesapla(satisStokHareketi);
+      });
+    } else {
+      setKrediKartli(false);
+      stokHareketleriKomisyonlu.forEach(satisStokHareketi => {
+        satisStokHareketi.tutar = indirimHesapla(fiyatHesapla(satisStokHareketi));
+      });
+    }
+    setStokHareketleriLists(stokHareketleriKomisyonlu);
+    toplamHesapla(stokHareketleriKomisyonlu);
+  };
+
   const searchUrun = value => {
-      if (!value.trim().length) {
-        return [...satisUrunleri];
-      } else {
-        return fuse.search(value.trim());
-      }
+    if (!value.trim().length) {
+      return [...satisUrunleri];
+    } else {
+      return fuse.search(value.trim());
+    }
   };
 
   const onChangeUrun = (e, key) => {
     if (typeof e !== 'string') {
       const yeniUrunler = [...stokHareketleriListState];
-    const secilenUrun = e;
-    yeniUrunler[key].urun = secilenUrun;
-    if (secilenUrun.birim === Birim.GRAM) {
-    yeniUrunler[key].miktar = 100;
-    yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar * 0.001;
-  }
-    else {
-      yeniUrunler[key].miktar = 1;
-      yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar;
-    }
+      const secilenUrun = e;
+      yeniUrunler[key].urun = secilenUrun;
+      if (secilenUrun.birim === Birim.GRAM) {
+        yeniUrunler[key].miktar = 100;
+        yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar * 0.001;
+        if (!isKrediKartli) yeniUrunler[key].tutar = indirimHesapla(yeniUrunler[key].tutar);
+      } else {
+        yeniUrunler[key].miktar = 1;
+        yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar;
+        if (!isKrediKartli) yeniUrunler[key].tutar = indirimHesapla(yeniUrunler[key].tutar);
+      }
       setStokHareketleriLists(yeniUrunler);
       toplamHesapla(yeniUrunler);
       addRow();
@@ -231,7 +273,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     for (const stokHareketi of stokHareketleriLists) {
       if (stokHareketi.urun == null) toplamTutar += stokHareketi.tutar;
     }
-    toplamTutar = Number((Math.round(toplamTutar * 4) / 4).toFixed(2));
+    toplamTutar = fixNumber(toplamTutar);
 
     if (errors.length === 0) {
       if (isNew) {
@@ -306,9 +348,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                                   onChangeUrun(newValue, i);
                                 }}
                                 filterOptions={filterOptions}
-                                renderInput={params => (
-                                  <TextField {...params} variant="outlined" fullWidth />
-                                )}
+                                renderInput={params => <TextField {...params} variant="outlined" fullWidth />}
                               />
                             </Col>
                             <Col style={{ marginTop: '10px', padding: '0px' }}>
@@ -388,7 +428,13 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   </AvGroup>
                   <AvGroup check>
                     <Label id="kartliSatisLabel">
-                      <AvInput id="satis-kartliSatis" type="checkbox" className="form-check-input" name="kartliSatis" />
+                      <AvInput
+                        id="satis-kartliSatis"
+                        type="checkbox"
+                        onChange={handleKrediKartiKomisyonu}
+                        className="form-check-input"
+                        name="kartliSatis"
+                      />
                       <Translate contentKey="koopApp.satis.kartliSatis">Kartli Satis</Translate>
                     </Label>
                   </AvGroup>
@@ -400,7 +446,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                   </AvGroup>
                 </div>
               ) : (
-                <div className="alert alert-warning"></div>
+                <div className="alert alert-warning" />
               )}
               <div className="table-responsive">
                 {kdvKategorisiList && kdvKategorisiList.length > 0 ? (
@@ -427,7 +473,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                     </tbody>
                   </Table>
                 ) : (
-                  <div className="alert alert-warning"></div>
+                  <div className="alert alert-warning" />
                 )}
               </div>
               {!isNew ? (
@@ -466,6 +512,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.satis.updating,
   updateSuccess: storeState.satis.updateSuccess,
   satisUrunleri: storeState.urun.satisUrunleri,
+  account: storeState.authentication.account,
 });
 
 const mapDispatchToProps = {
