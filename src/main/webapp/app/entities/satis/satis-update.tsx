@@ -89,7 +89,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   };
 
   useEffect(() => {
-    let yeniKdvList = [];
+    const yeniKdvList = [];
     const copyStokHareketleriListState = cloneDeep(stokHareketleriListState);
     copyStokHareketleriListState.forEach(satisStokHareketi => {
       const urun = satisStokHareketi.urun;
@@ -100,8 +100,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
           yeniKdvList.push(urun.kdvKategorisi);
         } else {
           urun.kdvKategorisi.kdvOrani = fixNumber(satisStokHareketi.tutar);
-          yeniKdvList = yeniKdvList.filter(kdvKategori => {
-            if (kdvKategori.id === urun.kdvKategorisi.id) kdvKategori.kdvOrani = urun.kdvKategorisi.kdvOrani + kdvKategori.kdvOrani;
+          yeniKdvList.forEach(kdvKategori => {
+            if (kdvKategori.id === urun.kdvKategorisi.id) {
+              kdvKategori.kdvOrani = urun.kdvKategorisi.kdvOrani + kdvKategori.kdvOrani;
+            }
           });
         }
       }
