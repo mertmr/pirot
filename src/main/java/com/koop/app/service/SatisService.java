@@ -7,16 +7,14 @@ import com.koop.app.domain.User;
 import com.koop.app.repository.SatisRepository;
 import com.koop.app.repository.SatisStokHareketleriRepository;
 import com.koop.app.repository.UrunRepository;
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SatisService {
@@ -95,7 +93,7 @@ public class SatisService {
             .collect(Collectors.toMap(satisStokHareketleri -> satisStokHareketleri.getUrun().getId(), SatisStokHareketleri::getUrun));
         for (Urun urun : urunList) {
             Urun satisUrunu = satisUrunList.get(urun.getId());
-            if(urun.getStok().compareTo(satisUrunu.getStok()) != 0){
+            if (urun.getStok().compareTo(satisUrunu.getStok()) != 0) {
                 throw new StockChangedException();
             }
         }
@@ -105,7 +103,7 @@ public class SatisService {
     public Satis updateSatis(Satis satis) {
         User currentUser = userService.getCurrentUser();
         satis.setUser(currentUser);
-        Optional<Satis> satisOncekiHaliOptional = satisRepository.findById(satis.getId());
+        Optional<Satis> satisOncekiHaliOptional = satisRepository.findOneWithStokHareketleriById(satis.getId());
         Satis satisOncekiHali = satisOncekiHaliOptional.orElseThrow(SatisNotFoundUsedException::new);
         if (Boolean.FALSE.equals(satisOncekiHali.isOrtagaSatis()) && Boolean.TRUE.equals(satis.isOrtagaSatis())) {
             satis.setKisi(kisilerService.getRandomKisi());
@@ -120,14 +118,24 @@ public class SatisService {
 
         makeStokUpdates(stokHareketleriLists);
 
-        List<SatisStokHareketleri> cikarilanUrunler = satisOncekiHali
-            .getStokHareketleriLists()
-            .stream()
-            .filter(satisStokHareketleri -> !stokHareketleriLists.contains(satisStokHareketleri))
-            .collect(Collectors.toList());
+        List<SatisStokHareketleri> cikarilanUrunler = new ArrayList<>();
+
+        for (SatisStokHareketleri oncekiStokHareketi : satisOncekiHali.getStokHareketleriLists()) {
+            var cikarildi = true;
+            for (SatisStokHareketleri simdikiStokHareketi : stokHareketleriLists) {
+                if (oncekiStokHareketi.getUrun().getId().equals(simdikiStokHareketi.getUrun().getId())) {
+                    cikarildi = false;
+                    break;
+                }
+            }
+
+            if(cikarildi) {
+                cikarilanUrunler.add(oncekiStokHareketi);
+            }
+        }
 
         for (SatisStokHareketleri cikarilanUrunHareketi : cikarilanUrunler) {
-            Urun urun = cikarilanUrunHareketi.getUrun();
+            var urun = cikarilanUrunHareketi.getUrun();
             urun.setStok(urun.getStok().add(BigDecimal.valueOf(cikarilanUrunHareketi.getMiktar())));
         }
 
@@ -165,7 +173,7 @@ public class SatisService {
 
     private void makeStokUpdates(Set<SatisStokHareketleri> stokHareketleriLists) {
         for (SatisStokHareketleri satisStokHareketi : stokHareketleriLists) {
-            Urun urun = satisStokHareketi.getUrun();
+            var urun = satisStokHareketi.getUrun();
             if (satisStokHareketi.getUrun().getStok() != null) {
                 if (satisStokHareketi.getId() != null) {
                     Optional<SatisStokHareketleri> oncekiSatisStokHareketiOptional = satisStokHareketleriRepository.findById(
@@ -174,8 +182,12 @@ public class SatisService {
                     SatisStokHareketleri oncekiSatisStokHareketi = oncekiSatisStokHareketiOptional.orElseThrow(
                         SatisNotFoundUsedException::new
                     );
-                    int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
-                    urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
+                    if (!oncekiSatisStokHareketi.getUrun().getId().equals(urun.getId())) { //urun degistirilmis
+                        urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
+                    } else {
+                        int stokDegisimi = oncekiSatisStokHareketi.getMiktar() - satisStokHareketi.getMiktar();
+                        urun.setStok(urun.getStok().add(BigDecimal.valueOf(stokDegisimi)));
+                    }
                 } else {
                     urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(satisStokHareketi.getMiktar())));
                 }

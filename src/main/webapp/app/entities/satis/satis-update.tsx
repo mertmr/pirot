@@ -66,25 +66,30 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     setParaUstu(value - satis.toplamTutar);
   };
 
+  const fixNumber = tutar => {
+    if (account.tenantId === 1) {
+      return Number((Math.round(tutar * 20) / 20).toFixed(2));
+    } else {
+      return Number((Math.round(tutar * 4) / 4).toFixed(2));
+    }
+  };
+
   const toplamHesapla = stokHareketleriListesi => {
     let toplamTutar = 0;
     for (const stokHareketi of stokHareketleriListesi) {
-      if (stokHareketi.tutar != null) toplamTutar += stokHareketi.tutar;
+      if (stokHareketi.tutar != null) {
+        toplamTutar = toplamTutar + stokHareketi.tutar;
+      }
     }
+    // fix number due to javascript numbers
+    toplamTutar = fixNumber(toplamTutar);
+
     setSatis({
       ...satis,
       toplamTutar,
     });
     if (nakit && nakit > 0) {
       setParaUstu(nakit - toplamTutar);
-    }
-  };
-
-  const fixNumber = tutar => {
-    if (account.tenantId === 1) {
-      return Number((Math.round(tutar * 20) / 20).toFixed(2));
-    } else {
-      return Number((Math.round(tutar * 4) / 4).toFixed(2));
     }
   };
 
