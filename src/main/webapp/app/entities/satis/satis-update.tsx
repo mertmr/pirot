@@ -67,11 +67,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   };
 
   const fixNumber = tutar => {
-    if (account.tenantId === 1) {
-      return Number((Math.round(tutar * 20) / 20).toFixed(2));
-    } else {
-      return Number((Math.round(tutar * 4) / 4).toFixed(2));
-    }
+    return Number((Math.round(tutar * 4) / 4).toFixed(2));
   };
 
   const toplamHesapla = stokHareketleriListesi => {
@@ -123,13 +119,6 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     toplamHesapla(yeniUrunler);
   };
 
-  const indirimHesapla = tutar => {
-    if (account.tenantId === 1) {
-      return fixNumber(tutar * (100 / 102));
-    }
-    return tutar;
-  };
-
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriListState];
     if (value > yeniUrunler[i].urun.stok) {
@@ -141,11 +130,9 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     if (yeniUrunler[i].urun.birim === Birim.GRAM) {
       const tutar = value * 0.001 * yeniUrunler[i].urun.musteriFiyati;
       yeniUrunler[i].tutar = fixNumber(tutar);
-      if (!isKrediKartli) yeniUrunler[i].tutar = fixNumber(indirimHesapla(yeniUrunler[i].tutar));
     } else {
       const tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
       yeniUrunler[i].tutar = fixNumber(tutar);
-      if (!isKrediKartli) yeniUrunler[i].tutar = fixNumber(indirimHesapla(yeniUrunler[i].tutar));
     }
     setStokHareketleriLists(yeniUrunler);
     toplamHesapla(yeniUrunler);
@@ -177,7 +164,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     } else {
       setKrediKartli(false);
       stokHareketleriKomisyonlu.forEach(satisStokHareketi => {
-        satisStokHareketi.tutar = indirimHesapla(fiyatHesapla(satisStokHareketi));
+        satisStokHareketi.tutar = fiyatHesapla(satisStokHareketi);
       });
     }
     setStokHareketleriLists(stokHareketleriKomisyonlu);
@@ -199,12 +186,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
       yeniUrunler[key].urun = secilenUrun;
       if (secilenUrun.birim === Birim.GRAM) {
         yeniUrunler[key].miktar = 100;
-        yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar * 0.001;
-        if (!isKrediKartli) yeniUrunler[key].tutar = indirimHesapla(yeniUrunler[key].tutar);
+        yeniUrunler[key].tutar = fixNumber(secilenUrun.musteriFiyati * yeniUrunler[key].miktar * 0.001);
       } else {
         yeniUrunler[key].miktar = 1;
-        yeniUrunler[key].tutar = secilenUrun.musteriFiyati * yeniUrunler[key].miktar;
-        if (!isKrediKartli) yeniUrunler[key].tutar = indirimHesapla(yeniUrunler[key].tutar);
+        yeniUrunler[key].tutar = fixNumber(secilenUrun.musteriFiyati * yeniUrunler[key].miktar);
       }
       setStokHareketleriLists(yeniUrunler);
       toplamHesapla(yeniUrunler);
