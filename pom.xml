@@ -59,7 +59,7 @@
         <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
         <archunit-junit5.version>0.14.1</archunit-junit5.version>
         <mapstruct.version>1.3.1.Final</mapstruct.version>
-        <caffeine.version>2.8.4</caffeine.version>
+        <caffeine.version>2.9.1</caffeine.version>
         <typesafe.version>1.4.0</typesafe.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
@@ -679,9 +679,9 @@
                         </diffChangeLogFile>
                         <driver>org.h2.Driver</driver>
                         <url>jdbc:h2:file:${project.build.directory}/h2db/db/koop</url>
-                        <defaultSchemaName></defaultSchemaName>
+                        <defaultSchemaName/>
                         <username>koop</username>
-                        <password></password>
+                        <password/>
                         <referenceUrl>hibernate:spring:com.koop.app.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>
