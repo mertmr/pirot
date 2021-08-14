@@ -10,9 +10,6 @@ const sass = require('sass');
 const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin')
-const PurgecssPlugin = require('purgecss-webpack-plugin')
-const glob = require('glob')
-const path = require('path')
 
 const ENV = 'production';
 
