@@ -116,8 +116,5 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
       skipWaiting: true,
       exclude: [/swagger-ui/]
     }),
-    new PurgecssPlugin({
-      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`,  { nodir: true }),
-    }),
   ]
 });
