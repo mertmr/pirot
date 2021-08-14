@@ -26,6 +26,15 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     )
     List<Urun> findSatistakiUrunler();
 
+    @Query(
+        "select urun " +
+            " from Urun urun " +
+            "left join fetch urun.kdvKategorisi kdv" +
+            " where urun.satista = true and urun.stok > 0 and urun.active=true and urun.tenantId=1" +
+            " order by urun.urunAdi"
+    )
+    List<Urun> findSatistakiUrunlerKadikoy();
+
     Page<Urun> findByUrunAdiContainingIgnoreCaseAndActive(String urunAdi, Boolean active, Pageable pageable);
 
     @Override

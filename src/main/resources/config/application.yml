@@ -163,3 +163,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+org.jobrunr.job-scheduler.enabled: true
+org.jobrunr.background-job-server.enabled: true
+org.jobrunr.dashboard.enabled: true
