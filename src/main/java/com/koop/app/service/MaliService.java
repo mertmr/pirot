@@ -37,7 +37,7 @@ public class MaliService {
         final Calendar c = Calendar.getInstance();
         if (c.get(Calendar.DATE) == c.getActualMaximum(Calendar.DATE)) {
             try (Workbook workbook = new XSSFWorkbook()) {
-                Sheet sheet = workbook.createSheet("Persons");
+                Sheet sheet = workbook.createSheet("Mali Stok Raporu");
                 sheet.setColumnWidth(0, 6000);
                 sheet.setColumnWidth(1, 4000);
 
