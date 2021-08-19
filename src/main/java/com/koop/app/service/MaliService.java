@@ -84,7 +84,8 @@ public class MaliService {
                 workbook.write(outputStream);
 
                 mailService.sendEmailWithFile(
-                    "mali@kadikoykoop.org",
+                    "mertmr@gmail.com",
+//                    "mali@kadikoykoop.org",
                     "Ay Sonu Stok Raporu",
                     "Bu ay sonunun stok raporunu ekte bulabilirsiniz.",
                     fileLocation
