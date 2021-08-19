@@ -35,7 +35,7 @@ public class MaliService {
     @Job(name = "Aylik Mali Stok Raporu")
     public void sendStockMail() throws IOException {
         final Calendar c = Calendar.getInstance();
-//        if (c.get(Calendar.DATE) == c.getActualMaximum(Calendar.DATE)) {
+        if (c.get(Calendar.DATE) == c.getActualMaximum(Calendar.DATE)) {
             try (Workbook workbook = new XSSFWorkbook()) {
                 Sheet sheet = workbook.createSheet("Mali Stok Raporu");
                 sheet.setColumnWidth(0, 6000);
@@ -84,13 +84,12 @@ public class MaliService {
                 workbook.write(outputStream);
 
                 mailService.sendEmailWithFile(
-                    "mertmr@gmail.com",
-//                    "mali@kadikoykoop.org",
+                    "mali@kadikoykoop.org",
                     "Ay Sonu Stok Raporu",
                     "Bu ay sonunun stok raporunu ekte bulabilirsiniz.",
                     fileLocation
                 );
             }
         }
-//    }
+    }
 }
