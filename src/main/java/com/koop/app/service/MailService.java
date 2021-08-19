@@ -97,7 +97,7 @@ public class MailService {
             message.setText(content, true);
             FileSystemResource file
                 = new FileSystemResource(new File(fileLocation));
-            message.addAttachment("Aylik Stok Raporu", file);
+            message.addAttachment("aySonuStokRaporu.xlsx", file);
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
         } catch (MailException | MessagingException e) {
