@@ -26,15 +26,6 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
     )
     List<Urun> findSatistakiUrunler();
 
-    @Query(
-        "select urun " +
-            " from Urun urun " +
-            "left join fetch urun.kdvKategorisi kdv" +
-            " where urun.satista = true and urun.stok > 0 and urun.active=true and urun.tenantId=1" +
-            " order by urun.urunAdi"
-    )
-    List<Urun> findSatistakiUrunlerKadikoy();
-
     Page<Urun> findByUrunAdiContainingIgnoreCaseAndActive(String urunAdi, Boolean active, Pageable pageable);
 
     @Override
@@ -48,6 +39,15 @@ public interface UrunRepository extends JpaRepository<Urun, Long> {
         "left join fetch urun.urunFiyatHesap uf " +
         "where urun.satista=true and urun.active=true order by urun.urunAdi")
     List<Urun> getAllUrunForStokGirisi();
+
+    @Query("select urun from Urun urun " +
+        "left join fetch urun.kdvKategorisi kdv " +
+        "left join fetch urun.urunFiyatHesap ufh " +
+        "left join fetch urun.urunSorumlusu us " +
+        "left join fetch urun.urunFiyatHesap uf " +
+        "where urun.satista=true and urun.active=true and urun.tenantId=1 " +
+        "order by urun.urunAdi")
+    List<Urun> getAllUrunForStokGirisiKadikoy();
 
     @Query("select urun from Urun urun where urun.active=true")
     Page<Urun> findEverything(Pageable pageable);

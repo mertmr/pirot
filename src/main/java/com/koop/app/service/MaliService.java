@@ -55,7 +55,7 @@ public class MaliService {
                 CellStyle style = workbook.createCellStyle();
                 style.setWrapText(true);
 
-                List<Urun> satistakiUrunler = urunRepository.findSatistakiUrunlerKadikoy();
+                List<Urun> satistakiUrunler = urunRepository.getAllUrunForStokGirisiKadikoy();
                 for (int i = 0, satistakiUrunlerSize = satistakiUrunler.size(); i < satistakiUrunlerSize; i++) {
                     Urun urun = satistakiUrunler.get(i);
                     Row row = sheet.createRow(i + 1);
