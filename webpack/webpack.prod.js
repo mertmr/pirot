@@ -114,7 +114,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
       exclude: [/swagger-ui/],
       runtimeCaching: [{
         urlPattern: /\.(?:css|js|html)$/,
-        handler: 'networkFirst',
+        handler: 'NetworkFirst',
         options: {
           cacheName: 'myCache',
           expiration: {
@@ -127,7 +127,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
       },
         {
           urlPattern: /\.(?:png|jpg|jpeg|svg|gif|eot|ttf|woff|woff2)$/,
-          handler: 'staleWhileRevalidate',
+          handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'assetCache',
             broadcastUpdate: {
