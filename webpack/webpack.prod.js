@@ -86,12 +86,12 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     ]
   },
   plugins: [
-    new PacktrackerPlugin({
-      project_token: '48f37371-7794-4def-8d6c-a29a79dfdb3e',
-      upload: true,
-      branch: process.env.GITHUB_REF,
-      fail_build: true
-    }),
+    // new PacktrackerPlugin({
+    //   project_token: '48f37371-7794-4def-8d6c-a29a79dfdb3e',
+    //   upload: true,
+    //   branch: process.env.GITHUB_REF,
+    //   fail_build: true
+    // }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       filename: 'content/[name].[hash].css',
@@ -111,7 +111,30 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
-      exclude: [/swagger-ui/]
+      exclude: [/swagger-ui/],
+      runtimeCaching: [{
+        urlPattern: /\.(?:css|js|html)$/,
+        handler: 'networkFirst',
+        options: {
+          cacheName: 'myCache',
+          expiration: {
+            maxAgeSeconds: 60*60*24
+          },
+          broadcastUpdate: {
+            channelName: 'update-myCache'
+          }
+        }
+      },
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif|eot|ttf|woff|woff2)$/,
+          handler: 'staleWhileRevalidate',
+          options: {
+            cacheName: 'assetCache',
+            broadcastUpdate: {
+              channelName: 'update-assetCache'
+            }
+          }
+        }]
     }),
   ]
 });

@@ -144,7 +144,8 @@
             var addPWABtn = document.querySelector(".add-pwa");
             addPWABtn.style.display = "block";
             addPWABtn.addEventListener("click", addToHomeScreen);
-        };
+            console.log('User accepted the prompt');
+        }
 
         function addToHomeScreen() {
             var addPWABtn = document.querySelector(".add-pwa");  // hide our user interface that shows our A2HS button
@@ -159,12 +160,8 @@
                     }
                     deferredPrompt = null;
                 });
-        };
+        }
     </script>
-    <script
-        type="module"
-        src="https://cdn.jsdelivr.net/npm/@pwabuilder/install"
-    ></script>
     <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
