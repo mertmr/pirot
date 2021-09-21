@@ -16,7 +16,7 @@
     "@material-ui/lab": "*",
     "@packtracker/webpack-plugin": "^2.3.0",
     "availity-reactstrap-validation": "2.6.1",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "bootstrap": "4.4.1",
     "chart.js": "^2.9.4",
     "fuse.js": "^3.6.1",
