@@ -50,9 +50,10 @@ export const EntitiesMenu = (props: IEntitiesMenuProps) => (
         <Translate contentKey="global.menu.entities.kisiler" />
       </MenuItem>
     )}
-    {/* <MenuItem icon="asterisk" to="/urun-fiyat-hesap" onClick={props.onClick}>
+    <MenuItem icon="asterisk" to="/urun-fiyat-hesap" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.urunFiyatHesap" />
     </MenuItem>
+    {/*
     <MenuItem icon="asterisk" to="/urun-fiyat" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.urunFiyat" />
     </MenuItem>

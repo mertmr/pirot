@@ -67,12 +67,23 @@ export const UrunFiyatHesap = (props: IUrunFiyatHesapProps) => {
   const { urunFiyatHesapList, match, loading, totalItems } = props;
   return (
     <div>
-      <h2 id="urun-fiyat-hesap-heading">
+      <h2 id="urun-fiyat-hesap-heading" style={{ marginBottom: '20px' }}>
         <Translate contentKey="koopApp.urunFiyatHesap.home.title">Urun Fiyat Hesaps</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="koopApp.urunFiyatHesap.home.createLabel">Create new Urun Fiyat Hesap</Translate>
+        </Link>
+      </h2>
+      <h2>
+        <Link
+          to={`${match.url}/1/hesap`}
+          className="btn btn-primary float-right jh-create-entity"
+          style={{ marginRight: '10px' }}
+          id="jh-create-entity"
+        >
+          <FontAwesomeIcon icon="plus" />
+          &nbsp; Fiyat Hesapla
         </Link>
       </h2>
       <div className="table-responsive">
