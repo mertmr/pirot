@@ -97,6 +97,7 @@ export const UrunFiyatHesap = (props: IUrunFiyatHesapProps) => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand">FaturaTipi</th>
                 <th className="hand" onClick={sort('amortisman')}>
                   <Translate contentKey="koopApp.urunFiyatHesap.amortisman">Amortisman</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -129,6 +130,7 @@ export const UrunFiyatHesap = (props: IUrunFiyatHesapProps) => {
                       {urunFiyatHesap.id}
                     </Button>
                   </td>
+                  <td>{urunFiyatHesap.faturaTipi}</td>
                   <td>{urunFiyatHesap.amortisman}</td>
                   <td>{urunFiyatHesap.giderPusulaMustahsil}</td>
                   <td>{urunFiyatHesap.dukkanGider}</td>

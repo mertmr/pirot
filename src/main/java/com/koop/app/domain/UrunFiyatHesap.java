@@ -2,8 +2,11 @@ package com.koop.app.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.koop.app.config.tenancy.TenantEntity;
+import com.koop.app.domain.enumeration.FaturaTipi;
+import com.koop.app.domain.enumeration.GiderTipi;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,6 +23,11 @@ public class UrunFiyatHesap extends TenantEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "fatura_tipi", nullable = false)
+    private FaturaTipi faturaTipi;
 
     @Column(name = "amortisman")
     private Integer amortisman;
@@ -143,7 +151,14 @@ public class UrunFiyatHesap extends TenantEntity implements Serializable {
         this.urun = urun;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public FaturaTipi getFaturaTipi() {
+        return faturaTipi;
+    }
+
+    public void setFaturaTipi(FaturaTipi faturaTipi) {
+        this.faturaTipi = faturaTipi;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -166,6 +181,7 @@ public class UrunFiyatHesap extends TenantEntity implements Serializable {
     public String toString() {
         return "UrunFiyatHesap{" +
             "id=" + getId() +
+            ", faturaTipi=" + getFaturaTipi() +
             ", amortisman=" + getAmortisman() +
             ", giderPusulaMustahsil=" + getGiderPusulaMustahsil() +
             ", dukkanGider=" + getDukkanGider() +

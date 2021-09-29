@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, Table } from 'reactstrap';
-import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Link, RouteComponentProps } from "react-router-dom";
+import { Button, Col, Label, Row, Table } from "reactstrap";
+import { AvForm, AvGroup, AvInput } from "availity-reactstrap-validation";
+import { TextFormat, Translate } from "react-jhipster";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './urun-fiyat-hesap.reducer';
-import { IUrunFiyatHesap } from 'app/shared/model/urun-fiyat-hesap.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
-import { getAllUrunForStokGirisi } from 'app/entities/urun/urun.reducer';
-import TextField from '@material-ui/core/TextField';
-import { toast } from 'react-toastify';
-import cloneDeep from 'lodash/cloneDeep';
-import { Calendar } from 'primereact/calendar';
-import 'primeflex/primeflex.css';
-import Fuse from 'fuse.js';
-import { Autocomplete } from '@material-ui/lab';
-import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/model/satis.model';
-import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
-import { Birim } from 'app/shared/model/enumerations/birim.model';
-import { convertDateTimeToServer } from 'app/shared/util/date-utils';
+import { IRootState } from "app/shared/reducers";
+import { getEntities } from "./urun-fiyat-hesap.reducer";
+import { getAllUrunForStokGirisi } from "app/entities/urun/urun.reducer";
+import TextField from "@material-ui/core/TextField";
+import cloneDeep from "lodash/cloneDeep";
+import "primeflex/primeflex.css";
+import Fuse from "fuse.js";
+import { Autocomplete } from "@material-ui/lab";
+import { defaultValue as satisDefault, defaultValueWithNew } from "app/shared/model/satis.model";
+import { ISatisStokHareketleri } from "app/shared/model/satis-stok-hareketleri.model";
+import { Birim } from "app/shared/model/enumerations/birim.model";
+import { createEntity } from "app/entities/satis/satis.reducer";
+import { APP_DATE_FORMAT } from "app/config/constants";
 
 export interface IFiyatHesapProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -100,21 +95,21 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
 
   const onChangeMiktar = (value, i) => {
     const yeniUrunler = [...stokHareketleriListState];
-    if (value > yeniUrunler[i].urun.stok) {
-      toast.error('Stoktan daha fazla miktar girdiniz!');
-      value = yeniUrunler[i].urun.stok;
-    }
-
+    yeniUrunler[i].agirlikAta = value;
     yeniUrunler[i].miktar = value;
-    if (yeniUrunler[i].urun.birim === Birim.GRAM) {
-      const tutar = value * 0.001 * yeniUrunler[i].urun.musteriFiyati;
-      yeniUrunler[i].tutar = fixNumber(tutar);
-    } else {
-      const tutar = Number((value * yeniUrunler[i].urun.musteriFiyati).toFixed(2));
-      yeniUrunler[i].tutar = fixNumber(tutar);
-    }
     setStokHareketleriLists(yeniUrunler);
-    toplamHesapla(yeniUrunler);
+  };
+
+  const onChangeBirimFiyat = (value, i) => {
+    const yeniUrunler = [...stokHareketleriListState];
+    yeniUrunler[i].tutar = value;
+    setStokHareketleriLists(yeniUrunler);
+  };
+
+  const onChangeAgirlikAta = (value, i) => {
+    const yeniUrunler = [...stokHareketleriListState];
+    yeniUrunler[i].agirlikAta = value;
+    setStokHareketleriLists(yeniUrunler);
   };
 
   const { satisUrunleri } = props;
@@ -124,14 +119,6 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
   };
 
   const fuse = new Fuse(satisUrunleri, options);
-
-  const fiyatHesapla = satisStokHareketi => {
-    if (satisStokHareketi.urun.birim === Birim.GRAM) {
-      return fixNumber(satisStokHareketi.urun.musteriFiyati * satisStokHareketi.miktar * 0.001);
-    } else {
-      return fixNumber(satisStokHareketi.urun.musteriFiyati * satisStokHareketi.miktar);
-    }
-  };
 
   const searchUrun = value => {
     if (!value.trim().length) {
@@ -162,7 +149,6 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
   };
 
   useEffect(() => {
-    if (isFisrtPageOpening) {
       setStokHareketleriLists([
         {
           miktar: 0,
@@ -174,11 +160,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
         },
       ]);
       setSatis(defaultValueWithNew);
-      setIsFisrtPageOpening(false);
-    } else if (isFisrtPageOpening) {
-      setStokHareketleriLists(cloneDeep(satisEntity.stokHareketleriLists));
-    }
-  }, [satisEntity.stokHareketleriLists, satisUrunleri]);
+  }, [satisUrunleri]);
 
   useEffect(() => {
     props.getAllUrunForStokGirisi();
@@ -190,26 +172,28 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
     }
   }, [props.updateSuccess]);
 
+  const fiyatHesapla = (event, errors, values) => {
+    setIsFisrtPageOpening(false);
+  };
+
   const saveEntity = (event, errors, values) => {
     let toplamTutar = 0;
     const stokHareketleriLists = stokHareketleriListState.filter(stokHareketi => stokHareketi.urun.id !== 0);
     for (const stokHareketi of stokHareketleriLists) {
       if (stokHareketi.urun == null) toplamTutar += stokHareketi.tutar;
     }
-    toplamTutar = fixNumber(toplamTutar);
 
     if (errors.length === 0) {
       const yenisatis = {
         ...satis,
-        satisEntity,
         stokHareketleriLists,
-        toplamTutar,
         ...values,
       };
       props.createEntity(yenisatis);
     }
   };
 
+  const { fiyatList } = props;
   return (
     <div>
       <h2 id="urun-fiyat-hesap-heading">
@@ -219,7 +203,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
       </h2>
       <Row className="justify-content-center">
         <Col md="10" className="satis-font">
-          <AvForm model={satis} onSubmit={saveEntity}>
+          <AvForm model={satis} onSubmit={fiyatHesapla}>
             <Button tag={Link} onClick={addRow} color="primary" size="sm">
               <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
             </Button>
@@ -234,6 +218,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                             <Autocomplete
                               options={satisUrunleri}
                               freeSolo
+                              style={{ marginLeft: '20px', width: '80%'}}
                               value={stokHareketi.urun}
                               getOptionLabel={option => option.urunAdi}
                               onChange={(event, newValue) => {
@@ -243,12 +228,6 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                               renderInput={params => <TextField {...params} variant="outlined" fullWidth />}
                             />
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }}>
-                            <Col>Kalan Stok</Col>
-                            <Col>
-                              {stokHareketi.urun.stok} {stokHareketi.urun.birim}
-                            </Col>
-                          </Col>
                           <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
                             <Col>
                               <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
@@ -256,21 +235,37 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                             <Col>
                               <input
                                 className="col-md-12"
-                                style={{ width: '80px' }}
+                                style={{ width: '80%' }}
                                 value={stokHareketi.miktar}
                                 onChange={e => onChangeMiktar(e.target.value, i)}
                               />
                             </Col>
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }}>
-                            <Col>Birim Fiyat</Col>
-                            <Col>{stokHareketi.urun.musteriFiyati} TL</Col>
-                          </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }}>
+                          <Col style={{ marginTop: '10px', padding: '0px'}} className="col-md col-6">
                             <Col>
-                              <Translate contentKey="koopApp.satisStokHareketleri.tutar">Tutar</Translate>
+                              Birim Fiyat
                             </Col>
-                            <Col>{stokHareketi.tutar} TL</Col>
+                            <Col>
+                              <input
+                                className="col-md-12"
+                                style={{ width: '80%' }}
+                                value={stokHareketi.tutar}
+                                onChange={e => onChangeBirimFiyat(e.target.value, i)}
+                              />
+                            </Col>
+                          </Col>
+                          <Col style={{ marginTop: '10px', padding: '0px'}} className="col-md col-6">
+                            <Col>
+                              Ağırlık Ata
+                            </Col>
+                            <Col>
+                              <input
+                                className="col-md-12"
+                                style={{ width: '80%' }}
+                                value={stokHareketi.agirlikAta}
+                                onChange={e => onChangeAgirlikAta(e.target.value, i)}
+                              />
+                            </Col>
                           </Col>
                           <Col style={{ marginTop: '10px', padding: '0px' }}>
                             <div className="btn-group flex-btn-group-container">
@@ -284,20 +279,47 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                     </AvGroup>
                   </div>
                 ))}
-                <AvGroup style={{ marginTop: '20px' }}>
-                  <Label for="satis-toplamTutar">
-                    <Translate contentKey="koopApp.satis.toplamTutar" />
-                  </Label>
-                  <AvInput
-                    id="satis-toplamTutar"
-                    type="text"
-                    value={satis.toplamTutar}
-                    className="form-control"
-                    name="toplamTutar"
-                    disabled
-                    readOnly
-                  />
-                </AvGroup>
+              </div>
+            ) : (
+              <div className="alert alert-warning" />
+            )}
+            <Button color="primary" id="save-entity">
+              <FontAwesomeIcon icon="save" />
+              &nbsp;
+              Fiyat Hesapla
+            </Button>
+          </AvForm>
+          <AvForm model={satis} onSubmit={saveEntity}>
+            {isFisrtPageOpening ? (
+              <div className="table-responsive">
+                {fiyatList && fiyatList.length > 0 ? (
+                  <Table responsive>
+                    <thead>
+                    <tr>
+                      <th className="hand">Ürün ID</th>
+                      <th className="hand">Ürün Adı</th>
+                      <th className="hand">Eski Fiyat</th>
+                      <th className="hand">Yeni Fiyat</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {fiyatList.map((fiyat, i) => (
+                      <tr key={`entity-${i}`}>
+                        <td>{fiyat.urunId}</td>
+                        <td>{fiyat.urunAdi}</td>
+                        <td>{fiyat.eskiFiyat}</td>
+                        <td>{fiyat.yeniFiyat}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </Table>
+                ) : (
+                   (
+                    <div className="alert alert-warning">
+                      <Translate contentKey="koopApp.fiyat.home.notFound">Fiyat hesabı bulunamadı</Translate>
+                    </div>
+                  )
+                )}
               </div>
             ) : (
               <div className="alert alert-warning" />
@@ -323,7 +345,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  fiyatHesapList: storeState.urunFiyatHesap.entities,
+  fiyatList: storeState.urunFiyatHesap.fiyatList,
   loading: storeState.urunFiyatHesap.loading,
   totalItems: storeState.urunFiyatHesap.totalItems,
   satisUrunleri: storeState.urun.satisUrunleri,
@@ -333,6 +355,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 const mapDispatchToProps = {
   getEntities,
   getAllUrunForStokGirisi,
+  createEntity,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

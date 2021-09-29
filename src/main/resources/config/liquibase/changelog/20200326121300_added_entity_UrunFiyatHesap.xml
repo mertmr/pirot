@@ -18,6 +18,9 @@
             <column name="tenant_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="fatura_tipi" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="amortisman" type="integer">
                 <constraints nullable="true" />
             </column>

@@ -5,9 +5,11 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IUrunFiyatHesap, defaultValue } from 'app/shared/model/urun-fiyat-hesap.model';
+import { IFiyat } from 'app/shared/model/fiyat.model';
 
 export const ACTION_TYPES = {
   FETCH_URUNFIYATHESAP_LIST: 'urunFiyatHesap/FETCH_URUNFIYATHESAP_LIST',
+  FETCH_FIYAT_LIST: 'urunFiyatHesap/FETCH_FIYAT_LIST',
   FETCH_URUNFIYATHESAP: 'urunFiyatHesap/FETCH_URUNFIYATHESAP',
   FETCH_URUNFIYATHESAPBYURUN: 'urunFiyatHesap/FETCH_URUNFIYATHESAPBYURUN',
   CREATE_URUNFIYATHESAP: 'urunFiyatHesap/CREATE_URUNFIYATHESAP',
@@ -20,6 +22,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IUrunFiyatHesap>,
+  fiyatList: [] as ReadonlyArray<IFiyat>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -33,6 +36,7 @@ export type UrunFiyatHesapState = Readonly<typeof initialState>;
 export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHesapState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_FIYAT_LIST):
     case REQUEST(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case REQUEST(ACTION_TYPES.FETCH_URUNFIYATHESAP):
       return {
@@ -51,6 +55,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_FIYAT_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.CREATE_URUNFIYATHESAP):
@@ -69,6 +74,12 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         loading: false,
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_FIYAT_LIST):
+      return {
+        ...state,
+        loading: false,
+        fiyatList: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAPBYURUN):
     case SUCCESS(ACTION_TYPES.FETCH_URUNFIYATHESAP):

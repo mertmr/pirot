@@ -114,6 +114,22 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                 />
               </AvGroup>
               <AvGroup>
+                <Label id="giderTipiLabel" for="gider-giderTipi">
+                  <Translate contentKey="koopApp.gider.giderTipi">Gider Tipi</Translate>
+                </Label>
+                <AvInput
+                  id="gider-giderTipi"
+                  type="select"
+                  className="form-control"
+                  name="faturaTipi"
+                  value={(!isNew && urunFiyatHesapEntity.faturaTipi) || 'FATURA'}
+                >
+                  <option value="FATURA">{'FATURA'}</option>
+                  <option value="GIDER">{'GIDER'}</option>
+                  <option value="MUSTAHSIL">{'MUSTAHSIL'}</option>
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
                 <Label id="amortismanLabel" for="urun-fiyat-hesap-amortisman">
                   <Translate contentKey="koopApp.urunFiyatHesap.amortisman">Amortisman</Translate>
                 </Label>
