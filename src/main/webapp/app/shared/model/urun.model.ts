@@ -16,6 +16,7 @@ export interface IUrun {
   urunKategorisi?: UrunKategorisi;
   urunSorumlusu?: IUser;
   kdvKategorisi?: IKdvKategorisi;
+  urunFiyatHesap?: IUrunFiyatHesap;
   active?: boolean;
 }
 

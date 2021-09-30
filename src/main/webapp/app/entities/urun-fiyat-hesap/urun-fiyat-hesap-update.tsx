@@ -65,8 +65,8 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...urunFiyatHesapEntity,
-        ...values,
         ...urunFiyatHesap,
+        ...values,
       };
 
       if (isNew) {
@@ -112,6 +112,22 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                   filterBy="urunAdi"
                   placeholder="Ürün seçiniz"
                 />
+              </AvGroup>
+              <AvGroup>
+                <Label id="giderTipiLabel" for="gider-giderTipi">
+                  <Translate contentKey="koopApp.gider.giderTipi">Gider Tipi</Translate>
+                </Label>
+                <AvInput
+                  id="gider-giderTipi"
+                  type="select"
+                  className="form-control"
+                  name="faturaTipi"
+                  value={(!isNew && urunFiyatHesapEntity.faturaTipi) || 'FATURA'}
+                >
+                  <option value="FATURA">{'FATURA'}</option>
+                  <option value="GIDER">{'GIDER'}</option>
+                  <option value="MUSTAHSIL">{'MUSTAHSIL'}</option>
+                </AvInput>
               </AvGroup>
               <AvGroup>
                 <Label id="amortismanLabel" for="urun-fiyat-hesap-amortisman">

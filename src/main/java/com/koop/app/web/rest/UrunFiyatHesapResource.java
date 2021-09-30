@@ -1,13 +1,23 @@
 package com.koop.app.web.rest;
 
+import com.koop.app.domain.StokGirisi;
+import com.koop.app.domain.Urun;
 import com.koop.app.domain.UrunFiyatHesap;
+import com.koop.app.domain.User;
+import com.koop.app.domain.enumeration.StokHareketiTipi;
+import com.koop.app.dto.FiyatHesapDTO;
+import com.koop.app.dto.FiyatHesapWrapperDTO;
 import com.koop.app.repository.UrunFiyatHesapRepository;
+import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.StokGirisiService;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -16,7 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +47,17 @@ public class UrunFiyatHesapResource {
 
     private final UrunFiyatHesapRepository urunFiyatHesapRepository;
 
-    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository) {
+    private final UrunRepository urunRepository;
+
+    private final StokGirisiService stokGirisiService;
+
+    private final UserService userService;
+
+    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository, StokGirisiService stokGirisiService, UserService userService) {
         this.urunFiyatHesapRepository = urunFiyatHesapRepository;
+        this.urunRepository = urunRepository;
+        this.stokGirisiService = stokGirisiService;
+        this.userService = userService;
     }
 
     /**
@@ -156,5 +174,35 @@ public class UrunFiyatHesapResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /yeni-fiyat} :Yeni fiyat kaydet
+     *
+     * @param fiyatHesapDTOList urunId ve yeni fiyat listesini gonder
+     */
+    @PostMapping("/urun-fiyat-hesaps/yeni-fiyat")
+    public ResponseEntity<Void> yeniFiyat(@RequestBody FiyatHesapWrapperDTO fiyatHesapDTOList) {
+        for (FiyatHesapDTO fiyatHesapDTO : fiyatHesapDTOList.getFiyatHesapDTOList()) {
+            Optional<Urun> urunOptional = urunRepository.findById(fiyatHesapDTO.getUrunId());
+            if(urunOptional.isPresent()) {
+                Urun urun = urunOptional.get();
+                urun.setMusteriFiyati(fiyatHesapDTO.getYeniFiyat());
+                urunRepository.save(urun);
+
+                StokGirisi stokGirisi = new StokGirisi();
+                User currentUser = userService.getCurrentUser();
+                stokGirisi.miktar(fiyatHesapDTO.getMiktar().intValue())
+                    .notlar("Faturali Stok Girisi")
+                    .urun(urun)
+                    .stokHareketiTipi(StokHareketiTipi.STOK_GIRISI)
+                    .tarih(ZonedDateTime.now())
+                    .user(currentUser);
+                stokGirisiService.save(stokGirisi);
+            }
+        }
+
+        return ResponseEntity
+            .ok().build();
     }
 }

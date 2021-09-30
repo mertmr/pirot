@@ -16,6 +16,7 @@ import reducer, {
 } from 'app/entities/urun-fiyat-hesap/urun-fiyat-hesap.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IUrunFiyatHesap, defaultValue } from 'app/shared/model/urun-fiyat-hesap.model';
+import { IFiyat } from 'app/shared/model/fiyat.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -30,6 +31,7 @@ describe('Entities reducer tests', () => {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IUrunFiyatHesap>,
+    fiyatList: [] as ReadonlyArray<IFiyat>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,

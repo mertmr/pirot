@@ -2,19 +2,19 @@
   "koopApp": {
     "urunFiyatHesap": {
       "home": {
-        "title": "Urun Fiyat Hesaps",
-        "createLabel": "Create a new Urun Fiyat Hesap",
-        "createOrEditLabel": "Create or edit a Urun Fiyat Hesap",
+        "title": "Fiyat Hesap",
+        "createLabel": "Hesap Kaydı",
+        "createOrEditLabel": "Düzenle",
         "notFound": "No Urun Fiyat Hesaps found"
       },
-      "created": "A new Urun Fiyat Hesap is created with identifier {{ param }}",
-      "updated": "A Urun Fiyat Hesap is updated with identifier {{ param }}",
-      "deleted": "A Urun Fiyat Hesap is deleted with identifier {{ param }}",
+      "created": "Yeni kayıt oluşturuldu: {{ param }}",
+      "updated": "Kayıt düzenlendi: {{ param }}",
+      "deleted": "Kayıt silindi {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Urun Fiyat Hesap {{ id }}?"
+        "question": "Silmek istediğinizden emin misiniz: {{ id }}?"
       },
       "detail": {
-        "title": "Urun Fiyat Hesap"
+        "title": "Ürün Fiyat Hesap"
       },
       "amortisman": "Amortisman",
       "giderPusulaMustahsil": "Gider Pusula Mustahsil",
@@ -22,7 +22,7 @@
       "kooperatifCalisma": "Kooperatif Calisma",
       "dayanisma": "Dayanisma",
       "fire": "Fire",
-      "urun": "Urun"
+      "urun": "Ürün"
     }
   }
 }
