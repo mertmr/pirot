@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IUrunFiyatHesap, defaultValue } from 'app/shared/model/urun-fiyat-hesap.model';
 import { IFiyat } from 'app/shared/model/fiyat.model';
+import { IFiyatDTO } from 'app/shared/model/fiyat-list.model';
 
 export const ACTION_TYPES = {
   FETCH_URUNFIYATHESAP_LIST: 'urunFiyatHesap/FETCH_URUNFIYATHESAP_LIST',
@@ -14,6 +15,7 @@ export const ACTION_TYPES = {
   FETCH_URUNFIYATHESAPBYURUN: 'urunFiyatHesap/FETCH_URUNFIYATHESAPBYURUN',
   CREATE_URUNFIYATHESAP: 'urunFiyatHesap/CREATE_URUNFIYATHESAP',
   UPDATE_URUNFIYATHESAP: 'urunFiyatHesap/UPDATE_URUNFIYATHESAP',
+  UPDATE_FIYAT: 'urunFiyatHesap/UPDATE_FIYAT',
   DELETE_URUNFIYATHESAP: 'urunFiyatHesap/DELETE_URUNFIYATHESAP',
   RESET: 'urunFiyatHesap/RESET',
 };
@@ -47,6 +49,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
       };
     case REQUEST(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case REQUEST(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
+    case REQUEST(ACTION_TYPES.UPDATE_FIYAT):
     case REQUEST(ACTION_TYPES.DELETE_URUNFIYATHESAP):
       return {
         ...state,
@@ -60,6 +63,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
     case FAILURE(ACTION_TYPES.FETCH_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.CREATE_URUNFIYATHESAP):
     case FAILURE(ACTION_TYPES.UPDATE_URUNFIYATHESAP):
+    case FAILURE(ACTION_TYPES.UPDATE_FIYAT):
     case FAILURE(ACTION_TYPES.DELETE_URUNFIYATHESAP):
       return {
         ...state,
@@ -96,6 +100,12 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
         updateSuccess: true,
         entity: action.payload.data,
       };
+    case SUCCESS(ACTION_TYPES.UPDATE_FIYAT):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+      };
     case SUCCESS(ACTION_TYPES.DELETE_URUNFIYATHESAP):
       return {
         ...state,
@@ -113,6 +123,7 @@ export default (state: UrunFiyatHesapState = initialState, action): UrunFiyatHes
 };
 
 const apiUrl = 'api/urun-fiyat-hesaps';
+const apiUrlFiyat = 'api/urun-fiyat-hesaps/yeni-fiyat';
 
 // Actions
 
@@ -154,6 +165,16 @@ export const updateEntity: ICrudPutAction<IUrunFiyatHesap> = entity => async dis
     type: ACTION_TYPES.UPDATE_URUNFIYATHESAP,
     payload: axios.put(apiUrl, cleanEntity(entity)),
   });
+  return result;
+};
+
+export const updateFiyat: ICrudPutAction<IFiyatDTO> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.UPDATE_FIYAT,
+    payload: axios.post(apiUrlFiyat, cleanEntity(entity)),
+  });
+
+  dispatch(getEntities());
   return result;
 };
 

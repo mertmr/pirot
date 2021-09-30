@@ -1,7 +1,11 @@
 package com.koop.app.web.rest;
 
+import com.koop.app.domain.Urun;
 import com.koop.app.domain.UrunFiyatHesap;
+import com.koop.app.dto.FiyatHesapDTO;
+import com.koop.app.dto.FiyatHesapWrapperDTO;
 import com.koop.app.repository.UrunFiyatHesapRepository;
+import com.koop.app.repository.UrunRepository;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -16,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +41,11 @@ public class UrunFiyatHesapResource {
 
     private final UrunFiyatHesapRepository urunFiyatHesapRepository;
 
-    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository) {
+    private final UrunRepository urunRepository;
+
+    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository) {
         this.urunFiyatHesapRepository = urunFiyatHesapRepository;
+        this.urunRepository = urunRepository;
     }
 
     /**
@@ -156,5 +162,25 @@ public class UrunFiyatHesapResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code POST  /yeni-fiyat} :Yeni fiyat kaydet
+     *
+     * @param fiyatHesapDTOList urunId ve yeni fiyat listesini gonder
+     */
+    @PostMapping("/urun-fiyat-hesaps/yeni-fiyat")
+    public ResponseEntity<Void> yeniFiyat(@RequestBody FiyatHesapWrapperDTO fiyatHesapDTOList) {
+        for (FiyatHesapDTO fiyatHesapDTO : fiyatHesapDTOList.getFiyatHesapDTOList()) {
+            Optional<Urun> urunOptional = urunRepository.findById(fiyatHesapDTO.getUrunId());
+            if(urunOptional.isPresent()) {
+                Urun urun = urunOptional.get();
+                urun.setMusteriFiyati(fiyatHesapDTO.getYeniFiyat());
+                urunRepository.save(urun);
+            }
+        }
+
+        return ResponseEntity
+            .ok().build();
     }
 }

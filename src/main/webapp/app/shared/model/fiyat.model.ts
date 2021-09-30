@@ -5,4 +5,5 @@ export interface IFiyat {
   yeniFiyat?: number;
 }
 
-export const defaultValue: Readonly<IFiyat> = {};
+export const defaultValue: IFiyat = {};
+export const defaultValueList: Array<IFiyat> = [];

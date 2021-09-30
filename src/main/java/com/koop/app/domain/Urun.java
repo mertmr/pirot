@@ -221,6 +221,10 @@ public class Urun extends TenantEntity implements Serializable {
         return this;
     }
 
+    public UrunFiyatHesap getUrunFiyatHesap() {
+        return urunFiyatHesap;
+    }
+
     public void setUrunFiyatHesap(UrunFiyatHesap urunFiyatHesap) {
         this.urunFiyatHesap = urunFiyatHesap;
     }

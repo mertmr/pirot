@@ -65,8 +65,8 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...urunFiyatHesapEntity,
-        ...values,
         ...urunFiyatHesap,
+        ...values,
       };
 
       if (isNew) {
