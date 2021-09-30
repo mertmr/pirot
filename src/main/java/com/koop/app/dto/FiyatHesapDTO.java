@@ -8,6 +8,8 @@ public class FiyatHesapDTO {
 
     private String urunAdi;
 
+    private BigDecimal miktar;
+
     private BigDecimal yeniFiyat;
 
     private BigDecimal eskiFiyat;
@@ -42,5 +44,13 @@ public class FiyatHesapDTO {
 
     public void setEskiFiyat(BigDecimal eskiFiyat) {
         this.eskiFiyat = eskiFiyat;
+    }
+
+    public BigDecimal getMiktar() {
+        return miktar;
+    }
+
+    public void setMiktar(BigDecimal miktar) {
+        this.miktar = miktar;
     }
 }

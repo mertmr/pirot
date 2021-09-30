@@ -1,17 +1,23 @@
 package com.koop.app.web.rest;
 
+import com.koop.app.domain.StokGirisi;
 import com.koop.app.domain.Urun;
 import com.koop.app.domain.UrunFiyatHesap;
+import com.koop.app.domain.User;
+import com.koop.app.domain.enumeration.StokHareketiTipi;
 import com.koop.app.dto.FiyatHesapDTO;
 import com.koop.app.dto.FiyatHesapWrapperDTO;
 import com.koop.app.repository.UrunFiyatHesapRepository;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.StokGirisiService;
+import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -43,9 +49,15 @@ public class UrunFiyatHesapResource {
 
     private final UrunRepository urunRepository;
 
-    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository) {
+    private final StokGirisiService stokGirisiService;
+
+    private final UserService userService;
+
+    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository, StokGirisiService stokGirisiService, UserService userService) {
         this.urunFiyatHesapRepository = urunFiyatHesapRepository;
         this.urunRepository = urunRepository;
+        this.stokGirisiService = stokGirisiService;
+        this.userService = userService;
     }
 
     /**
@@ -177,6 +189,16 @@ public class UrunFiyatHesapResource {
                 Urun urun = urunOptional.get();
                 urun.setMusteriFiyati(fiyatHesapDTO.getYeniFiyat());
                 urunRepository.save(urun);
+
+                StokGirisi stokGirisi = new StokGirisi();
+                User currentUser = userService.getCurrentUser();
+                stokGirisi.miktar(fiyatHesapDTO.getMiktar().intValue())
+                    .notlar("Faturali Stok Girisi")
+                    .urun(urun)
+                    .stokHareketiTipi(StokHareketiTipi.STOK_GIRISI)
+                    .tarih(ZonedDateTime.now())
+                    .user(currentUser);
+                stokGirisiService.save(stokGirisi);
             }
         }
 

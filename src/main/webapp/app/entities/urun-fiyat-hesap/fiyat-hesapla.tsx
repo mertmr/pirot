@@ -228,6 +228,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
         fiyatModel.urunAdi = stokGirisi.urun.urunAdi;
         fiyatModel.eskiFiyat = stokGirisi.urun.musteriFiyati;
         fiyatModel.yeniFiyat = koopFiyati;
+        fiyatModel.miktar = stokGirisi.miktar;
         fiyats.push(fiyatModel);
       }
     });
@@ -241,12 +242,9 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
   return (
     <div>
       <h2 id="urun-fiyat-hesap-heading">
-        <Button color="primary" id="save-entity" type="submit">
-          Kaydet
-        </Button>
       </h2>
       <Row className="justify-content-center">
-        <Col md="10" className="satis-font">
+        <Col md="12" className="satis-font">
           <AvForm model={satis} onSubmit={fiyatHesapla}>
             <Button tag={Link} onClick={addRow} color="primary" size="sm">
               <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
@@ -258,7 +256,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                     <AvGroup>
                       <Col style={{ padding: '0' }}>
                         <Row className="g-2">
-                          <Col className="col-md-5 col-12" style={{ marginTop: '10px', padding: '0px' }}>
+                          <Col className="col-md-4 col-12" style={{ marginTop: '10px', padding: '0px' }}>
                             <Autocomplete
                               options={satisUrunleri}
                               freeSolo
@@ -273,10 +271,10 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                             />
                           </Col>
                           <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
-                            <Col>
+                            <Col style={{ padding: '0px' }}>
                               <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                             </Col>
-                            <Col>
+                            <Col style={{ padding: '0px' }}>
                               <input
                                 className="col-md-12"
                                 style={{ width: '80%' }}
@@ -286,8 +284,8 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                             </Col>
                           </Col>
                           <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
-                            <Col>Birim Fiyat</Col>
-                            <Col>
+                            <Col style={{ padding: '0px' }}>KDVsiz Birim Fiyat</Col>
+                            <Col style={{ padding: '0px' }}>
                               <input
                                 className="col-md-12"
                                 style={{ width: '80%' }}
@@ -312,10 +310,9 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                               Bilgi
                             </Badge>
                             <UncontrolledTooltip placement={'right'} target={'stok-siniri-info'}>
-                              Ağırlık ata alanını manuel doldurmanız gereken tek zaman aynı faturada hem adetli hem de
-                              gramajlı ürün geldiği zamandır. Bu durumda mesela 10 tane maske, 10 kg da limon geldiyse tüm ürünlerin
-                              gramajını bu alana girerek fiyat hesaplamasını otomatik hale getirebilirsiniz. Mesela 10 kg limon
-                              için limon ağırlık kısmına 10000, 10 maske için de mesela bir maske 10 gr ise toplamda 100 gr diyebilirsiniz.
+                              Ağırlık ata alanını ürünlerin ağırlığına göre kargo dağıtmak için kullanmanız gerekir. Mesela
+                              500 gr dan 20 adet salça ve 10 gramdan 15 tane sumak geldiyse salça için bu alana 1000, sumak
+                              için 150 yazmak gerekir.
                             </UncontrolledTooltip>
                           </Col>
                           <Col style={{ marginTop: '10px', padding: '0px' }}>
@@ -355,6 +352,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                       <tr>
                         <th className="hand">Ürün ID</th>
                         <th className="hand">Ürün Adı</th>
+                        <th className="hand">Miktar</th>
                         <th className="hand">Eski Fiyat</th>
                         <th className="hand">Yeni Fiyat</th>
                       </tr>
@@ -364,6 +362,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                         <tr key={`entity-${i}`}>
                           <td>{fiyat.urunId}</td>
                           <td>{fiyat.urunAdi}</td>
+                          <td>{fiyat.miktar}</td>
                           <td>{fiyat.eskiFiyat}</td>
                           <td>{fiyat.yeniFiyat}</td>
                         </tr>
@@ -390,7 +389,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
             <Button color="primary" id="save-entity" type="submit">
               <FontAwesomeIcon icon="save" />
               &nbsp;
-              <Translate contentKey="entity.action.save">Save</Translate>
+              Stok ve Fiyat Gir
             </Button>
           </AvForm>
         </Col>
