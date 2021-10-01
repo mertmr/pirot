@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Link, RouteComponentProps } from "react-router-dom";
-import { Button, Col, Label, Row, Table, Badge, UncontrolledTooltip } from "reactstrap";
-import { AvForm, AvGroup, AvInput } from "availity-reactstrap-validation";
-import { Translate } from "react-jhipster";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Button, Col, Label, Row, Table, Badge, UncontrolledTooltip } from 'reactstrap';
+import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
+import { Translate } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IRootState } from "app/shared/reducers";
-import { getEntities, updateFiyat } from "./urun-fiyat-hesap.reducer";
-import TextField from "@material-ui/core/TextField";
-import cloneDeep from "lodash/cloneDeep";
-import "primeflex/primeflex.css";
-import Fuse from "fuse.js";
-import { Autocomplete } from "@material-ui/lab";
-import { defaultValue as satisDefault, defaultValueWithNew } from "app/shared/model/satis.model";
-import { defaultValueList, IFiyat } from "app/shared/model/fiyat.model";
-import { ISatisStokHareketleri } from "app/shared/model/satis-stok-hareketleri.model";
-import { Birim } from "app/shared/model/enumerations/birim.model";
-import { createEntity } from "app/entities/satis/satis.reducer";
-import { FATURA_TIPI } from "app/shared/model/enumerations/fatura-tipi.model";
-import { IFiyatDTO } from "app/shared/model/fiyat-list.model";
+import { IRootState } from 'app/shared/reducers';
+import { getEntities, updateFiyat } from './urun-fiyat-hesap.reducer';
+import TextField from '@material-ui/core/TextField';
+import cloneDeep from 'lodash/cloneDeep';
+import 'primeflex/primeflex.css';
+import Fuse from 'fuse.js';
+import { Autocomplete } from '@material-ui/lab';
+import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/model/satis.model';
+import { defaultValueList, IFiyat } from 'app/shared/model/fiyat.model';
+import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
+import { Birim } from 'app/shared/model/enumerations/birim.model';
+import { createEntity } from 'app/entities/satis/satis.reducer';
+import { FATURA_TIPI } from 'app/shared/model/enumerations/fatura-tipi.model';
+import { IFiyatDTO } from 'app/shared/model/fiyat-list.model';
 
 export interface IFiyatHesapProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -205,17 +205,20 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
       if (stokGirisi.urun.id !== 0) {
         const urunFiyatHesap = stokGirisi.urun.urunFiyatHesap;
         let kdvDahilBirimFiyat;
-        if(urunFiyatHesap.faturaTipi === FATURA_TIPI.FATURA) {
+        if (urunFiyatHesap.faturaTipi === FATURA_TIPI.FATURA) {
           kdvDahilBirimFiyat = stokGirisi.tutar * (1 + 0.01 * stokGirisi.urun.kdvKategorisi.kdvOrani);
         } else {
           kdvDahilBirimFiyat = stokGirisi.tutar;
         }
-        if(stokGirisi.urun.birim === Birim.ADET)
-          kdvDahilBirimFiyat = Number(kdvDahilBirimFiyat) + Number((((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / stokGirisi.miktar));
+        if (stokGirisi.urun.birim === Birim.ADET)
+          kdvDahilBirimFiyat =
+            Number(kdvDahilBirimFiyat) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / stokGirisi.miktar);
         else
-          kdvDahilBirimFiyat = Number(kdvDahilBirimFiyat) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / (stokGirisi.miktar * 0.001));
+          kdvDahilBirimFiyat =
+            Number(kdvDahilBirimFiyat) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / (stokGirisi.miktar * 0.001));
 
-        const koopPayi = urunFiyatHesap.amortisman +
+        const koopPayi =
+          urunFiyatHesap.amortisman +
           urunFiyatHesap.dayanisma +
           urunFiyatHesap.dukkanGider +
           urunFiyatHesap.fire +
@@ -241,8 +244,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
 
   return (
     <div>
-      <h2 id="urun-fiyat-hesap-heading">
-      </h2>
+      <h2 id="urun-fiyat-hesap-heading"></h2>
       <Row className="justify-content-center">
         <Col md="12" className="satis-font">
           <AvForm model={satis} onSubmit={fiyatHesapla}>
@@ -310,9 +312,8 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                               Bilgi
                             </Badge>
                             <UncontrolledTooltip placement={'right'} target={'stok-siniri-info'}>
-                              Ağırlık ata alanını ürünlerin ağırlığına göre kargo dağıtmak için kullanmanız gerekir. Mesela
-                              500 gr dan 20 adet salça ve 10 gramdan 15 tane sumak geldiyse salça için bu alana 1000, sumak
-                              için 150 yazmak gerekir.
+                              Ağırlık ata alanını ürünlerin ağırlığına göre kargo dağıtmak için kullanmanız gerekir. Mesela 500 gr dan 20
+                              adet salça ve 10 gramdan 15 tane sumak geldiyse salça için bu alana 1000, sumak için 150 yazmak gerekir.
                             </UncontrolledTooltip>
                           </Col>
                           <Col style={{ marginTop: '10px', padding: '0px' }}>
@@ -370,9 +371,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                     </tbody>
                   </Table>
                 ) : (
-                  <div className="alert alert-warning">
-                   Fiyat hesabı bulunamadı
-                  </div>
+                  <div className="alert alert-warning">Fiyat hesabı bulunamadı</div>
                 )}
               </div>
             ) : (
@@ -388,8 +387,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
             &nbsp;
             <Button color="primary" id="save-entity" type="submit">
               <FontAwesomeIcon icon="save" />
-              &nbsp;
-              Stok ve Fiyat Gir
+              &nbsp; Stok ve Fiyat Gir
             </Button>
           </AvForm>
         </Col>
