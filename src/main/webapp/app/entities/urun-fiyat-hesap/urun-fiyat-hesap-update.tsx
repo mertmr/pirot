@@ -14,6 +14,9 @@ import { defaultValue, IUrunFiyatHesap } from 'app/shared/model/urun-fiyat-hesap
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { Dropdown } from 'primereact/dropdown';
+import { FATURA_TIPI } from "app/shared/model/enumerations/fatura-tipi.model";
+import { Birim } from "app/shared/model/enumerations/birim.model";
+import { IFiyat } from "app/shared/model/fiyat.model";
 
 export interface IUrunFiyatHesapUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -21,6 +24,8 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
   const [urunId, setUrunId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
   const [urunFiyatHesap, setUrunFiyatHesap] = useState(defaultValue);
+  const [birimFiyat, setBirimFiyat] = useState(0);
+  const [payliBirimFiyat, setpayliBirimFiyat] = useState(0);
 
   const { urunFiyatHesapEntity, uruns, loading, updating, satisUrunleri } = props;
 
@@ -54,11 +59,82 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
     }
   }, [props.satisUrunleri, props.urunFiyatHesapEntity]);
 
-  const updateStokGirisi = e => {
+  const updateUrunFiyatHesap = e => {
     setUrunFiyatHesap({
       ...urunFiyatHesap,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const updateDukkanGider = e => {
+    setUrunFiyatHesap({
+      ...urunFiyatHesap,
+      [e.target.name]: Number(e.target.value),
+    });
+  };
+
+  const setGiderPusula = e => {
+    let giderPusulaMustahsil;
+    const faturaTipi = e;
+    if(e !== FATURA_TIPI.FATURA) {
+      giderPusulaMustahsil = 5;
+    } else {
+      giderPusulaMustahsil = 0;
+    }
+
+    setUrunFiyatHesap({
+      ...urunFiyatHesap,
+      giderPusulaMustahsil,
+      faturaTipi,
+    });
+  };
+
+  const setDayanisma = e => {
+    let amortisman;
+    let dayanisma;
+    let kooperatifCalisma;
+    let fire;
+    if(e === 'HAYIR') {
+      amortisman = 1;
+      dayanisma = 1;
+      fire = 5;
+      kooperatifCalisma = 1;
+    } else {
+      amortisman = 0;
+      dayanisma = 0;
+      fire = 0;
+      kooperatifCalisma = 0;
+    }
+
+    const dukkanGider = 23;
+    setUrunFiyatHesap({
+      ...urunFiyatHesap,
+      amortisman,
+      dayanisma,
+      fire,
+      kooperatifCalisma,
+      dukkanGider,
+    });
+  };
+
+  const fiyatHesapla = () => {
+        let kdvDahilBirimFiyat;
+        if(urunFiyatHesap.faturaTipi === FATURA_TIPI.FATURA) {
+          kdvDahilBirimFiyat = birimFiyat * (1 + 0.01 * urunFiyatHesap.urun.kdvKategorisi.kdvOrani);
+        } else {
+          kdvDahilBirimFiyat = birimFiyat;
+        }
+
+        const koopPayi = urunFiyatHesap.amortisman +
+          urunFiyatHesap.dayanisma +
+          urunFiyatHesap.dukkanGider +
+          urunFiyatHesap.fire +
+          urunFiyatHesap.giderPusulaMustahsil +
+          urunFiyatHesap.kooperatifCalisma;
+        let koopFiyati = kdvDahilBirimFiyat * (1 + 0.01 * koopPayi);
+        koopFiyati = Number((Math.round(koopFiyati * 4) / 4).toFixed(2));
+
+    setpayliBirimFiyat(koopFiyati);
   };
 
   const saveEntity = (event, errors, values) => {
@@ -106,7 +182,7 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                   options={satisUrunleri}
                   optionLabel="urunAdi"
                   name="urun"
-                  onChange={updateStokGirisi}
+                  onChange={updateUrunFiyatHesap}
                   filter={true}
                   filterPlaceholder="Ürün seçiniz"
                   filterBy="urunAdi"
@@ -114,16 +190,35 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                 />
               </AvGroup>
               <AvGroup>
+                <Label id="dayanismaLabel" for="dayanisma-dayanismaTipi">
+                  Dayanışma Ürünü mü?
+                </Label>
+                <AvInput
+                  id="dayanisma-dayanismaTipi"
+                  type="select"
+                  className="form-control"
+                  name="faturaTipi"
+                  value={''}
+                  onChange={e => setDayanisma(e.target.value)}
+                >
+                  <option value="">{''}</option>
+                  <option value="HAYIR">{'HAYIR'}</option>
+                  <option value="EVET">{'EVET'}</option>
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
                 <Label id="giderTipiLabel" for="gider-giderTipi">
-                  <Translate contentKey="koopApp.gider.giderTipi">Gider Tipi</Translate>
+                  Fatura Tipi
                 </Label>
                 <AvInput
                   id="gider-giderTipi"
                   type="select"
                   className="form-control"
                   name="faturaTipi"
-                  value={(!isNew && urunFiyatHesapEntity.faturaTipi) || 'FATURA'}
+                  value={(!isNew && urunFiyatHesapEntity.faturaTipi) || ''}
+                  onChange={e => setGiderPusula(e.target.value)}
                 >
+                  <option value="">{''}</option>
                   <option value="FATURA">{'FATURA'}</option>
                   <option value="GIDER">{'GIDER'}</option>
                   <option value="MUSTAHSIL">{'MUSTAHSIL'}</option>
@@ -133,37 +228,71 @@ export const UrunFiyatHesapUpdate = (props: IUrunFiyatHesapUpdateProps) => {
                 <Label id="amortismanLabel" for="urun-fiyat-hesap-amortisman">
                   <Translate contentKey="koopApp.urunFiyatHesap.amortisman">Amortisman</Translate>
                 </Label>
-                <AvField id="urun-fiyat-hesap-amortisman" type="string" className="form-control" name="amortisman" />
+                <AvField id="urun-fiyat-hesap-amortisman" type="string" className="form-control" name="amortisman"
+                         on value={urunFiyatHesap.amortisman}/>
               </AvGroup>
               <AvGroup>
                 <Label id="giderPusulaMustahsilLabel" for="urun-fiyat-hesap-giderPusulaMustahsil">
                   <Translate contentKey="koopApp.urunFiyatHesap.giderPusulaMustahsil">Gider Pusula Mustahsil</Translate>
                 </Label>
-                <AvField id="urun-fiyat-hesap-giderPusulaMustahsil" type="string" className="form-control" name="giderPusulaMustahsil" />
+                <AvField id="urun-fiyat-hesap-giderPusulaMustahsil" type="string"
+                         className="form-control" name="giderPusulaMustahsil"
+                         on value={urunFiyatHesap.giderPusulaMustahsil} onChange={e => setUrunFiyatHesap(e.target.value)}/>
               </AvGroup>
               <AvGroup>
                 <Label id="dukkanGiderLabel" for="urun-fiyat-hesap-dukkanGider">
                   <Translate contentKey="koopApp.urunFiyatHesap.dukkanGider">Dukkan Gider</Translate>
                 </Label>
-                <AvField id="urun-fiyat-hesap-dukkanGider" type="string" className="form-control" name="dukkanGider" />
+                <AvField id="urun-fiyat-hesap-dukkanGider" type="string" className="form-control" name="dukkanGider"
+                         on value={urunFiyatHesap.dukkanGider} onChange={e => updateDukkanGider(e)}/>
               </AvGroup>
               <AvGroup>
                 <Label id="kooperatifCalismaLabel" for="urun-fiyat-hesap-kooperatifCalisma">
                   <Translate contentKey="koopApp.urunFiyatHesap.kooperatifCalisma">Kooperatif Calisma</Translate>
                 </Label>
-                <AvField id="urun-fiyat-hesap-kooperatifCalisma" type="string" className="form-control" name="kooperatifCalisma" />
+                <AvField id="urun-fiyat-hesap-kooperatifCalisma" type="string" className="form-control" name="kooperatifCalisma"
+                         on value={urunFiyatHesap.kooperatifCalisma}/>
               </AvGroup>
               <AvGroup>
                 <Label id="dayanismaLabel" for="urun-fiyat-hesap-dayanisma">
                   <Translate contentKey="koopApp.urunFiyatHesap.dayanisma">Dayanisma</Translate>
                 </Label>
-                <AvField id="urun-fiyat-hesap-dayanisma" type="string" className="form-control" name="dayanisma" />
+                <AvField id="urun-fiyat-hesap-dayanisma" type="string" className="form-control" name="dayanisma"
+                         on value={urunFiyatHesap.dayanisma}/>
               </AvGroup>
               <AvGroup>
                 <Label id="fireLabel" for="urun-fiyat-hesap-fire">
                   <Translate contentKey="koopApp.urunFiyatHesap.fire">Fire</Translate>
                 </Label>
-                <AvField id="urun-fiyat-hesap-fire" type="string" className="form-control" name="fire" />
+                <AvField id="urun-fiyat-hesap-fire" type="string" className="form-control" name="fire"
+                         on value={urunFiyatHesap.fire}/>
+              </AvGroup>
+              <AvGroup>
+                <Row>
+                  <Col>
+                    <Label id="hesapId" for="urun-fiyat-hesap-asd">
+                      KDVsiz Birim Fiyat
+                    </Label>
+                <AvField id="urun-fiyat-hesap-asd" type="string" className="form-control" name="birimFiyat"
+                         on value={birimFiyat} onChange={e => setBirimFiyat(Number(e.target.value))}/>
+                  </Col>
+                  <Col>
+                    <Label id="hesapId" for="hesaplaButonId">
+                      Butonla Fiyat Hesabı Dene
+                    </Label>
+                    &nbsp;
+                    <Button color="primary" id="hesaplaButonId" onClick={fiyatHesapla}>
+                      Hesapla
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Label id="hesapId" for="urun-fiyat-hesap-asd">
+                      Hesaplanan Fiyat
+                    </Label>
+                <AvField id="urun-fiyat-hesap-asd" type="string" className="form-control" name="payliBirimFiyat"
+                         on value={payliBirimFiyat} disabled/>
+                </Col>
+                </Row>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/urun-fiyat-hesap" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
