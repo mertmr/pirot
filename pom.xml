@@ -52,7 +52,7 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <!-- The liquibase version should match the one managed by
         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-        <liquibase.version>3.9.0</liquibase.version>
+        <liquibase.version>4.0.0</liquibase.version>
         <liquibase-hibernate5.version>3.8</liquibase-hibernate5.version>
         <h2.version>1.4.200</h2.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
@@ -284,7 +284,7 @@
         <dependency>
             <groupId>org.javers</groupId>
             <artifactId>javers-spring-boot-starter-sql</artifactId>
-            <version>5.8.8</version>
+            <version>6.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
@@ -694,9 +694,9 @@
                         </diffChangeLogFile>
                         <driver>org.h2.Driver</driver>
                         <url>jdbc:h2:file:${project.build.directory}/h2db/db/koop</url>
-                        <defaultSchemaName></defaultSchemaName>
+                        <defaultSchemaName/>
                         <username>koop</username>
-                        <password></password>
+                        <password/>
                         <referenceUrl>hibernate:spring:com.koop.app.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>
