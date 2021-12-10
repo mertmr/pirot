@@ -59,6 +59,8 @@ public class StokGirisiService {
                 musteriFiyati.multiply(BigDecimal.valueOf(stokGirisi.getMiktar()).negate()),
                 "Musteri iadesi: Kasadan para cikti"
             );
+        } else if (stokGirisi.getStokHareketiTipi() == StokHareketiTipi.ERZAK_DESTEGI) {
+            urun.setStok(urun.getStok().subtract(BigDecimal.valueOf(stokGirisi.getMiktar())));
         }
 
         urunRepository.save(urun);

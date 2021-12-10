@@ -220,6 +220,7 @@ export const StokGirisiUpdate = (props: IStokGirisiUpdateProps) => {
                   </option>
                   <option value="MASRAF">{translate('koopApp.StokHareketiTipi.MASRAF')}</option>
                   <option value="IADE">{translate('koopApp.StokHareketiTipi.IADE')}</option>
+                  <option value="ERZAK_DESTEGI">ERZAK_DESTEGI</option>
                 </AvInput>
               </AvGroup>
               {/* fiyat hesaplama */}

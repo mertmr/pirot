@@ -8,5 +8,6 @@ public enum StokHareketiTipi {
     FIRE,
     STOK_DUZELTME,
     MASRAF,
-    IADE
+    IADE,
+    ERZAK_DESTEGI,
 }
