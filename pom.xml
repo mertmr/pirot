@@ -338,7 +338,7 @@
         <dependency>
             <groupId>org.springframework.boot.experimental</groupId>
             <artifactId>spring-boot-thin-layout</artifactId>
-            <version>1.0.23.RELEASE</version>
+            <version>1.0.27.RELEASE</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
         <dependency>
@@ -1225,7 +1225,7 @@
                             <dependency>
                                 <groupId>org.springframework.boot.experimental</groupId>
                                 <artifactId>spring-boot-thin-layout</artifactId>
-                                <version>1.0.23.RELEASE</version>
+                                <version>1.0.27.RELEASE</version>
                             </dependency>
                         </dependencies>
                     </plugin>
