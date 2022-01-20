@@ -28,10 +28,13 @@ import { Calendar } from 'primereact/calendar';
 import 'primeflex/primeflex.css';
 import Fuse from 'fuse.js';
 import { Autocomplete } from '@material-ui/lab';
+import { hasAnyAuthority } from "app/shared/auth/private-route";
+import { AUTHORITIES } from "app/config/constants";
 
 export interface ISatisUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SatisUpdate = (props: ISatisUpdateProps) => {
+  const [indirim, setIndirim] = useState(0);
   const [paraUstu, setParaUstu] = useState(0);
   const [nakit, setNakit] = useState(0);
   const [kdvKategorisiList, setKdvKategorisiList] = useState(kdvDefaultList);
@@ -50,7 +53,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
   const [isNew] = useState(!props.match.params || !props.match.params.id);
   const [isFisrtPageOpening, setIsFisrtPageOpening] = useState(true);
 
-  const { satisEntity, loading, updating, account } = props;
+  const { satisEntity, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/satis' + props.location.search);
@@ -80,6 +83,29 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     // fix number due to javascript numbers
     toplamTutar = fixNumber(toplamTutar);
 
+    setSatis({
+      ...satis,
+      toplamTutar,
+    });
+    if (nakit && nakit > 0) {
+      setParaUstu(nakit - toplamTutar);
+    }
+  };
+
+  const onChangeIndirim = value => {
+    setIndirim(value);
+    let toplamTutar = 0;
+    for (const stokHareketi of stokHareketleriListState) {
+      if (stokHareketi.tutar != null) {
+        toplamTutar = toplamTutar + stokHareketi.tutar;
+      }
+    }
+    // fix number due to javascript numbers
+    toplamTutar = fixNumber(toplamTutar);
+    if(value)
+      toplamTutar = toplamTutar * ((100 - value) / 100);
+
+    toplamTutar = fixNumber(toplamTutar);
     setSatis({
       ...satis,
       toplamTutar,
@@ -138,7 +164,7 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
     toplamHesapla(yeniUrunler);
   };
 
-  const { satisUrunleri } = props;
+  const { satisUrunleri, tenantId } = props;
 
   const options = {
     keys: ['urunAdi'],
@@ -384,6 +410,10 @@ export const SatisUpdate = (props: ISatisUpdateProps) => {
                       </AvGroup>
                     </div>
                   ))}
+                  <AvGroup style={tenantId === 2 ? { marginTop: '20px' } : { display: 'none' }}>
+                    <Label for="satis-indirim">İndirim Uygulama %</Label>
+                    <input style={{ marginLeft: '10px' }} className="col-sm-2" onChange={e => onChangeIndirim(Number(e.target.value))} />
+                  </AvGroup>
                   <AvGroup style={{ marginTop: '20px' }}>
                     <Label for="satis-toplamTutar">
                       <Translate contentKey="koopApp.satis.toplamTutar" />
@@ -504,7 +534,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.satis.updating,
   updateSuccess: storeState.satis.updateSuccess,
   satisUrunleri: storeState.urun.satisUrunleri,
-  account: storeState.authentication.account,
+  tenantId: storeState.authentication.account.tenantId,
+  isAdmin: hasAnyAuthority(storeState.authentication.account.authorities, [AUTHORITIES.ADMIN]),
 });
 
 const mapDispatchToProps = {
