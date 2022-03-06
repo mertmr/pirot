@@ -52,7 +52,7 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <!-- The liquibase version should match the one managed by
         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-        <liquibase.version>3.9.0</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <liquibase-hibernate5.version>3.8</liquibase-hibernate5.version>
         <h2.version>2.0.202</h2.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
@@ -284,7 +284,7 @@
         <dependency>
             <groupId>org.javers</groupId>
             <artifactId>javers-spring-boot-starter-sql</artifactId>
-            <version>5.8.8</version>
+            <version>6.6.3</version>
         </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
