@@ -22,7 +22,7 @@
     "fuse.js": "^3.6.1",
     "loaders.css": "0.1.2",
     "lodash": "4.17.21",
-    "moment": "2.24.0",
+    "moment": "2.29.2",
     "primeflex": "^2.0.0",
     "primeicons": "^2.0.0",
     "primereact": "^3.3.3",
