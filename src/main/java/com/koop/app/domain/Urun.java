@@ -58,6 +58,10 @@ public class Urun extends TenantEntity implements Serializable {
     private Boolean active;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "ureticis", allowSetters = true)
+    private Uretici uretici;
+
+    @ManyToOne
     @JsonIgnoreProperties(value = "uruns", allowSetters = true)
     private User urunSorumlusu;
 
@@ -229,7 +233,14 @@ public class Urun extends TenantEntity implements Serializable {
         this.urunFiyatHesap = urunFiyatHesap;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Uretici getUretici() {
+        return uretici;
+    }
+
+    public void setUretici(Uretici uretici) {
+        this.uretici = uretici;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -259,6 +270,7 @@ public class Urun extends TenantEntity implements Serializable {
             ", birim='" + getBirim() + "'" +
             ", dayanismaUrunu='" + isDayanismaUrunu() + "'" +
             ", satista='" + isSatista() + "'" +
+            ", uretici='" + getUretici() + "'" +
             ", urunKategorisi='" + getUrunKategorisi() + "'" +
             ", active='" + isActive() + "'" +
             "}";

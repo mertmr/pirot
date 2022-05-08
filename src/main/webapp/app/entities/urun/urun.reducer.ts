@@ -6,11 +6,13 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IUrun, defaultValue } from 'app/shared/model/urun.model';
 import { IUser } from 'app/shared/model/user.model';
+import { IUretici } from 'app/shared/model/uretici.model';
 
 export const ACTION_TYPES = {
   SEARCH_URUNS: 'urun/SEARCH_URUNS',
   FETCH_URUN_LIST: 'urun/FETCH_URUN_LIST',
   FETCH_URUN_USER_LIST: 'urun/FETCH_URUN_USER_LIST',
+  FETCH_URUN_URETICI_LIST: 'urun/FETCH_URUN_URETICI_LIST',
   FETCH_URUN_SATIS_LIST: 'urun/FETCH_URUN_SATIS_LIST',
   FETCH_URUN_STOK_GIRISI: 'urun/FETCH_URUN_STOK_GIRISI',
   FETCH_URUN: 'urun/FETCH_URUN',
@@ -25,6 +27,7 @@ const initialState = {
   errorMessage: null,
   entities: [] as ReadonlyArray<IUrun>,
   users: [] as Array<IUser>,
+  ureticis: [] as Array<IUser>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -41,6 +44,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case REQUEST(ACTION_TYPES.SEARCH_URUNS):
     case REQUEST(ACTION_TYPES.FETCH_URUN_LIST):
     case REQUEST(ACTION_TYPES.FETCH_URUN_USER_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_URUN_URETICI_LIST):
     case REQUEST(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
     case REQUEST(ACTION_TYPES.FETCH_URUN_STOK_GIRISI):
     case REQUEST(ACTION_TYPES.FETCH_URUN):
@@ -62,6 +66,7 @@ export default (state: UrunState = initialState, action): UrunState => {
     case FAILURE(ACTION_TYPES.SEARCH_URUNS):
     case FAILURE(ACTION_TYPES.FETCH_URUN_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUN_USER_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_URUN_URETICI_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUN_STOK_GIRISI):
     case FAILURE(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
     case FAILURE(ACTION_TYPES.FETCH_URUN):
@@ -88,6 +93,12 @@ export default (state: UrunState = initialState, action): UrunState => {
         ...state,
         loading: false,
         users: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_URUN_URETICI_LIST):
+      return {
+        ...state,
+        loading: false,
+        ureticis: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_URUN_SATIS_LIST):
       return {
@@ -151,6 +162,14 @@ export const getUrunUsers: ICrudGetAllAction<IUrun> = () => {
   const requestUrl = `api/users/findAll`;
   return {
     type: ACTION_TYPES.FETCH_URUN_USER_LIST,
+    payload: axios.get<IUser>(`${requestUrl}`),
+  };
+};
+
+export const getUreticis: ICrudGetAllAction<IUretici> = () => {
+  const requestUrl = `api/ureticis`;
+  return {
+    type: ACTION_TYPES.FETCH_URUN_URETICI_LIST,
     payload: axios.get<IUser>(`${requestUrl}`),
   };
 };

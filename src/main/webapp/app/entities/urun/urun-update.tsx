@@ -7,7 +7,7 @@ import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getEntities as getKdvKategorisis } from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
-import { createEntity, getEntity, getUrunUsers, reset, updateEntity } from './urun.reducer';
+import { createEntity, getEntity, getUreticis, getUrunUsers, reset, updateEntity } from "./urun.reducer";
 import { defaultValue } from 'app/shared/model/urun.model';
 import { Dropdown } from 'primereact/dropdown';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
@@ -20,7 +20,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
   const [kdvKategorisiId, setKdvKategorisiId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { urunEntity, urunUsers, kdvKategorisis, loading, updating, isAdmin } = props;
+  const { urunEntity, ureticis, urunUsers, kdvKategorisis, loading, updating, isAdmin } = props;
 
   const handleClose = () => {
     props.history.push('/urun' + props.location.search);
@@ -35,6 +35,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
 
     props.getUrunUsers();
     props.getKdvKategorisis();
+    props.getUreticis();
   }, []);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
     setUrunState({ ...urunEntity });
   }, [urunEntity]);
 
-  const onChangeUrunSorumlusu = e => {
+  const onChangeValue = e => {
     setUrunState({
       ...urunState,
       [e.target.name]: e.target.value,
@@ -56,10 +57,9 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
 
   const saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
-      const urunSorumlusu = urunState.urunSorumlusu;
       const entity = {
         ...urunEntity,
-        urunSorumlusu,
+        ...urunState,
         ...values,
       };
 
@@ -165,6 +165,27 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
+                <div>
+                  <Label for="urun-uretici">
+                    Üretici
+                  </Label>
+                </div>
+                <div>
+                  <Dropdown
+                    value={urunState.uretici}
+                    options={ureticis}
+                    optionLabel="adi"
+                    onChange={onChangeValue}
+                    filter={true}
+                    name="uretici"
+                    style={{ width: '400px' }}
+                    filterPlaceholder="Üretici Ara"
+                    filterBy="login"
+                    placeholder="Üretici seçin"
+                  />
+                </div>
+              </AvGroup>
+              <AvGroup>
                 <span>
                   <Label id="stokSiniriLabel" for="urun-stokSiniri">
                     <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
@@ -190,7 +211,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                     value={urunState.urunSorumlusu}
                     options={urunUsers}
                     optionLabel="login"
-                    onChange={onChangeUrunSorumlusu}
+                    onChange={onChangeValue}
                     filter={true}
                     name="urunSorumlusu"
                     style={{ width: '400px' }}
@@ -248,6 +269,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   kdvKategorisis: storeState.kdvKategorisi.entities,
   urunEntity: storeState.urun.entity,
   urunUsers: storeState.urun.users,
+  ureticis: storeState.urun.ureticis,
   loading: storeState.urun.loading,
   updating: storeState.urun.updating,
   updateSuccess: storeState.urun.updateSuccess,
@@ -261,6 +283,7 @@ const mapDispatchToProps = {
   createEntity,
   reset,
   getUrunUsers,
+  getUreticis,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

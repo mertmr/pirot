@@ -51,6 +51,9 @@
             <column name="kdv_kategorisi_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="uretici_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>

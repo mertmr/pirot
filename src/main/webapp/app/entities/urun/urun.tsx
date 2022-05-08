@@ -156,6 +156,9 @@ export const Urun = (props: IUrunProps) => {
                   <Translate contentKey="koopApp.urun.urunSorumlusu">Urun Sorumlusu</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
+                  Üretici
+                </th>
+                <th>
                   <Translate contentKey="koopApp.urun.kdvKategorisi">Kdv Kategorisi</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
@@ -182,6 +185,7 @@ export const Urun = (props: IUrunProps) => {
                     <Translate contentKey={`koopApp.UrunKategorisi.${urun.urunKategorisi}`} />
                   </td>
                   <td>{urun.urunSorumlusu ? urun.urunSorumlusu.login : ''}</td>
+                  <td>{urun.uretici ? urun.uretici.adi : ''}</td>
                   <td>{urun.kdvKategorisi ? <Link to={`kdv-kategorisi/${urun.kdvKategorisi.id}`}>{urun.kdvKategorisi.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
