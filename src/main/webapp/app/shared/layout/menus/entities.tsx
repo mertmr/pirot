@@ -41,7 +41,9 @@ export const EntitiesMenu = (props: IEntitiesMenuProps) => (
     </MenuItem>
     <MenuItem icon="box-open" to="/urun" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.urun" />
-    </MenuItem>
+    </MenuItem><MenuItem icon="people-carry" to="/uretici" onClick={props.onClick}>
+    <Translate contentKey="global.menu.entities.uretici" />
+  </MenuItem>
     <MenuItem icon="cash-register" to="/kasa-hareketleri" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.kasaHareketleri" />
     </MenuItem>
