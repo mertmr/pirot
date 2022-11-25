@@ -108,7 +108,7 @@ export const Urun = (props: IUrunProps) => {
           <AvForm onSubmit={startSearching}>
             <AvGroup>
               <InputGroup>
-                <AvInput type="text" name="search" value={search} onChange={handleSearch} placeholder="Ürün Ara" />
+                <AvInput type="text" name="search" value={search} onChange={handleSearch} placeholder="Ürün Ara" autocomplete="off" />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>

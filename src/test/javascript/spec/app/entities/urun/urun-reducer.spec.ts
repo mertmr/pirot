@@ -33,6 +33,7 @@ describe('Entities reducer tests', () => {
     errorMessage: null,
     entities: [] as ReadonlyArray<IUrun>,
     users: [] as Array<IUser>,
+    ureticis: [] as Array<IUser>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,
