@@ -41,9 +41,10 @@ export const EntitiesMenu = (props: IEntitiesMenuProps) => (
     </MenuItem>
     <MenuItem icon="box-open" to="/urun" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.urun" />
-    </MenuItem><MenuItem icon="people-carry" to="/uretici" onClick={props.onClick}>
-    <Translate contentKey="global.menu.entities.uretici" />
-  </MenuItem>
+    </MenuItem>
+    <MenuItem icon="people-carry" to="/uretici" onClick={props.onClick}>
+      <Translate contentKey="global.menu.entities.uretici" />
+    </MenuItem>
     <MenuItem icon="cash-register" to="/kasa-hareketleri" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.kasaHareketleri" />
     </MenuItem>
@@ -52,11 +53,11 @@ export const EntitiesMenu = (props: IEntitiesMenuProps) => (
         <Translate contentKey="global.menu.entities.kisiler" />
       </MenuItem>
     )}
-    <MenuItem icon="asterisk" to="/urun-fiyat-hesap" onClick={props.onClick}>
+    <MenuItem icon="calculator" to="/urun-fiyat-hesap" onClick={props.onClick}>
       <Translate contentKey="global.menu.entities.urunFiyatHesap" />
     </MenuItem>
-    <MenuItem icon="envelope-open-text" to="/borc-alacak" onClick={props.onClick}>
-      <Translate contentKey="global.menu.entities.borcAlacak" />
+    <MenuItem icon="credit-card" to="/uretici-odemeleri">
+      <Translate contentKey="global.menu.entities.ureticiOdemeleri" />
     </MenuItem>
     {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
   </NavDropdown>

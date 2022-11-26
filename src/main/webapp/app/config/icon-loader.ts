@@ -39,6 +39,8 @@ import { faPeopleCarry } from '@fortawesome/free-solid-svg-icons/faPeopleCarry';
 import { faBoxOpen } from '@fortawesome/free-solid-svg-icons/faBoxOpen';
 import { faEnvelopeOpenText } from '@fortawesome/free-solid-svg-icons/faEnvelopeOpenText';
 import { faCashRegister } from '@fortawesome/free-solid-svg-icons/faCashRegister';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons/faCreditCard';
+import { faCalculator } from '@fortawesome/free-solid-svg-icons/faCalculator';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -84,6 +86,8 @@ export const loadIcons = () => {
     faPeopleCarry,
     faBoxOpen,
     faEnvelopeOpenText,
-    faCashRegister
+    faCashRegister,
+    faCreditCard,
+    faCalculator
   );
 };

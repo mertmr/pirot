@@ -1,0 +1,32 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "uretici",
+      "otherEntityName": "uretici",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "ureticiOdemeleri"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "tutar",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "sonGuncellenmeTarihi",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20221126165840",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "uretici_odemeleri",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

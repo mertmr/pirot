@@ -62,6 +62,7 @@ public class CacheConfiguration {
             createCache(cm, com.koop.app.domain.NobetHareketleri.class.getName());
             createCache(cm, com.koop.app.domain.Kisiler.class.getName());
             createCache(cm, com.koop.app.domain.UrunFiyatHesap.class.getName());
+            createCache(cm, com.koop.app.domain.UreticiOdemeleri.class.getName());
             // jhipster-needle-caffeine-add-entry
         };
     }

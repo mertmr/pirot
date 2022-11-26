@@ -4,6 +4,7 @@ export interface IDashboardReports {
   gunlukCiro?: number;
   kartliSatis?: number;
   nakitSatis?: number;
+  toplamBorc?: number;
   haftalikCiroRakamlari?: [];
   haftalikCiroTarihleri?: [];
 }

@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +23,14 @@ public class DashboardReportService {
 
     private final KasaHareketleriRepository kasaHareketleriRepository;
 
+    private final UreticiOdemeleriService ureticiOdemeleriService;
+
     public DashboardReportService(
         SatisRepository satisRepository,
-        KasaHareketleriRepository kasaHareketleriRepository) {
+        KasaHareketleriRepository kasaHareketleriRepository, UreticiOdemeleriService ureticiOdemeleriService) {
         this.satisRepository = satisRepository;
         this.kasaHareketleriRepository = kasaHareketleriRepository;
+        this.ureticiOdemeleriService = ureticiOdemeleriService;
     }
 
     public DashboardReports getDashboardReports() {
@@ -60,6 +62,8 @@ public class DashboardReportService {
         List<String> ciroTarihleri = ciroReports.stream().map(ciro -> ciro.getTarih().toString()).collect(Collectors.toList());
         dashboardReports.setHaftalikCiroRakamlari(ciroRakamlari);
         dashboardReports.setHaftalikCiroTarihleri(ciroTarihleri);
+
+        dashboardReports.setToplamBorc(ureticiOdemeleriService.findTotalBorc().doubleValue());
 
         return dashboardReports;
     }

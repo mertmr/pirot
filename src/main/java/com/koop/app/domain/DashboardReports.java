@@ -14,6 +14,8 @@ public class DashboardReports {
 
     private double nakitSatis = 0;
 
+    private double toplamBorc = 0;
+
     private List<String> haftalikCiroTarihleri;
 
     private List<BigDecimal> haftalikCiroRakamlari;
@@ -72,5 +74,13 @@ public class DashboardReports {
 
     public void setNakitSatis(double nakitSatis) {
         this.nakitSatis = nakitSatis;
+    }
+
+    public double getToplamBorc() {
+        return toplamBorc;
+    }
+
+    public void setToplamBorc(double toplamBorc) {
+        this.toplamBorc = toplamBorc;
     }
 }

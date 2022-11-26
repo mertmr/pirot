@@ -351,7 +351,6 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                   <Table responsive>
                     <thead>
                     <tr>
-                      <th className="hand">Ürün ID</th>
                       <th className="hand">Ürün Adı</th>
                       <th className="hand">Miktar</th>
                       <th className="hand">Eski Fiyat</th>
@@ -361,7 +360,6 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                     <tbody>
                     {fiyatList.map((fiyat, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>{fiyat.urunId}</td>
                         <td>{fiyat.urunAdi}</td>
                         <td>{fiyat.miktar}</td>
                         <td>{fiyat.eskiFiyat}</td>

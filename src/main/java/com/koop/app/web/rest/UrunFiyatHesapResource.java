@@ -8,6 +8,7 @@ import com.koop.app.repository.UrunFiyatHesapRepository;
 import com.koop.app.repository.UrunRepository;
 import com.koop.app.service.BorcAlacakService;
 import com.koop.app.service.StokGirisiService;
+import com.koop.app.service.UreticiOdemeleriService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -53,12 +54,15 @@ public class UrunFiyatHesapResource {
 
     private final BorcAlacakService borcAlacakService;
 
-    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository, StokGirisiService stokGirisiService, UserService userService, BorcAlacakService borcAlacakService) {
+    private final UreticiOdemeleriService ureticiOdemeleriService;
+
+    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository, StokGirisiService stokGirisiService, UserService userService, BorcAlacakService borcAlacakService, UreticiOdemeleriService ureticiOdemeleriService) {
         this.urunFiyatHesapRepository = urunFiyatHesapRepository;
         this.urunRepository = urunRepository;
         this.stokGirisiService = stokGirisiService;
         this.userService = userService;
         this.borcAlacakService = borcAlacakService;
+        this.ureticiOdemeleriService = ureticiOdemeleriService;
     }
 
     /**
@@ -200,12 +204,12 @@ public class UrunFiyatHesapResource {
                     .tarih(ZonedDateTime.now())
                     .user(currentUser);
                 stokGirisiService.save(stokGirisi);
-
-                borcAlacakService.createBorcAlacak(fiyatHesapDTO, urun);
+                ureticiOdemeleriService.createUreticiOdemesi(fiyatHesapDTO, urun);
             }
         }
 
-        return ResponseEntity
-            .ok().build();
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, fiyatHesapDTOList.getFiyatHesapDTOList().size() + " yeni fiyat kaydedildi."))
+            .build();
     }
 }

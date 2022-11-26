@@ -56,7 +56,8 @@
     "ingressDomain": "192.168.99.100.nip.io",
     "monitoring": "no",
     "istio": false,
-    "ingressType": "nginx"
+    "ingressType": "nginx",
+    "lastLiquibaseTimestamp": 1669481920000
   },
   "entities": []
 }

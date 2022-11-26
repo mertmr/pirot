@@ -26,6 +26,7 @@
         "stokGirisi": "Stok Girişi",
         "urunFiyatHesap": "Ürün Fiyat Hesap",
         "urunFiyatHesap": "Urun Fiyat Hesap",
+        "ureticiOdemeleri": "Uretici Odemeleri",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "reports": {

@@ -1,0 +1,24 @@
+{
+  "koopApp": {
+    "ureticiOdemeleri": {
+      "home": {
+        "title": "Uretici Odemeleris",
+        "createLabel": "Create a new Uretici Odemeleri",
+        "createOrEditLabel": "Create or edit a Uretici Odemeleri",
+        "notFound": "No Uretici Odemeleris found"
+      },
+      "created": "A new Uretici Odemeleri is created with identifier {{ param }}",
+      "updated": "A Uretici Odemeleri is updated with identifier {{ param }}",
+      "deleted": "A Uretici Odemeleri is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Uretici Odemeleri {{ id }}?"
+      },
+      "detail": {
+        "title": "Uretici Odemeleri"
+      },
+      "tutar": "Tutar",
+      "sonGuncellenmeTarihi": "Son Guncellenme Tarihi",
+      "uretici": "Uretici"
+    }
+  }
+}

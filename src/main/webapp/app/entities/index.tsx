@@ -18,6 +18,7 @@ import KasaHareketleri from './kasa-hareketleri';
 import NobetHareketleri from './nobet-hareketleri';
 import Kisiler from './kisiler';
 import UrunFiyatHesap from './urun-fiyat-hesap';
+import UreticiOdemeleri from './uretici-odemeleri';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -38,6 +39,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}nobet-hareketleri`} component={NobetHareketleri} />
       <ErrorBoundaryRoute path={`${match.url}kisiler`} component={Kisiler} />
       <ErrorBoundaryRoute path={`${match.url}urun-fiyat-hesap`} component={UrunFiyatHesap} />
+      <ErrorBoundaryRoute path={`${match.url}uretici-odemeleri`} component={UreticiOdemeleri} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>
