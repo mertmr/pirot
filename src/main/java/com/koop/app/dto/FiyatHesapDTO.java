@@ -14,6 +14,8 @@ public class FiyatHesapDTO {
 
     private BigDecimal eskiFiyat;
 
+    private BigDecimal tutar;
+
     public Long getUrunId() {
         return urunId;
     }
@@ -52,5 +54,13 @@ public class FiyatHesapDTO {
 
     public void setMiktar(BigDecimal miktar) {
         this.miktar = miktar;
+    }
+
+    public BigDecimal getTutar() {
+        return tutar;
+    }
+
+    public void setTutar(BigDecimal tutar) {
+        this.tutar = tutar;
     }
 }

@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, Table, Badge, UncontrolledTooltip } from 'reactstrap';
-import { AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Badge, Button, Col, Label, Row, Table, UncontrolledTooltip} from 'reactstrap';
+import {AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-import { IRootState } from 'app/shared/reducers';
-import { getEntities, updateFiyat } from './urun-fiyat-hesap.reducer';
+import {IRootState} from 'app/shared/reducers';
+import {getEntities, updateFiyat} from './urun-fiyat-hesap.reducer';
 import TextField from '@material-ui/core/TextField';
 import cloneDeep from 'lodash/cloneDeep';
 import 'primeflex/primeflex.css';
 import Fuse from 'fuse.js';
-import { Autocomplete } from '@material-ui/lab';
-import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/model/satis.model';
-import { defaultValueList, IFiyat } from 'app/shared/model/fiyat.model';
-import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
-import { Birim } from 'app/shared/model/enumerations/birim.model';
-import { createEntity } from 'app/entities/satis/satis.reducer';
-import { FATURA_TIPI } from 'app/shared/model/enumerations/fatura-tipi.model';
-import { IFiyatDTO } from 'app/shared/model/fiyat-list.model';
+import {Autocomplete} from '@material-ui/lab';
+import {defaultValue as satisDefault, defaultValueWithNew} from 'app/shared/model/satis.model';
+import {defaultValueList, IFiyat} from 'app/shared/model/fiyat.model';
+import {ISatisStokHareketleri} from 'app/shared/model/satis-stok-hareketleri.model';
+import {Birim} from 'app/shared/model/enumerations/birim.model';
+import {createEntity} from 'app/entities/satis/satis.reducer';
+import {IFiyatDTO} from 'app/shared/model/fiyat-list.model';
 
-export interface IFiyatHesapProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IFiyatHesapProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {
+}
 
 export const FiyatHesap = (props: IFiyatHesapProps) => {
   const [satis, setSatis] = useState(satisDefault);
@@ -133,7 +133,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
     }
   };
 
-  const filterOptions = (optionss, { inputValue }) => searchUrun(inputValue);
+  const filterOptions = (optionss, {inputValue}) => searchUrun(inputValue);
 
   const onChangeUrun = (e, key) => {
     if (typeof e !== 'string') {
@@ -169,7 +169,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
     props.getEntities();
   }, []);
 
-  const { urunFiyatHesapList } = props;
+  const {urunFiyatHesapList} = props;
 
   useEffect(() => {
     const urunArray = [];
@@ -205,17 +205,13 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
       if (stokGirisi.urun.id !== 0) {
         const urunFiyatHesap = stokGirisi.urun.urunFiyatHesap;
         let kdvDahilBirimFiyat;
-        if (urunFiyatHesap.faturaTipi === FATURA_TIPI.FATURA) {
-          kdvDahilBirimFiyat = stokGirisi.tutar * (1 + 0.01 * stokGirisi.urun.kdvKategorisi.kdvOrani);
-        } else {
-          kdvDahilBirimFiyat = stokGirisi.tutar;
-        }
+
         if (stokGirisi.urun.birim === Birim.ADET)
           kdvDahilBirimFiyat =
-            Number(kdvDahilBirimFiyat) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / stokGirisi.miktar);
+            Number(stokGirisi.tutar) / (stokGirisi.miktar) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / stokGirisi.miktar);
         else
           kdvDahilBirimFiyat =
-            Number(kdvDahilBirimFiyat) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / (stokGirisi.miktar * 0.001));
+            Number(stokGirisi.tutar) / (stokGirisi.miktar * 0.001) + Number(((stokGirisi.agirlikAta / toplamKargoAgirligi) * kargo) / (stokGirisi.miktar * 0.001));
 
         const koopPayi =
           urunFiyatHesap.amortisman +
@@ -232,6 +228,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
         fiyatModel.eskiFiyat = stokGirisi.urun.musteriFiyati;
         fiyatModel.yeniFiyat = koopFiyati;
         fiyatModel.miktar = stokGirisi.miktar;
+        fiyatModel.tutar = stokGirisi.tutar;
         fiyats.push(fiyatModel);
       }
     });
@@ -249,77 +246,79 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
         <Col md="12" className="satis-font">
           <AvForm model={satis} onSubmit={fiyatHesapla}>
             <Button tag={Link} onClick={addRow} color="primary" size="sm">
-              <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
+              <FontAwesomeIcon icon="pencil-alt"/> <span className="d-none d-md-inline">Yeni Ürün Ekle</span>
             </Button>
             {stokHareketleriListState && stokHareketleriListState.length > 0 ? (
               <div>
                 {stokHareketleriListState.map((stokHareketi, i) => (
                   <div key={`entity-${i}`} className="urun-sinir">
                     <AvGroup>
-                      <Col style={{ padding: '0' }}>
+                      <Col style={{padding: '0'}}>
                         <Row className="g-2">
-                          <Col className="col-md-4 col-12" style={{ marginTop: '10px', padding: '0px' }}>
+                          <Col className="col-md-4 col-12" style={{marginTop: '10px', padding: '0px'}}>
                             <Autocomplete
                               options={satisUrunleri}
                               freeSolo
-                              style={{ marginLeft: '20px', width: '80%' }}
+                              style={{marginLeft: '20px', width: '80%'}}
                               value={stokHareketi.urun}
                               getOptionLabel={option => option.urunAdi}
                               onChange={(event, newValue) => {
                                 onChangeUrun(newValue, i);
                               }}
                               filterOptions={filterOptions}
-                              renderInput={params => <TextField {...params} variant="outlined" fullWidth />}
+                              renderInput={params => <TextField {...params} variant="outlined" fullWidth/>}
                             />
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
-                            <Col style={{ padding: '0px' }}>
+                          <Col style={{marginTop: '10px', padding: '0px'}} className="col-md col-6">
+                            <Col style={{padding: '0px'}}>
                               <Translate contentKey="koopApp.satisStokHareketleri.miktar">Miktar</Translate>
                             </Col>
-                            <Col style={{ padding: '0px' }}>
+                            <Col style={{padding: '0px'}}>
                               <input
                                 className="col-md-12"
-                                style={{ width: '80%' }}
+                                style={{width: '80%'}}
                                 value={stokHareketi.miktar}
                                 onChange={e => onChangeMiktar(e.target.value, i)}
                               />
                             </Col>
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
-                            <Col style={{ padding: '0px' }}>KDVsiz Birim Fiyat</Col>
-                            <Col style={{ padding: '0px' }}>
+                          <Col style={{marginTop: '10px', padding: '0px'}} className="col-md col-6">
+                            <Col style={{padding: '0px'}}>Toplam Kalem Fiyat</Col>
+                            <Col style={{padding: '0px'}}>
                               <input
                                 className="col-md-12"
-                                style={{ width: '80%' }}
+                                style={{width: '80%'}}
                                 value={stokHareketi.tutar}
                                 onChange={e => onChangeBirimFiyat(e.target.value, i)}
                               />
                             </Col>
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
+                          <Col style={{marginTop: '10px', padding: '0px'}} className="col-md col-6">
                             <Col>Ağırlık Ata</Col>
                             <Col>
                               <input
                                 className="col-md-12"
-                                style={{ width: '80%' }}
+                                style={{width: '80%'}}
                                 value={stokHareketi.agirlikAta}
                                 onChange={e => onChangeAgirlikAta(e.target.value, i)}
                               />
                             </Col>
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }} className="col-md col-6">
-                            <Badge id="stok-siniri-info" style={{ marginLeft: '5px' }} color="info">
+                          <Col style={{marginTop: '10px', padding: '0px'}} className="col-md col-6">
+                            <Badge id="stok-siniri-info" style={{marginLeft: '5px'}} color="info">
                               Bilgi
                             </Badge>
                             <UncontrolledTooltip placement={'right'} target={'stok-siniri-info'}>
-                              Ağırlık ata alanını ürünlerin ağırlığına göre kargo dağıtmak için kullanmanız gerekir. Mesela 500 gr dan 20
-                              adet salça ve 10 gramdan 15 tane sumak geldiyse salça için bu alana 1000, sumak için 150 yazmak gerekir.
+                              Ağırlık ata alanını ürünlerin ağırlığına göre kargo dağıtmak için kullanmanız gerekir.
+                              Mesela 500 gr dan 20
+                              adet salça ve 10 gramdan 15 tane sumak geldiyse salça için bu alana 1000, sumak için 150
+                              yazmak gerekir.
                             </UncontrolledTooltip>
                           </Col>
-                          <Col style={{ marginTop: '10px', padding: '0px' }}>
+                          <Col style={{marginTop: '10px', padding: '0px'}}>
                             <div className="btn-group flex-btn-group-container">
                               <Button tag={Link} color="danger" size="sm" onClick={() => deleteRow(i)}>
-                                <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline" />
+                                <FontAwesomeIcon icon="trash"/> <span className="d-none d-md-inline"/>
                               </Button>
                             </div>
                           </Col>
@@ -330,14 +329,15 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                 ))}
               </div>
             ) : (
-              <div className="alert alert-warning" />
+              <div className="alert alert-warning"/>
             )}
-            <AvGroup style={{ marginTop: '20px' }}>
+            <AvGroup style={{marginTop: '20px'}}>
               <Label for="kargo">Kargo</Label>
-              <AvInput id="kargo_input" type="number" className="form-control" name="kargo" onChange={e => setKargo(e.target.value)} />
+              <AvInput id="kargo_input" type="number" className="form-control" name="kargo"
+                       onChange={e => setKargo(e.target.value)}/>
             </AvGroup>
             <Button color="primary" id="save-entity">
-              <FontAwesomeIcon icon="save" />
+              <FontAwesomeIcon icon="save"/>
               &nbsp; Fiyat Hesapla
             </Button>
             <Button color="primary" onClick={() => clearTable()}>
@@ -350,24 +350,24 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                 {fiyatList && fiyatList.length > 0 ? (
                   <Table responsive>
                     <thead>
-                      <tr>
-                        <th className="hand">Ürün ID</th>
-                        <th className="hand">Ürün Adı</th>
-                        <th className="hand">Miktar</th>
-                        <th className="hand">Eski Fiyat</th>
-                        <th className="hand">Yeni Fiyat</th>
-                      </tr>
+                    <tr>
+                      <th className="hand">Ürün ID</th>
+                      <th className="hand">Ürün Adı</th>
+                      <th className="hand">Miktar</th>
+                      <th className="hand">Eski Fiyat</th>
+                      <th className="hand">Yeni Fiyat</th>
+                    </tr>
                     </thead>
                     <tbody>
-                      {fiyatList.map((fiyat, i) => (
-                        <tr key={`entity-${i}`}>
-                          <td>{fiyat.urunId}</td>
-                          <td>{fiyat.urunAdi}</td>
-                          <td>{fiyat.miktar}</td>
-                          <td>{fiyat.eskiFiyat}</td>
-                          <td>{fiyat.yeniFiyat}</td>
-                        </tr>
-                      ))}
+                    {fiyatList.map((fiyat, i) => (
+                      <tr key={`entity-${i}`}>
+                        <td>{fiyat.urunId}</td>
+                        <td>{fiyat.urunAdi}</td>
+                        <td>{fiyat.miktar}</td>
+                        <td>{fiyat.eskiFiyat}</td>
+                        <td>{fiyat.yeniFiyat}</td>
+                      </tr>
+                    ))}
                     </tbody>
                   </Table>
                 ) : (
@@ -375,10 +375,10 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
                 )}
               </div>
             ) : (
-              <div className="alert alert-warning" />
+              <div className="alert alert-warning"/>
             )}
             <Button tag={Link} id="cancel-save" to="/urun-fiyat-hesap" replace color="info">
-              <FontAwesomeIcon icon="arrow-left" />
+              <FontAwesomeIcon icon="arrow-left"/>
               &nbsp;
               <span className="d-none d-md-inline">
                 <Translate contentKey="entity.action.back">Back</Translate>
@@ -386,7 +386,7 @@ export const FiyatHesap = (props: IFiyatHesapProps) => {
             </Button>
             &nbsp;
             <Button color="primary" id="save-entity" type="submit">
-              <FontAwesomeIcon icon="save" />
+              <FontAwesomeIcon icon="save"/>
               &nbsp; Stok ve Fiyat Gir
             </Button>
           </AvForm>

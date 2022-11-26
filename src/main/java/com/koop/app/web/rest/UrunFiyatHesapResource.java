@@ -1,14 +1,12 @@
 package com.koop.app.web.rest;
 
-import com.koop.app.domain.StokGirisi;
-import com.koop.app.domain.Urun;
-import com.koop.app.domain.UrunFiyatHesap;
-import com.koop.app.domain.User;
+import com.koop.app.domain.*;
 import com.koop.app.domain.enumeration.StokHareketiTipi;
 import com.koop.app.dto.FiyatHesapDTO;
 import com.koop.app.dto.FiyatHesapWrapperDTO;
 import com.koop.app.repository.UrunFiyatHesapRepository;
 import com.koop.app.repository.UrunRepository;
+import com.koop.app.service.BorcAlacakService;
 import com.koop.app.service.StokGirisiService;
 import com.koop.app.service.UserService;
 import com.koop.app.web.rest.errors.BadRequestAlertException;
@@ -53,11 +51,14 @@ public class UrunFiyatHesapResource {
 
     private final UserService userService;
 
-    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository, StokGirisiService stokGirisiService, UserService userService) {
+    private final BorcAlacakService borcAlacakService;
+
+    public UrunFiyatHesapResource(UrunFiyatHesapRepository urunFiyatHesapRepository, UrunRepository urunRepository, StokGirisiService stokGirisiService, UserService userService, BorcAlacakService borcAlacakService) {
         this.urunFiyatHesapRepository = urunFiyatHesapRepository;
         this.urunRepository = urunRepository;
         this.stokGirisiService = stokGirisiService;
         this.userService = userService;
+        this.borcAlacakService = borcAlacakService;
     }
 
     /**
@@ -199,6 +200,8 @@ public class UrunFiyatHesapResource {
                     .tarih(ZonedDateTime.now())
                     .user(currentUser);
                 stokGirisiService.save(stokGirisi);
+
+                borcAlacakService.createBorcAlacak(fiyatHesapDTO, urun);
             }
         }
 
