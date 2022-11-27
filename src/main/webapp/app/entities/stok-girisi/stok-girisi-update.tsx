@@ -13,7 +13,7 @@ import { getUrunFiyatHesapByUrunId } from 'app/entities/urun-fiyat-hesap/urun-fi
 import { defaultValue } from 'app/shared/model/stok-girisi.model';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { Dropdown } from 'primereact/dropdown';
-import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/themes/nova/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';

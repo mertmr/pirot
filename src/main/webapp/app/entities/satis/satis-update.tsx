@@ -18,7 +18,7 @@ import { defaultValue as satisDefault, defaultValueWithNew } from 'app/shared/mo
 import { defaultValueList as kdvDefaultList } from 'app/shared/model/kdv-kategorisi.model';
 import { ISatisStokHareketleri } from 'app/shared/model/satis-stok-hareketleri.model';
 import { getAllUrunForStokGirisi, getSatisUrunleri } from 'app/entities/urun/urun.reducer';
-import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/themes/nova/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import { Birim } from 'app/shared/model/enumerations/birim.model';
