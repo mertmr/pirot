@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.koop.app.config.tenancy.TenantEntity;
 import com.koop.app.domain.enumeration.Birim;
 import com.koop.app.domain.enumeration.UrunKategorisi;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * A Urun.
@@ -55,7 +56,7 @@ public class Urun extends TenantEntity implements Serializable {
     private UrunKategorisi urunKategorisi;
 
     @Column(name = "active")
-    private Boolean active;
+    private Boolean active = true;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "ureticis", allowSetters = true)
@@ -63,10 +64,12 @@ public class Urun extends TenantEntity implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "uruns", allowSetters = true)
+    @JoinColumn(name = "urun_sorumlusu_id")
     private User urunSorumlusu;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "uruns", allowSetters = true)
+    @JoinColumn(name = "kdv_kategorisi_id")
     private KdvKategorisi kdvKategorisi;
 
     @OneToOne(mappedBy = "urun")

@@ -37,7 +37,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/koop;DB_CLOSE_DELAY=-1
+    url: jdbc:postgresql://localhost:5432/koop
     username: koop
     password:
     hikari:
@@ -47,7 +47,7 @@ spring:
     console:
       enabled: true
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: true
     properties:
       hibernate.id.new_generator_mappings: true

@@ -27,10 +27,6 @@ management:
         enabled: false
 
 spring:
-  profiles:
-    active: prod
-    include:
-      - no-liquibase
   devtools:
     restart:
       enabled: false
@@ -48,8 +44,8 @@ spring:
     database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
     show-sql: false
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
-  #  liquibase:
-  #    contexts: prod
+  liquibase:
+    contexts: prod
   mail:
     host: localhost
     port: 587

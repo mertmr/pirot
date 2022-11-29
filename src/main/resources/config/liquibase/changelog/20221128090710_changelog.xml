@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-28">
+        <createSequence incrementBy="50" sequenceName="sequenceGenerator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-29">
+        <addPrimaryKey columnNames="id" constraintName="koop_tenantPK" tableName="koop_tenant"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-30">
+        <addForeignKeyConstraint baseColumnNames="uretici_id" baseTableName="urun" constraintName="FKje44w6kpgemxxejl5srasyueq" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="uretici" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-31">
+        <dropForeignKeyConstraint baseTableName="urun" constraintName="fkt0ircqatp2kax78lihsk54qft"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-32">
+        <dropColumn columnName="user_id" tableName="urun"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-33">
+        <dropSequence sequenceName="satis_stok_hareketleri_id_seq"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-34">
+        <dropSequence sequenceName="sequence_generator"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-35">
+        <dropSequence sequenceName="sequence_generator_mert"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-1">
+        <dropDefaultValue columnDataType="boolean" columnName="activated" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-2">
+        <dropDefaultValue columnDataType="boolean" columnName="active" tableName="kisiler"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-3">
+        <dropDefaultValue columnDataType="boolean" columnName="active" tableName="urun"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-4">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="authority_name" tableName="koop_user_authority"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-5">
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="cikis_hesabi" tableName="virman"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-6">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="created_by" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-8">
+        <addNotNullConstraint columnDataType="bigint" columnName="id" tableName="koop_tenant" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-9">
+        <dropDefaultValue columnDataType="varchar(10)" columnName="lang_key" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669626456120-11">
+        <dropDefaultValue columnDataType="boolean" columnName="satista" tableName="urun"/>
+    </changeSet>
+</databaseChangeLog>

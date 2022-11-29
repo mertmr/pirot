@@ -43,9 +43,8 @@ public class Gider extends TenantEntity implements Serializable {
     @Column(name = "gider_tipi", nullable = false)
     private GiderTipi giderTipi;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "odeme_araci", nullable = false)
+    @Column(name = "odeme_araci")
     private OdemeAraci odemeAraci;
 
     @ManyToOne

@@ -1,175 +1,715 @@
-<?xml version="1.0" encoding="utf-8"?>
-<databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-
-    <changeSet id="00000000000000" author="jhipster">
-        <createSequence sequenceName="sequence_generator" startValue="1050" incrementBy="50"/>
-    </changeSet>
-
-    <!--
-        JHipster core tables.
-        The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
-    -->
-    <changeSet id="00000000000001" author="jhipster">
-        <createTable tableName="koop_user">
-            <column name="id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="tenant_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="login" type="varchar(50)">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_user_login"/>
-            </column>
-            <column name="password_hash" type="varchar(60)"/>
-            <column name="first_name" type="varchar(50)"/>
-            <column name="last_name" type="varchar(50)"/>
-            <column name="email" type="varchar(191)">
-                <constraints unique="true" nullable="true" uniqueConstraintName="ux_user_email"/>
-            </column>
-            <column name="image_url" type="varchar(256)"/>
-            <column name="activated" type="boolean" valueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="lang_key" type="varchar(10)"/>
-            <column name="activation_key" type="varchar(20)"/>
-            <column name="reset_key" type="varchar(20)"/>
-            <column name="created_by" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp"/>
-            <column name="reset_date" type="timestamp">
-                <constraints nullable="true"/>
-            </column>
-            <column name="last_modified_by" type="varchar(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
-        </createTable>
-
-        <createTable tableName="koop_authority">
-            <column name="name" type="varchar(50)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="koop_user_authority">
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="authority_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="koop_tenant">
-            <column name="id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="tenant_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addPrimaryKey columnNames="user_id, authority_name" tableName="koop_user_authority"/>
-
-        <addForeignKeyConstraint baseColumnNames="authority_name"
-                                 baseTableName="koop_user_authority"
-                                 constraintName="fk_authority_name"
-                                 referencedColumnNames="name"
-                                 referencedTableName="koop_authority"/>
-
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="koop_user_authority"
-                                 constraintName="fk_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="koop_user"/>
-
-        <addNotNullConstraint columnName="password_hash"
-                              columnDataType="varchar(60)"
-                              tableName="koop_user"/>
-        <loadData
-            file="config/liquibase/data/user.csv"
-            separator=";"
-            tableName="koop_user">
-            <column name="id" type="numeric"/>
-            <column name="activated" type="boolean"/>
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <dropDefaultValue tableName="koop_user" columnName="created_date" columnDataType="datetime"/>
-        <loadData
-            file="config/liquibase/data/authority.csv"
-            separator=";"
-            tableName="koop_authority">
-            <column name="name" type="string"/>
-        </loadData>
-
-        <loadData
-            file="config/liquibase/data/user_authority.csv"
-            separator=";"
-            tableName="koop_user_authority">
-            <column name="user_id" type="numeric"/>
-        </loadData>
-        <loadData
-            file="config/liquibase/fake-data/tenant.csv"
-            separator=";"
-            tableName="koop_tenant">
-            <column name="id" type="numeric"/>
-            <column name="tenant_name" type="string"/>
-        </loadData>
-        <createTable tableName="koop_persistent_audit_event">
-            <column name="event_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="principal" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="event_date" type="timestamp"/>
-            <column name="event_type" type="varchar(255)"/>
-        </createTable>
-
-        <createTable tableName="koop_persistent_audit_evt_data">
-            <column name="event_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="varchar(150)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="value" type="varchar(255)"/>
-        </createTable>
-        <addPrimaryKey columnNames="event_id, name" tableName="koop_persistent_audit_evt_data"/>
-
-        <createIndex indexName="idx_persistent_audit_event"
-                     tableName="koop_persistent_audit_event"
-                     unique="false">
-            <column name="principal" type="varchar(50)"/>
-            <column name="event_date" type="timestamp"/>
-        </createIndex>
-
-        <createIndex indexName="idx_persistent_audit_evt_data"
-                     tableName="koop_persistent_audit_evt_data"
-                     unique="false">
-            <column name="event_id" type="bigint"/>
-        </createIndex>
-
-        <addForeignKeyConstraint baseColumnNames="event_id"
-                                 baseTableName="koop_persistent_audit_evt_data"
-                                 constraintName="fk_evt_pers_audit_evt_data"
-                                 referencedColumnNames="event_id"
-                                 referencedTableName="koop_persistent_audit_event"/>
-    </changeSet>
-
-    <changeSet author="jhipster" id="00000000000002" context="test">
-        <createTable tableName="koop_date_time_wrapper">
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-1">
+        <createTable tableName="urun_fiyat">
             <column name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="koop_date_time_wrapperPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="urun_fiyat_pkey"/>
             </column>
-            <column name="instant" type="timestamp"/>
-            <column name="local_date_time" type="timestamp"/>
-            <column name="offset_date_time" type="timestamp"/>
-            <column name="zoned_date_time" type="timestamp"/>
-            <column name="local_time" type="time"/>
-            <column name="offset_time" type="time"/>
-            <column name="local_date" type="date"/>
+            <column name="fiyat" type="numeric"/>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="urun_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-2">
+        <createTable tableName="jv_global_id">
+            <column name="global_id_pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jv_global_id_pk"/>
+            </column>
+            <column name="local_id" type="VARCHAR(191)"/>
+            <column name="fragment" type="VARCHAR(200)"/>
+            <column name="type_name" type="VARCHAR(200)"/>
+            <column name="owner_id_fk" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-3">
+        <createTable tableName="jv_snapshot">
+            <column name="snapshot_pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jv_snapshot_pk"/>
+            </column>
+            <column name="type" type="VARCHAR(200)"/>
+            <column name="version" type="BIGINT"/>
+            <column name="state" type="TEXT"/>
+            <column name="changed_properties" type="TEXT"/>
+            <column name="managed_type" type="VARCHAR(200)"/>
+            <column name="global_id_fk" type="BIGINT"/>
+            <column name="commit_fk" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-4">
+        <createTable tableName="koop_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_authority_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-5">
+        <createTable tableName="jobrunr_backgroundjobservers">
+            <column name="id" type="CHAR(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jobrunr_backgroundjobservers_pkey"/>
+            </column>
+            <column name="workerpoolsize" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pollintervalinseconds" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="firstheartbeat" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastheartbeat" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="running" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="systemtotalmemory" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="systemfreememory" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="systemcpuload" type="numeric(3, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processmaxmemory" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processfreememory" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processallocatedmemory" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processcpuload" type="numeric(3, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deletesucceededjobsafter" type="VARCHAR(32)"/>
+            <column name="permanentlydeletejobsafter" type="VARCHAR(32)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-6">
+        <createTable tableName="koop_user">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_user_pkey"/>
+            </column>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="email" type="VARCHAR(191)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column defaultValueBoolean="true" name="activated" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="tr" name="lang_key" type="VARCHAR(10)"/>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+            <column defaultValue="system" name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="reset_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-7">
+        <createTable tableName="jv_commit_property">
+            <column name="property_name" type="VARCHAR(191)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="property_value" type="VARCHAR(600)"/>
+            <column name="commit_fk" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-8">
+        <createTable tableName="koop_persistent_audit_event">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_persistent_audit_event_pkey"/>
+            </column>
+            <column name="principal" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-9">
+        <createTable tableName="nobet_hareketleri">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="nobet_hareketleri_pkey"/>
+            </column>
+            <column name="fark" type="numeric(21, 2)"/>
+            <column name="kasa" type="numeric(21, 2)"/>
+            <column name="notlar" type="VARCHAR(255)"/>
+            <column name="pirot" type="numeric(21, 2)"/>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="nobet_suresi" type="numeric(21, 2)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="acilis_kapanis" type="VARCHAR(255)"/>
+            <column name="fark_denge" type="numeric(21, 2)"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-10">
+        <createTable tableName="urun_fiyat_hesap">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="urun_fiyat_hesap_pkey"/>
+            </column>
+            <column name="amortisman" type="INTEGER"/>
+            <column name="dayanisma" type="INTEGER"/>
+            <column name="fire" type="INTEGER"/>
+            <column name="gider_pusula_mustahsil" type="INTEGER"/>
+            <column name="kooperatif_calisma" type="INTEGER"/>
+            <column name="urun_id" type="BIGINT"/>
+            <column name="dukkan_gider" type="INTEGER"/>
+            <column name="tenant_id" type="BIGINT"/>
+            <column name="fatura_tipi" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-11">
+        <createTable tableName="stok_girisi">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="stok_girisi_pkey"/>
+            </column>
+            <column name="miktar" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="agirlik" type="INTEGER"/>
+            <column name="notlar" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stok_hareketi_tipi" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="urun_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-12">
+        <createTable tableName="satis_stok_hareketleri">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="satis_stok_hareketleri_pkey"/>
+            </column>
+            <column name="miktar" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tutar" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="satis_id" type="BIGINT"/>
+            <column name="urun_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-13">
+        <createTable tableName="koop_persistent_audit_evt_data">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_persistent_audit_evt_data_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(150)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_persistent_audit_evt_data_pkey"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-14">
+        <createTable tableName="satis">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="satis_pkey"/>
+            </column>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="toplam_tutar" type="numeric(21, 2)"/>
+            <column name="ortaga_satis" type="BOOLEAN"/>
+            <column name="kartli_satis" type="BOOLEAN"/>
+            <column name="kisi_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-15">
+        <createTable tableName="kasa_hareketleri">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="kasa_hareketleri_pkey"/>
+            </column>
+            <column name="hareket" type="VARCHAR(255)"/>
+            <column name="kasa_miktar" type="numeric(21, 2)"/>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-16">
+        <createTable tableName="uretici_odemeleri">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_uretici_odemeleri"/>
+            </column>
+            <column name="tutar" type="numeric(21, 2)"/>
+            <column name="son_guncellenme_tarihi" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="uretici_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-17">
+        <createTable tableName="jobrunr_migrations">
+            <column name="id" type="CHAR(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jobrunr_migrations_pkey"/>
+            </column>
+            <column name="script" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="installedon" type="VARCHAR(29)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-18">
+        <createTable tableName="kdv_kategorisi">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="kdv_kategorisi_pkey"/>
+            </column>
+            <column name="kategori_adi" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kdv_orani" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-19">
+        <createTable tableName="koop_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_user_authority_pkey"/>
+            </column>
+            <column defaultValue="ROLE_USER" name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="koop_user_authority_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-20">
+        <createTable tableName="kisiler">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="kisiler_pkey"/>
+            </column>
+            <column name="kisi_adi" type="VARCHAR(255)"/>
+            <column name="notlar" type="VARCHAR(255)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column defaultValueBoolean="true" name="active" type="BOOLEAN"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-21">
+        <createTable tableName="uretici">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="uretici_pkey"/>
+            </column>
+            <column name="adi" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adres" type="VARCHAR(255)"/>
+            <column name="banka_bilgileri" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-22">
+        <createTable tableName="jobrunr_metadata">
+            <column name="id" type="VARCHAR(156)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jobrunr_metadata_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(92)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdat" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updatedat" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-23">
+        <createTable tableName="jobrunr_jobs">
+            <column name="id" type="CHAR(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jobrunr_jobs_pkey"/>
+            </column>
+            <column name="version" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jobasjson" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jobsignature" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdat" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updatedat" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="scheduledat" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="recurringjobid" type="VARCHAR(128)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-24">
+        <createTable tableName="urun">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="urun_pkey"/>
+            </column>
+            <column name="urun_adi" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="musteri_fiyati" type="numeric"/>
+            <column name="birim" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dayanisma_urunu" type="BOOLEAN"/>
+            <column name="urun_kategorisi" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="kdv_kategorisi_id" type="BIGINT"/>
+            <column name="stok" type="numeric(21, 2)"/>
+            <column name="stok_siniri" type="numeric(21, 2)"/>
+            <column defaultValueBoolean="true" name="satista" type="BOOLEAN"/>
+            <column name="urun_sorumlusu_id" type="BIGINT"/>
+            <column defaultValueBoolean="true" name="active" type="BOOLEAN"/>
+            <column name="uretici_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-25">
+        <createTable tableName="gider">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="gider_pkey"/>
+            </column>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="tutar" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notlar" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gider_tipi" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="odeme_araci" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-26">
+        <createTable tableName="jobrunr_recurring_jobs">
+            <column name="id" type="CHAR(128)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jobrunr_recurring_jobs_pkey"/>
+            </column>
+            <column name="version" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jobasjson" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-27">
+        <createTable tableName="jv_commit">
+            <column name="commit_pk" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="jv_commit_pk"/>
+            </column>
+            <column name="author" type="VARCHAR(200)"/>
+            <column name="commit_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="commit_date_instant" type="VARCHAR(30)"/>
+            <column name="commit_id" type="numeric(22, 2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-28">
+        <createTable tableName="borc_alacak">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="borc_alacak_pkey"/>
+            </column>
+            <column name="hareket_tipi" type="VARCHAR(255)"/>
+            <column name="notlar" type="VARCHAR(255)"/>
+            <column name="odeme_araci" type="VARCHAR(255)"/>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="tutar" type="numeric(21, 2)"/>
+            <column name="urun_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-29">
+        <createTable tableName="virman">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="virman_pkey"/>
+            </column>
+            <column name="tutar" type="numeric">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notlar" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cikis_hesabi" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tarih" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="giris_hesabi" type="VARCHAR(255)"/>
+            <column name="tenant_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-30">
+        <createIndex indexName="jv_global_id_local_id_idx" tableName="jv_global_id">
+            <column name="local_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-31">
+        <createIndex indexName="jv_global_id_owner_id_fk_idx" tableName="jv_global_id">
+            <column name="owner_id_fk"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-32">
+        <addForeignKeyConstraint baseColumnNames="global_id_fk" baseTableName="jv_snapshot" constraintName="jv_snapshot_global_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="global_id_pk" referencedTableName="jv_global_id" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-33">
+        <createIndex indexName="jv_snapshot_commit_fk_idx" tableName="jv_snapshot">
+            <column name="commit_fk"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-34">
+        <createIndex indexName="jv_snapshot_global_id_fk_idx" tableName="jv_snapshot">
+            <column name="global_id_fk"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-35">
+        <createIndex indexName="jobrunr_bgjobsrvrs_fsthb_idx" tableName="jobrunr_backgroundjobservers">
+            <column name="firstheartbeat"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-36">
+        <createIndex indexName="jobrunr_bgjobsrvrs_lsthb_idx" tableName="jobrunr_backgroundjobservers">
+            <column name="lastheartbeat"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-37">
+        <createView fullDefinition="false" viewName="jobrunr_jobs_stats"> SELECT count(*) AS total,
+                                                                                 ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'AWAITING'::text)) AS awaiting,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'SCHEDULED'::text)) AS scheduled,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'ENQUEUED'::text)) AS enqueued,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'PROCESSING'::text)) AS processing,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'FAILED'::text)) AS failed,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'SUCCEEDED'::text)) AS succeeded,
+                                                                              ( SELECT ((jm.value)::character(10))::numeric(10,0) AS value
+                                                                          FROM jobrunr_metadata jm
+                                                                          WHERE ((jm.id)::text = 'succeeded-jobs-counter-cluster'::text)) AS alltimesucceeded,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_jobs jobs
+                                                                          WHERE ((jobs.state)::text = 'DELETED'::text)) AS deleted,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_backgroundjobservers) AS nbrofbackgroundjobservers,
+                                                                              ( SELECT count(*) AS count
+                                                                          FROM jobrunr_recurring_jobs) AS nbrofrecurringjobs
+                                                                          FROM jobrunr_jobs j;</createView>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-38">
+        <addUniqueConstraint columnNames="email" constraintName="ux_user_email" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-39">
+        <addUniqueConstraint columnNames="login" constraintName="ux_user_login" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-40">
+        <createIndex indexName="jv_commit_property_commit_fk_idx" tableName="jv_commit_property">
+            <column name="commit_fk"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-41">
+        <addPrimaryKey columnNames="commit_fk, property_name" constraintName="jv_commit_property_pk" tableName="jv_commit_property"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-42">
+        <createIndex indexName="jv_commit_property_property_name_property_value_idx" tableName="jv_commit_property">
+            <column name="property_name"/>
+            <column name="property_value"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-43">
+        <createIndex indexName="idx_persistent_audit_event" tableName="koop_persistent_audit_event">
+            <column name="principal"/>
+            <column name="event_date"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-44">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="nobet_hareketleri" constraintName="fk3jkj3hshky19hrsxjdjpcyx9m" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-45">
+        <addUniqueConstraint columnNames="urun_id" constraintName="uk_i2ocx42f5tx466amff2402fkq" tableName="urun_fiyat_hesap"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-46">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="stok_girisi" constraintName="fk_stok_girisi_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-47">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="koop_persistent_audit_evt_data" constraintName="fk_evt_pers_audit_evt_data" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="event_id" referencedTableName="koop_persistent_audit_event" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-48">
+        <createIndex indexName="idx_persistent_audit_evt_data" tableName="koop_persistent_audit_evt_data">
+            <column name="event_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-49">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="satis" constraintName="fk_satis_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-50">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="koop_user_authority" constraintName="fk_authority_name" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="name" referencedTableName="koop_authority" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-51">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="koop_user_authority" constraintName="fk_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-52">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="uretici" constraintName="fk_uretici_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-53">
+        <createIndex indexName="jobrunr_job_created_at_idx" tableName="jobrunr_jobs">
+            <column name="createdat"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-54">
+        <createIndex indexName="jobrunr_job_rci_idx" tableName="jobrunr_jobs">
+            <column name="recurringjobid"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-55">
+        <createIndex indexName="jobrunr_job_scheduled_at_idx" tableName="jobrunr_jobs">
+            <column name="scheduledat"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-56">
+        <createIndex indexName="jobrunr_job_signature_idx" tableName="jobrunr_jobs">
+            <column name="jobsignature"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-57">
+        <createIndex indexName="jobrunr_job_updated_at_idx" tableName="jobrunr_jobs">
+            <column name="updatedat"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-58">
+        <createIndex indexName="jobrunr_state_idx" tableName="jobrunr_jobs">
+            <column name="state"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-59">
+        <addForeignKeyConstraint baseColumnNames="kdv_kategorisi_id" baseTableName="urun" constraintName="fkct6fts7i2ncyu1c9pdagiji55" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="kdv_kategorisi" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-60">
+        <addForeignKeyConstraint baseColumnNames="urun_sorumlusu_id" baseTableName="urun" constraintName="fkgbkq8dnegjjjlqi01mfblskay" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-61">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="urun" constraintName="fkt0ircqatp2kax78lihsk54qft" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-62">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="gider" constraintName="fk_gider_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-63">
+        <createIndex indexName="jv_commit_commit_id_idx" tableName="jv_commit">
+            <column name="commit_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-64">
+        <addForeignKeyConstraint baseColumnNames="commit_fk" baseTableName="jv_commit_property" constraintName="jv_commit_property_commit_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="commit_pk" referencedTableName="jv_commit" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-65">
+        <addForeignKeyConstraint baseColumnNames="commit_fk" baseTableName="jv_snapshot" constraintName="jv_snapshot_commit_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="commit_pk" referencedTableName="jv_commit" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-66">
+        <addForeignKeyConstraint baseColumnNames="urun_id" baseTableName="borc_alacak" constraintName="fkbiv340axsb8chja2rqpty7rvg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="urun" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-67">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="borc_alacak" constraintName="fktrn5kyksiyu0tg4cbijp5bry7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-68">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="virman" constraintName="fk_virman_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-69">
+        <addForeignKeyConstraint baseColumnNames="urun_id" baseTableName="urun_fiyat" constraintName="fk_urun_fiyat_urun_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="urun" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-70">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="urun_fiyat" constraintName="fk_urun_fiyat_user_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="koop_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-71">
+        <addForeignKeyConstraint baseColumnNames="owner_id_fk" baseTableName="jv_global_id" constraintName="jv_global_id_owner_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="global_id_pk" referencedTableName="jv_global_id" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-72">
+        <addForeignKeyConstraint baseColumnNames="urun_id" baseTableName="urun_fiyat_hesap" constraintName="fk72rhdbb6r3w96gwy13cydt46v" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="urun" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-73">
+        <addForeignKeyConstraint baseColumnNames="urun_id" baseTableName="stok_girisi" constraintName="fk_stok_girisi_urun_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="urun" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-74">
+        <addForeignKeyConstraint baseColumnNames="satis_id" baseTableName="satis_stok_hareketleri" constraintName="fk_satis_stok_hareketleri_satis_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="satis" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-75">
+        <addForeignKeyConstraint baseColumnNames="urun_id" baseTableName="satis_stok_hareketleri" constraintName="fk_satis_stok_hareketleri_urun_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="urun" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-76">
+        <addForeignKeyConstraint baseColumnNames="kisi_id" baseTableName="satis" constraintName="fkii0fq163w1od9mxn9uqjy4hfq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="kisiler" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-77">
+        <addForeignKeyConstraint baseColumnNames="uretici_id" baseTableName="uretici_odemeleri" constraintName="FK_uretici_odemeleri_uretici_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="uretici" validate="true"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-78">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="jv_commit_pk_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-79">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="jv_global_id_pk_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-80">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="jv_snapshot_pk_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-81">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="satis_stok_hareketleri_id_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-82">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="sequence_generator" startValue="1"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-83">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="sequence_generator_mert" startValue="1050"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669621375522-84">
+        <createTable tableName="koop_tenant">
+            <column name="id" type="BIGINT"/>
+            <column name="tenant_name" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-2">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="authority_name" tableName="koop_user_authority"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-3">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="created_by" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-4">
+        <dropDefaultValue columnDataType="varchar(10)" columnName="lang_key" tableName="koop_user"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-6">
+        <dropNotNullConstraint columnDataType="bigint" columnName="tenant_id" tableName="borc_alacak"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-7">
+        <dropNotNullConstraint columnDataType="bigint" columnName="tenant_id" tableName="gider"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-8">
+        <dropNotNullConstraint columnDataType="bigint" columnName="tenant_id" tableName="kasa_hareketleri"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-9">
+        <dropNotNullConstraint columnDataType="bigint" columnName="tenant_id" tableName="kdv_kategorisi"/>
+    </changeSet>
+    <changeSet author="Mert.Meral (generated)" id="1669627293347-10">
+        <dropNotNullConstraint columnDataType="bigint" columnName="tenant_id" tableName="kisiler"/>
+    </changeSet>
+</databaseChangeLog>

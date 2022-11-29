@@ -24,9 +24,8 @@ public class UrunFiyatHesap extends TenantEntity implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "fatura_tipi", nullable = false)
+    @Column(name = "fatura_tipi")
     private FaturaTipi faturaTipi;
 
     @Column(name = "amortisman")
