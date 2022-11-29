@@ -18,9 +18,6 @@
     <changeSet author="Mert.Meral (generated)" id="1669626456120-33">
         <dropSequence sequenceName="satis_stok_hareketleri_id_seq"/>
     </changeSet>
-    <changeSet author="Mert.Meral (generated)" id="1669626456120-34">
-        <dropSequence sequenceName="sequence_generator"/>
-    </changeSet>
     <changeSet author="Mert.Meral (generated)" id="1669626456120-35">
         <dropSequence sequenceName="sequence_generator_mert"/>
     </changeSet>

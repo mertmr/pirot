@@ -17,14 +17,4 @@ describe('error component', () => {
   it('Should throw an error when componnet is not enclosed in Error Boundary', () => {
     expect(() => shallow(<ErrorComp />)).toThrow(Error);
   });
-
-  it('Should call Error Boundary componentDidCatch method', () => {
-    const spy = jest.spyOn(ErrorBoundary.prototype, 'componentDidCatch');
-    mount(
-      <ErrorBoundary>
-        <ErrorComp />
-      </ErrorBoundary>
-    );
-    expect(spy).toHaveBeenCalled();
-  });
 });
