@@ -12,12 +12,13 @@ import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import { CSVLink } from 'react-csv';
+import {getSortStateByIdDesc} from "app/shared/util/pagination-utils";
 
 export interface IUrunProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Urun = (props: IUrunProps) => {
   const [search, setSearch] = useState('');
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [paginationState, setPaginationState] = useState(getSortStateByIdDesc(props.location, ITEMS_PER_PAGE));
 
   const getAllEntities = () => {
     if (search && search !== '') {
