@@ -244,7 +244,8 @@ public class UserService {
             .findOneByLogin(login)
             .ifPresent(
                 user -> {
-                    userRepository.delete(user);
+                    user.setActivated(false);
+                    userRepository.save(user);
                     this.clearUserCaches(user);
                     log.debug("Deleted User: {}", user);
                 }
@@ -300,7 +301,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+        return userRepository.findAllByLoginNotAndActivatedTrue(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
