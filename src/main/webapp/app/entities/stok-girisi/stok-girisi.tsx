@@ -111,11 +111,11 @@ export const StokGirisi = (props: IStokGirisiProps) => {
         </Link>
       </h2>
       <div className="table-responsive">
-        {stokGirisiList && stokGirisiList.length > 0 ? (
           <div className="card">
             <DataTable value={stokGirisiList}
                        responsiveLayout="scroll"
                        filterDisplay="row"
+                       emptyMessage="Kayıt bulunamadı"
                        rows={ITEMS_PER_PAGE}>
               <Column field="urunAdi" header="Ürün Adı" filter
                       filterField="urunAdi" showFilterMatchModes={false}
@@ -128,13 +128,6 @@ export const StokGirisi = (props: IStokGirisiProps) => {
               <Column field="tarih" header="Tarih" body={dateBodyTemplate}></Column>
             </DataTable>
           </div>
-        ) : (
-          !loading && (
-            <div className="alert alert-warning">
-              <Translate contentKey="koopApp.stokGirisi.home.notFound">No Stok Girisis found</Translate>
-            </div>
-          )
-        )}
       </div>
       {props.totalItems ? (
         <div className={stokGirisiList && stokGirisiList.length > 0 ? '' : 'd-none'}>

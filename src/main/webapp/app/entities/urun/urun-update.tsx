@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Label, Row, UncontrolledTooltip, Badge } from 'reactstrap';
-import { AvField, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
-import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IRootState } from 'app/shared/reducers';
-import { getEntities as getKdvKategorisis } from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
-import { createEntity, getEntity, getUreticis, getUrunUsers, reset, updateEntity } from "./urun.reducer";
-import { defaultValue } from 'app/shared/model/urun.model';
-import { Dropdown } from 'primereact/dropdown';
-import { hasAnyAuthority } from 'app/shared/auth/private-route';
-import { AUTHORITIES } from 'app/config/constants';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {Badge, Button, Col, Label, Row, UncontrolledTooltip} from 'reactstrap';
+import {AvField, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation';
+import {Translate, translate} from 'react-jhipster';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {IRootState} from 'app/shared/reducers';
+import {getEntities as getKdvKategorisis} from 'app/entities/kdv-kategorisi/kdv-kategorisi.reducer';
+import {createEntity, getEntity, getUreticis, getUrunUsers, reset, updateEntity} from "./urun.reducer";
+import {defaultValue} from 'app/shared/model/urun.model';
+import {Dropdown} from 'primereact/dropdown';
+import {hasAnyAuthority} from 'app/shared/auth/private-route';
+import {AUTHORITIES} from 'app/config/constants';
 
-export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IUrunUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {
+}
 
 export const UrunUpdate = (props: IUrunUpdateProps) => {
   const [urunState, setUrunState] = useState(defaultValue);
   const [kdvKategorisiId, setKdvKategorisiId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { urunEntity, ureticis, urunUsers, kdvKategorisis, loading, updating, isAdmin } = props;
+  const {urunEntity, ureticis, urunUsers, kdvKategorisis, loading, updating, isAdmin} = props;
 
   const handleClose = () => {
     props.history.push('/urun' + props.location.search);
@@ -45,7 +46,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
   }, [props.updateSuccess]);
 
   useEffect(() => {
-    setUrunState({ ...urunEntity });
+    setUrunState({...urunEntity});
   }, [urunEntity]);
 
   const onChangeValue = e => {
@@ -91,7 +92,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <Label for="urun-id">
                     <Translate contentKey="global.field.id">ID</Translate>
                   </Label>
-                  <AvInput id="urun-id" type="text" className="form-control" name="id" required readOnly />
+                  <AvInput id="urun-id" type="text" className="form-control" name="id" required readOnly/>
                 </AvGroup>
               ) : null}
               <AvGroup>
@@ -104,7 +105,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   type="text"
                   name="urunAdi"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') },
+                    required: {value: true, errorMessage: translate('entity.validation.required')},
                   }}
                 />
               </AvGroup>
@@ -112,7 +113,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                 <Label id="musteriFiyatiLabel" for="urun-musteriFiyati">
                   <Translate contentKey="koopApp.urun.musteriFiyati">Musteri Fiyati</Translate>
                 </Label>
-                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati" disabled={!isAdmin} required />
+                <AvField id="urun-musteriFiyati" type="text" name="musteriFiyati" disabled={!isAdmin} required/>
               </AvGroup>
               <AvGroup>
                 <Label id="birimLabel" for="urun-birim">
@@ -144,7 +145,8 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
               </AvGroup>
               <AvGroup check>
                 <Label id="satistaLabel">
-                  <AvInput id="urun-satista" type="checkbox" disabled={!isAdmin} className="form-check-input" name="satista" />
+                  <AvInput id="urun-satista" type="checkbox" disabled={!isAdmin} className="form-check-input"
+                           name="satista" value={(isNew) ? true : urunEntity.satista}/>
                   <Translate contentKey="koopApp.urun.satista">Satista</Translate>
                 </Label>
               </AvGroup>
@@ -178,7 +180,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                     onChange={onChangeValue}
                     filter={true}
                     name="uretici"
-                    style={{ width: '400px' }}
+                    style={{width: '400px'}}
                     filterPlaceholder="Üretici Ara"
                     filterBy="login"
                     placeholder="Üretici seçin"
@@ -190,10 +192,10 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   <Label id="stokSiniriLabel" for="urun-stokSiniri">
                     <Translate contentKey="koopApp.urun.stokSiniri">Stok Siniri</Translate>
                   </Label>
-                  <Badge id="stok-siniri-info" style={{ marginLeft: '5px' }} color="info">
+                  <Badge id="stok-siniri-info" style={{marginLeft: '5px'}} color="info">
                     Bilgi
                   </Badge>
-                  <AvField id="urun-stokSiniri" type="text" name="stokSiniri" />
+                  <AvField id="urun-stokSiniri" type="text" name="stokSiniri"/>
                   <UncontrolledTooltip placement={'right'} target={'stok-siniri-info'}>
                     Opsiyonel alan: Bu ürünün stok miktarı buraya gireceğiniz stok sınırı altına indiğinde o ürünün sorumlusuna mail atar.
                     Ürün sorumlusu seçmeyi unutmayın!
@@ -214,7 +216,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                     onChange={onChangeValue}
                     filter={true}
                     name="urunSorumlusu"
-                    style={{ width: '400px' }}
+                    style={{width: '400px'}}
                     filterPlaceholder="Sorumlu Ara"
                     filterBy="login"
                     placeholder="Ürün sorumlusu seçin"
@@ -231,20 +233,21 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
                   disabled={!isAdmin}
                   className="form-control"
                   name="kdvKategorisi.id"
+                  value={isNew ? kdvKategorisis[0] && kdvKategorisis[0].id : urunEntity.kdvKategorisi?.id}
                   required
                 >
-                  <option value="" key="0" />
+                  <option value="" key="0"/>
                   {kdvKategorisis
                     ? kdvKategorisis.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.kategoriAdi}
-                        </option>
-                      ))
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.kategoriAdi}
+                      </option>
+                    ))
                     : null}
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/urun" replace color="info">
-                <FontAwesomeIcon icon="arrow-left" />
+                <FontAwesomeIcon icon="arrow-left"/>
                 &nbsp;
                 <span className="d-none d-md-inline">
                   <Translate contentKey="entity.action.back">Back</Translate>
@@ -252,7 +255,7 @@ export const UrunUpdate = (props: IUrunUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
+                <FontAwesomeIcon icon="save"/>
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
