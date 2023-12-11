@@ -5,7 +5,7 @@
 
     <groupId>com.koop.app</groupId>
     <artifactId>pirot</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.1</version>
     <packaging>jar</packaging>
     <name>Pirot</name>
 
@@ -22,7 +22,7 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <node.version>v12.16.1</node.version>
         <npm.version>6.14.5</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -756,47 +756,47 @@
                         <downloadJavadocs>true</downloadJavadocs>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${maven-enforcer-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>enforce-versions</id>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>enforce-dependencyConvergence</id>
-                            <configuration>
-                                <rules>
-                                    <DependencyConvergence/>
-                                </rules>
-                                <fail>false</fail>
-                            </configuration>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <rules>
-                            <requireMavenVersion>
-                                <message>You are running an older version of Maven. JHipster requires at least Maven
-                                    ${maven.version}
-                                </message>
-                                <version>[${maven.version},)</version>
-                            </requireMavenVersion>
-                            <requireJavaVersion>
-                                <message>You are running an incompatible version of Java. JHipster supports JDK 8 to
-                                    14.
-                                </message>
-                                <version>[1.8,15)</version>
-                            </requireJavaVersion>
-                        </rules>
-                    </configuration>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--                    <version>${maven-enforcer-plugin.version}</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>enforce-versions</id>-->
+<!--                            <goals>-->
+<!--                                <goal>enforce</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                        <execution>-->
+<!--                            <id>enforce-dependencyConvergence</id>-->
+<!--                            <configuration>-->
+<!--                                <rules>-->
+<!--                                    <DependencyConvergence/>-->
+<!--                                </rules>-->
+<!--                                <fail>false</fail>-->
+<!--                            </configuration>-->
+<!--                            <goals>-->
+<!--                                <goal>enforce</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                    <configuration>-->
+<!--                        <rules>-->
+<!--                            <requireMavenVersion>-->
+<!--                                <message>You are running an older version of Maven. JHipster requires at least Maven-->
+<!--                                    ${maven.version}-->
+<!--                                </message>-->
+<!--                                <version>[${maven.version},)</version>-->
+<!--                            </requireMavenVersion>-->
+<!--                            <requireJavaVersion>-->
+<!--                                <message>You are running an incompatible version of Java. JHipster supports JDK 8 to-->
+<!--                                    14.-->
+<!--                                </message>-->
+<!--                                <version>[1.8,15)</version>-->
+<!--                            </requireJavaVersion>-->
+<!--                        </rules>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-idea-plugin</artifactId>
