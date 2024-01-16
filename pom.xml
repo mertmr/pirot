@@ -652,12 +652,6 @@
                     <configuration>
                         <from>
                             <image>adoptopenjdk:11-jre-hotspot</image>
-                            <platforms>
-                                <platform>
-                                    <architecture>arm64</architecture>
-                                    <os>linux</os>
-                                </platform>
-                            </platforms>
                         </from>
                         <to>
                             <image>pirot:latest</image>
